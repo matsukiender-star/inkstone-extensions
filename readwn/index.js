@@ -303,11 +303,40 @@ class Source {
       body: qs(params),
     });
     const response = await manager.schedule(request);
+    if ([301, 302, 303, 307, 308].includes(response.status) && response.headers && response.headers.location) {
+      const next = App.createRequest({
+        url: resolveUrl(url, response.headers.location),
+        method: 'GET',
+        headers: { 'User-Agent': UA, Accept: 'text/html,application/xhtml+xml' },
+      });
+      const followed = await manager.schedule(next);
+      if (followed.status < 200 || followed.status >= 300) {
+        throw new Error(`ReadWN HTTP ${followed.status}`);
+      }
+      return followed.data;
+    }
     if (response.status < 200 || response.status >= 300) {
       throw new Error(`ReadWN HTTP ${response.status}`);
     }
     return response.data;
   }
+}
+
+function resolveUrl(base, location) {
+  if (/^https?:\/\//i.test(location)) return location;
+  const m = /^(https?:\/\/[^/?#]+)([^?#]*)/.exec(base);
+  if (!m) return location;
+  if (location.charAt(0) === '/') return m[1] + location;
+  const path = (m[2] || '/').replace(/[^/]*$/, '') + location;
+  const q = path.indexOf('?');
+  const bare = q === -1 ? path : path.slice(0, q);
+  const rest = q === -1 ? '' : path.slice(q);
+  const out = [];
+  bare.split('/').forEach((seg) => {
+    if (seg === '..') out.pop();
+    else if (seg !== '.') out.push(seg);
+  });
+  return m[1] + out.join('/') + rest;
 }
 
 function absolute(path) {

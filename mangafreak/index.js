@@ -63,7 +63,7 @@ function parseLatestReleases($) {
     if (!mangaId) return;
     const title = cleanText(link.text());
     if (!title) return;
-    const image = (card.find('img').first().attr('src') || '').trim();
+    const image = bigCover((card.find('img').first().attr('src') || '').trim());
     if (!image) return;
     results.push({
       mangaId,
@@ -86,7 +86,7 @@ function parseMangaListAll($) {
     if (!mangaId) return;
     const title = cleanText(link.text());
     if (!title) return;
-    const image = (card.find('.list_image img').first().attr('src') || '').trim();
+    const image = bigCover((card.find('.list_image img').first().attr('src') || '').trim());
     if (!image) return;
 
     const manga = {
@@ -121,7 +121,7 @@ function parseRankingList($) {
     if (!mangaId) return;
     const title = cleanText(link.text());
     if (!title) return;
-    const image = (card.find('.ranking_item_image img').first().attr('src') || '').trim();
+    const image = bigCover((card.find('.ranking_item_image img').first().attr('src') || '').trim());
     if (!image) return;
 
     const manga = {
@@ -162,7 +162,7 @@ function parseSearchResults($) {
     if (!mangaId) return;
     const title = cleanText(link.text());
     if (!title) return;
-    const image = (imageSpan.find('img').first().attr('src') || '').trim();
+    const image = bigCover((imageSpan.find('img').first().attr('src') || '').trim());
     if (!image) return;
 
     const manga = {
@@ -196,6 +196,10 @@ function parseSearchResults($) {
     results.push(manga);
   });
   return results;
+}
+
+function bigCover(src) {
+  return String(src || '').replace(/\/mini_images\/([^/]+)\/\d+x\d+$/, '/manga_images/$1.jpg');
 }
 
 class Source {
@@ -271,7 +275,7 @@ class Source {
 
     const dataScope = $('.manga_series_data');
     const title = cleanText(dataScope.find('h1').first().text()) || mangaId;
-    const image = ($('.manga_series_image img').first().attr('src') || '').trim();
+    const image = bigCover(($('.manga_series_image img').first().attr('src') || '').trim());
 
     const written = fieldValue($, dataScope, 'Written By');
     const illustrated = fieldValue($, dataScope, 'Illustrated By');

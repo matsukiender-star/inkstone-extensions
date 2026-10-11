@@ -44,6 +44,30 @@ function normalizeWhitespace(str) {
   return (str || '').replace(/\s+/g, ' ').trim();
 }
 
+function cleanCookieValue(raw, name) {
+  let v = String(raw || '').trim();
+  const at = v.lastIndexOf(`${name}=`);
+  if (at !== -1) v = v.slice(at + name.length + 1);
+  v = v.split(';')[0].trim().replace(/^["']|["']$/g, '');
+  return /^[\x21-\x7e]+$/.test(v) ? v : '';
+}
+
+function loginCookie() {
+  const aut = cleanCookieValue(App.getSourceSetting('nidAut'), 'NID_AUT');
+  const ses = cleanCookieValue(App.getSourceSetting('nidSes'), 'NID_SES');
+  return aut && ses ? `NID_AUT=${aut}; NID_SES=${ses}` : '';
+}
+
+function isLoginPage(html) {
+  return typeof html === 'string' && /nidlogin\.login/.test(html) && /id="pw"/.test(html);
+}
+
+function loginWallMessage(what) {
+  return loginCookie()
+    ? `Naver Webtoon: could not load ${what}. The saved NID_AUT and NID_SES cookies were not accepted (they expire; copy fresh ones from a signed-in browser), or the account is not age verified for 19+ titles.`
+    : `Naver Webtoon: could not load ${what} (it may not exist, or it may be a 19+ title that needs a signed-in, age-verified Naver account: add the NID_AUT and NID_SES cookies in this source's settings).`;
+}
+
 function parseKoreanCount(text) {
   const t = (text || '').replace(/,/g, '').replace(/\+$/, '').trim();
   const m = t.match(/^([\d.]+)(천|만)?$/);
@@ -89,13 +113,14 @@ function hasNextPage($) {
   return !cls.includes('disabled');
 }
 
-function parseToonLstItem($, li) {
+function parseToonLstItem($, li, keepAdult) {
   const $li = $(li);
   const a = $li.find('a').first();
   const href = a.attr('href') || '';
   const m = href.match(/titleId=(\d+)/);
   if (!m) return null;
-  if (hasAdultBadge($, a)) return null;
+  const adult = hasAdultBadge($, a);
+  if (adult && !keepAdult) return null;
 
   const titleId = m[1];
   const title = normalizeWhitespace(a.find('.toon_info .toon_name').first().text());
@@ -105,7 +130,7 @@ function parseToonLstItem($, li) {
   const scoreText = normalizeWhitespace(a.find('.toon_info div.sub_info .txt_score').first().text());
   const rating = scoreText ? parseFloat(scoreText) : undefined;
 
-  return {
+  const item = {
     mangaId: titleId,
     title,
     image,
@@ -115,15 +140,18 @@ function parseToonLstItem($, li) {
     webURL: `${SITE_BASE}/webtoon/list?titleId=${titleId}`,
     medium: 'comics',
   };
+  if (adult) item.ageRating = 18;
+  return item;
 }
 
-function parseListToonItem($, li) {
+function parseListToonItem($, li, keepAdult) {
   const $li = $(li);
   const a = $li.find('a.link').first();
   const href = a.attr('href') || '';
   const m = href.match(/titleId=(\d+)/);
   if (!m) return null;
-  if (hasAdultBadge($, a)) return null;
+  const adult = hasAdultBadge($, a);
+  if (adult && !keepAdult) return null;
 
   const titleId = m[1];
   const title = normalizeWhitespace(a.find('.info .title_box .title_text').first().text());
@@ -133,7 +161,7 @@ function parseListToonItem($, li) {
   const favText = normalizeWhitespace(a.find('.info .favcount .count_num').first().text());
   const views = parseKoreanCount(favText);
 
-  return {
+  const item = {
     mangaId: titleId,
     title,
     image,
@@ -143,6 +171,8 @@ function parseListToonItem($, li) {
     webURL: `${SITE_BASE}/webtoon/list?titleId=${titleId}`,
     medium: 'comics',
   };
+  if (adult) item.ageRating = 18;
+  return item;
 }
 
 function parseEpisodeListPage($, byNo) {
@@ -185,6 +215,7 @@ class Source {
 
     const page = (metadata && metadata.page) || 1;
     const query = (request && request.title) || '';
+    const keepAdult = !!loginCookie();
 
     if (query) {
       const url = `${BASE}/search/result?${qs({ keyword: query, searchType: 'WEBTOON', page })}`;
@@ -192,7 +223,7 @@ class Source {
       const $ = cheerio.load(html);
       const results = [];
       $('article.result_lst ul.toon_lst li').each((_, el) => {
-        const item = parseToonLstItem($, el);
+        const item = parseToonLstItem($, el, keepAdult);
         if (item) results.push(item);
       });
       const hasNext = hasNextPage($);
@@ -207,7 +238,7 @@ class Source {
       const $ = cheerio.load(html);
       const results = [];
       $('ul.toon_lst.lst_genre li').each((_, el) => {
-        const item = parseToonLstItem($, el);
+        const item = parseToonLstItem($, el, keepAdult);
         if (item) results.push(item);
       });
       const hasNext = hasNextPage($);
@@ -222,7 +253,7 @@ class Source {
       const $ = cheerio.load(html);
       const results = [];
       $('ul.list_toon li.item').each((_, el) => {
-        const item = parseListToonItem($, el);
+        const item = parseListToonItem($, el, keepAdult);
         if (item) results.push(item);
       });
       const hasNext = hasNextPage($);
@@ -235,7 +266,7 @@ class Source {
     const $ = cheerio.load(html);
     const results = [];
     $('ul.list_toon li.item').each((_, el) => {
-      const item = parseListToonItem($, el);
+      const item = parseListToonItem($, el, keepAdult);
       if (item) results.push(item);
     });
     return { results };
@@ -250,9 +281,7 @@ class Source {
     const infoArea = $('.area_info').first();
     const infoBack = $('.info_back').first();
     if (infoArea.length === 0 || infoBack.length === 0) {
-      throw new Error(
-        'Naver Webtoon: could not load this title (it may not exist, or it may be a 19+ title that requires a logged-in, age-verified Naver account, which this extension cannot access).',
-      );
+      throw new Error(loginWallMessage('this title'));
     }
 
     const title = normalizeWhitespace(infoArea.find('.title').first().text()) || titleId;
@@ -274,7 +303,13 @@ class Source {
     });
 
     const ageText = normalizeWhitespace(infoBack.find('.week_day .property.list_detail.age').first().text());
-    const ageRating = parseAgeRating(ageText);
+    let ageRating = parseAgeRating(ageText);
+    const adultPage =
+      /성인|청소년\s*(?:관람|이용)?\s*불가|청소년\s*유해/.test(ageText) ||
+      $('.area_badge .badge')
+        .toArray()
+        .some((el) => /\badult/.test($(el).attr('class') || ''));
+    if (adultPage && (ageRating === undefined || ageRating < 18)) ageRating = 18;
 
     const descLong = normalizeWhitespace(infoBack.find('.summary p').first().text());
     const descShort = normalizeWhitespace(infoArea.find('.summary').first().text());
@@ -311,9 +346,7 @@ class Source {
     parseEpisodeListPage($, byNo);
 
     if (total === 0 && byNo.size === 0) {
-      throw new Error(
-        'Naver Webtoon: could not load this title\'s episode list (it may not exist, or it may be a 19+ title that requires a logged-in, age-verified Naver account, which this extension cannot access).',
-      );
+      throw new Error(loginWallMessage("this title's episode list"));
     }
 
     let noNewPages = 0;
@@ -340,6 +373,7 @@ class Source {
     const no = chapterId;
     const url = `${BASE}/webtoon/detail?${qs({ titleId, no })}`;
     const html = await this.requestHTML(url);
+    if (isLoginPage(html)) throw new Error(loginWallMessage('this episode'));
     const $ = cheerio.load(html);
 
     const pages = [];
@@ -353,10 +387,13 @@ class Source {
 
   async requestHTML(url) {
     const manager = App.createRequestManager({});
+    const headers = { 'User-Agent': UA };
+    const cookie = loginCookie();
+    if (cookie) headers.Cookie = cookie;
     const request = App.createRequest({
       url,
       method: 'GET',
-      headers: { 'User-Agent': UA },
+      headers,
     });
     const response = await manager.schedule(request);
     if (response.status < 200 || response.status >= 300) {

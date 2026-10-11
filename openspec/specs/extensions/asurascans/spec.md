@@ -1,17 +1,17 @@
 # extensions/asurascans Specification
 
 ## Purpose
-AsuraScans (asurascans.com): Manhwa and manhua from AsuraScans' public JSON API. Five browse feeds, genre filtering, search, and full chapter reading. Chapters still under the site's 6-hour early-access window are clearly marked as locked, with a live countdown to when they unlock.
+AsuraScans (asurascans.com): Manhwa, manhua and the new Asura novels from AsuraScans' public JSON API: two real catalogs. Five browse feeds, genre filtering, search, and full reading for both. Locked chapters are marked: comics still in the 6-hour early-access window show a live countdown, and premium novel chapters show their shard price, with a clear note when you open one. Optionally sign in with your Asura account in the source's settings and a premium plan reads them in the app.
 
 ## Requirements
 
 ### Requirement: Listing
-The extension SHALL be listed as `asurascans`, for comics in English, with the content rating `safe`.
+The extension SHALL be listed as `asurascans`, for comics and novels in English, with the content rating `safe`.
 
 #### Scenario: Catalog listing
 - **WHEN** the extension appears in the catalog
 - **THEN** it is marked Safe
-- **AND** it declares the capabilities `browse`, `search`, `genres`, `details`, `chapters` and `reader`
+- **AND** it declares the capabilities `browse`, `search`, `genres`, `details`, `chapters`, `reader`, `locked` and `login`
 
 ### Requirement: Browse feeds
 The extension SHALL provide the feeds Trending (`trending`), Popular (`popular`), Latest (`latest`), Top Rated (`rating`) and A–Z (`title`).
@@ -37,7 +37,7 @@ The extension SHALL provide the site's genres as a flat list, and SHALL support 
 - **THEN** it searches the site by that genre's id
 
 ### Requirement: Details, chapters and reading
-The extension SHALL show a title's description and status, return its whole chapter list, and open a chapter as a list of absolute image URLs.
+The extension SHALL show a title's description and status, return its whole chapter list, and open a chapter as a list of absolute image URLs for comics, or as text for novels.
 
 #### Scenario: Read a chapter
 - **GIVEN** a title with chapters

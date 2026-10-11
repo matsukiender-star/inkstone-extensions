@@ -186,7 +186,7 @@ class Source {
   }
 
   _manager() {
-    return App.createRequestManager({ rateLimit: { requestsPerSecond: 3 } });
+    return App.createRequestManager({});
   }
 
   async _fetchHtml(path) {
@@ -417,7 +417,7 @@ class Source {
       return { error: `no cached page ${pageIndex} for chapter ${chapterId}` };
     }
 
-    if (!page.scramble) return { uri: page.url, referer: `${SITE_BASE}/` };
+    if (!page.scramble) return { uri: page.url };
 
     let response;
     try {
@@ -425,22 +425,22 @@ class Source {
         App.createRequest({
           url: page.url,
           method: 'GET',
-          headers: { 'User-Agent': UA, Referer: `${SITE_BASE}/` },
+          headers: { 'User-Agent': UA },
         }),
       );
     } catch (e) {
       return { error: `page ${pageIndex} fetch failed: ${e instanceof Error ? e.message : String(e)}` };
     }
 
-    if (response.status < 200 || response.status >= 300) return { uri: page.url, referer: `${SITE_BASE}/` };
+    if (response.status < 200 || response.status >= 300) return { uri: page.url };
 
     const headers = response.headers || {};
     const hasScrambleHeaders = Object.keys(headers).some((h) => /^x-(enc|scramble)-/i.test(h));
-    if (!hasScrambleHeaders) return { uri: page.url, referer: `${SITE_BASE}/` };
+    if (!hasScrambleHeaders) return { uri: page.url };
 
     const result = await App.descrambleImage({ base64: response.data, headers });
     if ('error' in result) {
-      return { uri: page.url, referer: `${SITE_BASE}/` };
+      return { uri: page.url };
     }
     return { base64: result.base64, mimeType: 'image/jpeg' };
   }

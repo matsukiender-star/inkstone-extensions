@@ -149,7 +149,11 @@ function mapNovelInfo(info) {
   return manga;
 }
 
-const HYDRATE_POOL = 10;
+const HYDRATE_POOL = 6;
+
+const FIRST_SLICE = 12;
+const SLICE_SIZE = 24;
+const LISTING_TTL_MS = 5 * 60 * 1000;
 
 async function settleInPool(items, worker, width) {
   const out = new Array(items.length);
@@ -198,6 +202,8 @@ class Source {
     try {
       let novelIds = [];
       let hasMore = false;
+      let moreInPage = false;
+      let nextOffset = 0;
 
       if (query) {
         if (page > 1) return { results: [] };
@@ -209,19 +215,30 @@ class Source {
       } else {
         const tagId = request && request.includedTags && request.includedTags[0] && request.includedTags[0].id;
         const lx = tagId || (request && request.feed) || '0';
-        const url = `${SITE_BASE}/bookbase.php?${qs({ lx, page })}`;
-        const html = await this.requestHTML(url);
-        const seen = {};
-        novelIds = [];
-        const re = /novelid=(\d+)/g;
-        let m;
-        while ((m = re.exec(html))) {
-          if (!seen[m[1]]) {
-            seen[m[1]] = true;
-            novelIds.push(m[1]);
+        const sliceStart = (metadata && metadata.offset) || 0;
+        const key = `${lx}:${page}`;
+        const now = Date.now();
+        this.listings = this.listings || {};
+        let allIds = this.listings[key] && now - this.listings[key].at < LISTING_TTL_MS ? this.listings[key].ids : null;
+        if (!allIds) {
+          const url = `${SITE_BASE}/bookbase.php?${qs({ lx, page })}`;
+          const html = await this.requestHTML(url);
+          const seen = {};
+          allIds = [];
+          const re = /novelid=(\d+)/g;
+          let m;
+          while ((m = re.exec(html))) {
+            if (!seen[m[1]]) {
+              seen[m[1]] = true;
+              allIds.push(m[1]);
+            }
           }
+          this.listings[key] = { ids: allIds, at: now };
         }
-        hasMore = novelIds.length > 0;
+        nextOffset = sliceStart === 0 ? FIRST_SLICE : sliceStart + SLICE_SIZE;
+        novelIds = allIds.slice(sliceStart, nextOffset);
+        moreInPage = nextOffset < allIds.length;
+        hasMore = allIds.length > 0;
       }
 
       const settled = await settleInPool(novelIds, (id) => this.fetchNovelInfo(id), HYDRATE_POOL);
@@ -246,7 +263,8 @@ class Source {
       }
 
       const more = hasMore && lost === 0;
-      return { results, metadata: more ? { page: page + 1 } : undefined };
+      if (!more) return { results, metadata: undefined };
+      return { results, metadata: moreInPage ? { page, offset: nextOffset } : { page: page + 1 } };
     } catch (e) {
       console.error('JJWXC getSearchResults failed:', e);
       throw e;

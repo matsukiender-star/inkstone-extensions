@@ -160,6 +160,15 @@ function cardToPartial($, el) {
   return manga;
 }
 
+function fixUtf8(text) {
+  if (typeof text !== 'string' || !/[\u00c2-\u00f4][\u0080-\u00bf]/.test(text)) return text;
+  try {
+    return decodeURIComponent(escape(text));
+  } catch (e) {
+    return text;
+  }
+}
+
 class Source {
   getSourceFeeds() {
     return [
@@ -366,7 +375,7 @@ class Source {
     if (response.status < 200 || response.status >= 300) {
       throw new Error(`Lectormanga HTTP ${response.status}`);
     }
-    return response.data;
+    return fixUtf8(response.data);
   }
 }
 

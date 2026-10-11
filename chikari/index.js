@@ -80,8 +80,8 @@ class Source {
 
     if (tagIds[0] === BLOCKED_GENRE_SLUG) return { results: [], metadata: undefined };
 
-    if (query) {
-      if (medium === 'novel' || page > 1) return { results: [], metadata: undefined };
+    if (query && medium === 'comics') {
+      if (page > 1) return { results: [], metadata: undefined };
       const found = await this.requestJSON(`${API_BASE}/search?${qs({ q: query })}`);
       return {
         results: (Array.isArray(found) ? found : [])
@@ -98,6 +98,7 @@ class Source {
         period: sort === 'trending-week' ? 'week' : undefined,
         type: medium === 'comics' ? ['manga', 'manhwa', 'manhua'] : undefined,
         genre: tagIds.length ? tagIds[0] : undefined,
+        q: medium === 'novel' && query ? query : undefined,
         limit: PAGE_SIZE,
         offset: (page - 1) * PAGE_SIZE,
       })}`

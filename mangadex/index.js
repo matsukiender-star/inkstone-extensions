@@ -105,23 +105,12 @@ class Source {
   async getSearchTags() {
     try {
       const json = await this.requestJSON(`${API_BASE}/manga/tag`);
-      const groups = {};
-      const order = [];
+      const tags = [];
       (json.data || []).forEach((t) => {
-        const group = t.attributes && t.attributes.group;
         const label = pickLang(t.attributes && t.attributes.name, 'en');
-        if (!group || !label) return;
-        if (!groups[group]) {
-          groups[group] = [];
-          order.push(group);
-        }
-        groups[group].push({ id: t.id, label });
+        if (label) tags.push({ id: t.id, label });
       });
-      return order.map((group) => ({
-        id: group,
-        title: group.charAt(0).toUpperCase() + group.slice(1),
-        tags: groups[group].sort((a, b) => a.label.localeCompare(b.label)),
-      }));
+      return tags.sort((a, b) => a.label.localeCompare(b.label));
     } catch (e) {
       console.error('MangaDex getSearchTags failed:', e);
       return [];
@@ -234,9 +223,7 @@ class Source {
   }
 
   async requestJSON(url) {
-    const manager = App.createRequestManager({
-      rateLimit: { requestsPerSecond: 4 },
-    });
+    const manager = App.createRequestManager({});
     const request = App.createRequest({
       url,
       method: 'GET',
@@ -249,10 +236,10 @@ class Source {
     return JSON.parse(response.data);
   }
 
-  coverUrl(manga) {
+  coverUrl(manga, small) {
     const coverRel = (manga.relationships || []).find((r) => r.type === 'cover_art');
     const fileName = coverRel && coverRel.attributes && coverRel.attributes.fileName;
-    return fileName ? `${UPLOADS_BASE}/covers/${manga.id}/${fileName}` : undefined;
+    return fileName ? `${UPLOADS_BASE}/covers/${manga.id}/${fileName}${small ? '.512.jpg' : ''}` : undefined;
   }
 
   authorNames(manga) {
@@ -268,7 +255,7 @@ class Source {
     return {
       mangaId: manga.id,
       title: bestTitle(a, 'en'),
-      image: this.coverUrl(manga),
+      image: this.coverUrl(manga, true),
       author: this.authorNames(manga),
       summary: cleanDescription(pickLang(a.description, 'en')),
       tags: (a.tags || []).map((t) => pickLang(t.attributes && t.attributes.name, 'en')).filter(Boolean),
@@ -285,6 +272,7 @@ class Source {
     return {
       mangaInfo: {
         ...partial,
+        image: this.coverUrl(manga, false),
         desc: partial.summary,
         status: mapStatus(manga.attributes && manga.attributes.status),
       },

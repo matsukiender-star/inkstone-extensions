@@ -6,27 +6,48 @@
     {
       "id": "asurascans",
       "name": "AsuraScans",
-      "version": "2.3.1",
-      "medium": "comics",
+      "version": "2.4.0",
+      "medium": "both",
       "website": "https://asurascans.com",
-      "description": "Manhwa and manhua from AsuraScans' public JSON API. Five browse feeds, genre filtering, search, and full chapter reading. Chapters still under the site's 6-hour early-access window are clearly marked as locked, with a live countdown to when they unlock.",
+      "description": "Manhwa, manhua and the new Asura novels from AsuraScans' public JSON API: two real catalogs. Five browse feeds, genre filtering, search, and full reading for both. Locked chapters are marked: comics still in the 6-hour early-access window show a live countdown, and premium novel chapters show their shard price, with a clear note when you open one. Optionally sign in with your Asura account in the source's settings and a premium plan reads them in the app.",
       "capabilities": [
         "browse",
         "search",
         "genres",
         "details",
         "chapters",
-        "reader"
+        "reader",
+        "locked",
+        "login"
       ],
       "language": "en",
       "contentRating": "safe",
+      "settingsSchema": [
+        {
+          "type": "section",
+          "label": "Account (optional)"
+        },
+        {
+          "type": "text",
+          "key": "email",
+          "label": "Email",
+          "placeholder": "Your Asura Scans email"
+        },
+        {
+          "type": "text",
+          "key": "password",
+          "label": "Password",
+          "secure": true,
+          "placeholder": "Not for Google-only accounts"
+        }
+      ],
       "iconUrl": "https://asurascans.com/icons/apple-touch-icon.png",
-      "sha256": "ddb2d4c996048f90d64ffe8ee042fcecc9212edec8be97232a1311f5bcf4aaed"
+      "sha256": "b9c2d51d5133baad1a3d4eeb6b3181dfc96e35903cad9e1e584c98cf221d473e"
     },
     {
       "id": "chikari",
       "name": "Chikari",
-      "version": "4.3.0",
+      "version": "4.4.0",
       "medium": "both",
       "website": "https://chikari.moe",
       "description": "Manga, manhwa, manhua and light novels from Chikari's on-site JSON API: two real catalogs, not one relabeled as the other. Four browse feeds, genre filtering, full in-app reading for both comics and light novels.",
@@ -41,7 +62,7 @@
       "language": "en",
       "contentRating": "adult",
       "iconUrl": "https://chikari.moe/apple-touch-icon.png",
-      "sha256": "c6e49a89f8f08a075f72c96529ef0ff0c1a47799560d6cae0db35cff45944f04"
+      "sha256": "067f2c9365c98fe888b74061a92a9afd8a2608f88a5c39609952ed7cc9b89f33"
     },
     {
       "id": "novelfire",
@@ -86,7 +107,7 @@
     {
       "id": "mangakatana",
       "name": "MangaKatana",
-      "version": "1.1.2",
+      "version": "1.1.3",
       "medium": "comics",
       "website": "https://mangakatana.com",
       "description": "Manga and manhwa with a smooth reading experience and a large catalog. Browse, search, genre filtering, and full chapter reading.",
@@ -101,7 +122,7 @@
       "language": "en",
       "contentRating": "adult",
       "iconUrl": "https://mangakatana.com/static/img/fav.png",
-      "sha256": "9774faf61ed8940f7b4e53317a8fe77ad7c4406ebeb388043691f96d01e32a05"
+      "sha256": "a8e7d3a4d93ba4d1926a93ab834462090cdb87ff8a4d6a3589268b9875448061"
     },
     {
       "id": "mangabuddy",
@@ -184,7 +205,7 @@
     {
       "id": "mangafreak",
       "name": "MangaFreak",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://mangafreak.me",
       "description": "Accessible manga platform with no Cloudflare blocks. Browse feeds (New Release, Manga List, Genre), genre filtering, search, and full chapter reading.",
@@ -199,7 +220,7 @@
       "language": "en",
       "contentRating": "adult",
       "iconUrl": "https://mangafreak.me/misc/MF.ico?1",
-      "sha256": "7e73f7f123f3861646b1c0bb6a590307d8a7c41ef48f0a955812213c799bed8d"
+      "sha256": "7ecaa7205940866211e55a17bc81928c32ae332da53c4b94aa7e7c8da872db7a"
     },
     {
       "id": "flamescans",
@@ -366,7 +387,7 @@
     {
       "id": "mangahere",
       "name": "MangaHere",
-      "version": "1.0.1",
+      "version": "1.1.0",
       "medium": "comics",
       "website": "https://www.mangahere.cc",
       "description": "Long-running English manga platform. Seven browse feeds, 37-entry genre filter, search, and full chapter reading.",
@@ -381,7 +402,7 @@
       "language": "en",
       "contentRating": "adult",
       "iconUrl": "https://www.mangahere.cc/favicon.ico",
-      "sha256": "41d15376e3e489cdd47d00205f98c053b8bd82a353c82a9ee558259610397b2a"
+      "sha256": "7011cae7c8fbd42bf8643b28400f006b15c3d0f96a4fb55ac1a7386e40f84743"
     },
     {
       "id": "rawkuma",
@@ -405,7 +426,7 @@
     {
       "id": "tritinia",
       "name": "Tritinia Scans",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://tritinia.org",
       "description": "Manga platform with six browse feeds, 46-entry genre filter, search, and full chapter reading.",
@@ -420,7 +441,7 @@
       "language": "en",
       "contentRating": "mature",
       "iconUrl": "https://tritinia.org/wp-content/uploads/2021/01/unknown.png",
-      "sha256": "d3afe8e4de20617834de16fb578cb14a72caeb5ea277321c36fb609096a4ab0b"
+      "sha256": "ca23e38387eef5934ea2ab8f4d6a0fc0401b83650710a623eb5afe2890ab6504"
     },
     {
       "id": "mangadistrict",
@@ -544,7 +565,7 @@
     {
       "id": "mangatown",
       "name": "MangaTown",
-      "version": "1.1.1",
+      "version": "1.2.0",
       "medium": "comics",
       "website": "https://www.mangatown.com",
       "description": "Long-running English manga platform. Five browse feeds, 34-entry genre filter, search, and full chapter reading.",
@@ -559,7 +580,7 @@
       "language": "en",
       "contentRating": "adult",
       "iconUrl": "https://static.mangatown.com/v20251117/mangatown/images/favicon.ico",
-      "sha256": "855b1776cd50faccaff7c7e8e1f7600a02c273575e4bdebca28f32f07d77a254"
+      "sha256": "b42ac88b4d8d155eaf2f8673f56095a25e3d1346e1fa835be7ba64eff1a9598d"
     },
     {
       "id": "manhwatop",
@@ -660,7 +681,7 @@
     {
       "id": "readnovelfull",
       "name": "ReadNovelFull",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "medium": "novel",
       "website": "https://readnovelfull.com",
       "iconUrl": "https://readnovelfull.com/img/favicon.ico",
@@ -675,7 +696,7 @@
       ],
       "language": "en",
       "contentRating": "adult",
-      "sha256": "ea191b8dd206d27bfd79810029b2cc4813187923fabcb8caad6028e3784b70d4"
+      "sha256": "27bf4a04ac079524192942f3435327b14b542870653bcc7e09a32da033633fe2"
     },
     {
       "id": "truyenqq",
@@ -873,7 +894,7 @@
     {
       "id": "tapas",
       "name": "Tapas",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "medium": "comics",
       "website": "https://tapas.io",
       "description": "Webcomic platform with weekday schedules and Popular/New/Completed/All Genres feeds. Seven browse options, search, and full chapter reading.",
@@ -888,7 +909,7 @@
       "language": "en",
       "contentRating": "mature",
       "iconUrl": "https://tapas.io/apple-touch-icon.png",
-      "sha256": "b1bbd66763df3be4f0992f89aa955c2c4d0e60211989a04dedae4312f750e826"
+      "sha256": "51a36c338f5f78c9ba92ffe49321ca25f2f9e3adf40784ef4d4e3ae7d3bc207d"
     },
     {
       "id": "wuxiaworld",
@@ -912,7 +933,7 @@
     {
       "id": "readwn",
       "name": "ReadWN",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "medium": "novel",
       "website": "https://www.wuxiabox.com",
       "description": "Web and light novels (ReadWN). Four browse feeds, 52-entry genre filter, search, and full in-app prose reading.",
@@ -927,7 +948,7 @@
       "language": "en",
       "contentRating": "safe",
       "iconUrl": "https://www.wuxiabox.com/favicon.ico",
-      "sha256": "023f25435a3ee23eb6e7f7eaede9392013b500dd9f6ec5dc677b18c0690b09e7"
+      "sha256": "6580c20e5a79e0b062d18251c57b3de7dab5523d36619f76d7a5b7e631fbca44"
     },
     {
       "id": "webnovel",
@@ -1111,7 +1132,7 @@
     {
       "id": "lectormanga",
       "name": "Lectormanga",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "medium": "comics",
       "website": "https://lectormangass.net",
       "description": "Spanish-language comics, manhwa and manhua platform. Four browse feeds, 43-entry genre filter, search, and full chapter reading.",
@@ -1126,7 +1147,7 @@
       "language": "es",
       "contentRating": "adult",
       "iconUrl": "https://lectormangass.net/apple-touch-icon.png?v=3",
-      "sha256": "784e90420ba1df994091f5150586ed38249dfbb862575257370ef841fc429f85"
+      "sha256": "e7797f92491443db0b16b00b6e46189795dd5d17d8643636bd639a052d6f68ad"
     },
     {
       "id": "komikindo",
@@ -1370,7 +1391,7 @@
     {
       "id": "blvillage",
       "name": "BL village",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "medium": "comics",
       "website": "https://blvillage.com",
       "iconUrl": "https://blvillage.com/favicon.ico",
@@ -1384,7 +1405,7 @@
       ],
       "language": "ja",
       "contentRating": "adult",
-      "sha256": "c17f2e9d5c91d40906d6f8097430f529355d972cad8aed75a970c01494e06c52"
+      "sha256": "8f1442fe4673f0694fbd001b3e81dafcb0417daf99bfc5d71c8157f047c412db"
     },
     {
       "id": "lelmanga",
@@ -1429,7 +1450,7 @@
     {
       "id": "mangaread",
       "name": "MangaRead",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://mangaread.org",
       "iconUrl": "https://www.mangaread.org/wp-content/uploads/2017/10/cropped-unnamed-32x32.png",
@@ -1444,12 +1465,12 @@
       ],
       "language": "en",
       "contentRating": "adult",
-      "sha256": "b0e77fb0239522554eda9893ddc85e2fcae9dc62ea36b3d02b73ac4be00e3db8"
+      "sha256": "538dde4fedc6e9cff57fcde4393854f14155693c337c0e0afa239772665e599d"
     },
     {
       "id": "ranobes",
       "name": "Ranobes",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "medium": "novel",
       "website": "https://ranobes.top",
       "description": "English-translated web/light novel platform on the DataLifeEngine CMS, confirmed directly plain-fetchable end to end (a mobile Safari UA gets real HTML straight through despite the `cloudflare` server header, no challenge encountered on any page type). Two real browse feeds, a live-fetched genre filter, search, and full in-app prose reading sourced from the site's own inline chapter-list JSON and paragraph-tagged reader markup.",
@@ -1464,7 +1485,7 @@
       "language": "en",
       "contentRating": "adult",
       "iconUrl": "https://ranobes.top/templates/Dark/images/favicon.ico",
-      "sha256": "b35a75ec4b5a1abf4330926d4957274b05763821fcaeb5758617121988a583c8"
+      "sha256": "535f81a8ce0b871721fe1805d44588f5b1f522812df7ea2e9f6f72ea56d24b1a"
     },
     {
       "id": "manhwahq",
@@ -1529,7 +1550,7 @@
     {
       "id": "webfic",
       "name": "Webfic",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "medium": "novel",
       "website": "https://www.webfic.com",
       "description": "Web novels from Webfic (DianZhong Technology, sibling to DramaBox/GoodNovel), read straight out of its own Next.js __NEXT_DATA__ hydration JSON on every page type, with no Cloudflare or other bot-check encountered. Genre browsing, real keyword search, full details and complete chapter lists (paging the site's own 18-per-page catalog), and in-app prose reading.",
@@ -1544,7 +1565,7 @@
       ],
       "language": "en",
       "contentRating": "adult",
-      "sha256": "1c89d83bb290acd4ff5560bb808ce9e8673d02fbaae82cc9027615b5e72fe657"
+      "sha256": "6a9f96119c53d932418d49eaef6b148c0d6cc312a47a5e0fbb36b4135053fd1e"
     },
     {
       "id": "qidian",
@@ -1569,7 +1590,7 @@
     {
       "id": "goodnovel",
       "name": "GoodNovel",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "medium": "novel",
       "website": "https://www.goodnovel.com",
       "description": "Mobile-first serialized-fiction platform (mafia/werewolf/billionaire romance is its dominant catalog), fully server-rendered with no Cloudflare or other bot-check. Real, unauthenticated JSON API endpoints (confirmed live) drive book details, complete chapter lists in one call, and full in-app prose reading; the site's own embedded page-state JSON backs genre and tag browsing. Real paginated search via the same endpoint that powers the site's own search page, an 18-genre feed list, and a live-fetched tag filter. Coin-gated chapters are correctly detected and shown as an honest locked notice alongside the site's own real preview teaser, never as fabricated or garbled text.",
@@ -1584,7 +1605,7 @@
       ],
       "language": "en",
       "contentRating": "adult",
-      "sha256": "8ec2a5d0c2dda9916ce58c2e94030a01678781a6267d029b59e10b5f81a4c791"
+      "sha256": "cadcd01435cb02cd46c66397fc0a57d885dd73e051864fb57e798e8839c71af4"
     },
     {
       "id": "17k",
@@ -1669,7 +1690,7 @@
     {
       "id": "jjwxc",
       "name": "JJWXC",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "medium": "novel",
       "website": "https://www.jjwxc.net",
       "description": "晋江文学城 (Jinjiang Literature City), China's leading female-oriented web-novel platform. The desktop/mobile site's own HTML is GB18030-encoded and unreadable through this app's UTF-8-only fetch, so this source instead drives the site's real, unauthenticated Android-app JSON API for book details, the complete chapter list, and full in-app prose reading, with genre browsing and search via the site's own live HTML/AJAX endpoints (read only for their numeric ids, never their text). VIP/paywalled and not-yet-approved chapters are correctly detected and shown as an honest locked notice rather than fabricated or garbled text.",
@@ -1684,7 +1705,7 @@
       ],
       "language": "zh",
       "contentRating": "mature",
-      "sha256": "2115191c25acdd5895526fe6fc2ed4a98735d14a7f733acaee89fae46f047ba3"
+      "sha256": "3becfe64ab7198441b38390c0243a1849368c09c9a0cdb334a74611db3557dd0"
     },
     {
       "id": "mangaplaza",
@@ -1709,10 +1730,10 @@
     {
       "id": "navercomic",
       "name": "Naver Webtoon",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "medium": "comics",
       "website": "https://comic.naver.com",
-      "description": "Naver's own official Korean webtoon platform (the sister site, same company/CDN family, to this repo's webtoons.com source), read through its real server-rendered mobile pages with no Cloudflare challenge and no mobile/desktop UA split needed. Eight real weekday-schedule feeds plus a Completed listing, a 13-entry genre filter, search, full series details, and complete chapter reading via the site's own paginated episode list. Naver's real 19+ account-and-login wall is honestly respected: age-restricted titles are dropped from every listing rather than surfaced unopenable, and a minority of individually-paywalled recent episodes are listed and clearly marked but correctly return no pages.",
+      "description": "Naver's own official Korean webtoon platform (the sister site, same company/CDN family, to this repo's webtoons.com source), read through its real server-rendered mobile pages with no Cloudflare challenge and no mobile/desktop UA split needed. Eight real weekday-schedule feeds plus a Completed listing, a 13-entry genre filter, search, full series details, and complete chapter reading via the site's own paginated episode list. Naver's real 19+ account-and-login wall is respected: anonymously, age-restricted titles are dropped from every listing rather than surfaced unopenable, and individually-paywalled recent episodes are listed and clearly marked. Optional: paste your signed-in NID_AUT and NID_SES cookies in the source's settings to list 19+ titles (marked 18+, so your content settings apply) and read episodes your account owns. Not yet confirmed with a real account.",
       "iconUrl": "https://shared-comic.pstatic.net/favicon/favicon_152x152.ico",
       "capabilities": [
         "browse",
@@ -1720,36 +1741,79 @@
         "genres",
         "details",
         "chapters",
-        "reader"
+        "reader",
+        "locked",
+        "login"
+      ],
+      "settingsSchema": [
+        {
+          "type": "section",
+          "label": "Naver account (optional)"
+        },
+        {
+          "type": "text",
+          "key": "nidAut",
+          "label": "NID_AUT cookie",
+          "secure": true,
+          "placeholder": "From a signed-in browser on naver.com"
+        },
+        {
+          "type": "text",
+          "key": "nidSes",
+          "label": "NID_SES cookie",
+          "secure": true,
+          "placeholder": "From the same browser"
+        }
       ],
       "language": "ko",
       "contentRating": "mature",
-      "sha256": "21522f91a43feb1f5ce56c1235e7ddb3b72534296b97dbf8c90be9b08730ac43"
+      "sha256": "c896eed5b597c592a0fb50a4827feee2e30529045932006e6e7f473a85aa9db9"
     },
     {
       "id": "mangatoon",
       "name": "MangaToon",
-      "version": "1.1.1",
+      "version": "1.2.0",
       "medium": "comics",
       "website": "https://mangatoon.mobi",
       "iconUrl": "https://mangatoon.mobi/images/icon-128.png",
-      "description": "MangaToon's own PHP-rendered web reader, real server HTML with no Cloudflare challenge encountered anywhere. Three sort-based browse feeds (Hottest/Updated/Completed) combinable with a live-read, numeric-id genre filter, search (capped at the site's own real 18-result limit), full series details, and complete chapter reading straight off the detail page's own embedded episode list. Most episodes on long-running series are genuinely gated behind an in-app coins paywall; this source lists every episode honestly, marks locked ones by name, and returns only the real, anonymously-visible preview pages for one rather than fabricating access.",
+      "description": "MangaToon's own PHP-rendered web reader, real server HTML with no Cloudflare challenge encountered anywhere. Three sort-based browse feeds (Hottest/Updated/Completed) combinable with a live-read, numeric-id genre filter, search (capped at the site's own real 18-result limit), full series details, and complete chapter reading straight off the detail page's own embedded episode list. Most episodes on long-running series are genuinely gated behind a coins paywall; this source lists every episode honestly, marks locked ones by name, and returns only the pages the site serves for one rather than fabricating access. Optional: sign in with a MangaToon email account in the source's settings (Google, Facebook and Apple accounts have no password). Not yet confirmed with a real account, and the site's web reader may still send paid episodes to the app.",
       "capabilities": [
         "browse",
         "search",
         "genres",
         "details",
         "chapters",
-        "reader"
+        "reader",
+        "locked",
+        "login"
+      ],
+      "settingsSchema": [
+        {
+          "type": "section",
+          "label": "Account (optional)"
+        },
+        {
+          "type": "text",
+          "key": "email",
+          "label": "Email",
+          "placeholder": "Your MangaToon email"
+        },
+        {
+          "type": "text",
+          "key": "password",
+          "label": "Password",
+          "secure": true,
+          "placeholder": "Not for Google or Facebook sign-in"
+        }
       ],
       "language": "en",
       "contentRating": "mature",
-      "sha256": "5ec133fe332409b9c2c8bcf4c98a52626bffb472245c5a2660b798548d3ad59a"
+      "sha256": "78501a002cf876558b3d26df25765483785cb0ffccf7e70c3fc36f3134a165ce"
     },
     {
       "id": "mangadex",
       "name": "MangaDex",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "medium": "comics",
       "website": "https://mangadex.org",
       "iconUrl": "https://mangadex.org/pwa/icons/icon-180.png",
@@ -1764,12 +1828,12 @@
       ],
       "language": "en",
       "contentRating": "safe",
-      "sha256": "fac725f47842131e3852d490cdab438434e2d09791360e07334eb70649b7ce7a"
+      "sha256": "9934ba1c9e29666cfb6de01525ec0fe298ce46e1ae33461e078490dfcb5b0bf1"
     },
     {
       "id": "comix",
       "name": "Comix",
-      "version": "2.2.2",
+      "version": "2.2.4",
       "medium": "comics",
       "website": "https://comix.to",
       "iconUrl": "https://comix.to/assets/uploads/35595e3de3c99889c1bd2c56f3e3714fc0c457.png",
@@ -1788,12 +1852,12 @@
       ],
       "language": "en",
       "contentRating": "safe",
-      "sha256": "2beee6d3c22fc8dcc8a996a9cf4a296031529e51057239f9788c43b475cf18fb"
+      "sha256": "b410a34df831fc26659eafda80b0ca1e7b3d1af6a76c188ed14ee41bc71daef6"
     },
     {
       "id": "kagane",
       "name": "Kagane",
-      "version": "1.0.7",
+      "version": "1.1.0",
       "medium": "comics",
       "website": "https://kagane.to",
       "iconUrl": "https://kagane.to/favicons/apple-icon-180x180.png",
@@ -1808,19 +1872,19 @@
       ],
       "language": "en",
       "contentRating": "safe",
-      "sha256": "541512eb98a09fb5d8c4306a386ea720ca585ef37bd79f9ffaaaac551ce2d422"
+      "sha256": "8d0cd775958e204ced6dcac38e17410829dfefbc064142c22e811ad56bf5d79f"
     },
     {
       "id": "mangafire",
       "name": "MangaFire",
-      "version": "1.0.1",
+      "version": "1.2.0",
       "medium": "comics",
       "website": "https://mangafire.to",
       "iconUrl": "https://mangafire.to/assets/mangafire/favicon.png",
       "hosts": [
         "mangafire.to"
       ],
-      "description": "Large aggregator, back up after being down. Not Cloudflare-challenge-gated (a plain request reaches it fine); every real endpoint instead requires a site-issued token only its own page JS can mint, so search, title details, chapter lists, and chapter pages all run through the app's real in-page execution rather than a plain request. Trending/browse-with-no-query is a genuine plain, fast request with no such token. Chapter lists that span more than one page are fetched by paging through the site's own real UI inside one session, not truncated to page 1. Search-result cards don't carry a content rating (the site's own API doesn't return one at that shape); only a title's own details page does, and is reflected per manga rather than hiding the whole source.",
+      "description": "Large aggregator, back up after being down. Not Cloudflare-challenge-gated (a plain request reaches it fine); every real endpoint instead requires a site-issued token only its own page JS can mint, so search, title details, chapter lists, and chapter pages all run through the app's real in-page execution rather than a plain request. Trending/browse-with-no-query is a genuine plain, fast request with no such token. Chapter lists that span more than one page are fetched by paging through the site's own real UI inside one session, not truncated to page 1. Search-result cards don't carry a content rating (the site's own API doesn't return one at that shape); only a title's own details page does, and is reflected per manga rather than hiding the whole source. Two feeds: Trending (a plain request) and Latest Updates (the homepage's fresh chapters list, paged, fetched through the page like search).",
       "capabilities": [
         "browse",
         "search",
@@ -1830,12 +1894,12 @@
       ],
       "language": "en",
       "contentRating": "safe",
-      "sha256": "332cfceb14d11c339f8971cd34f9d38eecdba907d75c13020ec94140ac261bc2"
+      "sha256": "c6b1907255a702656a5136b5f05c8882dd06b17a06ee5f4b242122c35f5482d5"
     },
     {
       "id": "hiperdex",
       "name": "HiperDEX",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://hiperdex.tv",
       "iconUrl": "https://hiperdex.tv/apple-touch-icon.png",
@@ -1855,7 +1919,7 @@
       ],
       "language": "en",
       "contentRating": "adult",
-      "sha256": "36d73fe03e3a8c607186c6ddb4fdbc52e8012362486b012f8e35463b6ac53737"
+      "sha256": "77e747cabab56f4c151d1c187d62f36191d05b59b194a42f59178a45aeefeae1"
     }
   ]
 }

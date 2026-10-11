@@ -1,4 +1,34 @@
 const SITE_BASE = 'https://mangatoon.mobi';
+const H5_BASE = 'https://h5.mangatoon.mobi';
+
+const SESSION_KEY = 'session';
+const SESSION_MAX_AGE_MS = 6 * 60 * 60 * 1000;
+const SIGN_IN_RETRY_MS = 60 * 1000;
+const REBIND_MIN_GAP_MS = 60 * 1000;
+
+const SIGNED_OUT_MARKER = /<a href='\/contribute\/index'>Log In<\/a>/;
+const LOGIN_FORM_MARKER = /id="btn-email-login"/;
+
+function randomSessionId() {
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let id = '';
+  for (let i = 0; i < 26; i++) id += chars.charAt(Math.floor(Math.random() * chars.length));
+  return id;
+}
+
+function formEncode(fields) {
+  return Object.keys(fields)
+    .map((k) => `${encodeURIComponent(k)}=${encodeURIComponent(String(fields[k]))}`)
+    .join('&');
+}
+
+function parseJSONOrNull(text) {
+  try {
+    return JSON.parse(text);
+  } catch (e) {
+    return null;
+  }
+}
 const UA =
   'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1';
 
@@ -185,7 +215,7 @@ class Source {
 
   async getMangaDetails(mangaId) {
     const url = `${SITE_BASE}/en/x?content_id=${encodeURIComponent(mangaId)}`;
-    const html = await this.requestHTML(url);
+    const html = await this.requestHTML(url, { auth: true });
     const $ = cheerio.load(html);
 
     const title = cleanText($('.detail-title').first().text());
@@ -234,7 +264,7 @@ class Source {
 
   async getChapters(mangaId) {
     const url = `${SITE_BASE}/en/x?content_id=${encodeURIComponent(mangaId)}`;
-    const html = await this.requestHTML(url);
+    const html = await this.requestHTML(url, { auth: true });
     const episodes = extractEpisodes(html);
 
     return episodes.map((ep) => {
@@ -251,7 +281,7 @@ class Source {
 
   async getChapterDetails(mangaId, chapterId) {
     const url = `${SITE_BASE}/en/watch/${encodeURIComponent(mangaId)}/${encodeURIComponent(chapterId)}`;
-    const html = await this.requestHTML(url);
+    const html = await this.requestHTML(url, { auth: true });
     const $ = cheerio.load(html);
 
     const pages = [];
@@ -264,18 +294,114 @@ class Source {
   }
 
   async requestHTML(url, opts) {
-    const manager = App.createRequestManager({});
-    const request = App.createRequest({
-      url,
-      method: 'GET',
-      headers: { 'User-Agent': UA },
-    });
-    const response = await manager.schedule(request);
+    const session = opts && opts.auth ? await this.getSession() : null;
+    let response = await this.send(url, { sid: session && session.sid });
+    if (session && typeof response.data === 'string' && SIGNED_OUT_MARKER.test(response.data)) {
+      const renewed = await this.renewSession(session);
+      if (renewed) response = await this.send(url, { sid: renewed.sid });
+    }
     if (opts && opts.allow404 && response.status === 404) return null;
     if (response.status < 200 || response.status >= 300) {
       throw new Error(`HTTP ${response.status}`);
     }
     return response.data;
+  }
+
+  async send(url, opts) {
+    const manager = App.createRequestManager({});
+    const headers = { 'User-Agent': UA };
+    if (opts && opts.sid) headers.Cookie = `PHPSESSID=${opts.sid}`;
+    const posting = opts && opts.form;
+    if (posting) headers['Content-Type'] = 'application/x-www-form-urlencoded';
+    const request = App.createRequest({
+      url,
+      method: posting ? 'POST' : 'GET',
+      headers,
+      body: posting ? formEncode(opts.form) : undefined,
+    });
+    return manager.schedule(request);
+  }
+
+  get state() {
+    if (!this.stateManager) this.stateManager = App.createSourceStateManager();
+    return this.stateManager;
+  }
+
+  async getSession() {
+    const now = Date.now();
+    if (this.sessionPromise && !(this.sessionFailedAt && now - this.sessionFailedAt > SIGN_IN_RETRY_MS)) {
+      return this.sessionPromise;
+    }
+    this.sessionFailedAt = 0;
+    this.sessionPromise = this.loadSession().then(
+      (session) => {
+        if (!session) this.sessionFailedAt = Date.now();
+        return session;
+      },
+      (e) => {
+        console.error('Mangatoon sign-in failed:', (e && e.message) || e);
+        this.sessionFailedAt = Date.now();
+        return null;
+      }
+    );
+    return this.sessionPromise;
+  }
+
+  async loadSession() {
+    const email = String(App.getSourceSetting('email') || '').trim();
+    const password = String(App.getSourceSetting('password') || '');
+    if (!email || !password) return null;
+    const saved = await this.state.retrieve(SESSION_KEY).catch(() => null);
+    if (
+      saved &&
+      saved.email === email &&
+      saved.token &&
+      saved.sid &&
+      Date.now() - (saved.savedAt || 0) < SESSION_MAX_AGE_MS
+    ) {
+      return saved;
+    }
+    return this.signIn(email, password);
+  }
+
+  async signIn(email, password) {
+    const response = await this.send(`${H5_BASE}/users/emailLogin`, { form: { email, pwd: password } });
+    const body = parseJSONOrNull(response.data) || {};
+    if (response.status < 200 || response.status >= 300 || body.status !== 'success' || !body.access_token) {
+      throw new Error(`the email or password was refused (HTTP ${response.status})`);
+    }
+    const sid = randomSessionId();
+    await this.bindSession(body.access_token, sid);
+    const session = { email, token: body.access_token, sid, savedAt: Date.now() };
+    await this.state.store(SESSION_KEY, session).catch(() => {});
+    this.sessionPromise = Promise.resolve(session);
+    return session;
+  }
+
+  async bindSession(token, sid) {
+    const response = await this.send(`${SITE_BASE}/passport/login?&_token=${encodeURIComponent(token)}`, { sid });
+    if (typeof response.data === 'string' && LOGIN_FORM_MARKER.test(response.data)) {
+      throw new Error('the site did not accept the sign-in token');
+    }
+  }
+
+  async renewSession(session) {
+    const now = Date.now();
+    if (this.lastRebindAt && now - this.lastRebindAt < REBIND_MIN_GAP_MS) return null;
+    this.lastRebindAt = now;
+    try {
+      try {
+        await this.bindSession(session.token, session.sid);
+        return session;
+      } catch (e) {
+        const email = String(App.getSourceSetting('email') || '').trim();
+        const password = String(App.getSourceSetting('password') || '');
+        return email && password ? await this.signIn(email, password) : null;
+      }
+    } catch (e) {
+      console.error('Mangatoon session renewal failed:', (e && e.message) || e);
+      return null;
+    }
   }
 }
 

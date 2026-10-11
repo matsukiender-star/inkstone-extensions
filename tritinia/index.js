@@ -91,7 +91,7 @@ function parseMangaListPage($) {
     if (!title) return;
 
     const img = link.find('img').first();
-    const image = (img.attr('data-src') || img.attr('src') || '').trim();
+    const image = coverFrom(img);
     if (!image) return;
 
     const badgeText = cleanText(card.find('.post-title .manga-title-badges').first().text());
@@ -123,7 +123,7 @@ function parseSearchResultsPage($) {
     if (!title) return;
 
     const img = link.find('img').first();
-    const image = (img.attr('data-src') || img.attr('src') || '').trim();
+    const image = coverFrom(img);
     if (!image) return;
 
     const author = cleanText(card.find('.post-content_item.mg_author .summary-content').first().text());
@@ -139,6 +139,16 @@ function parseSearchResultsPage($) {
     results.push(manga);
   });
   return results;
+}
+
+function coverFrom($img) {
+  const srcset = $img.attr('data-srcset') || $img.attr('srcset') || '';
+  let best = null;
+  srcset.split(',').forEach((part) => {
+    const m = /^\s*(\S+)\s+(\d+)w\s*$/.exec(part);
+    if (m && Number(m[2]) <= 400 && (!best || Number(m[2]) > best.width)) best = { url: m[1], width: Number(m[2]) };
+  });
+  return (best ? best.url : $img.attr('data-src') || $img.attr('src') || '').trim();
 }
 
 class Source {

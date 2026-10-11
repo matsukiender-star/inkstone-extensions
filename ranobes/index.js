@@ -180,7 +180,8 @@ class Source {
     }
 
     const url = withPage(baseUrl, page);
-    const html = await this.requestHTML(url);
+    const html = await this.requestHTML(url, true);
+    if (!html) return { results: [], metadata: undefined };
     const $ = cheerio.load(html);
     const results = parseMangaList($);
 
@@ -358,7 +359,7 @@ class Source {
     }
   }
 
-  async requestHTML(url) {
+  async requestHTML(url, softMissing) {
     const manager = App.createRequestManager({ rateLimit: RATE_LIMIT });
     const request = App.createRequest({
       url,
@@ -366,6 +367,7 @@ class Source {
       headers: { 'User-Agent': UA, Accept: 'text/html,application/xhtml+xml' },
     });
     const response = await manager.schedule(request);
+    if (softMissing && response.status === 404) return '';
     if (response.status < 200 || response.status >= 300) {
       throw new Error(`Ranobes HTTP ${response.status}`);
     }

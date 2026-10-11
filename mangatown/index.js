@@ -352,19 +352,34 @@ class Source {
       }
     });
 
-    const pages = [firstImage];
-    for (let page = 2; page <= totalPages; page++) {
-      const pageUrl = `${baseUrl}${page}.html`;
-      const html = await this.requestHTML(pageUrl);
-      const $page = cheerio.load(html);
-      const src = absolutize(($page('#image').attr('src') || '').trim());
-      if (!src) {
-        const message = `MangaTown getChapterDetails: no #image found on ${pageUrl} (page ${page} of ${totalPages})`;
-        console.error(message);
-        throw new Error(message);
+    const pages = new Array(Math.max(totalPages, 1));
+    pages[0] = firstImage;
+    let next = 2;
+    let failure = null;
+    const lane = async () => {
+      while (next <= totalPages && !failure) {
+        const page = next;
+        next += 1;
+        const pageUrl = `${baseUrl}${page}.html`;
+        let html;
+        try {
+          html = await this.requestHTML(pageUrl);
+        } catch (e) {
+          failure = failure || e;
+          return;
+        }
+        const src = absolutize((cheerio.load(html)('#image').attr('src') || '').trim());
+        if (!src) {
+          const message = `MangaTown getChapterDetails: no #image found on ${pageUrl} (page ${page} of ${totalPages})`;
+          console.error(message);
+          failure = failure || new Error(message);
+          return;
+        }
+        pages[page - 1] = src;
       }
-      pages.push(src);
-    }
+    };
+    await Promise.all(Array.from({ length: Math.min(6, Math.max(totalPages - 1, 1)) }, lane));
+    if (failure) throw failure;
 
     return { id: chapterId, mangaId, pages, referer: SITE_BASE };
   }

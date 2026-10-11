@@ -60,9 +60,19 @@ function searchResultToPartialManga(item) {
   };
 }
 
+const FEED_SORTS = {
+  latest: 'updated_at,desc',
+  popular: 'avg_views_week,desc',
+  added: 'created_at,desc',
+};
+
 class Source {
   getSourceFeeds() {
-    return [{ id: 'search', name: 'Search' }];
+    return [
+      { id: 'latest', name: 'Latest Updates' },
+      { id: 'popular', name: 'Popular This Week' },
+      { id: 'added', name: 'Recently Added' },
+    ];
   }
 
   async getSearchTags() {
@@ -78,7 +88,7 @@ class Source {
   async getSearchResults(request, metadata) {
     const query = (request && request.title) || '';
     const page1Based = (metadata && metadata.page) || 1;
-    if (!query) return { results: [] };
+    if (!query) return this._listing(request && request.feed, page1Based);
 
     const page0Based = page1Based - 1;
     const script = `
@@ -99,6 +109,39 @@ class Source {
       runBeforePageScripts: false,
     });
     if ('error' in result) throw new Error('Kagane search failed: ' + result.error);
+
+    const json = result.value;
+    const list = Array.isArray(json && json.content) ? json.content : [];
+    const hasMore = json ? !json.last : false;
+    return {
+      results: list.map((item) => searchResultToPartialManga(item)),
+      metadata: hasMore ? { page: page1Based + 1 } : undefined,
+    };
+  }
+
+  async _listing(feed, page1Based) {
+    const sort = FEED_SORTS[feed] || FEED_SORTS.latest;
+    const page0Based = Math.max(0, page1Based - 1);
+    const script = `
+      function __list(ratings) {
+        return __fetchJSON('/api/v2/search/series?page=${page0Based}&size=30&sort=${encodeURIComponent(sort)}', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content_rating: ratings }),
+        });
+      }
+      __list(['Safe', 'Suggestive', 'Erotica', 'Pornographic'])
+        .catch(function () { return __list(['Safe', 'Suggestive']); })
+        .then(__reportResult, function (e) { __reportError('listing failed: ' + e.message); });
+    `;
+    const result = await App.executeInWebView({
+      url: `${SITE_BASE}/`,
+      baseUrl: `${SITE_BASE}/`,
+      script,
+      timeoutMs: 170000,
+      runBeforePageScripts: false,
+    });
+    if ('error' in result) throw new Error('Kagane browse failed: ' + result.error);
 
     const json = result.value;
     const list = Array.isArray(json && json.content) ? json.content : [];

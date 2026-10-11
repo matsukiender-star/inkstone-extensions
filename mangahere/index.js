@@ -5,6 +5,7 @@ const UA =
 
 const AGE_HEADERS = { Cookie: 'isAdult=1' };
 
+const PAGE_LANES = 6;
 const ASHX_TRIES = 3;
 
 const MONTHS = {
@@ -421,14 +422,25 @@ class Source {
       const imageCount = parseInt(imageCountMatch[1], 10);
       const key = extractGuidKey(unpacked);
 
-      pages = [];
-      for (let page = 1; page <= imageCount; page++) {
-        const ashxUrl = `${SITE_BASE}/manga/${encodeURIComponent(mangaId)}/${chapterId}/chapterfun.ashx?cid=${cid}&page=${page}&key=${encodeURIComponent(key)}`;
-        const pageImage = await this.fetchPageImage(ashxUrl, readerUrl);
-        if (!pageImage) {
-          throw new Error(`MangaHere getChapterDetails: failed to parse page ${page} of ${readerUrl}`);
+      pages = new Array(imageCount);
+      let next = 1;
+      let failedPage = 0;
+      const lane = async () => {
+        while (next <= imageCount && !failedPage) {
+          const page = next;
+          next += 1;
+          const ashxUrl = `${SITE_BASE}/manga/${encodeURIComponent(mangaId)}/${chapterId}/chapterfun.ashx?cid=${cid}&page=${page}&key=${encodeURIComponent(key)}`;
+          const pageImage = await this.fetchPageImage(ashxUrl, readerUrl);
+          if (!pageImage) {
+            failedPage = failedPage || page;
+            return;
+          }
+          pages[page - 1] = pageImage;
         }
-        pages.push(pageImage);
+      };
+      await Promise.all(Array.from({ length: Math.min(PAGE_LANES, imageCount) }, lane));
+      if (failedPage) {
+        throw new Error(`MangaHere getChapterDetails: failed to parse page ${failedPage} of ${readerUrl}`);
       }
     }
 

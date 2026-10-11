@@ -294,8 +294,7 @@ class Source {
 
   async getChapters(mangaId) {
     const chapters = [];
-    let page = 1;
-    for (let i = 0; i < 200; i++) {
+    const fetchPage = async (page) => {
       const url = `${APP_BASE}/series/${encodeURIComponent(mangaId)}/episodes?${qs({
         page,
         sort: 'OLDEST',
@@ -309,7 +308,39 @@ class Source {
             `(code ${json && json.code}); refusing to return a partial chapter list`
         );
       }
+      return json;
+    };
 
+    const jsons = [await fetchPage(1)];
+    const first = jsons[0].data.pagination || {};
+    const perPage = Number(first.limit) || Number(first.max_limit) || 0;
+    const total = Number(first.total) || 0;
+    if (first.has_next && perPage > 0 && total > perPage) {
+      const lastPage = Math.min(Math.ceil(total / perPage), 200);
+      const byPage = {};
+      let next = 2;
+      let failure = null;
+      const lane = async () => {
+        while (next <= lastPage && !failure) {
+          const page = next;
+          next += 1;
+          try {
+            byPage[page] = await fetchPage(page);
+          } catch (e) {
+            failure = failure || e;
+          }
+        }
+      };
+      await Promise.all(Array.from({ length: Math.min(6, lastPage - 1) }, lane));
+      if (failure) throw failure;
+      for (let page = 2; page <= lastPage; page++) jsons.push(byPage[page]);
+    } else {
+      for (let page = 2; page <= 200 && jsons[jsons.length - 1].data.pagination && jsons[jsons.length - 1].data.pagination.has_next; page++) {
+        jsons.push(await fetchPage(page));
+      }
+    }
+
+    for (const json of jsons) {
       const $ = cheerio.load(json.data.body || '');
       $('a.episode-item').each((_, el) => {
         const a = $(el);
@@ -333,10 +364,6 @@ class Source {
         if (time !== undefined) chapter.time = time;
         chapters.push(chapter);
       });
-
-      const pagination = json.data.pagination || {};
-      if (!pagination.has_next) break;
-      page += 1;
     }
     return chapters;
   }

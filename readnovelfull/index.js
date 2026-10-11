@@ -62,7 +62,7 @@ function parseMangaList($) {
     if (!mangaId) return;
 
     const title = cleanText(link.attr('title') || link.text()) || mangaId;
-    const image = absolute(($el.find('img.cover').first().attr('src') || '').trim());
+    const image = bigCover(absolute(($el.find('img.cover').first().attr('src') || '').trim()));
     const author = cleanText($el.find('.author').first().text());
     const completed = $el.find('.label-title.label-full').length > 0;
 
@@ -113,6 +113,10 @@ function blockText($, $el) {
     .join('\n')
     .replace(/\n{3,}/g, '\n\n')
     .trim();
+}
+
+function bigCover(src) {
+  return String(src || '').replace(/\/thumb\/t-\d+x\d+\//, '/thumb/t-200x285/');
 }
 
 class Source {
@@ -182,7 +186,7 @@ class Source {
     const $ = cheerio.load(html);
 
     const title = cleanText($('.info-holder h3.title').first().text()) || mangaId;
-    const image = absolute(($('.info-holder .book img').first().attr('src') || '').trim());
+    const image = bigCover(absolute(($('.info-holder .book img').first().attr('src') || '').trim()));
 
     const authors = [];
     $('.info-meta a[href^="/authors/"]').each((_, el) => {

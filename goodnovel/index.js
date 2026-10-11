@@ -65,17 +65,27 @@ function richTextToPlain(raw) {
       root.find('br').replaceWith('\n');
       out = root.text();
     }
-    return out.replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
+    return breakParagraphs(out.replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim());
   }
 
-  return text
-    .replace(/\r\n/g, '\n')
-    .split('\n')
-    .map((line) => line.replace(/[ \t]+/g, ' ').trim())
-    .join('\n')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
+  return breakParagraphs(
+    text
+      .replace(/\r\n/g, '\n')
+      .split('\n')
+      .map((line) => line.replace(/[ \t]+/g, ' ').trim())
+      .join('\n')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim(),
+  );
 }
+
+function breakParagraphs(text) {
+  const lines = text.split('\n').filter((l) => l.trim());
+  const blank = (text.match(/\n\s*\n/g) || []).length;
+  if (lines.length < 4 || blank >= lines.length / 3) return text;
+  return lines.map((l) => l.trim()).join('\n\n');
+}
+
 
 function findBalancedObject(text, fromIndex) {
   const openIdx = text.indexOf('{', fromIndex);

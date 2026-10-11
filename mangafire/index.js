@@ -2,6 +2,59 @@ const SITE_BASE = 'https://mangafire.to';
 const ALL_CONTENT_RATINGS = 'safe,suggestive,erotica,pornographic';
 const ORACLE_TIMEOUT_MS = 170000;
 
+const WATCH_JS = `
+  var __mfSeen = [];
+  function __mfNorm(u) {
+    try { return new URL(String(u), location.href).href; } catch (e) { return String(u); }
+  }
+  (function () {
+    try { performance.setResourceTimingBufferSize(3000); } catch (e) {}
+    function note(u) {
+      try { var n = __mfNorm(u); if (__mfSeen.indexOf(n) === -1) __mfSeen.push(n); } catch (e) {}
+    }
+    try {
+      var origFetch = window.fetch;
+      if (origFetch) {
+        window.fetch = function (input) {
+          try { note(typeof input === 'string' ? input : input && input.url); } catch (e) {}
+          return origFetch.apply(this, arguments);
+        };
+      }
+      var origOpen = XMLHttpRequest.prototype.open;
+      XMLHttpRequest.prototype.open = function (method, url) {
+        try { note(url); } catch (e) {}
+        return origOpen.apply(this, arguments);
+      };
+    } catch (e) {}
+  })();
+  function __mfUrls(part) {
+    var out = [];
+    function add(u) { if (u && u.indexOf(part) !== -1 && out.indexOf(u) === -1) out.push(u); }
+    try {
+      var entries = performance.getEntriesByType('resource');
+      for (var i = 0; i < entries.length; i++) add(entries[i].name);
+    } catch (e) {}
+    for (var j = 0; j < __mfSeen.length; j++) add(__mfSeen[j]);
+    return out;
+  }
+  function __mfPoll(check, timeoutMs, message) {
+    return new Promise(function (resolve, reject) {
+      var started = Date.now();
+      (function tick() {
+        var value = null;
+        try { value = check(Date.now() - started); } catch (e) {}
+        if (value) { resolve(value); return; }
+        if (Date.now() - started >= timeoutMs) { reject(new Error(message)); return; }
+        setTimeout(tick, 150);
+      })();
+    });
+  }
+`;
+
+function safeId(value) {
+  return String(value || '').replace(/[^A-Za-z0-9_-]/g, '');
+}
+
 function ageRatingFor(rating) {
   if (!rating) return undefined;
   const r = rating.toLowerCase();
@@ -54,12 +107,19 @@ class Source {
   }
 
   getSourceFeeds() {
-    return [{ id: 'trending', name: 'Trending' }];
+    return [
+      { id: 'trending', name: 'Trending' },
+      { id: 'latest', name: 'Latest Updates' },
+    ];
   }
 
   async getSearchResults(request, metadata) {
     const query = (request && request.title) || '';
     const page = (metadata && metadata.page) || 1;
+
+    if (!query && request && request.feed === 'latest') {
+      return this._latestUpdates(page);
+    }
 
     if (!query) {
       const json = await this.requestJSON(
@@ -69,9 +129,13 @@ class Source {
       return { results: items.map((item) => toPartialManga(item)) };
     }
 
-    const script = `
-      __watchFetch('/api/titles?keyword=', 1200, 15000)
-        .then(function (urls) { return __fetchJSON(urls[urls.length - 1]); })
+    const script = WATCH_JS + `
+      __mfPoll(function () { return __mfUrls('/api/titles?keyword=').length ? true : null; }, 25000, 'no search request observed')
+        .then(function () { return new Promise(function (r) { setTimeout(r, 700); }); })
+        .then(function () {
+          var urls = __mfUrls('/api/titles?keyword=');
+          return __fetchJSON(urls[urls.length - 1]);
+        })
         .then(__reportResult, function (e) { __reportError(e.message || String(e)); });
     `;
     const result = await App.executeInWebView({
@@ -92,16 +156,56 @@ class Source {
     };
   }
 
+  async _latestUpdates(page) {
+    const wantPage = Math.max(1, parseInt(page, 10) || 1);
+    const script = WATCH_JS + `
+      function __mfMatches() {
+        return __mfUrls('/api/titles?').filter(function (u) {
+          var d = decodeURIComponent(u);
+          return d.indexOf('order[chapter_updated_at]=desc') !== -1 &&
+            new RegExp('[?&]page=${wantPage}(&|$)').test(d);
+        });
+      }
+      __mfPoll(function () { return __mfMatches().length ? true : null; }, 25000, 'no latest updates request observed')
+        .then(function () { return new Promise(function (r) { setTimeout(r, 700); }); })
+        .then(function () {
+          var urls = __mfMatches();
+          return __fetchJSON(urls[urls.length - 1]);
+        })
+        .then(__reportResult, function (e) { __reportError(e.message || String(e)); });
+    `;
+    const result = await App.executeInWebView({
+      url: `${SITE_BASE}/browse?sort=chapter_updated_at:desc&page=${wantPage}&content_rating=${ALL_CONTENT_RATINGS}`,
+      baseUrl: `${SITE_BASE}/`,
+      script,
+      timeoutMs: ORACLE_TIMEOUT_MS,
+      runBeforePageScripts: false,
+    });
+    if ('error' in result) throw new Error('MangaFire latest updates failed: ' + result.error);
+
+    const json = result.value;
+    const items = Array.isArray(json && json.items) ? json.items : [];
+    const hasNext = !!(json && json.meta && json.meta.hasNext);
+    return {
+      results: items.map((item) => toPartialManga(item)),
+      metadata: hasNext ? { page: wantPage + 1 } : undefined,
+    };
+  }
+
   async getMangaDetails(mangaId) {
-    const hid = hidOf(mangaId);
-    const script = `
-      __watchFetch('/api/titles/${hid}', 1200, 15000)
-        .then(function (urls) {
-          var detailsUrl = urls.filter(function (u) { return u.indexOf('/chapters') === -1; })[0];
-          var chaptersUrl = urls.filter(function (u) { return u.indexOf('/chapters') !== -1; })[0];
-          if (!detailsUrl) { __reportError('no details request observed'); return; }
-          __reportResult({ detailsUrl: detailsUrl, chaptersUrl: chaptersUrl || null });
-        }, function (e) { __reportError(e.message || String(e)); });
+    const hid = safeId(hidOf(mangaId));
+    const script = WATCH_JS + `
+      var __mfDetailsAt = 0;
+      __mfPoll(function (age) {
+        var urls = __mfUrls('/api/titles/${hid}');
+        var detailsUrl = urls.filter(function (u) { return u.indexOf('/chapters') === -1; })[0];
+        if (!detailsUrl) return null;
+        var chaptersUrl = urls.filter(function (u) { return u.indexOf('/chapters') !== -1; })[0];
+        if (!__mfDetailsAt) __mfDetailsAt = age;
+        if (!chaptersUrl && age - __mfDetailsAt < 1500) return null;
+        return { detailsUrl: detailsUrl, chaptersUrl: chaptersUrl || null };
+      }, 25000, 'no details request observed')
+        .then(__reportResult, function (e) { __reportError(e.message || String(e)); });
     `;
     const result = await App.executeInWebView({
       url: `${SITE_BASE}/title/${encodeURIComponent(mangaId)}`,
@@ -168,46 +272,61 @@ class Source {
     }));
   }
 
-  async _fetchAllChapterPages(mangaId, hid) {
-    const script = `
+  async _fetchAllChapterPages(mangaId, rawHid) {
+    const hid = safeId(rawHid);
+    const script = WATCH_JS + `
       (function () {
-        var urls = [];
-        var seen = new Set();
-        var origFetch = window.fetch;
-        window.fetch = function (input, init) {
-          var url = typeof input === 'string' ? input : (input && input.url);
-          var result = origFetch.apply(this, arguments);
-          try {
-            if (url && url.indexOf('/chapters?') !== -1 && !seen.has(url)) {
-              seen.add(url);
-              urls.push(url);
-            }
-          } catch (e) {}
-          return result;
-        };
-        function clickNextPage() {
-          var active = document.querySelector('.npager__num.is-active');
-          if (!active) return false;
-          var next = active.nextElementSibling;
-          if (next && next.classList && next.classList.contains('npager__num')) {
-            next.click();
-            return true;
-          }
-          return false;
+        var PART = '/api/titles/${hid}/chapters?';
+        function pageOf(u) {
+          var m = /[?&]page=(\\d+)/.exec(u);
+          return m ? parseInt(m[1], 10) : 0;
         }
-        function advance(previousCount, stepsLeft) {
-          setTimeout(function () {
-            if (urls.length === previousCount || stepsLeft <= 0) { finish(); return; }
-            if (clickNextPage()) advance(urls.length, stepsLeft - 1);
-            else finish();
-          }, 900);
+        function urls() {
+          return __mfUrls(PART).sort(function (a, b) { return pageOf(a) - pageOf(b); });
+        }
+        function activeNumber() {
+          var active = document.querySelector('.npager__num.is-active');
+          return active ? parseInt(active.textContent, 10) : 0;
+        }
+        function plan(want) {
+          var nums = document.querySelectorAll('.npager__num');
+          for (var i = 0; i < nums.length; i++) {
+            if (parseInt(nums[i].textContent, 10) === want) return nums[i];
+          }
+          if (activeNumber() !== want - 1) return null;
+          var navs = document.querySelectorAll('.npager__nav');
+          for (var j = 0; j < navs.length; j++) {
+            var label = (navs[j].getAttribute('aria-label') || '').toLowerCase();
+            if (label.indexOf('next') !== -1 && !navs[j].disabled) return navs[j];
+          }
+          return 'end';
         }
         function finish() {
-          window.fetch = origFetch;
-          if (urls.length > 0) __reportResult(urls);
+          var found = urls();
+          if (found.length) __reportResult(found);
           else __reportError('no chapters request observed');
         }
-        setTimeout(function () { advance(0, 40); }, 1200);
+        var requested = 1;
+        function step(left) {
+          if (left <= 0) { finish(); return; }
+          var want = requested + 1;
+          __mfPoll(function () { return plan(want); }, 6000, 'pager did not follow')
+            .then(function (target) {
+              if (target === 'end') { finish(); return null; }
+              var before = urls().length;
+              target.click();
+              return __mfPoll(function () { return urls().length > before ? true : null; }, 6000, 'no request')
+                .then(function () { requested = want; setTimeout(function () { step(left - 1); }, 50); });
+            })
+            .catch(function () { finish(); });
+        }
+        __mfPoll(function () { return urls().length ? true : null; }, 25000, 'no chapters request observed')
+          .then(function () {
+            return __mfPoll(function (age) {
+              return document.querySelector('.npager__num') ? true : (age > 3000 ? true : null);
+            }, 6000, '');
+          })
+          .then(function () { step(80); }, function (e) { __reportError(e.message || String(e)); });
       })();
     `;
     const result = await App.executeInWebView({
@@ -231,9 +350,14 @@ class Source {
   }
 
   async getChapterDetails(mangaId, chapterId) {
-    const script = `
-      __watchFetch('/api/chapters/${chapterId}', 1200, 15000)
-        .then(function (urls) { return __fetchJSON(urls[urls.length - 1]); })
+    const id = safeId(chapterId);
+    const script = WATCH_JS + `
+      __mfPoll(function () { return __mfUrls('/api/chapters/${id}').length ? true : null; }, 25000, 'no chapter request observed')
+        .then(function () { return new Promise(function (r) { setTimeout(r, 500); }); })
+        .then(function () {
+          var urls = __mfUrls('/api/chapters/${id}');
+          return __fetchJSON(urls[urls.length - 1]);
+        })
         .then(__reportResult, function (e) { __reportError(e.message || String(e)); });
     `;
     const result = await App.executeInWebView({

@@ -20,14 +20,24 @@ function cleanText(text) {
 }
 
 function plainText(text) {
-  return String(text || '')
-    .replace(/\r\n/g, '\n')
-    .split('\n')
-    .map((line) => line.trim())
-    .join('\n')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
+  return breakParagraphs(
+    String(text || '')
+      .replace(/\r\n/g, '\n')
+      .split('\n')
+      .map((line) => line.trim())
+      .join('\n')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim(),
+  );
 }
+
+function breakParagraphs(text) {
+  const lines = text.split('\n').filter((l) => l.trim());
+  const blank = (text.match(/\n\s*\n/g) || []).length;
+  if (lines.length < 4 || blank >= lines.length / 3) return text;
+  return lines.map((l) => l.trim()).join('\n\n');
+}
+
 
 function mapStatus(writeStatus) {
   const s = String(writeStatus || '').toUpperCase();
@@ -237,21 +247,39 @@ class Source {
   async getChapters(mangaId) {
     const chapters = [];
     try {
-      let page = 1;
-      let totalPage = 1;
-      do {
-        const pageProps = await this.fetchPageProps(`${SITE_BASE}/catalog/${encodeURIComponent(String(mangaId))}/${page}`);
-        const list = (pageProps && Array.isArray(pageProps.chapterList) && pageProps.chapterList) || [];
-        if (!list.length) {
-          if (page > 1 && page <= totalPage) {
-            throw new Error(
-              `Webfic: catalog page ${page} of ${totalPage} for ${mangaId} returned no chapters; ` +
-                `refusing to return a partial chapter list`
-            );
+      const catalogUrl = (page) => `${SITE_BASE}/catalog/${encodeURIComponent(String(mangaId))}/${page}`;
+      const firstProps = await this.fetchPageProps(catalogUrl(1));
+      const firstList = (firstProps && Array.isArray(firstProps.chapterList) && firstProps.chapterList) || [];
+      const totalPage = Math.min((firstProps && firstProps.totalPage) || 1, MAX_CATALOG_PAGES);
+      const lists = [firstList];
+      if (firstList.length && totalPage > 1) {
+        const byPage = {};
+        let next = 2;
+        let failure = null;
+        const lane = async () => {
+          while (next <= totalPage && !failure) {
+            const page = next;
+            next += 1;
+            try {
+              const props = await this.fetchPageProps(catalogUrl(page));
+              const list = (props && Array.isArray(props.chapterList) && props.chapterList) || [];
+              if (!list.length) {
+                throw new Error(
+                  `Webfic: catalog page ${page} of ${totalPage} for ${mangaId} returned no chapters; ` +
+                    `refusing to return a partial chapter list`
+                );
+              }
+              byPage[page] = list;
+            } catch (e) {
+              failure = failure || e;
+            }
           }
-          break;
-        }
-        totalPage = (pageProps && pageProps.totalPage) || totalPage;
+        };
+        await Promise.all(Array.from({ length: Math.min(6, totalPage - 1) }, lane));
+        if (failure) throw failure;
+        for (let page = 2; page <= totalPage; page++) lists.push(byPage[page]);
+      }
+      for (const list of lists) {
         for (const c of list) {
           if (!c || (c.id === undefined || c.id === null)) continue;
           const chapterId = String(c.id);
@@ -263,8 +291,7 @@ class Source {
             number,
           });
         }
-        page += 1;
-      } while (page <= totalPage && page <= MAX_CATALOG_PAGES);
+      }
       return chapters;
     } catch (e) {
       console.error('Webfic getChapters failed:', e);

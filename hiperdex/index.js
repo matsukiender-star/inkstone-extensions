@@ -469,7 +469,7 @@ class Source {
   }
 
   manager() {
-    if (!this.requests) this.requests = App.createRequestManager({ rateLimit: { requestsPerSecond: 4 } });
+    if (!this.requests) this.requests = App.createRequestManager({});
     return this.requests;
   }
 

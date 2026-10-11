@@ -230,7 +230,7 @@ class Source {
   }
 
   async requestHTML(url) {
-    const manager = App.createRequestManager({ rateLimit: { requestsPerSecond: 2 } });
+    const manager = App.createRequestManager({});
     const request = App.createRequest({
       url,
       method: 'GET',
