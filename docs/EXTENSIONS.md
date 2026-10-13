@@ -187,6 +187,8 @@ whole extension.
 `desc` (not `description`) and `status` must be one of those exact uppercase
 strings. Anything else maps to Unknown.
 
+**Volumes (optional).** A source that can list a title's volumes returns `volumesId` in the details: any id of its own choosing for the title's volumes edition (MangaFire uses the title's id plus `~volumes`, a suffix that is safe in URLs and never part of a real id). The app then shows a Chapters / Volumes switch. Volumes lists `getChapters(volumesId)` and reads a volume with `getChapterDetails(volumesId, volumeId)`, so the volumes are a second series as far as the extension is concerned, and their progress, history, downloads and read marks are kept apart from the chapters' (they would otherwise be mixed: Continue picks the furthest chapter number). Each volume is a chapter-shaped entry (`id`, `name` such as `Volume 3`, `number`, and a `group` line such as `9 chapters`). It must be a string id. Leave it out when the title has no volumes. Apps without the switch ignore it.
+
 **Chapter:**
 
 ```js
@@ -195,9 +197,18 @@ strings. Anything else maps to Unknown.
   name: 'Chapter 12',   // `title` also accepted
   number: 12,           // `chapNum` also accepted; used for sorting
   group: 'scanlator',
+  volume: '3',          // optional, a STRING, shown as "Vol. 3"
   time: 1755731400000,  // ← numeric epoch **ms**, NOT a Date object
 }
 ```
+
+The app casts these fields: `name`, `group` and `volume` must be strings and
+`number` and `time` must be numbers, or the chapter list throws instead of
+showing a blank. A locked chapter on a timer ends its `name` with
+`(Locked, unlocks in 5h 3m)` (`Xh Ym`, `Xh`, `Ym` or `moments`), which the app
+shows as a lock icon with a countdown. Any other lock label is shown as plain
+text. See [BUILD_WITH_AI.md](BUILD_WITH_AI.md) for locked chapters, accounts and
+the rules that keep an extension stable.
 
 **Chapter details:** `pages` must be an array of absolute image URL **strings**.
 The Reader decodes them as images via ImageIO. For a prose source (novels:

@@ -1813,11 +1813,11 @@
     {
       "id": "mangadex",
       "name": "MangaDex",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "medium": "comics",
       "website": "https://mangadex.org",
       "iconUrl": "https://mangadex.org/pwa/icons/icon-180.png",
-      "description": "MangaDex's official, fully public JSON API, with no scraping, no bot protection encountered anywhere. Browse (Latest/Most Followed/Top Rated/Recently Added), grouped genre/theme/format/content tag filtering, search, full details, and complete chapter reading via MangaDex's own at-home image CDN (no referer needed, real un-DRM'd images). A small number of chapters on some titles are metadata-only entries pointing at an official publisher's own site (VIZ, MangaPlus) with no page images MangaDex itself can serve. These are left out of the chapter list entirely rather than listed as a dead end. Per-title content rating (MangaDex serves everything from all-ages to explicit, correctly tagged) is reflected per manga rather than hiding the whole source.",
+      "description": "MangaDex's official, fully public JSON API, with no scraping, no bot protection encountered anywhere. Browse (Latest/Most Followed/Top Rated/Recently Added), grouped genre/theme/format/content tag filtering, search, full details, and complete chapter reading via MangaDex's own at-home image CDN (no referer needed, real un-DRM'd images). A small number of chapters on some titles are metadata-only entries pointing at an official publisher's own site (VIZ, MangaPlus) with no page images MangaDex itself can serve. These are left out of the chapter list entirely rather than listed as a dead end. Chapters show in your chosen language (English by default, changeable in the source's settings, or all languages); a title with none in it lists the language it does have instead of showing no chapters, with that language named beside each chapter. Per-title content rating (MangaDex serves everything from all-ages to explicit, correctly tagged) is reflected per manga rather than hiding the whole source.",
       "capabilities": [
         "browse",
         "search",
@@ -1826,9 +1826,105 @@
         "chapters",
         "reader"
       ],
+      "settingsSchema": [
+        {
+          "type": "select",
+          "key": "language",
+          "label": "Chapter language",
+          "default": "en",
+          "options": [
+            {
+              "value": "en",
+              "label": "English"
+            },
+            {
+              "value": "all",
+              "label": "All languages"
+            },
+            {
+              "value": "es",
+              "label": "Spanish"
+            },
+            {
+              "value": "es-la",
+              "label": "Spanish (Latin America)"
+            },
+            {
+              "value": "pt-br",
+              "label": "Portuguese (Brazil)"
+            },
+            {
+              "value": "pt",
+              "label": "Portuguese"
+            },
+            {
+              "value": "fr",
+              "label": "French"
+            },
+            {
+              "value": "de",
+              "label": "German"
+            },
+            {
+              "value": "it",
+              "label": "Italian"
+            },
+            {
+              "value": "ru",
+              "label": "Russian"
+            },
+            {
+              "value": "id",
+              "label": "Indonesian"
+            },
+            {
+              "value": "vi",
+              "label": "Vietnamese"
+            },
+            {
+              "value": "tr",
+              "label": "Turkish"
+            },
+            {
+              "value": "ar",
+              "label": "Arabic"
+            },
+            {
+              "value": "pl",
+              "label": "Polish"
+            },
+            {
+              "value": "th",
+              "label": "Thai"
+            },
+            {
+              "value": "ja",
+              "label": "Japanese"
+            },
+            {
+              "value": "ko",
+              "label": "Korean"
+            },
+            {
+              "value": "zh",
+              "label": "Chinese (Simplified)"
+            },
+            {
+              "value": "zh-hk",
+              "label": "Chinese (Traditional)"
+            }
+          ]
+        },
+        {
+          "type": "toggle",
+          "key": "dataSaver",
+          "label": "Data saver (smaller images)",
+          "default": false
+        }
+      ],
       "language": "en",
       "contentRating": "safe",
-      "sha256": "9934ba1c9e29666cfb6de01525ec0fe298ce46e1ae33461e078490dfcb5b0bf1"
+      "sha256": "862e297aeae26cc41908e6725b1b178820df90bbb45af33a0c8fcc5438b2308d"
     },
     {
       "id": "comix",
@@ -1877,24 +1973,25 @@
     {
       "id": "mangafire",
       "name": "MangaFire",
-      "version": "1.2.0",
+      "version": "1.4.0",
       "medium": "comics",
       "website": "https://mangafire.to",
       "iconUrl": "https://mangafire.to/assets/mangafire/favicon.png",
       "hosts": [
         "mangafire.to"
       ],
-      "description": "Large aggregator, back up after being down. Not Cloudflare-challenge-gated (a plain request reaches it fine); every real endpoint instead requires a site-issued token only its own page JS can mint, so search, title details, chapter lists, and chapter pages all run through the app's real in-page execution rather than a plain request. Trending/browse-with-no-query is a genuine plain, fast request with no such token. Chapter lists that span more than one page are fetched by paging through the site's own real UI inside one session, not truncated to page 1. Search-result cards don't carry a content rating (the site's own API doesn't return one at that shape); only a title's own details page does, and is reflected per manga rather than hiding the whole source. Two feeds: Trending (a plain request) and Latest Updates (the homepage's fresh chapters list, paged, fetched through the page like search).",
+      "description": "Large aggregator, back up after being down. Not Cloudflare-challenge-gated (a plain request reaches it fine); every real endpoint instead requires a site-issued token only its own page JS can mint, so search, title details, chapter lists, and chapter pages all run through the app's real in-page execution the first time. Those tokens never change for a given URL, so every URL the page produced is remembered and replayed with a plain request afterwards: a title, chapter or volume you have opened before, the Latest Updates pages and repeated searches open without loading the site's page at all. Chapter lists that span more than one page are fetched by paging through the site's own real UI, not truncated to page 1, in the same single visit that returns the title's details. Titles that have volumes also list them (English): the app shows a Chapters / Volumes switch, and each volume reads as one long chapter. Search-result cards don't carry a content rating (the site's own API doesn't return one at that shape); only a title's own details page does, and is reflected per manga rather than hiding the whole source. Two feeds: Trending (a plain request) and Latest Updates (the homepage's fresh chapters list, paged). Not yet timed inside the Boundless app itself: the web view part is measured in a real WKWebView, and the Chapters / Volumes switch needs a Boundless build that has it.",
       "capabilities": [
         "browse",
         "search",
         "details",
         "chapters",
-        "reader"
+        "reader",
+        "volumes"
       ],
       "language": "en",
       "contentRating": "safe",
-      "sha256": "c6b1907255a702656a5136b5f05c8882dd06b17a06ee5f4b242122c35f5482d5"
+      "sha256": "e0e858fd338365c4917da97b8ce64e63403dca4ea6906700e44cc84d37237da6"
     },
     {
       "id": "hiperdex",

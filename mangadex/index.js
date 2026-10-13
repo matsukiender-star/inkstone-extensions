@@ -23,6 +23,16 @@ const SORT_TO_ORDER = {
 
 const CONTENT_RATINGS = ['safe', 'suggestive', 'erotica', 'pornographic'];
 
+const LANGUAGE_NAMES = {
+  en: 'English', es: 'Spanish', 'es-la': 'Spanish (Latin America)', 'pt-br': 'Portuguese (Brazil)',
+  pt: 'Portuguese', fr: 'French', de: 'German', it: 'Italian', ru: 'Russian', id: 'Indonesian',
+  vi: 'Vietnamese', tr: 'Turkish', ar: 'Arabic', pl: 'Polish', th: 'Thai', ja: 'Japanese',
+  ko: 'Korean', zh: 'Chinese (Simplified)', 'zh-hk': 'Chinese (Traditional)', hi: 'Hindi',
+  uk: 'Ukrainian', nl: 'Dutch', ro: 'Romanian', hu: 'Hungarian', cs: 'Czech', fil: 'Filipino',
+  ms: 'Malay', bn: 'Bengali', my: 'Burmese', he: 'Hebrew', fa: 'Persian', el: 'Greek',
+  bg: 'Bulgarian', ca: 'Catalan', sv: 'Swedish', fi: 'Finnish', da: 'Danish', no: 'Norwegian',
+};
+
 function qs(params) {
   return Object.keys(params)
     .filter((k) => params[k] !== undefined && params[k] !== null && params[k] !== '')
@@ -177,36 +187,77 @@ class Source {
 
   async getChapters(mangaId, sinceDate) {
     try {
-      const language = App.getSourceSetting('language') || 'en';
-      const chapters = [];
-      let offset = 0;
-      const limit = 500;
-      for (let i = 0; i < 20; i++) {
-        const queryParts = [
-          qs({
-            limit,
-            offset,
-            'order[chapter]': 'asc',
-            createdAtSince: sinceDate ? sinceDate.slice(0, 19) : undefined,
-          }),
-          qsRepeat('translatedLanguage[]', [language]),
-          qsRepeat('contentRating[]', CONTENT_RATINGS),
-          qsRepeat('includes[]', ['scanlation_group']),
-        ];
-        const json = await this.requestJSON(
-          `${API_BASE}/manga/${encodeURIComponent(mangaId)}/feed?${joinQuery(queryParts)}`
-        );
-        const data = json.data || [];
-        data.filter((c) => !c.attributes || !c.attributes.externalUrl).forEach((c) => chapters.push(this.toChapter(c)));
-        const total = typeof json.total === 'number' ? json.total : data.length;
-        offset += limit;
-        if (data.length === 0 || offset >= total || offset + limit > MAX_OFFSET_PLUS_LIMIT) break;
+      const wanted = App.getSourceSetting('language') || 'en';
+      this._languages = this._languages || new Map();
+      const key = `${wanted}|${mangaId}`;
+      const known = this._languages.has(key);
+      const language = known ? this._languages.get(key) : wanted;
+      let chapters = await this._chapterFeed(mangaId, sinceDate, language, language !== wanted || wanted === 'all');
+      if (!chapters.length && !known && wanted !== 'all') {
+        const other = await this._otherLanguage(mangaId, wanted);
+        this._languages.set(key, other || wanted);
+        if (other) chapters = await this._chapterFeed(mangaId, sinceDate, other, true);
       }
       return chapters;
     } catch (e) {
       console.error('MangaDex getChapters failed:', e);
       throw e;
     }
+  }
+
+  async _chapterFeed(mangaId, sinceDate, language, showLanguage) {
+    const chapters = [];
+    let offset = 0;
+    const limit = 500;
+    for (let i = 0; i < 20; i++) {
+      const queryParts = [
+        qs({
+          limit,
+          offset,
+          'order[chapter]': 'asc',
+          createdAtSince: sinceDate ? sinceDate.slice(0, 19) : undefined,
+        }),
+        language === 'all' ? '' : qsRepeat('translatedLanguage[]', [language]),
+        qsRepeat('contentRating[]', CONTENT_RATINGS),
+        qsRepeat('includes[]', ['scanlation_group']),
+      ];
+      const json = await this.requestJSON(
+        `${API_BASE}/manga/${encodeURIComponent(mangaId)}/feed?${joinQuery(queryParts)}`
+      );
+      const data = json.data || [];
+      data
+        .filter((c) => !c.attributes || !c.attributes.externalUrl)
+        .forEach((c) => chapters.push(this.toChapter(c, showLanguage)));
+      const total = typeof json.total === 'number' ? json.total : data.length;
+      offset += limit;
+      if (data.length === 0 || offset >= total || offset + limit > MAX_OFFSET_PLUS_LIMIT) break;
+    }
+    return chapters;
+  }
+
+  async _otherLanguage(mangaId, wanted) {
+    const json = await this.requestJSON(`${API_BASE}/manga/${encodeURIComponent(mangaId)}`);
+    const attrs = (json.data && json.data.attributes) || {};
+    const available = Array.isArray(attrs.availableTranslatedLanguages) ? attrs.availableTranslatedLanguages : [];
+    if (!available.length || available.indexOf(wanted) !== -1) return null;
+    const counts = await Promise.all(
+      available.slice(0, 12).map(async (lang) => {
+        try {
+          const feed = await this.requestJSON(
+            `${API_BASE}/manga/${encodeURIComponent(mangaId)}/feed?${joinQuery([
+              qs({ limit: 1 }),
+              qsRepeat('translatedLanguage[]', [lang]),
+              qsRepeat('contentRating[]', CONTENT_RATINGS),
+            ])}`
+          );
+          return { lang, total: typeof feed.total === 'number' ? feed.total : (feed.data || []).length };
+        } catch (e) {
+          return { lang, total: 0 };
+        }
+      })
+    );
+    counts.sort((x, y) => y.total - x.total);
+    return counts[0] && counts[0].total > 0 ? counts[0].lang : null;
   }
 
   async getChapterDetails(mangaId, chapterId) {
@@ -279,11 +330,13 @@ class Source {
     };
   }
 
-  toChapter(c) {
+  toChapter(c, showLanguage) {
     const a = c.attributes || {};
     const groupRel = (c.relationships || []).find((r) => r.type === 'scanlation_group');
-    const group = groupRel && groupRel.attributes && groupRel.attributes.name;
+    const scanlator = groupRel && groupRel.attributes && groupRel.attributes.name;
     const num = a.chapter !== null && a.chapter !== undefined ? a.chapter : '0';
+    const lang = showLanguage && a.translatedLanguage ? LANGUAGE_NAMES[a.translatedLanguage] || String(a.translatedLanguage).toUpperCase() : null;
+    const group = [lang, scanlator].filter(Boolean).join(' \u00b7 ') || undefined;
     return {
       id: c.id,
       chapterId: c.id,

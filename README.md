@@ -73,8 +73,8 @@ Prefer to review a written plan before any code is written? This repo works with
 | [Manga District](mangadistrict/index.js) | mangadistrict.com | English | Adult | 1.0.0 |
 | [Manga-Scantrad](mangascantrad/index.js) | manga-scantrad.io | French | Adult | 1.0.0 |
 | [MangaBuddy](mangabuddy/index.js) | mangabuddy1.co.uk | English | Adult | 1.3.0 |
-| [MangaDex](mangadex/index.js) | mangadex.org | English | Safe | 1.1.0 |
-| [MangaFire](mangafire/index.js) | mangafire.to | English | Safe | 1.2.0 |
+| [MangaDex](mangadex/index.js) | mangadex.org | English | Safe | 1.2.0 |
+| [MangaFire](mangafire/index.js) | mangafire.to | English | Safe | 1.4.0 |
 | [MangaFreak](mangafreak/index.js) | mangafreak.me | English | Adult | 1.0.1 |
 | [MangaGo](mangago/index.js) | mangago.me | English | Adult | 1.1.0 |
 | [MangaHere](mangahere/index.js) | mangahere.cc | English | Adult | 1.1.0 |

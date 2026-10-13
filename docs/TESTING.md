@@ -39,8 +39,8 @@ It looks for `versioning.json` one folder above your extension, the same layout 
 - If titles carry their own rating, it is an `ageRating` number. A `contentRating` word on a title is ignored by Boundless, so the script warns about it.
 - Page 2 really differs from page 1.
 - Genre list (if you have one) has ids and labels. An empty list is a warning, because some sites have no working genre filter. In that case don't declare `genres` in `versioning.json`, and the script checks the two agree.
-- Search returns titles.
-- For two titles: details have a `desc` and an allowed `status`, the chapter list isn't empty, chapter times are in milliseconds, and the first and last chapters open with real image URLs (or text, for novels).
+- Search returns titles, and a search for a nonsense word returns an empty list instead of an error.
+- For two titles: details have a `desc` and an allowed `status`, and the title, author and description are plain strings. The chapter list isn't empty, every chapter id is unique, chapter fields have the types the app casts to (strings for `name`, `group` and `volume`, numbers for `number` and `time`), chapter times are in milliseconds, and the first and last chapters open with real image URLs (or text, for novels).
 - Every host your extension called is listed in `hosts`.
 
 ## Reading the output
@@ -65,6 +65,9 @@ Aim for zero `FAIL`. Try a few different search words, including one that should
 | `every cover is an absolute URL in "image"` fails | You used `coverURL`, or returned relative URLs. |
 | `page 2 differs from page 1` fails | The site ignores `page=`. Try an `offset` or a different pagination style. |
 | `chapter times are in milliseconds` fails | `time` is a `Date`, or in seconds. |
+| `chapter fields have the types Boundless casts to` fails | A number where a string belongs (`volume: 3`, `name: 12`) or a string where a number belongs (`number: "12"`). The app throws on these. |
+| `every chapter id is unique` fails | A chapter appears on two pages of the site's own list. List it once. |
+| `a search that matches nothing returns a list` fails | The site answers a no-match search with an error or a 404. Return `{ results: [] }`. |
 | `chapter ... opens` fails for the oldest chapter | Early chapters often use a different layout. Check one by hand. |
 | `HTTP 403` or `HTTP 503` | Bot protection. See below. |
 | `sha256 matches the file` fails | You edited the file after hashing it. Run `shasum -a 256 <id>/index.js` again. |

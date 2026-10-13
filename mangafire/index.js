@@ -2,8 +2,20 @@ const SITE_BASE = 'https://mangafire.to';
 const ALL_CONTENT_RATINGS = 'safe,suggestive,erotica,pornographic';
 const ORACLE_TIMEOUT_MS = 170000;
 
+const EARLY_TIMEOUT_MS = 45000;
+const EARLY_FIRST_WAIT_MS = 10000;
+const LATE_FIRST_WAIT_MS = 25000;
+const SAVED_TITLE_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
+const MAX_SAVED_PAGE_URLS = 150;
+const VOLUMES_SUFFIX = '~volumes';
+
+const SESSION_TTL_MS = 10 * 60 * 1000;
+const SESSION_MAX = 24;
+const FRESH_SESSION_MS = 20 * 1000;
+
 const WATCH_JS = `
   var __mfSeen = [];
+  var __mfDone = [];
   function __mfNorm(u) {
     try { return new URL(String(u), location.href).href; } catch (e) { return String(u); }
   }
@@ -22,7 +34,13 @@ const WATCH_JS = `
       }
       var origOpen = XMLHttpRequest.prototype.open;
       XMLHttpRequest.prototype.open = function (method, url) {
-        try { note(url); } catch (e) {}
+        try {
+          note(url);
+          var n = __mfNorm(url);
+          this.addEventListener('loadend', function () {
+            try { if (__mfDone.indexOf(n) === -1) __mfDone.push(n); } catch (e) {}
+          });
+        } catch (e) {}
         return origOpen.apply(this, arguments);
       };
     } catch (e) {}
@@ -37,6 +55,20 @@ const WATCH_JS = `
     for (var j = 0; j < __mfSeen.length; j++) add(__mfSeen[j]);
     return out;
   }
+  function __mfDoneUrls(part) {
+    var out = [];
+    for (var i = 0; i < __mfDone.length; i++) {
+      if (__mfDone[i].indexOf(part) !== -1 && out.indexOf(__mfDone[i]) === -1) out.push(__mfDone[i]);
+    }
+    return out;
+  }
+  function __mfTick() {
+    return new Promise(function (resolve) {
+      var c = new MessageChannel();
+      c.port1.onmessage = function () { resolve(); };
+      c.port2.postMessage(0);
+    });
+  }
   function __mfPoll(check, timeoutMs, message) {
     return new Promise(function (resolve, reject) {
       var started = Date.now();
@@ -44,8 +76,9 @@ const WATCH_JS = `
         var value = null;
         try { value = check(Date.now() - started); } catch (e) {}
         if (value) { resolve(value); return; }
-        if (Date.now() - started >= timeoutMs) { reject(new Error(message)); return; }
-        setTimeout(tick, 150);
+        var age = Date.now() - started;
+        if (age >= timeoutMs) { reject(new Error(message)); return; }
+        if (age < 250) __mfTick().then(tick); else setTimeout(tick, 40);
       })();
     });
   }
@@ -101,9 +134,88 @@ function toPartialManga(item) {
   };
 }
 
+function splitId(mangaId) {
+  const id = String(mangaId || '');
+  return id.endsWith(VOLUMES_SUFFIX)
+    ? { base: id.slice(0, -VOLUMES_SUFFIX.length), volumes: true }
+    : { base: id, volumes: false };
+}
+
+function toVolumeChapter(v) {
+  const number = Number(v.number);
+  const label = v.name ? `Volume ${v.number}: ${String(v.name).trim()}` : `Volume ${v.number}`;
+  const count = Number(v.chapterCount);
+  return {
+    id: String(v.id),
+    chapterId: String(v.id),
+    name: label,
+    number: Number.isFinite(number) ? number : 0,
+    group: count > 0 ? `${count} ${count === 1 ? 'chapter' : 'chapters'}` : undefined,
+  };
+}
+
+class UrlMemory {
+  constructor(name, cap) {
+    this.name = name;
+    this.cap = cap;
+    this.map = null;
+    this.loading = null;
+    this.state = null;
+  }
+
+  _load() {
+    if (this.map) return Promise.resolve(this.map);
+    if (!this.loading) {
+      this.state = App.createSourceStateManager();
+      this.loading = this.state.retrieve(this.name).then(
+        (saved) => {
+          const entries = saved && Array.isArray(saved.entries) ? saved.entries : [];
+          this.map = new Map(entries);
+          return this.map;
+        },
+        () => {
+          this.map = new Map();
+          return this.map;
+        }
+      );
+    }
+    return this.loading;
+  }
+
+  async get(key) {
+    const map = await this._load();
+    return map.has(key) ? map.get(key) : null;
+  }
+
+  async set(key, value) {
+    const map = await this._load();
+    map.delete(key);
+    map.set(key, value);
+    while (map.size > this.cap) map.delete(map.keys().next().value);
+    await this._save(map);
+  }
+
+  async remove(key) {
+    const map = await this._load();
+    if (map.delete(key)) await this._save(map);
+  }
+
+  async _save(map) {
+    try {
+      await this.state.store(this.name, { entries: Array.from(map.entries()) });
+    } catch (e) {
+    }
+  }
+}
+
+function ignore() {}
+
 class Source {
   constructor() {
-    this._chaptersUrlCache = new Map();
+    this._sessions = new Map();
+    this._titles = new UrlMemory('titles-v1', 60);
+    this._readers = new UrlMemory('readers-v1', 500);
+    this._feeds = new UrlMemory('feeds-v1', 100);
   }
 
   getSourceFeeds() {
@@ -111,6 +223,50 @@ class Source {
       { id: 'trending', name: 'Trending' },
       { id: 'latest', name: 'Latest Updates' },
     ];
+  }
+
+  async _runPage(url, build) {
+    const common = { url, baseUrl: `${SITE_BASE}/` };
+    const early = await App.executeInWebView(
+      Object.assign({}, common, {
+        script: build(EARLY_FIRST_WAIT_MS),
+        timeoutMs: EARLY_TIMEOUT_MS,
+        runBeforePageScripts: true,
+      })
+    );
+    if (!('error' in early)) return early;
+    return App.executeInWebView(
+      Object.assign({}, common, {
+        script: build(LATE_FIRST_WAIT_MS),
+        timeoutMs: ORACLE_TIMEOUT_MS,
+        runBeforePageScripts: false,
+      })
+    );
+  }
+
+  async _listing(remember, pageUrl, build, what) {
+    const saved = await this._feeds.get(remember);
+    if (saved) {
+      try {
+        return await this.requestJSON(saved);
+      } catch (e) {
+        this._feeds.remove(remember).catch(ignore);
+      }
+    }
+    const result = await this._runPage(pageUrl, (wait) => WATCH_JS + build(wait));
+    if ('error' in result) throw new Error(`MangaFire ${what} failed: ${result.error}`);
+    const found = result.value || {};
+    if (found.url) this._feeds.set(remember, found.url).catch(ignore);
+    return found.json;
+  }
+
+  _pageOfTitles(json, page) {
+    const items = Array.isArray(json && json.items) ? json.items : [];
+    const hasNext = !!(json && json.meta && json.meta.hasNext);
+    return {
+      results: items.map((item) => toPartialManga(item)),
+      metadata: hasNext ? { page: page + 1 } : undefined,
+    };
   }
 
   async getSearchResults(request, metadata) {
@@ -129,36 +285,28 @@ class Source {
       return { results: items.map((item) => toPartialManga(item)) };
     }
 
-    const script = WATCH_JS + `
-      __mfPoll(function () { return __mfUrls('/api/titles?keyword=').length ? true : null; }, 25000, 'no search request observed')
-        .then(function () { return new Promise(function (r) { setTimeout(r, 700); }); })
+    const find = (wait) => `
+      __mfPoll(function () { return __mfUrls('/api/titles?keyword=').length ? true : null; }, ${wait}, 'no search request observed')
+        .then(function () { return new Promise(function (r) { setTimeout(r, 120); }); })
         .then(function () {
           var urls = __mfUrls('/api/titles?keyword=');
-          return __fetchJSON(urls[urls.length - 1]);
+          var u = urls[urls.length - 1];
+          return __fetchJSON(u).then(function (json) { return { url: u, json: json }; });
         })
         .then(__reportResult, function (e) { __reportError(e.message || String(e)); });
     `;
-    const result = await App.executeInWebView({
-      url: `${SITE_BASE}/browse?keyword=${encodeURIComponent(query)}&sort=relevance:desc&page=${page}&content_rating=${ALL_CONTENT_RATINGS}`,
-      baseUrl: `${SITE_BASE}/`,
-      script,
-      timeoutMs: ORACLE_TIMEOUT_MS,
-      runBeforePageScripts: false,
-    });
-    if ('error' in result) throw new Error('MangaFire search failed: ' + result.error);
-
-    const json = result.value;
-    const items = Array.isArray(json && json.items) ? json.items : [];
-    const hasNext = !!(json && json.meta && json.meta.hasNext);
-    return {
-      results: items.map((item) => toPartialManga(item)),
-      metadata: hasNext ? { page: page + 1 } : undefined,
-    };
+    const json = await this._listing(
+      `s:${page}:${query}`,
+      `${SITE_BASE}/browse?keyword=${encodeURIComponent(query)}&sort=relevance:desc&page=${page}&content_rating=${ALL_CONTENT_RATINGS}`,
+      find,
+      'search'
+    );
+    return this._pageOfTitles(json, page);
   }
 
   async _latestUpdates(page) {
     const wantPage = Math.max(1, parseInt(page, 10) || 1);
-    const script = WATCH_JS + `
+    const find = (wait) => `
       function __mfMatches() {
         return __mfUrls('/api/titles?').filter(function (u) {
           var d = decodeURIComponent(u);
@@ -166,100 +314,107 @@ class Source {
             new RegExp('[?&]page=${wantPage}(&|$)').test(d);
         });
       }
-      __mfPoll(function () { return __mfMatches().length ? true : null; }, 25000, 'no latest updates request observed')
-        .then(function () { return new Promise(function (r) { setTimeout(r, 700); }); })
+      __mfPoll(function () { return __mfMatches().length ? true : null; }, ${wait}, 'no latest updates request observed')
+        .then(function () { return new Promise(function (r) { setTimeout(r, 120); }); })
         .then(function () {
           var urls = __mfMatches();
-          return __fetchJSON(urls[urls.length - 1]);
+          var u = urls[urls.length - 1];
+          return __fetchJSON(u).then(function (json) { return { url: u, json: json }; });
         })
         .then(__reportResult, function (e) { __reportError(e.message || String(e)); });
     `;
-    const result = await App.executeInWebView({
-      url: `${SITE_BASE}/browse?sort=chapter_updated_at:desc&page=${wantPage}&content_rating=${ALL_CONTENT_RATINGS}`,
-      baseUrl: `${SITE_BASE}/`,
-      script,
-      timeoutMs: ORACLE_TIMEOUT_MS,
-      runBeforePageScripts: false,
-    });
-    if ('error' in result) throw new Error('MangaFire latest updates failed: ' + result.error);
-
-    const json = result.value;
-    const items = Array.isArray(json && json.items) ? json.items : [];
-    const hasNext = !!(json && json.meta && json.meta.hasNext);
-    return {
-      results: items.map((item) => toPartialManga(item)),
-      metadata: hasNext ? { page: wantPage + 1 } : undefined,
-    };
+    const json = await this._listing(
+      `l:${wantPage}`,
+      `${SITE_BASE}/browse?sort=chapter_updated_at:desc&page=${wantPage}&content_rating=${ALL_CONTENT_RATINGS}`,
+      find,
+      'latest updates'
+    );
+    return this._pageOfTitles(json, wantPage);
   }
 
   async getMangaDetails(mangaId) {
-    const hid = safeId(hidOf(mangaId));
-    const script = WATCH_JS + `
-      var __mfDetailsAt = 0;
-      __mfPoll(function (age) {
-        var urls = __mfUrls('/api/titles/${hid}');
-        var detailsUrl = urls.filter(function (u) { return u.indexOf('/chapters') === -1; })[0];
-        if (!detailsUrl) return null;
-        var chaptersUrl = urls.filter(function (u) { return u.indexOf('/chapters') !== -1; })[0];
-        if (!__mfDetailsAt) __mfDetailsAt = age;
-        if (!chaptersUrl && age - __mfDetailsAt < 1500) return null;
-        return { detailsUrl: detailsUrl, chaptersUrl: chaptersUrl || null };
-      }, 25000, 'no details request observed')
-        .then(__reportResult, function (e) { __reportError(e.message || String(e)); });
-    `;
-    const result = await App.executeInWebView({
-      url: `${SITE_BASE}/title/${encodeURIComponent(mangaId)}`,
-      baseUrl: `${SITE_BASE}/`,
-      script,
-      timeoutMs: ORACLE_TIMEOUT_MS,
-      runBeforePageScripts: false,
-    });
-    if ('error' in result) throw new Error('MangaFire details failed: ' + result.error);
-
-    const { detailsUrl, chaptersUrl } = result.value;
-    if (chaptersUrl) {
-      this._chaptersUrlCache.set(mangaId, { url: chaptersUrl, at: Date.now() });
-    }
-
-    const json = await this.requestJSON(detailsUrl);
-    const series = json.data;
-    return {
-      mangaInfo: {
-        title: series.title,
-        image: series.poster && (series.poster.large || series.poster.medium),
-        desc: stripHtml(series.synopsisHtml),
-        status: mapStatus(series.status),
-        ageRating: ageRatingFor(series.contentRating),
-        tags: [
-          ...(series.genres || []).map((g) => g.title),
-          ...(series.themes || []).map((t) => t.title),
-          ...(series.demographics || []).map((d) => d.title),
-        ].filter(Boolean),
-        author: (series.authors || []).map((a) => a.title).join(', ') || undefined,
-        communityRating: typeof series.rating === 'number' ? series.rating : undefined,
-        webURL: `${SITE_BASE}${series.url || '/title/' + mangaId}`,
-        medium: 'comics',
-      },
+    const id = splitId(mangaId);
+    const loaded = await this._loadDetails(id.base, !id.volumes);
+    const series = loaded.json.data;
+    const info = {
+      title: id.volumes ? `${series.title} (Volumes)` : series.title,
+      image: series.poster && (series.poster.large || series.poster.medium),
+      desc: stripHtml(series.synopsisHtml),
+      status: mapStatus(series.status),
+      ageRating: ageRatingFor(series.contentRating),
+      tags: [
+        ...(series.genres || []).map((g) => g.title),
+        ...(series.themes || []).map((t) => t.title),
+        ...(series.demographics || []).map((d) => d.title),
+      ].filter(Boolean),
+      author: (series.authors || []).map((a) => a.title).join(', ') || undefined,
+      communityRating: typeof series.rating === 'number' ? series.rating : undefined,
+      webURL: `${SITE_BASE}${series.url || '/title/' + id.base}`,
+      medium: 'comics',
     };
+    if (loaded.volumes && loaded.volumes.length) info.volumesId = id.base + VOLUMES_SUFFIX;
+    return { mangaInfo: info };
+  }
+
+  async _loadDetails(base, withVolumes) {
+    let session = await this._titleSession(base);
+    const volumes = (s) =>
+      withVolumes && s.volumesUrl
+        ? this._volumeItems(base).catch((e) => {
+            console.error('MangaFire volumes list failed:', (e && e.message) || e);
+            return null;
+          })
+        : Promise.resolve(null);
+    try {
+      const [json, vols] = await Promise.all([this.requestJSON(session.detailsUrl), volumes(session)]);
+      return { json, volumes: vols };
+    } catch (e) {
+      if (!this._isReused(session)) throw e;
+      session = await this._titleSession(base, { fresh: true });
+      const [json, vols] = await Promise.all([this.requestJSON(session.detailsUrl), volumes(session)]);
+      return { json, volumes: vols };
+    }
   }
 
   async getChapters(mangaId) {
-    const hid = hidOf(mangaId);
-    const cached = this._chaptersUrlCache.get(mangaId);
-    const cacheFresh = cached && Date.now() - cached.at < 120000;
+    const id = splitId(mangaId);
+    if (id.volumes) return this._volumeChapters(id.base);
+    let session = await this._titleSession(id.base);
+    let items;
+    try {
+      items = await this._loadChapterPages(session);
+    } catch (e) {
+      if (!this._isReused(session)) throw e;
+      session = await this._titleSession(id.base, { fresh: true });
+      items = await this._loadChapterPages(session);
+    }
+    return this._toChapterList(items);
+  }
 
-    if (cacheFresh) {
-      try {
-        const firstPage = await this.requestJSON(cached.url);
-        if (!(firstPage.meta && firstPage.meta.hasNext)) {
-          return this._toChapterList(firstPage.items || []);
-        }
-      } catch (e) {
+  async _loadChapterPages(session) {
+    if (!session.chapterUrls.length) {
+      throw new Error('MangaFire chapters failed: the title page made no chapter list request');
+    }
+    if (session.missing.length) {
+      throw new Error(
+        `MangaFire chapters incomplete: ${session.chapterUrls.length} of ${session.lastPage} pages were reachable`
+      );
+    }
+    const pages = await Promise.all(session.chapterUrls.map((u) => this.requestJSON(u)));
+    const lastPage = pages[0] && pages[0].meta && pages[0].meta.lastPage;
+    if (lastPage && lastPage > session.chapterUrls.length) {
+      throw new Error(`MangaFire chapter list grew to ${lastPage} pages since it was read`);
+    }
+    const items = [];
+    const seen = new Set();
+    for (const page of pages) {
+      for (const item of Array.isArray(page.items) ? page.items : []) {
+        if (seen.has(item.id)) continue;
+        seen.add(item.id);
+        items.push(item);
       }
     }
-
-    const items = await this._fetchAllChapterPages(mangaId, hid);
-    return this._toChapterList(items);
+    return items;
   }
 
   _toChapterList(items) {
@@ -272,104 +427,281 @@ class Source {
     }));
   }
 
-  async _fetchAllChapterPages(mangaId, rawHid) {
-    const hid = safeId(rawHid);
-    const script = WATCH_JS + `
+  async _volumeItems(base) {
+    let session = await this._titleSession(base);
+    if (!session.volumesUrl) return null;
+    try {
+      return await this._fetchVolumes(session);
+    } catch (e) {
+      if (!this._isReused(session)) throw e;
+      session = await this._titleSession(base, { fresh: true });
+      return session.volumesUrl ? this._fetchVolumes(session) : null;
+    }
+  }
+
+  _fetchVolumes(session) {
+    if (!session.volumes) {
+      session.volumes = this.requestJSON(session.volumesUrl).then(
+        (json) => (Array.isArray(json && json.items) ? json.items : []).filter((v) => v.language === 'en'),
+        (e) => {
+          session.volumes = null;
+          throw e;
+        }
+      );
+    }
+    return session.volumes;
+  }
+
+  async _volumeChapters(base) {
+    const items = await this._volumeItems(base);
+    if (!items) throw new Error('MangaFire volumes failed: the title page made no volumes request');
+    return items.map(toVolumeChapter);
+  }
+
+  _titleSession(mangaId, options) {
+    const fresh = !!(options && options.fresh);
+    const hit = this._sessions.get(mangaId);
+    if (!fresh && hit && Date.now() - hit.at < SESSION_TTL_MS) return hit.promise;
+    if (this._sessions.size >= SESSION_MAX) {
+      const oldest = this._sessions.keys().next().value;
+      this._sessions.delete(oldest);
+    }
+    const entry = { at: Date.now(), promise: null };
+    entry.promise = this._openTitle(mangaId, fresh).then(
+      (session) => {
+        entry.at = Date.now();
+        return session;
+      },
+      (e) => {
+        if (this._sessions.get(mangaId) === entry) this._sessions.delete(mangaId);
+        throw e;
+      }
+    );
+    this._sessions.set(mangaId, entry);
+    return entry.promise;
+  }
+
+  async _openTitle(mangaId, fresh) {
+    if (!fresh) {
+      const saved = await this._titles.get(mangaId);
+      if (
+        saved &&
+        saved.detailsUrl &&
+        Array.isArray(saved.chapterUrls) &&
+        saved.chapterUrls.length > 0 &&
+        Date.now() - (saved.savedAt || 0) < SAVED_TITLE_MAX_AGE_MS
+      ) {
+        return {
+          detailsUrl: saved.detailsUrl,
+          chapterUrls: saved.chapterUrls,
+          lastPage: saved.lastPage || saved.chapterUrls.length,
+          missing: [],
+          hasVolumes: !!saved.hasVolumes,
+          volumesUrl: saved.volumesUrl || null,
+          at: saved.savedAt,
+        };
+      }
+    }
+    const session = await this._visitTitle(mangaId);
+    session.at = Date.now();
+    const remember =
+      session.detailsUrl &&
+      !session.missing.length &&
+      session.chapterUrls.length > 0 &&
+      session.chapterUrls.length <= MAX_SAVED_PAGE_URLS &&
+      !(session.hasVolumes && !session.volumesUrl);
+    if (remember) {
+      this._titles
+        .set(mangaId, {
+          detailsUrl: session.detailsUrl,
+          chapterUrls: session.chapterUrls,
+          lastPage: session.lastPage,
+          hasVolumes: session.hasVolumes,
+          volumesUrl: session.volumesUrl,
+          savedAt: session.at,
+        })
+        .catch(ignore);
+    }
+    return session;
+  }
+
+  _isReused(session) {
+    return Date.now() - (session.at || 0) > FRESH_SESSION_MS;
+  }
+
+  async _visitTitle(mangaId) {
+    const hid = safeId(hidOf(mangaId));
+    const script = (wait) => WATCH_JS + `
       (function () {
-        var PART = '/api/titles/${hid}/chapters?';
+        var HID = '${hid}';
+        var DETAILS = '/api/titles/' + HID + '?';
+        var PART = '/api/titles/' + HID + '/chapters?';
+        var VOLUMES = '/api/titles/' + HID + '/volumes';
         function pageOf(u) {
           var m = /[?&]page=(\\d+)/.exec(u);
           return m ? parseInt(m[1], 10) : 0;
         }
-        function urls() {
-          return __mfUrls(PART).sort(function (a, b) { return pageOf(a) - pageOf(b); });
+        function chapterUrlsByPage(finished) {
+          var byPage = {};
+          var urls = finished ? __mfDoneUrls(PART) : __mfUrls(PART);
+          for (var i = 0; i < urls.length; i++) {
+            var p = pageOf(urls[i]);
+            if (p && !byPage[p]) byPage[p] = urls[i];
+          }
+          return byPage;
         }
-        function activeNumber() {
-          var active = document.querySelector('.npager__num.is-active');
-          return active ? parseInt(active.textContent, 10) : 0;
+        function detailsUrl() {
+          var urls = __mfUrls(DETAILS);
+          return urls.length ? urls[0] : null;
         }
-        function plan(want) {
+        function volumesUrl() {
+          var urls = __mfUrls(VOLUMES);
+          return urls.length ? urls[0] : null;
+        }
+        function pagerNumbers() {
+          var out = [];
           var nums = document.querySelectorAll('.npager__num');
-          for (var i = 0; i < nums.length; i++) {
-            if (parseInt(nums[i].textContent, 10) === want) return nums[i];
-          }
-          if (activeNumber() !== want - 1) return null;
-          var navs = document.querySelectorAll('.npager__nav');
-          for (var j = 0; j < navs.length; j++) {
-            var label = (navs[j].getAttribute('aria-label') || '').toLowerCase();
-            if (label.indexOf('next') !== -1 && !navs[j].disabled) return navs[j];
-          }
-          return 'end';
+          for (var i = 0; i < nums.length; i++) out.push({ n: parseInt(nums[i].textContent, 10), el: nums[i] });
+          return out;
         }
-        function finish() {
-          var found = urls();
-          if (found.length) __reportResult(found);
-          else __reportError('no chapters request observed');
+        function pagerSignature() {
+          var active = document.querySelector('.npager__num.is-active');
+          var shown = pagerNumbers().map(function (x) { return x.n; }).join(',');
+          return shown + '|' + (active ? active.textContent : '');
         }
-        var requested = 1;
-        function step(left) {
-          if (left <= 0) { finish(); return; }
-          var want = requested + 1;
-          __mfPoll(function () { return plan(want); }, 6000, 'pager did not follow')
-            .then(function (target) {
-              if (target === 'end') { finish(); return null; }
-              var before = urls().length;
-              target.click();
-              return __mfPoll(function () { return urls().length > before ? true : null; }, 6000, 'no request')
-                .then(function () { requested = want; setTimeout(function () { step(left - 1); }, 50); });
+        function nextWanted(lastPage) {
+          var finished = chapterUrlsByPage(true);
+          for (var p = 2; p <= lastPage; p++) if (!finished[p]) return p;
+          return 0;
+        }
+        function finish(lastPage, hasVolumes) {
+          var byPage = chapterUrlsByPage();
+          var urls = [];
+          var missing = [];
+          for (var p = 1; p <= lastPage; p++) {
+            if (byPage[p]) urls.push(byPage[p]); else missing.push(p);
+          }
+          __reportResult({
+            detailsUrl: detailsUrl(),
+            chapterUrls: urls,
+            lastPage: lastPage,
+            missing: missing,
+            hasVolumes: hasVolumes,
+            volumesUrl: volumesUrl()
+          });
+        }
+        function walk(lastPage, budget, deadline) {
+          var want = nextWanted(lastPage);
+          if (!want) return Promise.resolve();
+          if (budget <= 0 || Date.now() > deadline) return Promise.reject(new Error('the pager did not reach page ' + want));
+          return __mfPoll(function () { return pagerNumbers().length ? true : null; }, 6000, 'the pager never appeared')
+            .then(function () {
+              var shown = pagerNumbers();
+              var target = null;
+              for (var i = 0; i < shown.length; i++) if (shown[i].n === want) target = shown[i];
+              if (target) {
+                target.el.click();
+                return __mfPoll(function () { return chapterUrlsByPage(true)[want] ? true : null; }, 6000, 'no response for page ' + want)
+                  .catch(function () {});
+              }
+              var below = null;
+              var above = null;
+              for (var j = 0; j < shown.length; j++) {
+                if (shown[j].n < want && (!below || shown[j].n > below.n)) below = shown[j];
+                if (shown[j].n > want && (!above || shown[j].n < above.n)) above = shown[j];
+              }
+              var step = below || above;
+              var before = pagerSignature();
+              step.el.click();
+              return __mfPoll(function () { return pagerSignature() !== before ? true : null; }, 3000, '').catch(function () {});
             })
-            .catch(function () { finish(); });
+            .then(function () { return walk(lastPage, budget - 1, deadline); });
         }
-        __mfPoll(function () { return urls().length ? true : null; }, 25000, 'no chapters request observed')
+        __mfPoll(function () { return detailsUrl() ? true : null; }, ${wait}, 'no details request observed')
           .then(function () {
-            return __mfPoll(function (age) {
-              return document.querySelector('.npager__num') ? true : (age > 3000 ? true : null);
-            }, 6000, '');
+            return __mfPoll(function () { return chapterUrlsByPage()[1] ? true : null; }, 1500, '').catch(function () {});
           })
-          .then(function () { step(80); }, function (e) { __reportError(e.message || String(e)); });
+          .then(function () {
+            var first = chapterUrlsByPage()[1];
+            if (!first) {
+              __reportResult({ detailsUrl: detailsUrl(), chapterUrls: [], lastPage: 0, missing: [], hasVolumes: false, volumesUrl: volumesUrl() });
+              return null;
+            }
+            return Promise.all([__fetchJSON(first), __fetchJSON(detailsUrl())]).then(function (both) {
+              var lastPage = (both[0] && both[0].meta && both[0].meta.lastPage) || 1;
+              var hasVolumes = !!(both[1] && both[1].data && both[1].data.hasVolumes);
+              var volumes = hasVolumes
+                ? __mfPoll(function () { return volumesUrl() ? true : null; }, 2000, '').catch(function () {})
+                : Promise.resolve();
+              return volumes
+                .then(function () { return walk(lastPage, lastPage * 3 + 10, Date.now() + 40000); })
+                .then(function () { finish(lastPage, hasVolumes); }, function () { finish(lastPage, hasVolumes); });
+            });
+          })
+          .catch(function (e) { __reportError(e.message || String(e)); });
       })();
     `;
-    const result = await App.executeInWebView({
-      url: `${SITE_BASE}/title/${encodeURIComponent(mangaId)}`,
-      baseUrl: `${SITE_BASE}/`,
-      script,
-      timeoutMs: ORACLE_TIMEOUT_MS,
-      runBeforePageScripts: false,
-    });
-    if ('error' in result) {
-      throw new Error('MangaFire chapters failed: ' + result.error);
+    const complete = (s) => !s.missing.length && !(s.hasVolumes && !s.volumesUrl);
+    const score = (s) => s.chapterUrls.length + (s.volumesUrl ? 1 : 0);
+    let best = null;
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const result = await this._runPage(`${SITE_BASE}/title/${encodeURIComponent(mangaId)}`, script);
+      if ('error' in result) {
+        if (best) break;
+        throw new Error('MangaFire title failed: ' + result.error);
+      }
+      const value = result.value || {};
+      const session = {
+        detailsUrl: value.detailsUrl,
+        chapterUrls: Array.isArray(value.chapterUrls) ? value.chapterUrls : [],
+        lastPage: value.lastPage || 0,
+        missing: Array.isArray(value.missing) ? value.missing : [],
+        hasVolumes: !!value.hasVolumes,
+        volumesUrl: value.volumesUrl || null,
+      };
+      if (!session.detailsUrl) throw new Error('MangaFire title failed: no details request was seen');
+      if (!best || score(session) > score(best)) best = session;
+      if (complete(best)) break;
     }
-
-    const pageUrls = result.value;
-    const pages = await Promise.all(pageUrls.map((u) => this.requestJSON(u)));
-    const items = [];
-    for (const page of pages) {
-      if (Array.isArray(page.items)) items.push(...page.items);
-    }
-    return items;
+    return best;
   }
 
   async getChapterDetails(mangaId, chapterId) {
-    const id = safeId(chapterId);
-    const script = WATCH_JS + `
-      __mfPoll(function () { return __mfUrls('/api/chapters/${id}').length ? true : null; }, 25000, 'no chapter request observed')
-        .then(function () { return new Promise(function (r) { setTimeout(r, 500); }); })
-        .then(function () {
-          var urls = __mfUrls('/api/chapters/${id}');
-          return __fetchJSON(urls[urls.length - 1]);
-        })
-        .then(__reportResult, function (e) { __reportError(e.message || String(e)); });
-    `;
-    const result = await App.executeInWebView({
-      url: `${SITE_BASE}/title/${encodeURIComponent(mangaId)}/chapter/${encodeURIComponent(chapterId)}`,
-      baseUrl: `${SITE_BASE}/`,
-      script,
-      timeoutMs: ORACLE_TIMEOUT_MS,
-      runBeforePageScripts: false,
-    });
-    if ('error' in result) throw new Error('MangaFire chapter fetch failed: ' + result.error);
+    const id = splitId(mangaId);
+    const volume = id.volumes;
+    const key = `${volume ? 'v' : 'c'}:${chapterId}`;
+    let json = null;
+    const saved = await this._readers.get(key);
+    if (saved) {
+      try {
+        json = await this.requestJSON(saved);
+      } catch (e) {
+        this._readers.remove(key).catch(ignore);
+      }
+    }
+    if (!json) {
+      const api = `${volume ? '/api/volumes/' : '/api/chapters/'}${safeId(chapterId)}?`;
+      const script = (wait) => WATCH_JS + `
+        __mfPoll(function () { return __mfUrls('${api}').length ? true : null; }, ${wait}, 'no reader request observed')
+          .then(function () { return new Promise(function (r) { setTimeout(r, 100); }); })
+          .then(function () {
+            var urls = __mfUrls('${api}');
+            var u = urls[urls.length - 1];
+            return __fetchJSON(u).then(function (json) { return { url: u, json: json }; });
+          })
+          .then(__reportResult, function (e) { __reportError(e.message || String(e)); });
+      `;
+      const page = `${SITE_BASE}/title/${encodeURIComponent(id.base)}/${volume ? 'volume' : 'chapter'}/${encodeURIComponent(chapterId)}`;
+      const result = await this._runPage(page, script);
+      if ('error' in result) {
+        throw new Error(`MangaFire ${volume ? 'volume' : 'chapter'} fetch failed: ${result.error}`);
+      }
+      const found = result.value || {};
+      json = found.json;
+      if (found.url) this._readers.set(key, found.url).catch(ignore);
+    }
 
-    const data = result.value.data;
+    const data = json.data;
     const pages = (Array.isArray(data.pages) ? data.pages : []).map((p) => p.url);
     return {
       id: chapterId,

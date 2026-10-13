@@ -202,6 +202,13 @@ if (found) {
   else check(count > 0, `search "${query}" returns titles`, `${count} results in ${found.took}`);
 }
 
+const nothing = await step('search for a word that matches nothing', () => source.getSearchResults({ title: 'zzqxkvjwpl' }, null));
+if (nothing) {
+  const empty = nothing.value?.results;
+  check(Array.isArray(empty), 'a search that matches nothing returns a list, not an error', 'some sites answer 404 for no match: treat that as an empty list');
+  if (Array.isArray(empty) && empty.length > 0) say('warn', `a nonsense search still returned ${empty.length} titles`, 'fine if the site does fuzzy matching, a bug if the query is being ignored (check the parameter name)');
+}
+
 for (const item of (found?.value.results ?? []).slice(0, 2)) {
   console.log(`\n${item.title}`);
   const details = await step('details', () => source.getMangaDetails(item.mangaId));
@@ -209,6 +216,7 @@ for (const item of (found?.value.results ?? []).slice(0, 2)) {
     const info = details.value.mangaInfo;
     check(info && (info.desc !== undefined || info.summary !== undefined), 'details have a description (desc or summary)', details.took);
     check(['ONGOING', 'COMPLETED', 'HIATUS', 'CANCELLED', 'UNKNOWN'].includes(info?.status), 'status is an allowed value', info?.status);
+    check([info?.title, info?.author, info?.desc, info?.summary].every((v) => v === undefined || v === null || typeof v === 'string'), 'title, author and description are plain strings', 'join several author names into one string, the app throws on a list');
     if (info && info.contentRating !== undefined && info.ageRating === undefined) warnIgnoredRating('details');
   }
   const chapters = await step('chapters', () => source.getChapters(item.mangaId));
@@ -217,6 +225,13 @@ for (const item of (found?.value.results ?? []).slice(0, 2)) {
   check(list.length > 0, 'chapter list is not empty', `${list.length} chapters in ${chapters.took}`);
   check(list.every((c) => c.id), 'every chapter has an id');
   check(list.every((c) => c.time === undefined || c.time > 1e11), 'chapter times are in milliseconds');
+  check(new Set(list.map((c) => String(c.id))).size === list.length, 'every chapter id is unique', 'a chapter that appears on two pages of the site should be listed once');
+  const wrongType = (v, type) => v !== undefined && v !== null && typeof v !== type;
+  check(
+    list.every((c) => !wrongType(c.name, 'string') && !wrongType(c.group, 'string') && !wrongType(c.volume, 'string') && !wrongType(c.number, 'number') && !wrongType(c.time, 'number')),
+    'chapter fields have the types Boundless casts to',
+    'name, group and volume are strings; number and time are numbers, not "12"',
+  );
   const tryOpen = async (chapter) => {
     const label = `chapter "${chapter.name ?? chapter.id}"`;
     const started = Date.now();
@@ -233,7 +248,7 @@ for (const item of (found?.value.results ?? []).slice(0, 2)) {
     }
   };
   const readable = list.filter((c) => !gated(c));
-  if (readable.length && readable.length < list.length) say('warn', `${list.length - readable.length} locked or paid chapters were skipped`);
+  if (readable.length && readable.length < list.length) say('warn', `${list.length - readable.length} locked or paid chapters were skipped`, 'timed locks should end in "(Locked, unlocks in 5h 3m)" so the app shows a countdown');
   const pool = readable.length ? readable : list;
   const attempts = [];
   for (const chapter of pool.slice(0, 4)) {
