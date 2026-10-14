@@ -1,7 +1,7 @@
 schema: spec-driven
 
 context: |
-  This repository holds extensions for Boundless Reader. Each extension is one JavaScript
+  This repository holds extensions for Boundless Reader and Sumizuri. Each extension is one JavaScript
   file at <id>/index.js, listed in versioning.json. Extensions run in a JavaScriptCore
   sandbox inside the app. They only have App and cheerio. There is no fetch, URL,
   setTimeout, document or require.

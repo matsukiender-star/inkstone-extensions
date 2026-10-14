@@ -2,7 +2,7 @@
   "name": "inkstone-extensions",
   "private": true,
   "type": "module",
-  "description": "Community-made extensions that add content to Boundless Reader",
+  "description": "Community-made extensions that add content to Boundless Reader and Sumizuri",
   "license": "MIT",
   "devDependencies": {
     "cheerio": "^1.0.0",

@@ -1,6 +1,6 @@
 # Instructions for AI assistants
 
-This repository holds Boundless Reader extensions: one folder per site, each with an `index.js`, plus `versioning.json`.
+This repository holds extensions for Boundless Reader and Sumizuri: one folder per site, each with an `index.js`, plus `versioning.json`.
 
 ## Adding or fixing an extension
 

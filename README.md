@@ -1,17 +1,17 @@
 # Inkstone
 
-**Extension Registry.** Community-made extensions that add content to Boundless Reader. Free and open source under the MIT license.
+**Extension Registry.** Community-made extensions that add content to Boundless Reader and Sumizuri. Free and open source under the MIT license.
 
-Each extension is one small JavaScript file that Boundless downloads and runs in a sandbox on your device.
+Each extension is one small JavaScript file that your app downloads and runs on your device (in a sandbox, in Boundless Reader).
 
 The full catalog and docs live at [inkstone.web.app](https://inkstone.web.app). Questions or a broken extension? Come say hi on [Discord](https://discord.gg/6pX2XgFYcs).
 
-## Add it to Boundless
+## Add it to your app
 
-Paste this into Boundless Reader's extension settings:
+Paste this into Boundless Reader's extension settings, or into Sumizuri (Browse, then Repos, then Add a repo):
 
 ```
-https://inkstone.web.app/v3
+https://inkstone.web.app
 ```
 
 Step by step guide: [inkstone.web.app/installation](https://inkstone.web.app/installation)
@@ -22,7 +22,7 @@ Nothing installs until you pick an extension, and removing one takes a tap.
 
 ```
 <id>/index.js              one folder per extension
-versioning.json            the list Boundless reads
+versioning.json            the list your app reads
 docs/BUILD_WITH_AI.md      have an AI assistant build one for you
 docs/EXTENSIONS.md         how an extension works
 docs/TESTING.md            check an extension works

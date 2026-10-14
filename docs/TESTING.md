@@ -81,6 +81,6 @@ Aim for zero `FAIL`. Try a few different search words, including one that should
 
 ## Then try it in Boundless
 
-A repository is just a folder of static files. Put `versioning.json` and your `<id>/index.js` on any static host (GitHub Pages works), add that URL in Boundless's extension settings, and install your extension. Browse it, search it, open a title and read a chapter.
+A repository is just a folder of static files. Put `versioning.json` and your `<id>/index.js` on any static host (GitHub Pages works), add that URL in Boundless's extension settings (in Sumizuri: Browse, then Repos, then Add a repo), and install your extension. Browse it, search it, open a title and read a chapter.
 
 When it all works, [list it on Inkstone](https://inkstone.web.app/contribute).

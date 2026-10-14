@@ -13,6 +13,8 @@ If your AI can't open links, paste this whole file into the chat first, then add
 **What you do:** pick a site, let the AI work, read what it reports back, try the result in Boundless, and send it in.
 **What the AI does:** everything in between.
 
+The extensions you build load in Boundless Reader and in Sumizuri. The details below describe Boundless's runtime, so test in Boundless, and in Sumizuri too if you can.
+
 Works with Claude, ChatGPT, Cursor, Codex, Gemini and anything else that can write code. It works best when the AI can run commands (curl, node), so it can check the real site instead of guessing.
 
 **Why the instructions are so specific.** Every rule below comes from building and repairing real extensions in this catalog: blank screens, chapters that never loaded, covers that came back 403, lists that quietly stopped at page 5. Each rule is here because skipping it once broke a real extension.
@@ -647,7 +649,7 @@ The script checks data, so these are yours to check before you report:
 - A title with a mature rating: it should blur in Boundless.
 - Everything the script skipped (web view code, Cloudflare). Report it as not tested.
 
-When it passes, try it in Boundless for real. A repository is just a folder of static files, so put `versioning.json` and your `<id>/index.js` on any static host (GitHub Pages works), add that URL in Boundless's extension settings, and install your extension.
+When it passes, try it in Boundless for real. A repository is just a folder of static files, so put `versioning.json` and your `<id>/index.js` on any static host (GitHub Pages works), add that URL in Boundless's extension settings (in Sumizuri: Browse, then Repos, then Add a repo), and install your extension.
 
 ## Step 4: Package it
 
