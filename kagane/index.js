@@ -1,11 +1,17 @@
-const SITE_BASE = 'https://kagane.to';
+const SITE_BASE = 'https://kagane.org';
+const LIGHT_PAGE = `${SITE_BASE}/version.json`;
 
-function ageRatingFor(rating) {
-  const r = (rating || '').toLowerCase();
-  if (r === 'safe') return 0;
-  if (r === 'suggestive') return 16;
-  if (r === 'erotica' || r === 'pornographic') return 18;
-  return 16;
+const SERIES_TTL_MS = 5 * 60 * 1000;
+
+function ageRatingFor(item) {
+  const r = String((item && (item.age_rating || item.content_rating)) || '').toLowerCase();
+  let age = 16;
+  if (r === 'safe') age = 0;
+  else if (r === 'fifteenplus' || r === 'suggestive') age = 16;
+  else if (r === 'eighteenplus' || r === 'erotica' || r === 'pornographic') age = 18;
+  if (item && item.is_pornographic) age = 18;
+  else if (item && item.is_disturbing && age < 16) age = 16;
+  return age;
 }
 
 function mapStatus(status) {
@@ -13,48 +19,27 @@ function mapStatus(status) {
   if (s.includes('ongoing')) return 'ONGOING';
   if (s.includes('complet') || s.includes('finished')) return 'COMPLETED';
   if (s.includes('hiatus')) return 'HIATUS';
-  if (s.includes('cancel') || s.includes('dropped')) return 'CANCELLED';
+  if (s.includes('cancel') || s.includes('dropped') || s.includes('abandon')) return 'CANCELLED';
   return 'UNKNOWN';
 }
 
-function coverUrl(series) {
-  const covers = Array.isArray(series.series_covers) ? series.series_covers : [];
-  const id = covers.length > 0 ? (covers[0].cover_id || covers[0].id) : null;
+function coverUrl(id) {
   return id ? `${SITE_BASE}/api/v2/image/${id}/compressed` : undefined;
 }
 
-function tagList(series) {
-  const flat = (arr) => (Array.isArray(arr) ? arr : []).map((t) =>
-    typeof t === 'string' ? t : (t && (t.genre_name || t.name || t.title))
-  ).filter(Boolean);
-  return [...flat(series.genres), ...flat(series.tags)];
-}
-
-function toPartialManga(series) {
-  return {
-    mangaId: series.series_id,
-    title: series.title,
-    image: coverUrl(series),
-    status: mapStatus(series.publication_status),
-    ageRating: ageRatingFor(series.content_rating),
-    tags: tagList(series),
-    chapters: Array.isArray(series.series_books) ? series.series_books.length : undefined,
-    webURL: `${SITE_BASE}/series/${series.series_id}`,
-    medium: 'comics',
-  };
+function names(list, pick) {
+  return (Array.isArray(list) ? list : []).map(pick).filter((n) => typeof n === 'string' && n);
 }
 
 function searchResultToPartialManga(item) {
   return {
-    mangaId: item.series_id,
+    mangaId: String(item.series_id),
     title: item.title,
-    image: item.cover_image_id
-      ? `${SITE_BASE}/api/v2/image/${item.cover_image_id}/compressed`
-      : undefined,
+    image: coverUrl(item.cover_image_id),
     status: mapStatus(item.publication_status),
-    ageRating: ageRatingFor(item.content_rating),
-    tags: [],
-    chapters: item.current_books,
+    ageRating: ageRatingFor(item),
+    tags: names(item.genre_list, (g) => g && g.name),
+    chapters: typeof item.current_books === 'number' ? item.current_books : undefined,
     webURL: `${SITE_BASE}/series/${item.series_id}`,
     medium: 'comics',
   };
@@ -66,7 +51,108 @@ const FEED_SORTS = {
   added: 'created_at,desc',
 };
 
+const RATINGS = ['Safe', 'FifteenPlus', 'EighteenPlus'];
+
+function wantedRatings() {
+  const v = App.getSourceSetting('contentRating');
+  if (v === 'safe') return ['Safe'];
+  if (v === '15') return ['Safe', 'FifteenPlus'];
+  return RATINGS;
+}
+
+function wantedLanguage() {
+  const v = App.getSourceSetting('language');
+  if (!v) return 'en';
+  return v === 'any' ? null : v;
+}
+
+function tagIds(list) {
+  return (Array.isArray(list) ? list : []).map((t) => t && t.id).filter(Boolean);
+}
+
+function readerScript(bookId) {
+  return `
+(function () {
+  var BOOK = ${JSON.stringify(bookId)};
+  var finished = false;
+  var gateSeen = false;
+  var gateClicked = false;
+  function finish(fn) { if (finished) return; finished = true; fn(); }
+  function onChallenge() {
+    return /just a moment/i.test(document.title || '') || /__cf_chl/.test(location.href);
+  }
+  function pagesFrom(json) {
+    var list = json && json.manifest && json.manifest.pages;
+    if (!json || !json.access_token || !Array.isArray(list) || list.length === 0) return null;
+    var base = String(json.cache_url || 'https://kstatic.to').replace(/\\/+$/, '');
+    return list.slice().sort(function (a, b) { return a.page_no - b.page_no; }).map(function (p) {
+      return base + '/api/v2/books/page/' + encodeURIComponent(BOOK) + '/' + p.page_id + '.' + (p.ext || 'jxl') + '?token=' + json.access_token;
+    });
+  }
+  var realFetch = window.fetch;
+  window.fetch = function (input) {
+    var url = typeof input === 'string' ? input : ((input && input.url) || '');
+    var result = realFetch.apply(this, arguments);
+    try {
+      if (url.indexOf('/api/v2/books/' + BOOK) !== -1 && url.indexOf('intent=Read') !== -1) {
+        result.then(function (res) {
+          if (!res.ok) return null;
+          return res.clone().json().then(function (json) {
+            var pages = pagesFrom(json);
+            if (pages) finish(function () { __reportResult(pages); });
+          });
+        }).catch(function () {});
+      }
+    } catch (e) {}
+    return result;
+  };
+  // The prompt is found by watching the page change (a MutationObserver is
+  // not a timer, so it still fires in a web view that is off screen, where
+  // timers can be held back: measured in a hidden WKWebView, a 500 ms interval
+  // stopped after 7 s), with a slow interval and the first look as backups.
+  function lookForPrompt() {
+    if (finished || gateClicked) return;
+    var buttons = document.querySelectorAll('button');
+    for (var i = 0; i < buttons.length; i++) {
+      var label = (buttons[i].textContent || '').replace(/\\s+/g, ' ').trim();
+      if (/^only this time$/i.test(label)) {
+        gateSeen = true;
+        gateClicked = true;
+        buttons[i].click();
+        return;
+      }
+    }
+  }
+  function watchPage() {
+    if (!document.documentElement) { setTimeout(watchPage, 10); return; }
+    lookForPrompt();
+    try {
+      new MutationObserver(lookForPrompt).observe(document.documentElement, { childList: true, subtree: true, characterData: true });
+    } catch (e) {}
+  }
+  watchPage();
+  setInterval(lookForPrompt, 250);
+  var since = Date.now();
+  var clock = setInterval(function () {
+    if (finished) { clearInterval(clock); return; }
+    if (onChallenge()) { since = Date.now(); return; }
+    if (Date.now() - since >= 45000) {
+      clearInterval(clock);
+      finish(function () {
+        __reportError('the reader never answered with a page list within 45 s' + (gateSeen ? ' (after the 18+ prompt was accepted)' : ''));
+      });
+    }
+  }, 500);
+})();
+`;
+}
+
 class Source {
+  constructor() {
+    this._series = new Map();
+    this._genres = null;
+  }
+
   getSourceFeeds() {
     return [
       { id: 'latest', name: 'Latest Updates' },
@@ -77,8 +163,11 @@ class Source {
 
   async getSearchTags() {
     try {
-      const json = await this.requestJSON(`${SITE_BASE}/api/v2/genres/list`);
-      return (Array.isArray(json) ? json : []).map((g) => ({ id: g.id, label: g.genre_name }));
+      if (!this._genres) {
+        const json = await this._get('/api/v2/genres/list');
+        this._genres = (Array.isArray(json) ? json : []).map((g) => ({ id: g.id, label: g.genre_name }));
+      }
+      return this._genres;
     } catch (e) {
       console.error('Kagane getSearchTags failed: ' + (e && e.message));
       return [];
@@ -86,66 +175,29 @@ class Source {
   }
 
   async getSearchResults(request, metadata) {
-    const query = (request && request.title) || '';
-    const page1Based = (metadata && metadata.page) || 1;
-    if (!query) return this._listing(request && request.feed, page1Based);
-
-    const page0Based = page1Based - 1;
+    const query = ((request && request.title) || '').trim();
+    const page1Based = Math.max(1, (metadata && metadata.page) || 1);
+    const sort = query ? '' : (FEED_SORTS[request && request.feed] || FEED_SORTS.latest);
+    const size = query ? 20 : 30;
+    const body = { age_rating: wantedRatings() };
+    if (query) body.title = query;
+    const language = wantedLanguage();
+    if (language) body.content_lang = [language];
+    const include = tagIds(request && request.includedTags);
+    const exclude = tagIds(request && request.excludedTags);
+    if (include.length || exclude.length) body.genres = { values: include, exclude };
+    const path = `/api/v2/search/series?page=${page1Based - 1}&size=${size}` +
+      (sort ? `&sort=${encodeURIComponent(sort)}` : '');
     const script = `
-      __fetchJSON('/api/v2/search/series?page=${page0Based}&size=20', {
+      __fetchJSON(${JSON.stringify(path)}, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          title: ${JSON.stringify(query)},
-          contentRating: ['Safe', 'Suggestive', 'Erotica', 'Pornographic'],
-        }),
-      }).then(__reportResult, (e) => __reportError('search failed: ' + e.message));
+        body: ${JSON.stringify(JSON.stringify(body))},
+      }).then(__reportResult, function (e) { __reportError('search failed: ' + e.message); });
     `;
-    const result = await App.executeInWebView({
-      url: `${SITE_BASE}/`,
-      baseUrl: `${SITE_BASE}/`,
-      script,
-      timeoutMs: 170000,
-      runBeforePageScripts: false,
-    });
-    if ('error' in result) throw new Error('Kagane search failed: ' + result.error);
-
-    const json = result.value;
+    const json = await this._inPage(script);
     const list = Array.isArray(json && json.content) ? json.content : [];
-    const hasMore = json ? !json.last : false;
-    return {
-      results: list.map((item) => searchResultToPartialManga(item)),
-      metadata: hasMore ? { page: page1Based + 1 } : undefined,
-    };
-  }
-
-  async _listing(feed, page1Based) {
-    const sort = FEED_SORTS[feed] || FEED_SORTS.latest;
-    const page0Based = Math.max(0, page1Based - 1);
-    const script = `
-      function __list(ratings) {
-        return __fetchJSON('/api/v2/search/series?page=${page0Based}&size=30&sort=${encodeURIComponent(sort)}', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ content_rating: ratings }),
-        });
-      }
-      __list(['Safe', 'Suggestive', 'Erotica', 'Pornographic'])
-        .catch(function () { return __list(['Safe', 'Suggestive']); })
-        .then(__reportResult, function (e) { __reportError('listing failed: ' + e.message); });
-    `;
-    const result = await App.executeInWebView({
-      url: `${SITE_BASE}/`,
-      baseUrl: `${SITE_BASE}/`,
-      script,
-      timeoutMs: 170000,
-      runBeforePageScripts: false,
-    });
-    if ('error' in result) throw new Error('Kagane browse failed: ' + result.error);
-
-    const json = result.value;
-    const list = Array.isArray(json && json.content) ? json.content : [];
-    const hasMore = json ? !json.last : false;
+    const hasMore = json ? !json.last && list.length > 0 : false;
     return {
       results: list.map((item) => searchResultToPartialManga(item)),
       metadata: hasMore ? { page: page1Based + 1 } : undefined,
@@ -153,15 +205,23 @@ class Source {
   }
 
   async getMangaDetails(mangaId) {
-    const series = await this.requestJSON(`${SITE_BASE}/api/v2/series/${encodeURIComponent(mangaId)}`);
+    const { series, index } = await this._seriesData(mangaId);
+    const staff = Array.isArray(series.series_staff) ? series.series_staff : [];
+    const writers = names(staff, (s) => (/author|story|writer/i.test(s.role || '') ? s.name : null));
+    const tags = [
+      ...names(series.genres, (g) => g && g.genre_name),
+      ...names(series.tags, (t) => (t && !t.is_spoiler ? t.tag_name : null)),
+    ];
     return {
       mangaInfo: {
         title: series.title,
-        image: coverUrl(series),
+        image: coverUrl(series.main_cover_id || (Array.isArray(series.series_covers) && series.series_covers[0] && series.series_covers[0].cover_id)),
         desc: series.description,
         status: mapStatus(series.publication_status),
-        ageRating: ageRatingFor(series.content_rating),
-        tags: tagList(series),
+        ageRating: ageRatingFor(series),
+        tags,
+        author: writers.length ? writers.join(', ') : undefined,
+        chapters: index && typeof index.count === 'number' ? index.count : undefined,
         webURL: `${SITE_BASE}/series/${mangaId}`,
         medium: 'comics',
       },
@@ -169,53 +229,112 @@ class Source {
   }
 
   async getChapters(mangaId) {
-    const series = await this.requestJSON(`${SITE_BASE}/api/v2/series/${encodeURIComponent(mangaId)}`);
-    const books = Array.isArray(series.series_books) ? series.series_books : [];
-    const sorted = [...books].sort((a, b) => parseFloat(a.chapter_no) - parseFloat(b.chapter_no));
-    return sorted.map((b) => ({
-      id: b.book_id,
-      chapterId: b.book_id,
-      name: b.title || `Ch. ${b.chapter_no}`,
-      number: parseFloat(b.chapter_no) || 0,
-      time: b.created_at ? Date.parse(b.created_at) : undefined,
-    }));
+    const { index } = await this._seriesData(mangaId);
+    const columns = {};
+    (Array.isArray(index.fields) ? index.fields : []).forEach((name, i) => { columns[name] = i; });
+    const groups = Array.isArray(index.groups) ? index.groups : [];
+    const books = Array.isArray(index.books) ? index.books : [];
+    const get = (row, name) => (name in columns ? row[columns[name]] : undefined);
+    const chapters = books.map((row) => {
+      const chapterNo = get(row, 'chapter_no');
+      const sortNo = get(row, 'sort_no');
+      const number = parseFloat(chapterNo);
+      const released = get(row, 'released_at');
+      const volume = get(row, 'volume_no');
+      const who = names(get(row, 'group_ix'), (ix) => (groups[ix] && groups[ix].title));
+      const title = get(row, 'title');
+      return {
+        id: String(get(row, 'book_id')),
+        name: title || `Ch. ${chapterNo}`,
+        number: Number.isFinite(number) ? number : (Number(sortNo) || 0),
+        volume: volume === null || volume === undefined || volume === '' ? undefined : String(volume),
+        group: who.length ? who.join(' & ') : undefined,
+        time: typeof released === 'number' ? released * 1000 : undefined,
+        _sort: typeof sortNo === 'number' ? sortNo : 0,
+      };
+    });
+    chapters.sort((a, b) => (a.number - b.number) || (a._sort - b._sort));
+    return chapters.map((c) => {
+      const { _sort, ...chapter } = c;
+      return chapter;
+    });
   }
 
   async getChapterDetails(mangaId, chapterId) {
-    const script = `
-      __watchFetch('/api/v2/books/page/', 1500, 15000)
-        .then(__reportResult, (e) => __reportError(e.message));
-    `;
     const result = await App.executeInWebView({
       url: `${SITE_BASE}/series/${encodeURIComponent(mangaId)}/reader/${encodeURIComponent(chapterId)}`,
       baseUrl: `${SITE_BASE}/`,
-      script,
+      script: readerScript(chapterId),
       timeoutMs: 170000,
       runBeforePageScripts: true,
     });
     if ('error' in result) throw new Error('Kagane chapter fetch failed: ' + result.error);
-
     const pages = Array.isArray(result.value) ? result.value : [];
+    if (pages.length === 0) throw new Error('Kagane returned no pages for this chapter');
     return { id: chapterId, mangaId, pages };
   }
 
-  async requestJSON(url, options) {
-    const method = (options && options.method) || 'GET';
-    const body = options && options.body;
+  async _seriesData(mangaId) {
+    const hit = this._series.get(mangaId);
+    if (hit && Date.now() - hit.at < SERIES_TTL_MS) return hit.promise;
+    const promise = this._loadSeries(mangaId).catch((e) => {
+      this._series.delete(mangaId);
+      throw e;
+    });
+    this._series.set(mangaId, { at: Date.now(), promise });
+    return promise;
+  }
+
+  async _loadSeries(mangaId) {
+    const id = encodeURIComponent(mangaId);
+    const seriesPath = `/api/v2/series/${id}`;
+    const indexPath = `/api/v2/series/${id}/books/index?fields=List`;
+    try {
+      const [series, index] = await Promise.all([this._plain(seriesPath), this._plain(indexPath)]);
+      return { series, index };
+    } catch (plainError) {
+      const value = await this._inPage(`
+        Promise.all([__fetchJSON(${JSON.stringify(seriesPath)}), __fetchJSON(${JSON.stringify(indexPath)})])
+          .then(function (r) { __reportResult({ series: r[0], index: r[1] }); },
+                function (e) { __reportError('series failed: ' + e.message); });
+      `);
+      if (!value || !value.series || !value.index) throw plainError;
+      return value;
+    }
+  }
+
+  async _get(path) {
+    try {
+      return await this._plain(path);
+    } catch (plainError) {
+      return this._inPage(`__fetchJSON(${JSON.stringify(path)}).then(__reportResult, function (e) { __reportError(e.message); });`);
+    }
+  }
+
+  async _plain(path) {
     const manager = App.createRequestManager({});
     const request = App.createRequest({
-      url,
-      method,
-      headers: body
-        ? { Accept: 'application/json', 'Content-Type': 'application/json' }
-        : { Accept: 'application/json' },
-      body,
+      url: `${SITE_BASE}${path}`,
+      method: 'GET',
+      headers: { Accept: 'application/json' },
     });
     const response = await manager.schedule(request);
     if (response.status < 200 || response.status >= 300) {
       throw new Error(`HTTP ${response.status}`);
     }
     return JSON.parse(response.data);
+  }
+
+  async _inPage(script) {
+    const result = await App.executeInWebView({
+      url: LIGHT_PAGE,
+      baseUrl: `${SITE_BASE}/`,
+      script,
+      timeoutMs: 170000,
+      runBeforePageScripts: false,
+    });
+    if ('error' in result) throw new Error('Kagane request failed: ' + result.error);
+    return result.value;
   }
 }
 

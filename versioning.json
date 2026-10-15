@@ -1929,16 +1929,15 @@
     {
       "id": "comix",
       "name": "Comix",
-      "version": "2.2.4",
+      "version": "2.3.0",
       "medium": "comics",
       "website": "https://comix.to",
       "iconUrl": "https://comix.to/assets/uploads/35595e3de3c99889c1bd2c56f3e3714fc0c457.png",
       "hosts": [
         "comix.to",
-        "*.wowpic1.store",
-        "*.wowpic2.store"
+        "*.comix.to"
       ],
-      "description": "comix.to signs every API request and returns encrypted responses, so this source does not reimplement that crypto. It lets the site's own code sign and decrypt, then reads the plaintext react-query state the site itself produced. Browse feeds and full title details come straight from each page's server-rendered state with no WebView at all; search and chapter lists use Boundless's native App.executeInWebView, which walks all of a long series' chapter pages inside a single WebView load. Pages resolve lazily, one at a time as the reader turns to them. Roughly every tenth page is tile-scrambled and is reassembled by real native image codecs (App.descrambleImage). Known gap, stated plainly: the descrambler recognises two X-Scramble-Hash values and the live site currently sends a third, so those scrambled pages are handed back un-reassembled (visibly shuffled) rather than wrongly rebuilt. The other nine in ten pages are unaffected. Per-title content rating (comix.to serves everything from all-ages to explicit, correctly tagged) is reflected per manga rather than hiding the whole source.",
+      "description": "comix.to signs every API request and returns encrypted responses, so this source does not reimplement that crypto. It lets the site's own code sign and decrypt, then reads the plaintext react-query state the site itself produced. Browse feeds (Latest Updates, Most Followed, Trending) and full title details come straight from each page's server-rendered state with no WebView at all; search and chapter lists use the app's native in-page execution, which walks all of a long series' chapter pages inside a single WebView load. The site now scrambles the field names of everything it fetches client-side (search results, chapter lists, a chapter's pages) and may change them on any deploy, so this source recognises each value by what it is (a chapter's own link gives its id and number, a title's link gives its id) and does not depend on any field name. Chapter pages are plain images on a rotating set of hosts that answer only a request with no Referer, and are handed to the reader as they are. The old tile-scrambled pages no longer show up in the site's data; if shuffled pages ever return, that needs a live check. Per-title content rating (comix.to serves everything from all-ages to explicit, correctly tagged) is reflected per manga rather than hiding the whole source. Checked against the live site in a real browser: 500 of 500 chapters of a long title, 120 pages of a chapter, and 168 search results all read correctly. Not yet tried inside the Boundless or Sumizuri app itself, because the site's Cloudflare check in a test web view is an interactive one.",
       "capabilities": [
         "browse",
         "search",
@@ -1948,16 +1947,21 @@
       ],
       "language": "en",
       "contentRating": "safe",
-      "sha256": "b410a34df831fc26659eafda80b0ca1e7b3d1af6a76c188ed14ee41bc71daef6"
+      "sha256": "f6c5e39ad4e4fe0f27737c540b3d96ce12bb7ae724eada243ef55a164a59099b"
     },
     {
       "id": "kagane",
       "name": "Kagane",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "medium": "comics",
-      "website": "https://kagane.to",
-      "iconUrl": "https://kagane.to/favicons/apple-icon-180x180.png",
-      "description": "Community reader aggregator (many scanlation groups upload to one platform, similar in spirit to MangaDex). Series details, genre list, and page images (a separate kstatic.to CDN) are plain JSON/image endpoints. Search uses the site's own POST search API directly. Chapter page URLs are captured live from the site's own reader page, since fetching them directly requires a token only the site's real page JS can mint. Per-title content rating (Kagane serves everything from Safe to Pornographic, tagged per series) is reflected per manga rather than hiding the whole source.",
+      "website": "https://kagane.org",
+      "iconUrl": "https://kagane.org/favicons/apple-icon-180x180.png",
+      "hosts": [
+        "kagane.org",
+        "*.kagane.org",
+        "kstatic.to"
+      ],
+      "description": "Community reader aggregator (many scanlation groups upload to one platform, similar in spirit to MangaDex). Moved to kagane.org: the old kagane.to address no longer exists, and the site's API changed with the move. Browse feeds, search, details and chapter lists use the site's own JSON API (listings and search run inside a page of the site, because Cloudflare's check cannot be passed by a plain request). A chapter's full page list comes from the site's own reader page, since the request that returns it needs a token only the site's real page code can mint; the images then load from kstatic.to with no Referer. The site's Content and language settings are source settings here: content rating (Safe, 15+ or 18+, default 18+ so the app's own content settings blur or hide each title by its rating) and preferred chapter language (default English, or Any). Genre filters work (several included genres list titles with any of them). Per-title content rating is reflected per manga rather than hiding the whole source. Not yet tried inside the Boundless or Sumizuri app itself: everything was run against the live site in a real browser and in real WebKit. Titles rated 18+ show an age prompt in the site's reader; this source presses its 'Only this time' button for the reader, and that one step has only been tried against a stand-in page.",
       "capabilities": [
         "browse",
         "search",
@@ -1966,9 +1970,291 @@
         "chapters",
         "reader"
       ],
+      "settingsSchema": [
+        {
+          "type": "select",
+          "key": "contentRating",
+          "label": "Content rating",
+          "default": "18",
+          "options": [
+            {
+              "value": "safe",
+              "label": "Safe (all ages)"
+            },
+            {
+              "value": "15",
+              "label": "15+ (fan service, romance, violence, mature themes)"
+            },
+            {
+              "value": "18",
+              "label": "18+ (everything, including explicit content)"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "key": "language",
+          "label": "Preferred chapter language",
+          "default": "en",
+          "options": [
+            {
+              "value": "any",
+              "label": "Any"
+            },
+            {
+              "value": "ja",
+              "label": "Japanese"
+            },
+            {
+              "value": "ko",
+              "label": "Korean"
+            },
+            {
+              "value": "zh-Hans",
+              "label": "Chinese (Simplified)"
+            },
+            {
+              "value": "zh-Hant",
+              "label": "Chinese (Traditional)"
+            },
+            {
+              "value": "en",
+              "label": "English"
+            },
+            {
+              "value": "af",
+              "label": "Afrikaans"
+            },
+            {
+              "value": "sq",
+              "label": "Albanian"
+            },
+            {
+              "value": "ar",
+              "label": "Arabic"
+            },
+            {
+              "value": "az",
+              "label": "Azerbaijani"
+            },
+            {
+              "value": "eu",
+              "label": "Basque"
+            },
+            {
+              "value": "be",
+              "label": "Belarusian"
+            },
+            {
+              "value": "bn",
+              "label": "Bengali"
+            },
+            {
+              "value": "bg",
+              "label": "Bulgarian"
+            },
+            {
+              "value": "my",
+              "label": "Burmese"
+            },
+            {
+              "value": "ca",
+              "label": "Catalan"
+            },
+            {
+              "value": "cv",
+              "label": "Chuvash"
+            },
+            {
+              "value": "hr",
+              "label": "Croatian"
+            },
+            {
+              "value": "cs",
+              "label": "Czech"
+            },
+            {
+              "value": "da",
+              "label": "Danish"
+            },
+            {
+              "value": "nl",
+              "label": "Dutch"
+            },
+            {
+              "value": "eo",
+              "label": "Esperanto"
+            },
+            {
+              "value": "et",
+              "label": "Estonian"
+            },
+            {
+              "value": "fil",
+              "label": "Filipino"
+            },
+            {
+              "value": "fi",
+              "label": "Finnish"
+            },
+            {
+              "value": "fr",
+              "label": "French"
+            },
+            {
+              "value": "ka",
+              "label": "Georgian"
+            },
+            {
+              "value": "de",
+              "label": "German"
+            },
+            {
+              "value": "el",
+              "label": "Greek"
+            },
+            {
+              "value": "he",
+              "label": "Hebrew"
+            },
+            {
+              "value": "hi",
+              "label": "Hindi"
+            },
+            {
+              "value": "hu",
+              "label": "Hungarian"
+            },
+            {
+              "value": "id",
+              "label": "Indonesian"
+            },
+            {
+              "value": "ga",
+              "label": "Irish"
+            },
+            {
+              "value": "it",
+              "label": "Italian"
+            },
+            {
+              "value": "jv",
+              "label": "Javanese"
+            },
+            {
+              "value": "kk",
+              "label": "Kazakh"
+            },
+            {
+              "value": "la",
+              "label": "Latin"
+            },
+            {
+              "value": "lt",
+              "label": "Lithuanian"
+            },
+            {
+              "value": "ms",
+              "label": "Malay"
+            },
+            {
+              "value": "mn",
+              "label": "Mongolian"
+            },
+            {
+              "value": "ne",
+              "label": "Nepali"
+            },
+            {
+              "value": "no",
+              "label": "Norwegian"
+            },
+            {
+              "value": "fa",
+              "label": "Persian"
+            },
+            {
+              "value": "pl",
+              "label": "Polish"
+            },
+            {
+              "value": "pt",
+              "label": "Portuguese"
+            },
+            {
+              "value": "pt-BR",
+              "label": "Portuguese (Brazil)"
+            },
+            {
+              "value": "ro",
+              "label": "Romanian"
+            },
+            {
+              "value": "ru",
+              "label": "Russian"
+            },
+            {
+              "value": "sr",
+              "label": "Serbian"
+            },
+            {
+              "value": "sk",
+              "label": "Slovak"
+            },
+            {
+              "value": "sl",
+              "label": "Slovenian"
+            },
+            {
+              "value": "es",
+              "label": "Spanish"
+            },
+            {
+              "value": "es-419",
+              "label": "Spanish (LATAM)"
+            },
+            {
+              "value": "sv",
+              "label": "Swedish"
+            },
+            {
+              "value": "ta",
+              "label": "Tamil"
+            },
+            {
+              "value": "te",
+              "label": "Telugu"
+            },
+            {
+              "value": "th",
+              "label": "Thai"
+            },
+            {
+              "value": "tr",
+              "label": "Turkish"
+            },
+            {
+              "value": "uk",
+              "label": "Ukrainian"
+            },
+            {
+              "value": "ur",
+              "label": "Urdu"
+            },
+            {
+              "value": "uz",
+              "label": "Uzbek"
+            },
+            {
+              "value": "vi",
+              "label": "Vietnamese"
+            }
+          ]
+        }
+      ],
       "language": "en",
       "contentRating": "safe",
-      "sha256": "8d0cd775958e204ced6dcac38e17410829dfefbc064142c22e811ad56bf5d79f"
+      "sha256": "afc2a2de80b88035befe68a2b1462546e2770da956fc73da4a40e3e0521ab387"
     },
     {
       "id": "mangafire",

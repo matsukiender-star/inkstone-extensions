@@ -264,6 +264,12 @@ passwords) and `options: [{ value, label }]`. Read the value back with
 `App.getSourceSetting('key')`, which returns a string, so a toggle is `'true'`
 or `'false'`.
 
+When the site has its own preferences (a content rating, a language), offer them
+as settings and send what the site sends. `kagane` does: its content rating
+(Safe, 15+ or 18+) and preferred chapter language become the `age_rating` and
+`content_lang` of its search request, and its default keeps what the extension
+did before the setting existed.
+
 ### Known issues: the optional `status` and `statusNote` fields
 
 An extension that is known to be broken is marked with `"status": "broken"` and

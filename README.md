@@ -52,7 +52,7 @@ Prefer to review a written plan before any code is written? This repo works with
 | [Chikari](chikari/index.js) | chikari.moe | English | Adult | 4.4.0 |
 | [CManga](cmanga/index.js) | cmangavn.com | Vietnamese | Adult | 1.0.0 |
 | [ComicFury](comicfury/index.js) | comicfury.com | English | Adult | 1.0.0 |
-| [Comix](comix/index.js) | comix.to | English | Safe | 2.2.4 |
+| [Comix](comix/index.js) | comix.to | English | Safe | 2.3.0 |
 | [Flame Scans](flamescans/index.js) | flamecomics.xyz | English | Safe | 1.0.0 |
 | [GD Scans](gdscans/index.js) | gdscans.com | English | Adult | 1.0.0 |
 | [GlobalComix](globalcomix/index.js) | globalcomix.com | English | Adult | 1.1.0 |
@@ -61,7 +61,7 @@ Prefer to review a written plan before any code is written? This repo works with
 | [Indomanhwa](indomanhwa/index.js) | indomanhwa.com | Indonesian | Mature | 1.0.0 |
 | [InkStory](inkstory/index.js) | inkstory.net | Russian | Mature | 1.1.0 |
 | [InManga](inmanga/index.js) | inmanga.com | Spanish | Safe | 1.1.0 |
-| [Kagane](kagane/index.js) | kagane.to | English | Safe | 1.1.0 |
+| [Kagane](kagane/index.js) | kagane.org | English | Safe | 1.2.0 |
 | [Keikomik](keikomik/index.js) | keikomik.net | Indonesian | Adult | 1.0.0 |
 | [Kingofshojo](kingofshojo/index.js) | kingofshojo.com | English | Adult | 1.0.0 |
 | [Komikindo](komikindo/index.js) | komikindo.ch | Indonesian | Adult | 1.0.0 |
