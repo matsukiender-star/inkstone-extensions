@@ -6,6 +6,73 @@ const CHAPTER_PAGE_SIZE = 200;
 const MAX_CHAPTER_PAGES = 60;
 const PARALLEL_PAGES = 10;
 const CHAPTER_LIST_KEEP_MS = 60 * 1000;
+const SCRIPT_BURST = 12;
+const SCRIPT_TIMEOUT_MS = 170000;
+
+let jsonComesWrapped = false;
+
+function parseJsonBody(text) {
+  const body = String(text || '').trim();
+  if (body.charAt(0) !== '<') return JSON.parse(body);
+  jsonComesWrapped = true;
+  const $ = cheerio.load(body);
+  const pre = $('pre').first();
+  return JSON.parse((pre.length ? pre.text() : $('body').text()).trim());
+}
+
+function chapterScript(basePath, startPage, totalPage) {
+  return `
+(function () {
+  var base = ${JSON.stringify(basePath)};
+  var MAX_PAGES = ${MAX_CHAPTER_PAGES};
+  var BURST = ${SCRIPT_BURST};
+  var start = ${startPage};
+  var knownTotal = ${totalPage};
+  function sleep(ms) { return new Promise(function (resolve) { setTimeout(resolve, ms); }); }
+  function parse(n, text) {
+    var json = JSON.parse(text);
+    if (!json || json.code !== 200 || typeof json.html !== 'string') throw new Error('chapter page ' + n + ' had an unexpected reply');
+    var doc = new DOMParser().parseFromString('<ul>' + json.html + '</ul>', 'text/html');
+    var rows = [];
+    [].forEach.call(doc.querySelectorAll('li a'), function (a) {
+      var id = (a.getAttribute('href') || '').split('/').filter(Boolean).pop();
+      if (id) rows.push([id, (a.getAttribute('title') || a.textContent || '')]);
+    });
+    if (json.html.trim() && rows.length === 0) throw new Error('chapter page ' + n + ' had markup with no chapter rows');
+    return { rows: rows, totalPage: parseInt(json.totalPage, 10) || 1, totalChapters: parseInt(json.totalChapters, 10) || 0 };
+  }
+  function load(n, attempt) {
+    return fetch(base + n, { credentials: 'include', headers: { 'X-Requested-With': 'XMLHttpRequest', Accept: 'application/json' } }).then(function (r) {
+      if (r.status === 429 && attempt < 8) return sleep(1500 * (attempt + 1)).then(function () { return load(n, attempt + 1); });
+      if (!r.ok) throw new Error('chapter page ' + n + ' answered HTTP ' + r.status);
+      return r.text().then(function (text) { return parse(n, text); });
+    });
+  }
+  var pages = {};
+  var total = knownTotal;
+  var expected = 0;
+  (knownTotal ? Promise.resolve() : load(1, 0).then(function (first) { pages[1] = first.rows; total = first.totalPage; expected = first.totalChapters; start = 2; }))
+    .then(function () {
+      var last = Math.min(total, MAX_PAGES);
+      var wanted = [];
+      for (var n = start; n <= last; n += 1) wanted.push(n);
+      var together = wanted.slice(0, BURST);
+      var later = wanted.slice(BURST);
+      return Promise.all(together.map(function (n) { return load(n, 0).then(function (p) { pages[n] = p.rows; }); })).then(function () {
+        return later.reduce(function (chain, n) {
+          return chain.then(function () { return sleep(1000); }).then(function () { return load(n, 0).then(function (p) { pages[n] = p.rows; }); });
+        }, Promise.resolve());
+      }).then(function () { return last; });
+    })
+    .then(function (last) {
+      var ordered = [];
+      for (var n = 1; n <= last; n += 1) if (pages[n]) ordered.push(pages[n]);
+      __reportResult({ pages: ordered, totalPage: total, totalChapters: expected });
+    })
+    .catch(function (e) { __reportError(String((e && e.message) || e)); });
+})();
+`;
+}
 
 function cleanText(text) {
   return (text || '').replace(/\s+/g, ' ').trim();
@@ -257,46 +324,40 @@ class Source {
 
   async loadChapters(mangaId) {
     try {
-      const first = await this.fetchChapterPage(mangaId, 1);
-      const totalPage = parseInt(first.totalPage, 10) || 1;
-      const lastPage = Math.min(totalPage, MAX_CHAPTER_PAGES);
-      const pages = [first];
-
-      const together = [];
-      for (let page = 2; page <= Math.min(lastPage, PARALLEL_PAGES); page += 1) together.push(page);
-      if (together.length > 0) {
-        pages.push(...(await Promise.all(together.map((page) => this.fetchChapterPage(mangaId, page)))));
+      let first = null;
+      let totalPage = 0;
+      if (!jsonComesWrapped) {
+        const json = await this.fetchChapterPage(mangaId, 1);
+        first = this.chapterRows(json, mangaId, 1);
+        totalPage = parseInt(json.totalPage, 10) || 1;
       }
-      for (let page = PARALLEL_PAGES + 1; page <= lastPage; page += 1) {
-        pages.push(await this.fetchChapterPage(mangaId, page));
+
+      let pages = null;
+      if (jsonComesWrapped && !(first && totalPage <= 1)) {
+        try {
+          const got = await this.chapterPagesByScript(mangaId, first ? 2 : 1, first ? totalPage : 0);
+          pages = first ? [first, ...got.pages] : got.pages;
+          totalPage = got.totalPage;
+        } catch (e) {
+          console.error('FreeWebNovel: the in-page chapter fetch failed, using one request per page:', e);
+        }
+      }
+      if (!pages) {
+        if (!first) {
+          const json = await this.fetchChapterPage(mangaId, 1);
+          first = this.chapterRows(json, mangaId, 1);
+          totalPage = parseInt(json.totalPage, 10) || 1;
+        }
+        pages = await this.chapterPagesPlain(mangaId, first, totalPage);
       }
 
       const chapters = [];
-      for (let index = 0; index < pages.length; index += 1) {
-        const json = pages[index];
-        const page = index + 1;
-
-        if (!json.html.trim()) break;
-
-        const $ = cheerio.load(json.html);
-        let added = 0;
-        $('li').each((_, li) => {
-          const a = $(li).find('a').first();
-          const href = a.attr('href') || '';
-          const chapterId = href.split('/').filter(Boolean).pop();
-          if (!chapterId) return;
+      for (const rows of pages) {
+        if (rows.length === 0) break;
+        for (const [chapterId, rowName] of rows) {
           const numMatch = chapterId.match(/chapter-(\d+(?:\.\d+)?)/i);
           const number = numMatch ? parseFloat(numMatch[1]) : 0;
-          const name = cleanText(a.attr('title')) || cleanText(a.text()) || `Chapter ${number}`;
-          chapters.push({ id: chapterId, chapterId, name, number });
-          added += 1;
-        });
-
-        if (!added) {
-          throw new Error(
-            `FreeWebNovel: chapter page ${page} of ${mangaId} returned ${json.html.length} bytes ` +
-              'of markup with no parseable chapter rows'
-          );
+          chapters.push({ id: chapterId, chapterId, name: rowName || `Chapter ${number}`, number });
         }
       }
 
@@ -312,6 +373,65 @@ class Source {
       console.error('FreeWebNovel getChapters failed:', e);
       throw e;
     }
+  }
+
+  async chapterPagesPlain(mangaId, first, totalPage) {
+    const lastPage = Math.min(totalPage, MAX_CHAPTER_PAGES);
+    const pages = [first];
+    const together = [];
+    for (let page = 2; page <= Math.min(lastPage, PARALLEL_PAGES); page += 1) together.push(page);
+    if (together.length > 0) {
+      const jsons = await Promise.all(together.map((page) => this.fetchChapterPage(mangaId, page)));
+      jsons.forEach((json, index) => pages.push(this.chapterRows(json, mangaId, together[index])));
+    }
+    for (let page = PARALLEL_PAGES + 1; page <= lastPage; page += 1) {
+      pages.push(this.chapterRows(await this.fetchChapterPage(mangaId, page), mangaId, page));
+    }
+    return pages;
+  }
+
+  async chapterPagesByScript(mangaId, start, total) {
+    const path = `/novel/${encodeURIComponent(mangaId)}?ajax=chapters&pageSize=${CHAPTER_PAGE_SIZE}&page=`;
+    const result = await App.executeInWebView({
+      url: `${SITE_BASE}${path}1`,
+      baseUrl: `${SITE_BASE}/`,
+      script: chapterScript(path, start, total),
+      timeoutMs: SCRIPT_TIMEOUT_MS,
+      runBeforePageScripts: false,
+    });
+    if (!result || 'error' in result) {
+      throw new Error(`FreeWebNovel chapter script failed: ${result && result.error}`);
+    }
+    const value = result.value;
+    if (!value || !Array.isArray(value.pages) || (start === 1 && value.pages.length === 0)) {
+      throw new Error('FreeWebNovel chapter script returned no pages');
+    }
+    return {
+      pages: value.pages.map((rows) =>
+        rows.map((row) => [String(row[0]), cleanText(String(row[1] || ''))])
+      ),
+      totalPage: parseInt(value.totalPage, 10) || 1,
+    };
+  }
+
+  chapterRows(json, mangaId, page) {
+    if (!json.html.trim()) return [];
+    const $ = cheerio.load(json.html);
+    const rows = [];
+    $('li').each((_, li) => {
+      const a = $(li).find('a').first();
+      const href = a.attr('href') || '';
+      const chapterId = href.split('/').filter(Boolean).pop();
+      if (!chapterId) return;
+      rows.push([chapterId, cleanText(a.attr('title')) || cleanText(a.text())]);
+    });
+    if (rows.length === 0) {
+      throw new Error(
+        `FreeWebNovel: chapter page ${page} of ${mangaId} returned ${json.html.length} bytes ` +
+          'of markup with no parseable chapter rows'
+      );
+    }
+    return rows;
   }
 
   async getChapterDetails(mangaId, chapterId) {
@@ -385,7 +505,7 @@ class Source {
     if (response.status < 200 || response.status >= 300) {
       throw new Error(`FreeWebNovel API HTTP ${response.status}`);
     }
-    return JSON.parse(response.data);
+    return parseJsonBody(response.data);
   }
 }
 

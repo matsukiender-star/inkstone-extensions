@@ -721,7 +721,7 @@
     {
       "id": "freewebnovel",
       "name": "FreeWebNovel",
-      "version": "1.2.1",
+      "version": "1.2.2",
       "medium": "novel",
       "website": "https://freewebnovel.com",
       "description": "Web and light novel platform with four browse feeds, a 38 entry genre filter, search, full details, complete chapter lists and in-app prose reading. The site writes its own address into chapter text in a different styled-letter spelling on every request; that watermark is removed from the text you read.",
@@ -736,7 +736,7 @@
       "language": "en",
       "contentRating": "adult",
       "iconUrl": "https://inkstone.web.app/freewebnovel/icon.png",
-      "sha256": "ba6c5a7b2340f6fd6eadd89609cebaf1a621070f8dc6beb7bb2120b61403022c",
+      "sha256": "67c28f9c2ea33146d41cc31a52c26c9ae8072fc04342a58a71a9b4be1e6c9435",
       "hosts": [
         "freewebnovel.com",
         "*.freewebnovel.com"
