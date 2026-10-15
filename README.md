@@ -40,7 +40,7 @@ Prefer to review a written plan before any code is written? This repo works with
 
 ## Extensions
 
-93 extensions right now. Ratings are Safe, Mature or Adult, and some extensions also rate each title on its own.
+94 extensions right now. Ratings are Safe, Mature or Adult, and some extensions also rate each title on its own.
 
 ### Comics
 
@@ -52,7 +52,7 @@ Prefer to review a written plan before any code is written? This repo works with
 | [Chikari](chikari/index.js) | chikari.moe | English | Adult | 4.4.0 |
 | [CManga](cmanga/index.js) | cmangavn.com | Vietnamese | Adult | 1.0.0 |
 | [ComicFury](comicfury/index.js) | comicfury.com | English | Adult | 1.0.0 |
-| [Comix](comix/index.js) | comix.to | English | Safe | 2.3.0 |
+| [Comix](comix/index.js) | comix.to | English | Safe | 2.3.2 |
 | [Flame Scans](flamescans/index.js) | flamecomics.xyz | English | Safe | 1.0.0 |
 | [GD Scans](gdscans/index.js) | gdscans.com | English | Adult | 1.0.0 |
 | [GlobalComix](globalcomix/index.js) | globalcomix.com | English | Adult | 1.1.0 |
@@ -110,6 +110,7 @@ Prefer to review a written plan before any code is written? This repo works with
 | [Tapas](tapas/index.js) | tapas.io | English | Mature | 1.2.0 |
 | [Tilki Scans](tilkiscans/index.js) | tilkiscans.com | Turkish | Mature | 1.1.0 |
 | [ToonGod](toongod/index.js) | toongod.org | English | Adult | 1.0.0 |
+| [ToonGrab](toongrab/index.js) | toongrab.com | English | Safe | 1.0.0 |
 | [Toonily](toonily/index.js) | toonily.com | English | Adult | 1.2.1 |
 | [Tritinia Scans](tritinia/index.js) | tritinia.org | English | Mature | 1.0.1 |
 | [TruyenQQ](truyenqq/index.js) | truyenqqgo.com | Vietnamese | Safe | 1.0.0 |

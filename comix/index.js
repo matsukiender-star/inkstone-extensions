@@ -5,7 +5,11 @@ const UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/6
 
 const MAX_CHAPTER_PAGES = 120;
 
-const CHAPTER_WALK_BUDGET_MS = 45000;
+const CHAPTER_WALK_BUDGET_MS = 90000;
+
+const CHAPTER_STALL_MS = 1500;
+
+const CHAPTER_RETRY_MS = 3000;
 
 const CHAPTER_PAGES_TTL_MS = 30 * 60 * 1000;
 
@@ -34,7 +38,13 @@ function itemsOf(value) {
 }
 
 const ORACLE_PREAMBLE = `
+  var __cachedClient = null;
   function __findQueryClient() {
+    if (!__cachedClient) __cachedClient = __scanForQueryClient();
+    return __cachedClient;
+  }
+
+  function __scanForQueryClient() {
     var el = document.getElementById('app-root') || document.body && document.body.firstElementChild;
     if (!el) return null;
     var key = null, keys = Object.keys(el);
@@ -174,20 +184,25 @@ const ORACLE_PREAMBLE = `
    *  cache entry and decides whether it has enough yet, which is how the
    *  chapter walk below accumulates pages across several refetches.
    *
-   *  react-query publishes a cache event the moment it commits a decrypted
-   *  response, so once its client is mounted an event pulls the pending
-   *  attempt forward instead of waiting out the tick. The tick deliberately
-   *  stays at 200ms once subscribed rather than relaxing: nothing here can
-   *  tell whether the site's events actually cover the transition being
-   *  waited on, and a longer backstop would make every one of the chapter
-   *  walk's hops slower than the plain poll it replaced if they ever stop
-   *  doing so. */
+   *  Nothing here waits on a timer for its pace. In a web view nobody is looking
+   *  at (the app's runs off screen, and a browser tab without focus does the
+   *  same) setTimeout is held back to about a second, and the chapter walk makes
+   *  one step per wake-up: 25 pages took 27 seconds on timers and 6.4 seconds
+   *  when the wake-ups are MessageChannel messages (a message is not throttled),
+   *  in the same tab, against the same site, a minute apart. So the poll is
+   *  woken by events: react-query publishes a cache event the moment it commits
+   *  a decrypted response, a MutationObserver reports the page changing while
+   *  it hydrates, and each wake-up is a message. The 200 ms timer stays only as
+   *  a backstop for an event nothing announced. */
   function __pollFor(needles, timeoutMs, pick) {
     var deadline = Date.now() + timeoutMs;
     var done = false;
     var unsubscribe = null;
     var subscribed = false;
     var timer = null;
+    var observer = null;
+    var queued = false;
+    var channel = new MessageChannel();
 
     function stop() {
       done = true;
@@ -195,21 +210,51 @@ const ORACLE_PREAMBLE = `
         clearTimeout(timer);
         timer = null;
       }
+      if (observer) {
+        try {
+          observer.disconnect();
+        } catch (e) {}
+        observer = null;
+      }
       if (unsubscribe) {
         try {
           unsubscribe();
         } catch (e) {}
         unsubscribe = null;
       }
+      try {
+        channel.port1.close();
+      } catch (e) {}
     }
+
+    /** Runs attempt() on the next message: soon, and never inside the
+     *  notification that asked for it (the chapter walk's pick() calls
+     *  history.pushState, which is not safe to start from inside react-query's
+     *  own cache update). Wake-ups that arrive while one is queued are one. */
+    function soon() {
+      if (done || queued) return;
+      queued = true;
+      channel.port2.postMessage(0);
+    }
+
+    channel.port1.onmessage = function () {
+      queued = false;
+      if (timer !== null) {
+        clearTimeout(timer);
+        timer = null;
+      }
+      attempt();
+    };
 
     function arm(delay) {
       if (done || timer !== null) return;
-      timer = setTimeout(attempt, delay);
+      timer = setTimeout(function () {
+        timer = null;
+        attempt();
+      }, delay);
     }
 
     function attempt() {
-      timer = null;
       if (done) return;
       var result;
       try {
@@ -228,32 +273,24 @@ const ORACLE_PREAMBLE = `
       }
       if (!subscribed) {
         // Swallowed, not reported: failing to subscribe costs only the
-        // acceleration, and this runs from a timer where an escaping throw
-        // would strand the oracle with no result at all.
+        // acceleration, and this runs where an escaping throw would strand the
+        // oracle with no result at all.
         try {
           var cache = __findQueryClient();
           cache = cache && cache.getQueryCache();
           if (cache && typeof cache.subscribe === 'function') {
             subscribed = true;
-            unsubscribe = cache.subscribe(wake);
+            unsubscribe = cache.subscribe(soon);
           }
         } catch (e) {}
       }
       arm(200);
     }
 
-    /** Only pulls the pending attempt forward, never runs pick() inline: the
-     *  chapter walk's pick() calls history.pushState, and react-query
-     *  notifies subscribers from inside its own cache update, which is not a
-     *  safe place to start another navigation and render from. Rescheduling
-     *  the single pending timer rather than starting a second chain is what
-     *  keeps a burst of cache events from forking the poll. */
-    function wake() {
-      if (done || timer === null) return;
-      clearTimeout(timer);
-      timer = null;
-      arm(0);
-    }
+    try {
+      observer = new MutationObserver(soon);
+      observer.observe(document, { childList: true, subtree: true });
+    } catch (e) {}
 
     attempt();
   }
@@ -428,6 +465,7 @@ class Source {
     this._chapterPages = new Map();
     this._chapterPagesAt = new Map();
     this._chapterUrls = new Map();
+    this._htmlMemo = new Map();
   }
 
   getSourceFeeds() {
@@ -452,9 +490,20 @@ class Source {
     return response.data;
   }
 
-  async _runOracle(path, script, timeoutMs) {
+  _titleHtml(path) {
+    const hit = this._htmlMemo.get(path);
+    if (hit && Date.now() - hit.at < 60000) return hit.promise;
+    const promise = this._fetchHtml(path).catch((e) => {
+      this._htmlMemo.delete(path);
+      throw e;
+    });
+    this._htmlMemo.set(path, { at: Date.now(), promise });
+    return promise;
+  }
+
+  async _runOracle(path, script, timeoutMs, htmlPath) {
     const startedAt = Date.now();
-    const html = await this._fetchHtml(path);
+    const html = htmlPath ? await this._titleHtml(htmlPath) : await this._fetchHtml(path);
     const fetchedAt = Date.now();
     const result = await App.executeInWebView({
       html,
@@ -570,7 +619,7 @@ class Source {
   }
 
   async getMangaDetails(mangaId) {
-    const data = extractInitialData(await this._fetchHtml(`/title/${encodeURIComponent(mangaId)}`));
+    const data = extractInitialData(await this._titleHtml(`/title/${encodeURIComponent(mangaId)}`));
     const manga = findQueryValue(data, '"manga"', '"detail"');
     if (!manga) throw new Error('manga not found');
     return this.toMangaInfo(manga);
@@ -580,44 +629,88 @@ class Source {
     const base = `/title/${encodeURIComponent(mangaId)}`;
     const value = await this._runOracle(
       `${base}?tab=chapters&page=1`,
-      `var collected = [];
-       var seen = {};
+      `var pagesGot = {};
+       var order = [];
        var wanted = 1;
-       var firstCount = 0;
+       var nextPage = 2;
+       var lastPage = 0;
+       var perPage = 0;
+       var navAt = 0;
+       var lastGain = Date.now();
+       var retriedAt = 0;
+       var expected = 0;
        var maxPages = ${MAX_CHAPTER_PAGES};
        var walkDeadline = Date.now() + ${CHAPTER_WALK_BUDGET_MS};
        var basePath = ${JSON.stringify(base)};
-       __pollFor(['"manga"', '"chapters"'], 60000, function (entries) {
-         var entry = null;
-         for (var i = 0; i < entries.length; i++) {
-           var params = entries[i].key[3];
-           if (params && params.page === wanted) { entry = entries[i]; break; }
+       function go(n) {
+         history.pushState({}, '', basePath + '?tab=chapters&page=' + n);
+         window.dispatchEvent(new PopStateEvent('popstate', { state: {} }));
+         navAt = Date.now();
+       }
+       function finish(truncated, outOfBudget) {
+         var collected = [];
+         var walked = 0;
+         for (var p = 1; p <= lastPage; p++) {
+           if (pagesGot[p]) { collected = collected.concat(pagesGot[p]); walked++; }
          }
-         if (!entry || !entry.data) return null;
-         var items = __itemsOf(entry.data);
-         if (!items || seen[wanted]) return null;
-         seen[wanted] = true;
-         collected = collected.concat(items);
-         if (wanted === 1) firstCount = items.length;
-         var perPage = (entry.key[3] && entry.key[3].limit) || firstCount;
-         var more = __hasMore(entry.data, collected.length, perPage);
-         var outOfBudget = Date.now() > walkDeadline;
-         if (more && wanted < maxPages && !outOfBudget) {
-           wanted++;
-           history.pushState({}, '', basePath + '?tab=chapters&page=' + wanted);
-           window.dispatchEvent(new PopStateEvent('popstate', { state: {} }));
-           return null;
-         }
-         var total = __totalOf(entry.data);
          return {
            items: collected,
-           truncated: more,
+           truncated: truncated,
            stoppedOnBudget: outOfBudget,
-           pagesWalked: wanted,
-           expectedTotal: total > 0 ? total : null,
+           pagesWalked: walked,
+           expectedTotal: expected > 0 ? expected : null,
          };
+       }
+       __pollFor(['"manga"', '"chapters"'], 100000, function (entries) {
+         for (var i = 0; i < entries.length; i++) {
+           var params = entries[i].key[3];
+           if (!params || !params.page || pagesGot[params.page] || !entries[i].data) continue;
+           var items = __itemsOf(entries[i].data);
+           if (!items) continue;
+           pagesGot[params.page] = items;
+           order.push(params.page);
+           lastGain = Date.now();
+           if (params.page === 1) {
+             perPage = params.limit || items.length;
+             var total = __totalOf(entries[i].data);
+             expected = total;
+             lastPage = items.length < perPage ? 1 : (total > 0 ? Math.min(maxPages, Math.ceil(total / perPage)) : maxPages);
+           }
+           if (perPage && items.length < perPage && params.page < lastPage) lastPage = params.page;
+         }
+         if (!lastPage) return null;
+         var have = 0;
+         for (var q = 1; q <= lastPage; q++) if (pagesGot[q]) have++;
+         if (have >= lastPage) return finish(false, false);
+         var now = Date.now();
+         var outOfBudget = now > walkDeadline;
+         if (outOfBudget) return finish(true, true);
+         if (nextPage <= lastPage && (pagesGot[wanted] || now - navAt > ${CHAPTER_STALL_MS})) {
+           wanted = nextPage++;
+           go(wanted);
+           return null;
+         }
+         if (nextPage > lastPage && now - lastGain > ${CHAPTER_RETRY_MS} && now - retriedAt > ${CHAPTER_RETRY_MS}) {
+           var missing = 0;
+           for (var m = 1; m <= lastPage; m++) if (!pagesGot[m]) { missing = m; break; }
+           if (missing) {
+             retriedAt = now;
+             var client = __findQueryClient();
+             var cache = client && client.getQueryCache();
+             if (cache) {
+               cache.getAll().filter(function (c) {
+                 return c.queryKey[1] === 'chapters' && c.queryKey[3] && c.queryKey[3].page === missing && !(c.state && c.state.data);
+               }).forEach(function (c) { cache.remove(c); });
+             }
+             go(missing > 1 ? missing - 1 : missing + 1);
+             wanted = missing;
+             window.setTimeout(function () { go(missing); }, 60);
+           }
+         }
+         return null;
        });`,
-      60000,
+      100000,
+      base,
     );
 
     const chapters = [];
