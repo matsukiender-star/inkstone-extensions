@@ -2383,6 +2383,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://arenascan.com",
+      "iconUrl": "https://arenascan.com/wp-content/uploads/2024/05/37353d5b-214e-4d1d-acef-265067ef0c8e_c03f4d14-ddbc-48ff-b7cb-b19366af81b4.png",
       "hosts": [
         "arenascan.com",
         "*.arenascan.com"
@@ -2406,6 +2407,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://anisascans.in",
+      "iconUrl": "https://inkstone.web.app/anisascans/icon.png",
       "hosts": [
         "anisascans.in",
         "*.anisascans.in"
@@ -2429,6 +2431,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://athreascans.com",
+      "iconUrl": "https://athreascans.com/wp-content/uploads/ath-pwa/athreascans-192.png",
       "hosts": [
         "athreascans.com",
         "*.athreascans.com"
@@ -2452,6 +2455,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://cocomic.co",
+      "iconUrl": "https://cocomic.co/wp-content/uploads/2017/10/cropped-unnamed-180x180.png",
       "hosts": [
         "cocomic.co",
         "*.cocomic.co"
@@ -2475,6 +2479,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://evascans.net",
+      "iconUrl": "https://evascans.net/wp-content/uploads/2026/09/2026-09-14-11-20-35-1789428035312-180x180.png",
       "hosts": [
         "evascans.net",
         "*.evascans.net"
@@ -2498,6 +2503,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://gakamangas.com",
+      "iconUrl": "https://gakamangas.com/wp-content/uploads/2024/05/IMG_1710.png",
       "hosts": [
         "gakamangas.com",
         "*.gakamangas.com"
@@ -2521,6 +2527,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://hunlightcomics.com",
+      "iconUrl": "https://hunlightcomics.com/wp-content/uploads/2026/06/cropped-Hunlight-180x180.png",
       "hosts": [
         "hunlightcomics.com",
         "*.hunlightcomics.com"
@@ -2543,6 +2550,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://kokomangas.com",
+      "iconUrl": "https://kokomangas.com/apple-touch-icon.png",
       "hosts": [
         "kokomangas.com",
         "*.kokomangas.com"
@@ -2565,6 +2573,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://ksgroupscans.com",
+      "iconUrl": "https://ksgroupscans.com/wp-content/uploads/2023/02/cropped-logoks-180x180.png",
       "hosts": [
         "ksgroupscans.com",
         "*.ksgroupscans.com"
@@ -2588,6 +2597,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://lagoonscans.com",
+      "iconUrl": "https://lagoonscans.com/wp-content/uploads/2025/10/cropped-3423423434-180x180.webp",
       "hosts": [
         "lagoonscans.com",
         "*.lagoonscans.com"
@@ -2611,6 +2621,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://lhtranslation.net",
+      "iconUrl": "https://inkstone.web.app/lhtranslation/icon.png",
       "hosts": [
         "lhtranslation.net",
         "*.lhtranslation.net"
@@ -2634,6 +2645,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://mangaeclipse.com",
+      "iconUrl": "https://mangaeclipse.com/wp-content/uploads/2022/02/MANGA-Eclipse-500-%C3%97-180-px-500-%C3%97-500-px-1-300x300.png",
       "hosts": [
         "mangaeclipse.com",
         "*.mangaeclipse.com"
@@ -2657,6 +2669,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://mangasushi.org",
+      "iconUrl": "https://mangasushi.org/wp-content/uploads/2022/01/cropped-MS_LOGO-180x180.png",
       "hosts": [
         "mangasushi.org",
         "*.mangasushi.org"
@@ -2680,6 +2693,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://mangatrend.org",
+      "iconUrl": "https://mangatrend.org/wp-content/uploads/2026/09/cropped-file_00000000e06c81f4841ce4fc647bae9e-180x180.png",
       "hosts": [
         "mangatrend.org",
         "*.mangatrend.org"
@@ -2702,6 +2716,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://mangayy.org",
+      "iconUrl": "https://inkstone.web.app/mangayy/icon.png",
       "hosts": [
         "mangayy.org",
         "*.mangayy.org"
@@ -2725,6 +2740,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://manhuanext.com",
+      "iconUrl": "https://manhuanext.com/wp-content/uploads/2025/04/cropped-manhua_next-removebg-preview-180x180.png",
       "hosts": [
         "manhuanext.com",
         "*.manhuanext.com"
@@ -2748,6 +2764,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://manhwanex.com",
+      "iconUrl": "https://manhwanex.com/wp-content/uploads/2026/02/cropped-ChatGPT-Image-Feb-13-2026-08_18_51-PM-180x180.png",
       "hosts": [
         "manhwanex.com",
         "*.manhwanex.com"
@@ -2771,6 +2788,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://manhwareads.com",
+      "iconUrl": "https://manhwareads.com/wp-content/uploads/2026/02/512.png",
       "hosts": [
         "manhwareads.com",
         "*.manhwareads.com"
@@ -2794,6 +2812,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://rackusreads.com",
+      "iconUrl": "https://rackusreads.com/wp-content/uploads/2024/09/cropped-RACKLOGO2-180x180.png",
       "hosts": [
         "rackusreads.com",
         "*.rackusreads.com"
@@ -2817,6 +2836,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://ravenscans.org",
+      "iconUrl": "https://ravenscans.org/wp-content/uploads/2025/05/cropped-favicon-180x180.png",
       "hosts": [
         "ravenscans.org",
         "*.ravenscans.org"
@@ -2840,6 +2860,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://s2read.com",
+      "iconUrl": "https://s2read.com/wp-content/uploads/2026/08/cropped-Thiet-ke-chua-co-ten-5-180x180.png",
       "hosts": [
         "s2read.com",
         "*.s2read.com"
@@ -2863,6 +2884,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://en-thunderscans.com",
+      "iconUrl": "https://inkstone.web.app/thunderscans/icon.png",
       "hosts": [
         "en-thunderscans.com",
         "*.en-thunderscans.com"
@@ -2886,6 +2908,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://violetmanga.com",
+      "iconUrl": "https://inkstone.web.app/violetscans/icon.png",
       "hosts": [
         "violetmanga.com",
         "*.violetmanga.com"
@@ -2909,6 +2932,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://yakshacomics.com",
+      "iconUrl": "https://yakshacomics.com/wp-content/uploads/2025/05/cropped-file_00000000810061f687588747abd1dd5e-1-180x180.png",
       "hosts": [
         "yakshacomics.com",
         "*.yakshacomics.com"
@@ -2931,6 +2955,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://bunmanga.com",
+      "iconUrl": "https://inkstone.web.app/bunmanga/icon.png",
       "hosts": [
         "bunmanga.com",
         "*.bunmanga.com"
@@ -2954,6 +2979,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://www.zinmanga.net",
+      "iconUrl": "https://www.zinmanga.net/image/icon/cropped-IMG_20200222_225535-180x180.jpg",
       "hosts": [
         "zinmanga.net",
         "*.zinmanga.net"
@@ -2977,6 +3003,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://vortexscans.org",
+      "iconUrl": "https://inkstone.web.app/vortexscans/icon.png",
       "hosts": [
         "vortexscans.org",
         "*.vortexscans.org"
@@ -3000,6 +3027,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://nyxscans.com",
+      "iconUrl": "https://nyxscans.com/apple-touch-icon.png",
       "hosts": [
         "nyxscans.com",
         "*.nyxscans.com"
@@ -3023,6 +3051,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://sanascans.com",
+      "iconUrl": "https://inkstone.web.app/sanascans/icon.png",
       "hosts": [
         "sanascans.com",
         "*.sanascans.com"
@@ -3046,6 +3075,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://en-hijala.com",
+      "iconUrl": "https://en-hijala.com/apple-touch-icon.png",
       "hosts": [
         "en-hijala.com",
         "*.en-hijala.com"
@@ -3069,6 +3099,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://orion-scans.com",
+      "iconUrl": "https://orion-scans.com/apple-touch-icon.png",
       "hosts": [
         "orion-scans.com",
         "*.orion-scans.com"
@@ -3092,6 +3123,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://renascans.net",
+      "iconUrl": "https://inkstone.web.app/renascans/icon.png",
       "hosts": [
         "renascans.net",
         "*.renascans.net"
@@ -3115,6 +3147,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://magustoon.org",
+      "iconUrl": "https://inkstone.web.app/magusmanga/icon.png",
       "hosts": [
         "magustoon.org",
         "*.magustoon.org"
@@ -3138,6 +3171,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://kencomics.com",
+      "iconUrl": "https://inkstone.web.app/kenscans/icon.png",
       "hosts": [
         "kencomics.com",
         "*.kencomics.com"
@@ -3161,7 +3195,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://www.mangabats.com",
-      "iconUrl": "https://www.mangabats.com/favicon.ico",
+      "iconUrl": "https://inkstone.web.app/mangabats/icon.png",
       "hosts": [
         "mangabats.com",
         "*.mangabats.com",
