@@ -1973,7 +1973,7 @@
     {
       "id": "mangafire",
       "name": "MangaFire",
-      "version": "1.4.0",
+      "version": "1.4.1",
       "medium": "comics",
       "website": "https://mangafire.to",
       "iconUrl": "https://mangafire.to/assets/mangafire/favicon.png",
@@ -1991,7 +1991,7 @@
       ],
       "language": "en",
       "contentRating": "safe",
-      "sha256": "e0e858fd338365c4917da97b8ce64e63403dca4ea6906700e44cc84d37237da6"
+      "sha256": "55c3fa75a48b1b41150458dcdaf3f9c83bc4b437b89f1ed11af3ffb83ee01776"
     },
     {
       "id": "hiperdex",
@@ -2017,6 +2017,75 @@
       "language": "en",
       "contentRating": "adult",
       "sha256": "77e747cabab56f4c151d1c187d62f36191d05b59b194a42f59178a45aeefeae1"
+    },
+    {
+      "id": "anizone",
+      "name": "AniZone",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://anizone.to",
+      "iconUrl": "https://anizone.to/apple-touch-icon.png",
+      "hosts": [
+        "anizone.to",
+        "*.xin-cdn.xyz",
+        "*.vid-cdn.xyz"
+      ],
+      "description": "Anime with English and many other soft subtitles. Three browse feeds (Recently Added, Newest, A to Z), search, details and every regular episode, paged through the site's own list (long shows like One Piece take a while the first time). Episodes play as HLS in Sumizuri with ASS subtitles, and the intro and credits from the site's chapter markers can be skipped. Anime needs an app that plays video, such as Sumizuri; Boundless skips it.",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "7c2a1cf4ab40672dcdea037fd1dd502ec9c371c7a3db5785bd69f944f7ac050d"
+    },
+    {
+      "id": "kickassanime",
+      "name": "KickAssAnime",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://kaa.lt",
+      "iconUrl": "https://kaa.lt/favicon.ico",
+      "hosts": [
+        "kaa.lt",
+        "krussdomi.com"
+      ],
+      "description": "Anime from the KickAssAnime JSON API. A Latest feed, search, details with banner, and the full Japanese-audio episode list in one go. Each episode lists every player server the site offers, as HLS up to 1080p with VTT or SRT subtitles. Anime needs an app that plays video, such as Sumizuri; Boundless skips it.",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "6dabf9b5909565454bff9234c71c2dd888af601a4bb026bf40f5364589e0a039"
+    },
+    {
+      "id": "uniquestream",
+      "name": "UniqueStream",
+      "version": "1.0.1",
+      "medium": "anime",
+      "website": "https://anime.uniquestream.net",
+      "iconUrl": "https://anime.uniquestream.net/favicon.ico",
+      "hosts": [
+        "anime.uniquestream.net"
+      ],
+      "description": "Anime from the UniqueStream (AnimeStream) JSON API. New and Popular feeds, search across series and movies, details with poster and banner, and episodes grouped by the site's own seasons and arcs. Episodes play as HLS with separate subtitle tracks. Anime needs an app that plays video, such as Sumizuri; Boundless skips it.",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "0705d46e4e7e3a02dfc02cd0212eb7989353d849bcb6fef8e4e26c43a4d13fa4"
     }
   ]
 }

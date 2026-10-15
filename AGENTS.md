@@ -1,6 +1,6 @@
 # Instructions for AI assistants
 
-This repository holds Boundless Reader extensions: one folder per site, each with an `index.js`, plus `versioning.json`.
+This repository holds extensions for Boundless Reader and Sumizuri: one folder per site, each with an `index.js`, inside `comics/`, `novels/` or `mixed/` by what the site offers, plus `versioning.json`.
 
 ## Adding or fixing an extension
 
@@ -20,15 +20,15 @@ If they don't, follow `docs/BUILD_WITH_AI.md` directly.
 
 ## Rules
 
-- One folder per extension, named after its `id` (lowercase), containing `index.js`.
+- One folder per extension, named after its `id` (lowercase), containing `index.js`. It goes in `comics/` for `medium: "comics"`, `novels/` for `"novel"`, `mixed/` for `"both"` and `anime/` for `"anime"`, for example `comics/mysite/index.js`. Anime extensions add `getVideos` (see the Sumizuri guide) and only play in apps with a video player. The site still serves it at `/v3/<id>/index.js`.
 - No comments in `index.js`. Put notes in the pull request.
 - Run the test script before finishing, and fix every `FAIL`:
 
 ```bash
 npm install
-node docs/test-extension.mjs <id>/index.js "search term"
+node docs/test-extension.mjs <type>/<id>/index.js "search term"
 ```
 
-- Update the extension's entry in `versioning.json`: bump `version`, set an honest `contentRating`, and refresh `sha256` with `shasum -a 256 <id>/index.js`.
+- Update the extension's entry in `versioning.json`: bump `version`, set an honest `contentRating`, and refresh `sha256` with `shasum -a 256 <type>/<id>/index.js`.
 - Only use what Boundless provides: `App` and `cheerio`. No `fetch`, `URL`, `setTimeout` or `require`.
 - Never invent data. Only describe behavior you have seen on the live site.

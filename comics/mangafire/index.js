@@ -6,7 +6,9 @@ const EARLY_TIMEOUT_MS = 45000;
 const EARLY_FIRST_WAIT_MS = 10000;
 const LATE_FIRST_WAIT_MS = 25000;
 const SAVED_TITLE_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
-const MAX_SAVED_PAGE_URLS = 150;
+const MAX_SAVED_PAGE_URLS = 400;
+const WALK_MIN_MS = 40000;
+const WALK_PER_PAGE_MS = 1500;
 const VOLUMES_SUFFIX = '~volumes';
 
 const SESSION_TTL_MS = 10 * 60 * 1000;
@@ -94,7 +96,7 @@ function ageRatingFor(rating) {
   if (r === 'safe') return 0;
   if (r === 'suggestive') return 16;
   if (r === 'erotica' || r === 'pornographic') return 18;
-  return 16;
+  return undefined;
 }
 
 function mapStatus(status) {
@@ -110,14 +112,27 @@ function hidOf(mangaId) {
   return (mangaId || '').split('-')[0];
 }
 
+const ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ' };
+
+function decodeEntities(text) {
+  return text.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (whole, name) => {
+    if (name[0] === '#') {
+      const hex = name[1] === 'x' || name[1] === 'X';
+      const code = hex ? parseInt(name.slice(2), 16) : parseInt(name.slice(1), 10);
+      return Number.isFinite(code) && code > 0 && code <= 0x10ffff ? String.fromCodePoint(code) : whole;
+    }
+    const known = ENTITIES[name.toLowerCase()];
+    return known === undefined ? whole : known;
+  });
+}
+
 function stripHtml(html) {
-  return (html || '')
-    .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<[^>]+>/g, '')
-    .replace(/&#039;/g, "'")
-    .replace(/&amp;/g, '&')
-    .replace(/&quot;/g, '"')
-    .trim();
+  return decodeEntities(
+    (html || '')
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<\/p>\s*<p[^>]*>/gi, '\n\n')
+      .replace(/<[^>]+>/g, '')
+  ).trim();
 }
 
 function toPartialManga(item) {
@@ -216,6 +231,7 @@ class Source {
     this._titles = new UrlMemory('titles-v1', 60);
     this._readers = new UrlMemory('readers-v1', 500);
     this._feeds = new UrlMemory('feeds-v1', 100);
+    this._requests = null;
   }
 
   getSourceFeeds() {
@@ -634,7 +650,7 @@ class Source {
                 ? __mfPoll(function () { return volumesUrl() ? true : null; }, 2000, '').catch(function () {})
                 : Promise.resolve();
               return volumes
-                .then(function () { return walk(lastPage, lastPage * 3 + 10, Date.now() + 40000); })
+                .then(function () { return walk(lastPage, lastPage * 3 + 10, Date.now() + Math.max(${WALK_MIN_MS}, lastPage * ${WALK_PER_PAGE_MS})); })
                 .then(function () { finish(lastPage, hasVolumes); }, function () { finish(lastPage, hasVolumes); });
             });
           })
@@ -674,7 +690,9 @@ class Source {
     const saved = await this._readers.get(key);
     if (saved) {
       try {
-        json = await this.requestJSON(saved);
+        const replayed = await this.requestJSON(saved);
+        if (replayed && replayed.data && Array.isArray(replayed.data.pages)) json = replayed;
+        else this._readers.remove(key).catch(ignore);
       } catch (e) {
         this._readers.remove(key).catch(ignore);
       }
@@ -701,8 +719,11 @@ class Source {
       if (found.url) this._readers.set(key, found.url).catch(ignore);
     }
 
-    const data = json.data;
-    const pages = (Array.isArray(data.pages) ? data.pages : []).map((p) => p.url);
+    const data = json && json.data;
+    if (!data || !Array.isArray(data.pages)) {
+      throw new Error(`MangaFire ${volume ? 'volume' : 'chapter'} fetch failed: the reader gave no pages`);
+    }
+    const pages = data.pages.map((p) => p.url).filter(Boolean);
     return {
       id: chapterId,
       mangaId,
@@ -714,7 +735,8 @@ class Source {
   async requestJSON(url, options) {
     const method = (options && options.method) || 'GET';
     const body = options && options.body;
-    const manager = App.createRequestManager({});
+    if (!this._requests) this._requests = App.createRequestManager({});
+    const manager = this._requests;
     const request = App.createRequest({
       url,
       method,

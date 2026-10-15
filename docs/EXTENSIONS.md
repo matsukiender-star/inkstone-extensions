@@ -246,7 +246,8 @@ your-repo/
 ```
 
 The app resolves each bundle as `<repo>/<id>/index.js`, so the folder name must
-equal the `id`. `description` and `capabilities` are landing-page-only and
+equal the `id`. In the Inkstone repository the folder sits inside `comics/`, `novels/`
+or `mixed/`, and the site serves it without that folder. `description` and `capabilities` are landing-page-only and
 never read by the app itself, but `medium`, `website`, `iconUrl`, `language`,
 `contentRating`, `minApiVersion` and `settingsSchema` are all read and copied
 onto the installed record at install/update time. They drive real

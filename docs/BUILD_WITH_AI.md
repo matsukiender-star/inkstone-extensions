@@ -451,7 +451,7 @@ if (typeof source.getSourceFeeds === 'function') {
 }
 
 const folder = path.resolve(path.dirname(file));
-const listPath = path.join(path.dirname(folder), 'versioning.json');
+const listPath = [path.dirname(folder), path.dirname(path.dirname(folder))].map((dir) => path.join(dir, 'versioning.json')).find((candidate) => existsSync(candidate)) ?? path.join(path.dirname(folder), 'versioning.json');
 let entry;
 if (existsSync(listPath)) {
   const listing = JSON.parse(readFileSync(listPath, 'utf8'));
@@ -459,6 +459,9 @@ if (existsSync(listPath)) {
   if (check(entry, 'has an entry in versioning.json', `id "${path.basename(folder)}"`)) {
     check(entry.name && /^\d+\.\d+\.\d+/.test(entry.version ?? ''), 'entry has a name and a version like 1.0.0');
     check(['comics', 'novel', 'both'].includes(entry.medium), 'medium is comics, novel or both', entry.medium);
+    const typeFolder = path.basename(path.dirname(folder));
+    const wantedFolder = { comics: 'comics', novel: 'novels', both: 'mixed' }[entry.medium];
+    if (['comics', 'novels', 'mixed'].includes(typeFolder)) check(typeFolder === wantedFolder, 'sits in the folder for its medium', `${typeFolder}/ holds it, ${wantedFolder}/ fits "${entry.medium}"`);
     check(['safe', 'mature', 'adult'].includes(entry.contentRating), 'contentRating is safe, mature or adult', entry.contentRating);
     check(isUrl(entry.website), 'website is a full URL');
     check(/^[a-z]{2,3}$/.test(entry.language ?? ''), 'language is a short code like en', entry.language);
@@ -468,7 +471,7 @@ if (existsSync(listPath)) {
     else say('warn', 'no sha256 yet', `shasum -a 256 gives ${digest.slice(0, 12)}...`);
   }
 } else {
-  say('warn', 'no versioning.json one folder up, so the listing checks were skipped');
+  say('warn', 'no versioning.json one or two folders up, so the listing checks were skipped');
 }
 
 console.log('\nLive results (real requests to the site)\n');

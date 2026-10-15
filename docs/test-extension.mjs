@@ -111,7 +111,8 @@ const Source = sandbox.module.exports.Source;
 if (!check(typeof Source === 'function', 'exports a Source class', 'module.exports = { Source }')) finish();
 const source = new Source();
 
-for (const method of ['getSearchResults', 'getMangaDetails', 'getChapters', 'getChapterDetails']) {
+const anime = typeof source.getVideos === 'function';
+for (const method of ['getSearchResults', 'getMangaDetails', 'getChapters', anime ? 'getVideos' : 'getChapterDetails']) {
   check(typeof source[method] === 'function', `has ${method}()`);
 }
 
@@ -125,14 +126,18 @@ if (typeof source.getSourceFeeds === 'function') {
 }
 
 const folder = path.resolve(path.dirname(file));
-const listPath = path.join(path.dirname(folder), 'versioning.json');
+const listPath = [path.dirname(folder), path.dirname(path.dirname(folder))].map((dir) => path.join(dir, 'versioning.json')).find((candidate) => existsSync(candidate)) ?? path.join(path.dirname(folder), 'versioning.json');
 let entry;
 if (existsSync(listPath)) {
   const listing = JSON.parse(readFileSync(listPath, 'utf8'));
   entry = listing.sources?.find((s) => s.id === path.basename(folder));
   if (check(entry, 'has an entry in versioning.json', `id "${path.basename(folder)}"`)) {
     check(entry.name && /^\d+\.\d+\.\d+/.test(entry.version ?? ''), 'entry has a name and a version like 1.0.0');
-    check(['comics', 'novel', 'both'].includes(entry.medium), 'medium is comics, novel or both', entry.medium);
+    check(['comics', 'novel', 'both', 'anime'].includes(entry.medium), 'medium is comics, novel, both or anime', entry.medium);
+    check((entry.medium === 'anime') === anime, 'an anime source has getVideos, and only an anime source', entry.medium);
+    const typeFolder = path.basename(path.dirname(folder));
+    const wantedFolder = { comics: 'comics', novel: 'novels', both: 'mixed', anime: 'anime' }[entry.medium];
+    if (['comics', 'novels', 'mixed', 'anime'].includes(typeFolder)) check(typeFolder === wantedFolder, 'sits in the folder for its medium', `${typeFolder}/ holds it, ${wantedFolder}/ fits "${entry.medium}"`);
     check(['safe', 'mature', 'adult'].includes(entry.contentRating), 'contentRating is safe, mature or adult', entry.contentRating);
     check(isUrl(entry.website), 'website is a full URL');
     check(/^[a-z]{2,3}$/.test(entry.language ?? ''), 'language is a short code like en', entry.language);
@@ -142,7 +147,7 @@ if (existsSync(listPath)) {
     else say('warn', 'no sha256 yet', `shasum -a 256 gives ${digest.slice(0, 12)}...`);
   }
 } else {
-  say('warn', 'no versioning.json one folder up, so the listing checks were skipped');
+  say('warn', 'no versioning.json one or two folders up, so the listing checks were skipped');
 }
 
 console.log('\nLive results (real requests to the site)\n');
@@ -232,10 +237,23 @@ for (const item of (found?.value.results ?? []).slice(0, 2)) {
     'chapter fields have the types Boundless casts to',
     'name, group and volume are strings; number and time are numbers, not "12"',
   );
+  const tryPlay = async (chapter, label, started) => {
+    const videos = await withTimeout(source.getVideos(item.mangaId, chapter.id));
+    if (!Array.isArray(videos) || videos.length === 0 || !videos.every((v) => isUrl(v.url))) return { ok: false, label, detail: 'getVideos gave no video with a full URL' };
+    const first = videos[0];
+    const answer = await withTimeout(fetch(first.url, { headers: first.headers ?? {} }), 30000);
+    const body = answer.ok ? await answer.text() : '';
+    const plays = answer.ok && (body.startsWith('#EXTM3U') || (answer.headers.get('content-type') ?? '').startsWith('video/'));
+    const subtitles = (first.subtitles ?? []).length;
+    const took = `${((Date.now() - started) / 1000).toFixed(1)}s`;
+    const skip = first.intro ? `, intro ${Math.round(first.intro.start / 1000)}s to ${Math.round(first.intro.end / 1000)}s` : '';
+    return { ok: plays, label, detail: plays ? `${videos.length} video, ${subtitles} subtitle tracks${skip}, in ${took}` : `the stream answered ${answer.status}` };
+  };
   const tryOpen = async (chapter) => {
     const label = `chapter "${chapter.name ?? chapter.id}"`;
     const started = Date.now();
     try {
+      if (anime) return await tryPlay(chapter, label, started);
       const read = await withTimeout(source.getChapterDetails(item.mangaId, chapter.id));
       const isText = Array.isArray(read.pages) && read.pages.length === 0 && read.text;
       const isImages = read.pages?.length > 0 && read.pages.every(isUrl);

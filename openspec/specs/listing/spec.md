@@ -6,12 +6,12 @@ How an extension is published in this repository: its folder, its `versioning.js
 ## Requirements
 
 ### Requirement: Folder layout
-Each extension SHALL live at `<id>/index.js`, where `<id>` is lowercase letters and numbers, and the folder name SHALL equal the `id` in `versioning.json`. Boundless resolves each extension as `<repository>/<id>/index.js`.
+Each extension SHALL live at `<type>/<id>/index.js` in this repository, where `<id>` is lowercase letters and numbers, the folder name SHALL equal the `id` in `versioning.json`, and `<type>` SHALL be `comics` for `medium: "comics"`, `novels` for `"novel"`, `mixed` for `"both"` and `anime` for `"anime"`. The site SHALL serve each extension at `<repository>/<id>/index.js`, without the type folder, because the apps resolve it there.
 
 #### Scenario: Matching names
 - **GIVEN** an entry with `id` `mysite`
 - **WHEN** Boundless installs it
-- **THEN** it downloads `mysite/index.js`
+- **THEN** it downloads `mysite/index.js` from the site, built from `comics/mysite/index.js` in this repository
 
 ### Requirement: Listing entry
 `versioning.json` SHALL contain an entry for every extension with `id`, `name` and `version`. The app reads `medium` (`comics`, `novel` or `both`), `website`, `iconUrl`, `language` (a short code), `contentRating` and `settingsSchema` when installing. `description` and `capabilities` are shown on the website.
@@ -30,7 +30,7 @@ Each extension SHALL declare `contentRating` as `safe`, `mature` or `adult`, cho
 - **THEN** its `contentRating` is `adult`
 
 ### Requirement: Integrity hash
-An entry SHOULD declare `sha256`, the lowercase hex SHA-256 of the exact bytes of `<id>/index.js`. The hash SHALL be recomputed after every change to the file, because a stale hash makes Boundless refuse the install or update.
+An entry SHOULD declare `sha256`, the lowercase hex SHA-256 of the exact bytes of the extension's `index.js`. The hash SHALL be recomputed after every change to the file, because a stale hash makes Boundless refuse the install or update.
 
 #### Scenario: File edited after hashing
 - **GIVEN** an entry whose `sha256` no longer matches the file

@@ -1,0 +1,2 @@
+# The apps check each extension against the sha256 in versioning.json, which is taken over these exact bytes, so they always keep LF line endings.
+*/*/index.js text eol=lf
