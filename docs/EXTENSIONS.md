@@ -89,7 +89,7 @@ reject.
 `GET`; for a `POST`, pass `body` as a string and a `Content-Type` header. To
 pace requests to a site that answers 429, pass a limit when creating the
 manager: `App.createRequestManager({ rateLimit: { requestsPerSecond: 2 } })`
-(`requestsPerMinute` works too, and the stricter of the two wins).
+(`requestsPerMinute` works too, and the stricter of the two wins). Sites that answer a burst with a 503 "connection limit" page need it as much as ones that answer 429.
 
 ### The rest of `App`
 
@@ -247,7 +247,8 @@ your-repo/
 ```
 
 The app resolves each bundle as `<repo>/<id>/index.js`, so the folder name must
-equal the `id`. `description` and `capabilities` are landing-page-only and
+equal the `id`. In the Inkstone repository the folder sits inside `comics/`, `novels/`,
+`mixed/` or `anime/`, and the site serves it without that folder. `description` and `capabilities` are landing-page-only and
 never read by the app itself, but `medium`, `website`, `iconUrl`, `language`,
 `contentRating`, `minApiVersion` and `settingsSchema` are all read and copied
 onto the installed record at install/update time. They drive real

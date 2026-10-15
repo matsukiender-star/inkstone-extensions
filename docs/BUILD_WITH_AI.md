@@ -60,6 +60,8 @@ Do these checks in one batch (one script, or a few curl calls sent together), th
    - A Cloudflare "Just a moment..." page or a `cf-mitigated` header is fine. Boundless solves those in a hidden browser view (and asks the user to tap if it has to), so the extension doesn't have to.
    - If curl fails before any HTTP response arrives (a TLS error like `alert access denied`), the site is rejecting non-browser clients outright. Treat that as a no-go and say so.
    - Fire five requests at once at one endpoint. If you see 429s, add a `rateLimit` (see Step 2).
+   - A limit can also hide behind a 503 or a page that says "Connection limit reached". Dynasty Scans let 16 requests through, then refused the next, then let about 1.3 a second pass; it only showed up when 40 requests ran one after another, and a retry inside the extension made the deep-check tool miss it. Measure with a longer run (40 requests, at two or three different paces) and say which pace passed.
+   - A page that asks the reader to solve something (a sum, a password box, "verify you are human") is a gate, not a bug. Do not script around it: report the chapter as locked (a 403 with a short message in the error) and say so in the description. Bun Manga locks its newest four chapters of every title this way.
 3. **Look for a JSON API.** Many sites fetch their data from an API. Check the page source for `__NEXT_DATA__`, `__NUXT__` or hydration props (`astro-island` tags), search the site's JavaScript files for `/api/`, or watch the network calls in a real browser. Note whether the page uses `fetch` or `XMLHttpRequest`. A JSON API is far more stable than scraping markup. Check that a field you will read is a real name: a site can scramble the field names of the data it fetches in the browser (`dg`, `Cu`, `vl` for `items`, `id`, `name`) while its server-rendered pages keep the plain ones, and the scrambled names can change on any deploy. If you see that, read values by what they are instead (a chapter's own link carries its id and number, a list is the property holding an array of objects, a rating is one of a few known words) and check the result against the plain data on a few hundred items.
 4. **Sample widely.** Walk details, then the chapter list, then at least two chapters, for 3 to 5 different titles: a brand new one, an old one, different genres. This is the most valuable check there is. It catches sites that run two different reader layouts, and titles that are listed and searchable but have no chapters at all. Include a title that shows no chapters in your language: ask the API what that title does have (other languages, other sections) before you decide the request is wrong. Also find a fractional chapter (12.5, 219.5; scan the whole catalog for non-integers, a few titles have them) and open it: a site that addresses a chapter by its number can answer "219-5" or "219_5" with chapter 219 and no error, so compare the chapter you got with the one you asked for.
 5. **Check ids are stable.** Note the id or slug of a few titles. If they carry a date or a long random suffix, fetch the listing again a few minutes later and compare. If the ids change, the extension has to cope with that.
@@ -256,7 +258,7 @@ These are the mistakes that broke real extensions. Check your code against each 
 
 - Boundless opens a title by asking for its details and its chapters at the same moment. If both come from the same page or request, fetch it once: keep the pending promise in a `Map` keyed by id for a few minutes, and delete the entry if it fails.
 - When the site pages its chapters, read the first page for the total, then fetch the remaining pages together with `Promise.all`, not one after another.
-- No `rateLimit`, and no waiting, unless the site really pushed back with a 429. A fixed delay for something you could detect is a bug.
+- No `rateLimit`, and no waiting, unless the site really pushed back with a 429 or a "connection limit" 503. A fixed delay for something you could detect is a bug. There is no timer to sleep with, so a request that was refused is sent again through the same manager: its declared spacing is the pause. The test script spaces requests by your declared `rateLimit` the way the app does, so run it after you add one.
 
 **Language and region**
 
@@ -370,8 +372,20 @@ const gated = (chapter) => /\b(locked|paid|premium|join to read|early access|coi
 
 const requests = [];
 const App = {
-  createRequestManager: () => ({
+  createRequestManager: (options = {}) => {
+    // Boundless spaces a manager's requests by its declared rateLimit (the stricter of
+    // requestsPerSecond and requestsPerMinute), so the test does the same.
+    const limit = options.rateLimit ?? {};
+    const gaps = [limit.requestsPerSecond > 0 ? 1000 / limit.requestsPerSecond : 0, limit.requestsPerMinute > 0 ? 60000 / limit.requestsPerMinute : 0];
+    const gap = Math.max(...gaps);
+    let nextSlot = 0;
+    return {
     async schedule(request) {
+      if (gap > 0) {
+        const wait = Math.max(0, nextSlot - Date.now());
+        nextSlot = Math.max(nextSlot, Date.now()) + gap;
+        if (wait > 0) await new Promise((resolve) => setTimeout(resolve, wait));
+      }
       requests.push(new URL(request.url).hostname);
       let res;
       try {
@@ -385,7 +399,8 @@ const App = {
       }
       return { status: res.status, headers: Object.fromEntries(res.headers), data: await res.text() };
     },
-  }),
+    };
+  },
   createRequest: (options) => options,
   getSourceSetting: () => undefined,
   createSourceStateManager: () => {
@@ -440,7 +455,8 @@ const Source = sandbox.module.exports.Source;
 if (!check(typeof Source === 'function', 'exports a Source class', 'module.exports = { Source }')) finish();
 const source = new Source();
 
-for (const method of ['getSearchResults', 'getMangaDetails', 'getChapters', 'getChapterDetails']) {
+const anime = typeof source.getVideos === 'function';
+for (const method of ['getSearchResults', 'getMangaDetails', 'getChapters', anime ? 'getVideos' : 'getChapterDetails']) {
   check(typeof source[method] === 'function', `has ${method}()`);
 }
 
@@ -454,14 +470,18 @@ if (typeof source.getSourceFeeds === 'function') {
 }
 
 const folder = path.resolve(path.dirname(file));
-const listPath = path.join(path.dirname(folder), 'versioning.json');
+const listPath = [path.dirname(folder), path.dirname(path.dirname(folder))].map((dir) => path.join(dir, 'versioning.json')).find((candidate) => existsSync(candidate)) ?? path.join(path.dirname(folder), 'versioning.json');
 let entry;
 if (existsSync(listPath)) {
   const listing = JSON.parse(readFileSync(listPath, 'utf8'));
   entry = listing.sources?.find((s) => s.id === path.basename(folder));
   if (check(entry, 'has an entry in versioning.json', `id "${path.basename(folder)}"`)) {
     check(entry.name && /^\d+\.\d+\.\d+/.test(entry.version ?? ''), 'entry has a name and a version like 1.0.0');
-    check(['comics', 'novel', 'both'].includes(entry.medium), 'medium is comics, novel or both', entry.medium);
+    check(['comics', 'novel', 'both', 'anime'].includes(entry.medium), 'medium is comics, novel, both or anime', entry.medium);
+    check((entry.medium === 'anime') === anime, 'an anime source has getVideos, and only an anime source', entry.medium);
+    const typeFolder = path.basename(path.dirname(folder));
+    const wantedFolder = { comics: 'comics', novel: 'novels', both: 'mixed', anime: 'anime' }[entry.medium];
+    if (['comics', 'novels', 'mixed', 'anime'].includes(typeFolder)) check(typeFolder === wantedFolder, 'sits in the folder for its medium', `${typeFolder}/ holds it, ${wantedFolder}/ fits "${entry.medium}"`);
     check(['safe', 'mature', 'adult'].includes(entry.contentRating), 'contentRating is safe, mature or adult', entry.contentRating);
     check(isUrl(entry.website), 'website is a full URL');
     check(/^[a-z]{2,3}$/.test(entry.language ?? ''), 'language is a short code like en', entry.language);
@@ -471,7 +491,7 @@ if (existsSync(listPath)) {
     else say('warn', 'no sha256 yet', `shasum -a 256 gives ${digest.slice(0, 12)}...`);
   }
 } else {
-  say('warn', 'no versioning.json one folder up, so the listing checks were skipped');
+  say('warn', 'no versioning.json one or two folders up, so the listing checks were skipped');
 }
 
 console.log('\nLive results (real requests to the site)\n');
@@ -561,10 +581,23 @@ for (const item of (found?.value.results ?? []).slice(0, 2)) {
     'chapter fields have the types Boundless casts to',
     'name, group and volume are strings; number and time are numbers, not "12"',
   );
+  const tryPlay = async (chapter, label, started) => {
+    const videos = await withTimeout(source.getVideos(item.mangaId, chapter.id));
+    if (!Array.isArray(videos) || videos.length === 0 || !videos.every((v) => isUrl(v.url))) return { ok: false, label, detail: 'getVideos gave no video with a full URL' };
+    const first = videos[0];
+    const answer = await withTimeout(fetch(first.url, { headers: first.headers ?? {} }), 30000);
+    const body = answer.ok ? await answer.text() : '';
+    const plays = answer.ok && (body.startsWith('#EXTM3U') || (answer.headers.get('content-type') ?? '').startsWith('video/'));
+    const subtitles = (first.subtitles ?? []).length;
+    const took = `${((Date.now() - started) / 1000).toFixed(1)}s`;
+    const skip = first.intro ? `, intro ${Math.round(first.intro.start / 1000)}s to ${Math.round(first.intro.end / 1000)}s` : '';
+    return { ok: plays, label, detail: plays ? `${videos.length} video, ${subtitles} subtitle tracks${skip}, in ${took}` : `the stream answered ${answer.status}` };
+  };
   const tryOpen = async (chapter) => {
     const label = `chapter "${chapter.name ?? chapter.id}"`;
     const started = Date.now();
     try {
+      if (anime) return await tryPlay(chapter, label, started);
       const read = await withTimeout(source.getChapterDetails(item.mangaId, chapter.id));
       const isText = Array.isArray(read.pages) && read.pages.length === 0 && read.text;
       const isImages = read.pages?.length > 0 && read.pages.every(isUrl);
@@ -584,6 +617,7 @@ for (const item of (found?.value.results ?? []).slice(0, 2)) {
     attempts.push(await tryOpen(chapter));
     if (attempts.at(-1).ok || attempts.at(-1).skipped) break;
   }
+  if (attempts.length === 0) continue;
   const [first] = attempts;
   const opened = attempts.at(-1);
   if (first.skipped) {
@@ -719,6 +753,9 @@ End with something the user can read in thirty seconds:
 | Using `fetch`, `URL` or `setTimeout` | Empty screens |
 | Chapter list capped at 100 | Missing chapters |
 | Forgetting `referer` on hotlink-protected images | Chapters open but every page fails |
+| A CDN that refuses the app's own (Dart) user agent, with only `referer` returned | Chapters open but every page fails, though the same URL works in curl; return `headers` with a browser `User-Agent` on pages and covers |
+| Using the 110 by 150 thumbnail a WordPress grid names | Blurry covers; check whether the 175 by 238 or 350 by 476 size of the same file exists and use it |
+| Rating a site safe because it prints no genres | Explicit titles in a source the reader trusts; look at the titles and blurbs of the first listing page too |
 | Stale `sha256` | Install refused |
 | `contentRating` guessed from the site's name | Wrong filtering for the reader |
 | `getChapters` returning `[]` after an error | The title looks empty, then a burst of "new chapters" later |

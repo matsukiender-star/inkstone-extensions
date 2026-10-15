@@ -6,7 +6,7 @@ How an extension is checked for compatibility with Boundless Reader and for fetc
 ## Requirements
 
 ### Requirement: Run the test script
-Every new or changed extension SHALL pass `node docs/test-extension.mjs <id>/index.js "<search term>"` with no `FAIL` lines before it is submitted. The script exits with a non-zero code when any check fails.
+Every new or changed extension SHALL pass `node docs/test-extension.mjs <type>/<id>/index.js "<search term>"` with no `FAIL` lines before it is submitted. The script exits with a non-zero code when any check fails.
 
 #### Scenario: Passing run
 - **GIVEN** a working extension

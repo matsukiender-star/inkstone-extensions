@@ -2,7 +2,8 @@ schema: spec-driven
 
 context: |
   This repository holds extensions for Boundless Reader and Sumizuri. Each extension is one JavaScript
-  file at <id>/index.js, listed in versioning.json. Extensions run in a JavaScriptCore
+  file at <type>/<id>/index.js, where <type> is comics, novels, mixed or anime to match
+  its medium, listed in versioning.json. The site serves it at /<id>/index.js. Extensions run in a JavaScriptCore
   sandbox inside the app. They only have App and cheerio. There is no fetch, URL,
   setTimeout, document or require.
   The specs in openspec/specs describe the runtime, the Source class, the listing format
@@ -33,13 +34,13 @@ rules:
     - Say whether the site hotlink protects images and whether chapters need a referer.
     - List every host the extension will call, for the hosts allowlist.
   tasks:
-    - Include writing <id>/index.js, running the test script until there are no FAIL lines, adding the versioning.json entry, refreshing sha256, and removing comments from the final file.
+    - Include writing <type>/<id>/index.js, running the test script until there are no FAIL lines, adding the versioning.json entry, refreshing sha256, and removing comments from the final file.
     - Say how each task is verified, for example the test script output.
 
 operations:
   apply:
     guidance:
-      - Run node docs/test-extension.mjs <id>/index.js "search term" after every meaningful change and fix every FAIL.
+      - Run node docs/test-extension.mjs <type>/<id>/index.js "search term" after every meaningful change and fix every FAIL.
       - Try a few different search terms, including one that should return nothing.
       - Anything using App.executeInWebView only runs inside Boundless, so say what could not be tested.
   archive:

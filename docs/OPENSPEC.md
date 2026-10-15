@@ -40,7 +40,7 @@ openspec init
 
 2. **Review.** Read the proposal, the specs, the design and the tasks. Is the data source right? Is the content rating fair? Is anything missing? Ask for changes until you're happy. Nothing has been built yet.
 
-3. **Apply.** Run `/opsx:apply`. The AI writes `mysite/index.js`, adds the `versioning.json` entry, runs the test script until there are no `FAIL` lines, and ticks off the tasks.
+3. **Apply.** Run `/opsx:apply`. The AI writes `comics/mysite/index.js`, adds the `versioning.json` entry, runs the test script until there are no `FAIL` lines, and ticks off the tasks.
 
 4. **Archive.** Run `/opsx:archive`. The new extension spec moves into `openspec/specs/extensions/mysite/spec.md`, and the change is filed away.
 
@@ -94,7 +94,7 @@ Boundless readers can't read MySite (mysite.example) yet. It's a comics site wit
 ### Modified Capabilities
 
 ## Impact
-- New `mysite/index.js` and a `versioning.json` entry.
+- New `comics/mysite/index.js` and a `versioning.json` entry.
 - No change to any existing extension.
 ```
 
@@ -125,12 +125,12 @@ Page images load without a Referer, so chapters don't set one.
 # Tasks
 
 ## 1. Extension
-- [ ] 1.1 Write `mysite/index.js` using only `App` and `cheerio`
-- [ ] 1.2 Verify: `node docs/test-extension.mjs mysite/index.js "naruto"` shows no FAIL lines
+- [ ] 1.1 Write `comics/mysite/index.js` using only `App` and `cheerio`
+- [ ] 1.2 Verify: `node docs/test-extension.mjs comics/mysite/index.js "naruto"` shows no FAIL lines
 
 ## 2. Listing
 - [ ] 2.1 Add the `versioning.json` entry with `contentRating: safe` and `hosts`
-- [ ] 2.2 Refresh `sha256` with `shasum -a 256 mysite/index.js`
+- [ ] 2.2 Refresh `sha256` with `shasum -a 256 comics/mysite/index.js`
 - [ ] 2.3 Confirm the published file has no comments
 
 ## 3. Submit
@@ -195,7 +195,7 @@ Two commands cover it:
 
 ```bash
 openspec validate --all --strict
-node docs/test-extension.mjs mysite/index.js "naruto"
+node docs/test-extension.mjs comics/mysite/index.js "naruto"
 ```
 
 The first checks your plan and specs are well formed. The second checks the extension itself is compatible and fetches real results. See [TESTING.md](TESTING.md).
