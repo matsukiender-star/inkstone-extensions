@@ -721,10 +721,10 @@
     {
       "id": "freewebnovel",
       "name": "FreeWebNovel",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "medium": "novel",
       "website": "https://freewebnovel.com",
-      "description": "Web and light novel platform with four browse feeds, 38-entry genre filter, search, and full in-app prose reading.",
+      "description": "Web and light novel platform with four browse feeds, a 38 entry genre filter, search, full details, complete chapter lists and in-app prose reading. The site writes its own address into chapter text in a different styled-letter spelling on every request; that watermark is removed from the text you read.",
       "capabilities": [
         "browse",
         "search",
@@ -735,8 +735,12 @@
       ],
       "language": "en",
       "contentRating": "adult",
-      "iconUrl": "https://freewebnovel.com/favicon.ico",
-      "sha256": "48e48a844327865e4affbf5f2a58db6db1dd679408a6c5922782d73243b4235a"
+      "iconUrl": "https://inkstone.web.app/freewebnovel/icon.png",
+      "sha256": "ba6c5a7b2340f6fd6eadd89609cebaf1a621070f8dc6beb7bb2120b61403022c",
+      "hosts": [
+        "freewebnovel.com",
+        "*.freewebnovel.com"
+      ]
     },
     {
       "id": "scribblehub",

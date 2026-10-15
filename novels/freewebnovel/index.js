@@ -4,6 +4,8 @@ const UA =
 
 const CHAPTER_PAGE_SIZE = 200;
 const MAX_CHAPTER_PAGES = 60;
+const PARALLEL_PAGES = 10;
+const CHAPTER_LIST_KEEP_MS = 60 * 1000;
 
 function cleanText(text) {
   return (text || '').replace(/\s+/g, ' ').trim();
@@ -24,6 +26,30 @@ function mapStatus(text) {
   return 'UNKNOWN';
 }
 
+const STYLED_LETTER = /[\u{1D400}-\u{1D7FF}\u{2100}-\u{214F}\u{FF21}-\u{FF5A}\u{24B6}-\u{24E9}\u{1F130}-\u{1F189}]/u;
+const SITE_MARK = /free\s*web\s*novel(?:\s*\.\s*com)?/gi;
+
+function stripSiteMark(text) {
+  return text
+    .split(/(\s+)/)
+    .map((token) => {
+      if (!STYLED_LETTER.test(token)) return token;
+      const original = Array.from(token);
+      const plain = Array.from(token.normalize('NFKC'));
+      if (original.length !== plain.length) return token;
+      const flat = plain.join('');
+      const found = [];
+      let match;
+      SITE_MARK.lastIndex = 0;
+      while ((match = SITE_MARK.exec(flat))) {
+        found.push({ from: Array.from(flat.slice(0, match.index)).length, length: Array.from(match[0]).length });
+      }
+      for (let i = found.length - 1; i >= 0; i -= 1) original.splice(found[i].from, found[i].length);
+      return original.join('');
+    })
+    .join('');
+}
+
 function blockText($, $el) {
   if (!$el || !$el.length) return '';
   const clone = $el.clone();
@@ -40,7 +66,7 @@ function blockText($, $el) {
     }
   });
 
-  return text
+  return stripSiteMark(text)
     .split('\n')
     .map((line) => line.trim())
     .join('\n')
@@ -217,15 +243,38 @@ class Source {
   }
 
   async getChapters(mangaId) {
+    const kept = this.chapterLists && this.chapterLists.get(mangaId);
+    if (kept && Date.now() - kept.at < CHAPTER_LIST_KEEP_MS) return kept.promise;
+    const promise = this.loadChapters(mangaId);
+    if (!this.chapterLists) this.chapterLists = new Map();
+    this.chapterLists.set(mangaId, { at: Date.now(), promise });
+    promise.catch(() => {
+      const current = this.chapterLists.get(mangaId);
+      if (current && current.promise === promise) this.chapterLists.delete(mangaId);
+    });
+    return promise;
+  }
+
+  async loadChapters(mangaId) {
     try {
+      const first = await this.fetchChapterPage(mangaId, 1);
+      const totalPage = parseInt(first.totalPage, 10) || 1;
+      const lastPage = Math.min(totalPage, MAX_CHAPTER_PAGES);
+      const pages = [first];
+
+      const together = [];
+      for (let page = 2; page <= Math.min(lastPage, PARALLEL_PAGES); page += 1) together.push(page);
+      if (together.length > 0) {
+        pages.push(...(await Promise.all(together.map((page) => this.fetchChapterPage(mangaId, page)))));
+      }
+      for (let page = PARALLEL_PAGES + 1; page <= lastPage; page += 1) {
+        pages.push(await this.fetchChapterPage(mangaId, page));
+      }
+
       const chapters = [];
-      let page = 1;
-      let totalPage = 1;
-
-      do {
-        const json = await this.fetchChapterPage(mangaId, page);
-
-        totalPage = parseInt(json.totalPage, 10) || 1;
+      for (let index = 0; index < pages.length; index += 1) {
+        const json = pages[index];
+        const page = index + 1;
 
         if (!json.html.trim()) break;
 
@@ -249,9 +298,7 @@ class Source {
               'of markup with no parseable chapter rows'
           );
         }
-
-        page += 1;
-      } while (page <= totalPage && page <= MAX_CHAPTER_PAGES);
+      }
 
       if (totalPage > MAX_CHAPTER_PAGES) {
         console.warn(

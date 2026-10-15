@@ -171,7 +171,7 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [AsuraScans](mixed/asurascans/index.js) | asurascans.com | English | Safe | 2.4.0 |
 | [Chikari](mixed/chikari/index.js) | chikari.moe | English | Adult | 4.4.0 |
 | [Dreame](novels/dreame/index.js) | dreame.com | English | Adult | 1.2.0 |
-| [FreeWebNovel](novels/freewebnovel/index.js) | freewebnovel.com | English | Adult | 1.2.0 |
+| [FreeWebNovel](novels/freewebnovel/index.js) | freewebnovel.com | English | Adult | 1.2.1 |
 | [GoodNovel](novels/goodnovel/index.js) | goodnovel.com | English | Adult | 1.2.1 |
 | [JJWXC](novels/jjwxc/index.js) | jjwxc.net | Chinese | Mature | 1.3.0 |
 | [LibRead](novels/libread/index.js) | libread.com | English | Adult | 1.2.0 |
