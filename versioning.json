@@ -3205,6 +3205,30 @@
       "sha256": "3bdf1610a249115b78d0bd231e8c9680507c0a9e7e8f97eedf115cd877bfff7f"
     },
     {
+      "id": "novelarchive",
+      "name": "Novel Archive",
+      "version": "1.0.0",
+      "medium": "novel",
+      "website": "https://novelarchive.cc",
+      "iconUrl": "https://inkstone.web.app/novelarchive/icon.png",
+      "hosts": [
+        "novelarchive.cc",
+        "*.novelarchive.cc"
+      ],
+      "description": "A large novel aggregator (112,231 titles when this was written, English, many of them machine translations marked MTL in the title) with six browse feeds (latest updates, popular, trending, new additions, top rated, editor's choice), a 535 entry genre filter with include and exclude, search, full details, complete chapter lists and in-app prose reading. About one title in ten carries an explicit tag, so the source is rated mature and every title is rated from its own genres (18 for the explicit tags, 16 for mature, ecchi and similar), which the app's content settings then blur or hide. Shota and loli categories are never served. Light novels copied from other sites can have chapters that are only illustrations: those open with a short note instead of a picture, and pictures inside a text chapter are left out. Chapters are read with the site's lighter prefetch form, which does not count a view for the title. The site gives its API a budget of 900 requests per 5 minutes, so requests are held to 3 a second. Not yet tried inside the Boundless or Sumizuri app itself: the whole API was run against the live site with plain requests.",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "ff79935bdedd2612f5154af7c60a526883f433ace089f4bfbf6eb112f77799ff"
+    },
+    {
       "id": "anizone",
       "name": "AniZone",
       "version": "1.0.0",
