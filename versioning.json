@@ -1931,29 +1931,6 @@
       "sha256": "862e297aeae26cc41908e6725b1b178820df90bbb45af33a0c8fcc5438b2308d"
     },
     {
-      "id": "comix",
-      "name": "Comix",
-      "version": "2.3.2",
-      "medium": "comics",
-      "website": "https://comix.to",
-      "iconUrl": "https://comix.to/assets/uploads/35595e3de3c99889c1bd2c56f3e3714fc0c457.png",
-      "hosts": [
-        "comix.to",
-        "*.comix.to"
-      ],
-      "description": "comix.to signs every API request and returns encrypted responses, so this source does not reimplement that crypto. It lets the site's own code sign and decrypt, then reads the plaintext react-query state the site itself produced. Browse feeds (Latest Updates, Most Followed, Trending) and full title details come straight from each page's server-rendered state with no WebView at all; search and chapter lists use the app's native in-page execution, which walks all of a long series' chapter pages inside a single WebView load. The site now scrambles the field names of everything it fetches client-side (search results, chapter lists, a chapter's pages) and may change them on any deploy, so this source recognises each value by what it is (a chapter's own link gives its id and number, a title's link gives its id) and does not depend on any field name. Chapter pages are plain images on a rotating set of hosts that answer only a request with no Referer, and are handed to the reader as they are. The old tile-scrambled pages no longer show up in the site's data; if shuffled pages ever return, that needs a live check. Per-title content rating (comix.to serves everything from all-ages to explicit, correctly tagged) is reflected per manga rather than hiding the whole source. A 500 chapter title (25 pages of the site's own chapter list) no longer waits on the site's own retry of a refused request, which cost 5 to 11 seconds each time it happened inside the app: the walk goes on to the next page, and asks again at once for any page the site is still holding back. Checked against the live site in a real browser: 500 of 500 chapters of a long title, 120 pages of a chapter, and 168 search results all read correctly. Not yet tried inside the Boundless or Sumizuri app itself, because the site's Cloudflare check in a test web view is an interactive one.",
-      "capabilities": [
-        "browse",
-        "search",
-        "details",
-        "chapters",
-        "reader"
-      ],
-      "language": "en",
-      "contentRating": "safe",
-      "sha256": "55f77da509aaee2d17fab662a35af1cacba293ead98379af9d6ba88b231b8007"
-    },
-    {
       "id": "kagane",
       "name": "Kagane",
       "version": "1.3.0",

@@ -98,7 +98,7 @@ manager: `App.createRequestManager({ rateLimit: { requestsPerSecond: 2 } })`
 | `App.getSourceSetting(key)` | Reads a value the user set in your settings (see `settingsSchema` below). Always a string, or `undefined`. |
 | `App.createSourceStateManager()` | Returns `{ store(key, value), retrieve(key) }`, both async, for remembering things between calls. |
 | `App.base64Encode(text)`, `App.base64Decode(text)` | Base64 in and out. |
-| `App.executeInWebView({ url \| html + baseUrl, script, timeoutMs })` | Last resort for sites that only hand out a token through their own page scripts. Runs `script` in a real browser view and resolves to `{ value }` or `{ error }`. A few newer extensions (`mangafire`, `kagane`, `comix`) use it, but treat them as examples of the call rather than models. |
+| `App.executeInWebView({ url \| html + baseUrl, script, timeoutMs })` | Last resort for sites that only hand out a token through their own page scripts. Runs `script` in a real browser view and resolves to `{ value }` or `{ error }`. A few newer extensions (`mangafire`, `kagane`) use it, but treat them as examples of the call rather than models. |
 
 ## 3. The `Source` class
 

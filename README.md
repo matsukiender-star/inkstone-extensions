@@ -43,7 +43,7 @@ Prefer to review a written plan before any code is written? This repo works with
 
 ## Extensions
 
-134 extensions right now. Ratings are Safe, Mature or Adult, and some extensions also rate each title on its own.
+133 extensions right now. Ratings are Safe, Mature or Adult, and some extensions also rate each title on its own.
 
 Each extension lives in the folder for what it offers: `comics`, `novels`, `mixed` for those that do both, or `anime`. The site still serves every one at `inkstone.web.app/<id>/index.js`, so the folders change nothing in the apps.
 
@@ -63,7 +63,6 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [Cocomic](comics/cocomic/index.js) | cocomic.co | English | Safe | 1.0.0 |
 | [ComicFury](comics/comicfury/index.js) | comicfury.com | English | Adult | 1.0.0 |
 | [ComicLand](comics/comicland/index.js) | comicland.org | English | Adult | 1.0.0 |
-| [Comix](comics/comix/index.js) | comix.to | English | Safe | 2.3.2 |
 | [Dynasty Scans](comics/dynastyscans/index.js) | dynasty-scans.com | English | Mature | 1.0.0 |
 | [Eva Scans](comics/evascans/index.js) | evascans.net | English | Safe | 1.0.0 |
 | [Flame Scans](comics/flamescans/index.js) | flamecomics.xyz | English | Safe | 1.0.0 |
