@@ -1,5 +1,24 @@
-const SITE_BASE = 'https://kagane.org';
-const LIGHT_PAGE = `${SITE_BASE}/version.json`;
+const MIRRORS = ['kagane.si', 'kagane.cx', 'kagane.moe', 'kagane.net'];
+let mirrorIx = 0;
+
+function siteBase() {
+  return `https://${MIRRORS[mirrorIx]}`;
+}
+
+function parseJsonBody(text) {
+  const body = String(text || '').trim();
+  if (body.charAt(0) !== '<') return JSON.parse(body);
+  const $ = cheerio.load(body);
+  const pre = $('pre').first();
+  return JSON.parse((pre.length ? pre.text() : $('body').text()).trim());
+}
+
+function mirrorFailed(error) {
+  const status = /HTTP (\d{3})/.exec(String((error && error.message) || error));
+  if (!status) return true;
+  const code = Number(status[1]);
+  return code >= 500 || code === 403;
+}
 
 const SERIES_TTL_MS = 5 * 60 * 1000;
 
@@ -24,7 +43,7 @@ function mapStatus(status) {
 }
 
 function coverUrl(id) {
-  return id ? `${SITE_BASE}/api/v2/image/${id}/compressed` : undefined;
+  return id ? `${siteBase()}/api/v2/image/${id}/compressed` : undefined;
 }
 
 function names(list, pick) {
@@ -40,7 +59,7 @@ function searchResultToPartialManga(item) {
     ageRating: ageRatingFor(item),
     tags: names(item.genre_list, (g) => g && g.name),
     chapters: typeof item.current_books === 'number' ? item.current_books : undefined,
-    webURL: `${SITE_BASE}/series/${item.series_id}`,
+    webURL: `${siteBase()}/series/${item.series_id}`,
     medium: 'comics',
   };
 }
@@ -188,14 +207,7 @@ class Source {
     if (include.length || exclude.length) body.genres = { values: include, exclude };
     const path = `/api/v2/search/series?page=${page1Based - 1}&size=${size}` +
       (sort ? `&sort=${encodeURIComponent(sort)}` : '');
-    const script = `
-      __fetchJSON(${JSON.stringify(path)}, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: ${JSON.stringify(JSON.stringify(body))},
-      }).then(__reportResult, function (e) { __reportError('search failed: ' + e.message); });
-    `;
-    const json = await this._inPage(script);
+    const json = await this._post(path, body);
     const list = Array.isArray(json && json.content) ? json.content : [];
     const hasMore = json ? !json.last && list.length > 0 : false;
     return {
@@ -222,7 +234,7 @@ class Source {
         tags,
         author: writers.length ? writers.join(', ') : undefined,
         chapters: index && typeof index.count === 'number' ? index.count : undefined,
-        webURL: `${SITE_BASE}/series/${mangaId}`,
+        webURL: `${siteBase()}/series/${mangaId}`,
         medium: 'comics',
       },
     };
@@ -261,14 +273,17 @@ class Source {
   }
 
   async getChapterDetails(mangaId, chapterId) {
-    const result = await App.executeInWebView({
-      url: `${SITE_BASE}/series/${encodeURIComponent(mangaId)}/reader/${encodeURIComponent(chapterId)}`,
-      baseUrl: `${SITE_BASE}/`,
-      script: readerScript(chapterId),
-      timeoutMs: 170000,
-      runBeforePageScripts: true,
-    });
-    if ('error' in result) throw new Error('Kagane chapter fetch failed: ' + result.error);
+    const result = await this._onMirror(async (base) => {
+      const answer = await App.executeInWebView({
+        url: `${base}/series/${encodeURIComponent(mangaId)}/reader/${encodeURIComponent(chapterId)}`,
+        baseUrl: `${base}/`,
+        script: readerScript(chapterId),
+        timeoutMs: 170000,
+        runBeforePageScripts: true,
+      });
+      if ('error' in answer) throw new Error('Kagane chapter fetch failed: ' + answer.error);
+      return answer;
+    }, 2);
     const pages = Array.isArray(result.value) ? result.value : [];
     if (pages.length === 0) throw new Error('Kagane returned no pages for this chapter');
     return { id: chapterId, mangaId, pages };
@@ -311,30 +326,87 @@ class Source {
     }
   }
 
-  async _plain(path) {
-    const manager = App.createRequestManager({});
-    const request = App.createRequest({
-      url: `${SITE_BASE}${path}`,
-      method: 'GET',
-      headers: { Accept: 'application/json' },
-    });
-    const response = await manager.schedule(request);
-    if (response.status < 200 || response.status >= 300) {
-      throw new Error(`HTTP ${response.status}`);
+  async _onMirror(run, tries) {
+    const count = Math.min(tries || MIRRORS.length, MIRRORS.length);
+    let lastError = null;
+    for (let attempt = 0; attempt < count; attempt += 1) {
+      const ix = (mirrorIx + attempt) % MIRRORS.length;
+      try {
+        const result = await run(`https://${MIRRORS[ix]}`);
+        mirrorIx = ix;
+        return result;
+      } catch (e) {
+        lastError = e;
+        if (!mirrorFailed(e)) {
+          mirrorIx = ix;
+          throw e;
+        }
+        console.warn(`Kagane: ${MIRRORS[ix]} did not work (${e && e.message}), trying the next address`);
+      }
     }
-    return JSON.parse(response.data);
+    throw lastError;
+  }
+
+  async _plain(path) {
+    return this._onMirror(async (base) => {
+      const manager = App.createRequestManager({});
+      const request = App.createRequest({
+        url: `${base}${path}`,
+        method: 'GET',
+        headers: { Accept: 'application/json' },
+      });
+      const response = await manager.schedule(request);
+      if (response.status < 200 || response.status >= 300) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      return parseJsonBody(response.data);
+    });
+  }
+
+  async _post(path, body) {
+    try {
+      return await this._onMirror(async (base) => {
+        const manager = App.createRequestManager({});
+        const request = App.createRequest({
+          url: `${base}${path}`,
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Origin: base,
+            Referer: `${base}/`,
+          },
+          body: JSON.stringify(body),
+        });
+        const response = await manager.schedule(request);
+        if (response.status < 200 || response.status >= 300) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+        return parseJsonBody(response.data);
+      });
+    } catch (plainError) {
+      return this._inPage(`
+        __fetchJSON(${JSON.stringify(path)}, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: ${JSON.stringify(JSON.stringify(body))},
+        }).then(__reportResult, function (e) { __reportError('search failed: ' + e.message); });
+      `);
+    }
   }
 
   async _inPage(script) {
-    const result = await App.executeInWebView({
-      url: LIGHT_PAGE,
-      baseUrl: `${SITE_BASE}/`,
-      script,
-      timeoutMs: 170000,
-      runBeforePageScripts: false,
-    });
-    if ('error' in result) throw new Error('Kagane request failed: ' + result.error);
-    return result.value;
+    return this._onMirror(async (base) => {
+      const result = await App.executeInWebView({
+        url: `${base}/version.json`,
+        baseUrl: `${base}/`,
+        script,
+        timeoutMs: 170000,
+        runBeforePageScripts: false,
+      });
+      if ('error' in result) throw new Error('Kagane request failed: ' + result.error);
+      return result.value;
+    }, 2);
   }
 }
 

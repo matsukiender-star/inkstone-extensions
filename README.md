@@ -77,7 +77,7 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [Indomanhwa](comics/indomanhwa/index.js) | indomanhwa.com | Indonesian | Mature | 1.0.0 |
 | [InkStory](comics/inkstory/index.js) | inkstory.net | Russian | Mature | 1.1.0 |
 | [InManga](comics/inmanga/index.js) | inmanga.com | Spanish | Safe | 1.1.0 |
-| [Kagane](comics/kagane/index.js) | kagane.org | English | Safe | 1.2.0 |
+| [Kagane](comics/kagane/index.js) | kagane.org | English | Safe | 1.3.0 |
 | [Keikomik](comics/keikomik/index.js) | keikomik.net | Indonesian | Adult | 1.0.0 |
 | [Ken Scans](comics/kenscans/index.js) | kencomics.com | English | Mature | 1.0.0 |
 | [Kingofshojo](comics/kingofshojo/index.js) | kingofshojo.com | English | Adult | 1.0.0 |

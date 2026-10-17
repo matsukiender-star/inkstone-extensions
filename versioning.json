@@ -1956,16 +1956,24 @@
     {
       "id": "kagane",
       "name": "Kagane",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "medium": "comics",
       "website": "https://kagane.org",
-      "iconUrl": "https://kagane.org/favicons/apple-icon-180x180.png",
+      "iconUrl": "https://inkstone.web.app/kagane/icon.png",
       "hosts": [
         "kagane.org",
         "*.kagane.org",
+        "kagane.si",
+        "*.kagane.si",
+        "kagane.cx",
+        "*.kagane.cx",
+        "kagane.moe",
+        "*.kagane.moe",
+        "kagane.net",
+        "*.kagane.net",
         "kstatic.to"
       ],
-      "description": "Community reader aggregator (many scanlation groups upload to one platform, similar in spirit to MangaDex). Moved to kagane.org: the old kagane.to address no longer exists, and the site's API changed with the move. Browse feeds, search, details and chapter lists use the site's own JSON API (listings and search run inside a page of the site, because Cloudflare's check cannot be passed by a plain request). A chapter's full page list comes from the site's own reader page, since the request that returns it needs a token only the site's real page code can mint; the images then load from kstatic.to with no Referer. The site's Content and language settings are source settings here: content rating (Safe, 15+ or 18+, default 18+ so the app's own content settings blur or hide each title by its rating) and preferred chapter language (default English, or Any). Genre filters work (several included genres list titles with any of them). Per-title content rating is reflected per manga rather than hiding the whole source. Not yet tried inside the Boundless or Sumizuri app itself: everything was run against the live site in a real browser and in real WebKit. Titles rated 18+ show an age prompt in the site's reader; this source presses its 'Only this time' button for the reader, and that one step has only been tried against a stand-in page.",
+      "description": "Community reader aggregator (many scanlation groups upload to one platform, similar in spirit to MangaDex). The site now lives on four mirror addresses (kagane.si, kagane.cx, kagane.moe and kagane.net; kagane.org only lists them behind a Cloudflare check): this source uses the first one that answers and moves to the next when it stops. Browse feeds, search, details and chapter lists use the site's own JSON API with plain requests, with a call made inside a page of the site as the fallback when the app's own request is refused. A chapter's full page list comes from the site's own reader page, since the request that returns it needs a token only the site's real page code can mint; the images then load from kstatic.to with no Referer. The site's Content and language settings are source settings here: content rating (Safe, 15+ or 18+, default 18+ so the app's own content settings blur or hide each title by its rating) and preferred chapter language (default English, or Any). Genre filters work (several included genres list titles with any of them). Per-title content rating is reflected per manga rather than hiding the whole source. Not yet tried inside the Boundless or Sumizuri app itself: the API, the reader page and the extension's own reader script were run against the live mirrors in a real browser. Titles rated 18+ show an age prompt in the site's reader; this source presses its 'Only this time' button for the reader, and that one step has only been tried against a stand-in page.",
       "capabilities": [
         "browse",
         "search",
@@ -2258,7 +2266,7 @@
       ],
       "language": "en",
       "contentRating": "safe",
-      "sha256": "afc2a2de80b88035befe68a2b1462546e2770da956fc73da4a40e3e0521ab387"
+      "sha256": "afd3faabcc353a4747103eadbea3ffadbc8fc49dfbb0f9967d0603912912f377"
     },
     {
       "id": "mangafire",

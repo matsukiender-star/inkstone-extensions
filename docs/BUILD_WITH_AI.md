@@ -780,4 +780,5 @@ End with something the user can read in thirty seconds:
 | Reading a site's browser-fetched JSON by field name when the site scrambles the names | Empty lists and timeouts after a deploy, with the server-rendered pages still fine |
 | Counting timer ticks to measure a timeout in a web view | Twice as long, or never, in a view that holds timers back |
 | Keeping the old domain after the site moved | Every request fails at once (the name does not resolve) |
+| Treating a site's old address as dead when it still resolves but answers a challenge | It may now be only a directory of mirror addresses (a real browser shows a "Mirrors" page, curl gets a 403 challenge): open it in a browser, test each listed address with curl, and have the source try them in order and stay on the one that answers |
 | Changing how ids are built in an update | Saved library and history entries stop matching |
