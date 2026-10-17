@@ -55,7 +55,7 @@ function genresOf(novel) {
   return String((novel && novel.genres) || '')
     .split(',')
     .map((g) => cleanText(g))
-    .filter(Boolean);
+    .filter((g) => g && g.toLowerCase() !== 'unknown');
 }
 
 function isBlocked(novel) {
@@ -115,29 +115,49 @@ function toPartialManga(novel) {
 }
 
 function chapterText(blocks, name) {
-  const lines = blocks.map((b) => cleanText(b)).filter(Boolean);
+  const lines = blocks.map((b) => cleanText(String(b).replace(/\uFFFD+/g, ' '))).filter(Boolean);
   const squash = (s) => s.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '');
   if (lines.length > 1 && name && squash(lines[0]) === squash(name)) lines.shift();
   return lines.join('\n\n');
 }
 
-function htmlBlocks(html) {
+const ILLUSTRATION = '[Illustration]';
+const BLOCK_TAGS = new Set([
+  'p', 'div', 'section', 'article', 'blockquote', 'ul', 'ol', 'li', 'pre', 'figure',
+  'figcaption', 'table', 'tr', 'hr', 'br', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+]);
+
+function htmlLines(html) {
   const $ = cheerio.load(String(html || ''));
-  const images = $('img').length;
-  $('script, style, img').remove();
-  $('br').replaceWith('\n');
-  const blocks = [];
-  $('p, h1, h2, h3, h4, h5, h6, li').each((_, el) => {
-    String($(el).text())
-      .split(/\n/)
-      .forEach((line) => blocks.push(line));
-  });
-  if (blocks.filter((b) => cleanText(b)).length === 0) {
-    String($.root().text())
-      .split(/\n/)
-      .forEach((line) => blocks.push(line));
-  }
-  return { blocks, images };
+  const lines = [];
+  let line = '';
+  const flush = () => {
+    const text = cleanText(line);
+    if (text) lines.push(text);
+    line = '';
+  };
+  const walk = (nodes) => {
+    nodes.each((_, node) => {
+      if (node.type === 'text') {
+        line += node.data;
+        return;
+      }
+      if (node.type !== 'tag') return;
+      const tag = String(node.name || '').toLowerCase();
+      if (tag === 'img') {
+        flush();
+        lines.push(ILLUSTRATION);
+        return;
+      }
+      const block = BLOCK_TAGS.has(tag);
+      if (block) flush();
+      walk($(node).contents());
+      if (block) flush();
+    });
+  };
+  walk($.root().contents());
+  flush();
+  return lines;
 }
 
 class Source {
@@ -237,17 +257,18 @@ class Source {
       const chapter = (json && json.chapter) || {};
       text = chapterText(String(chapter.content || '').replace(/\r\n?/g, '\n').split('\n'), chapter.name);
     } catch (e) {
-      if (!/HTTP 404/.test(String(e && e.message))) throw e;
+      if (!/HTTP 404 \(Chapter does not exist\)/.test(String(e && e.message))) throw e;
       missing = e;
     }
     if (text) return { id: chapterId, mangaId, pages: [], text };
 
     let sources = [];
+    let lookupFailed = false;
     try {
       const json = await this._get(`/novels/${id}/sources`);
       sources = Array.isArray(json && json.sources) ? json.sources : [];
     } catch (e) {
-      sources = [];
+      lookupFailed = true;
     }
     let pictures = 0;
     for (let i = 0; i < sources.length; i += 1) {
@@ -255,12 +276,15 @@ class Source {
       try {
         json = await this._get(`/novels/${id}/sources/${encodeURIComponent(sources[i].id)}/chapters/${number}`);
       } catch (e) {
+        if (!/HTTP 404/.test(String(e && e.message))) lookupFailed = true;
         continue;
       }
-      const { blocks, images } = htmlBlocks(json && json.content_html);
-      const body = chapterText(blocks, json && json.title);
-      if (body) return { id: chapterId, mangaId, pages: [], text: body };
-      pictures = Math.max(pictures, images);
+      const lines = htmlLines(json && json.content_html);
+      const words = lines.filter((l) => l !== ILLUSTRATION);
+      if (words.length > 0) {
+        return { id: chapterId, mangaId, pages: [], text: chapterText(lines, json && json.title) };
+      }
+      pictures = Math.max(pictures, lines.length - words.length);
     }
     if (pictures > 0) {
       return {
@@ -270,6 +294,16 @@ class Source {
         text:
           `This chapter is only ${pictures === 1 ? 'an illustration' : `${pictures} illustrations`}, ` +
           `and the text reader cannot show pictures.\n\nIt can be opened on the site: ${SITE_BASE}/reader?novel=${mangaId}&chapter=${number}`,
+      };
+    }
+    if (missing && !lookupFailed) {
+      return {
+        id: chapterId,
+        mangaId,
+        pages: [],
+        text:
+          `Novel Archive lists this chapter but has no text for it, so it is missing on the site itself and there is nothing to retry. ` +
+          `The next chapter reads normally.\n\nThe site's page for it: ${SITE_BASE}/reader?novel=${mangaId}&chapter=${number}`,
       };
     }
     throw missing || new Error('NovelArchive returned no text for this chapter');
