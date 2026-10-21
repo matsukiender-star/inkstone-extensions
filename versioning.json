@@ -3229,6 +3229,143 @@
       "sha256": "12a8574d64023c74cb420b66f4f08045b517316452db8a1bf384d835dd979044"
     },
     {
+      "id": "qimanga",
+      "name": "Qi Manga",
+      "version": "1.1.0",
+      "medium": "both",
+      "website": "https://qimanga.com",
+      "iconUrl": "https://inkstone.web.app/qimanga/icon.png",
+      "hosts": [
+        "qimanga.com",
+        "*.qimanga.com",
+        "qimanhwa.com",
+        "*.qimanhwa.com",
+        "qiscans.org",
+        "*.qiscans.org",
+        "quantumscans.org",
+        "*.quantumscans.org"
+      ],
+      "description": "The reading site of the Qi Scans group, the merger of Night Scans, Aurora Scans, Quantum Scans and LS Comic (about a thousand series: manhwa, manhua, manga and a few novels), with four browse feeds (latest updated, newest, popular, A-Z), a 65 entry genre filter (one genre at a time), search, full details, complete chapter lists and reading, comics as images and novels as text. The site has no adult category; its only sensitive tags are Ecchi and Mature (17 series), which are rated 16 per title, so the source is rated safe. The newest chapters of a series cost coins on the site: those are named (Locked, 50 coins), a paid comic chapter opens as an error that says so and a paid novel chapter as a short note; the site makes them free later and the API does not say when, so no countdown is shown. Optional sign-in: enter your Qi Manga email and password in this source's settings and the chapters your account has unlocked open here (email accounts only, not Google or Discord; it never buys anything, and this part has not been tried with a real account). Eight novels the site has moved to its sister sites are left out (Exnovels has them). Covers are the site's original files (median about 200 KB, some over 1 MB) and it offers no thumbnail size. The site allows 60 requests per 30 seconds, so requests are held to 2 a second. Not yet tried inside the Boundless or Sumizuri app itself: the whole API was run against the live site with plain requests and in the app's own engine on a Mac.",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "en",
+      "contentRating": "safe",
+      "settingsSchema": [
+        {
+          "type": "section",
+          "label": "Account (optional)"
+        },
+        {
+          "type": "text",
+          "key": "email",
+          "label": "Email",
+          "placeholder": "Your Qi Manga email"
+        },
+        {
+          "type": "text",
+          "key": "password",
+          "label": "Password",
+          "secure": true,
+          "placeholder": "Not for Google or Discord sign-ins"
+        }
+      ],
+      "sha256": "7ac2bfd4cb3f7f9c6d4a8b6124bfb5ec497db9322fa26416fc19bb58434deb92"
+    },
+    {
+      "id": "exnovels",
+      "name": "Exnovels",
+      "version": "1.0.0",
+      "medium": "novel",
+      "website": "https://exnovels.com",
+      "iconUrl": "https://inkstone.web.app/exnovels/icon.png",
+      "hosts": [
+        "exnovels.com",
+        "*.exnovels.com",
+        "shadownovels.com",
+        "*.shadownovels.com"
+      ],
+      "description": "EXTRA novels, the novel sister site of Qi Manga (191 translated web novels) with four browse feeds (latest updated, newest, popular, A-Z), a 26 entry genre filter (one genre at a time), search, full details, complete chapter lists and in-app prose reading. The site has no adult or suggestive category, so the source is rated safe. Many chapters cost coins on the site (30 to 50 each): those are named (Locked, 30 coins) and open as a short note that says so; the site makes them free later and the API does not say when, so no countdown is shown. Optional sign-in: enter your Exnovels email and password in this source's settings and the chapters your account has unlocked open here (email accounts only, not Google or Discord; it never buys anything, and this part has not been tried with a real account). The site allows 60 requests per 30 seconds, so requests are held to 2 a second. Not yet tried inside the Boundless or Sumizuri app itself: the API was run against the live site with plain requests.",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "en",
+      "contentRating": "safe",
+      "settingsSchema": [
+        {
+          "type": "section",
+          "label": "Account (optional)"
+        },
+        {
+          "type": "text",
+          "key": "email",
+          "label": "Email",
+          "placeholder": "Your Exnovels email"
+        },
+        {
+          "type": "text",
+          "key": "password",
+          "label": "Password",
+          "secure": true,
+          "placeholder": "Not for Google or Discord sign-ins"
+        }
+      ],
+      "sha256": "889bd8ee17a9a74fb096758a07d640a2eb8d3b9ead45a4b32108fb0e294977c8"
+    },
+    {
+      "id": "ezmanga",
+      "name": "EzManga",
+      "version": "1.0.0",
+      "medium": "both",
+      "website": "https://ezmanga.org",
+      "iconUrl": "https://inkstone.web.app/ezmanga/icon.png",
+      "hosts": [
+        "ezmanga.org",
+        "*.ezmanga.org"
+      ],
+      "description": "A manhwa reading site (about 800 series, mostly shoujo and josei romance and fantasy) with four browse feeds (latest updated, newest, popular, A-Z), a 40 entry genre filter (one genre at a time), search, full details, complete chapter lists and reading. The site has no adult category (its only sensitive tag is GORE on one series, rated 16 per title), so the source is rated safe. The newest chapters of a series cost coins on the site: those are named (Locked, 100 coins), a paid chapter opens as an error that says so and the site makes them free later; the API does not say when, so no countdown is shown. Optional sign-in: enter your EzManga email and password in this source's settings and the chapters your account has unlocked open here (email accounts only, not Google or Discord; it never buys anything, and this part has not been tried with a real account). The website itself refuses anything that is not a browser, so this source talks to the site's own API host only. One series the site has moved to another site is left out. Covers are the site's original files (median about 340 KB, some over 1 MB) and it offers no thumbnail size. The site allows 60 requests per 30 seconds, so requests are held to 2 a second. Not yet tried inside the Boundless or Sumizuri app itself: the API was run against the live site with plain requests.",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "en",
+      "contentRating": "safe",
+      "settingsSchema": [
+        {
+          "type": "section",
+          "label": "Account (optional)"
+        },
+        {
+          "type": "text",
+          "key": "email",
+          "label": "Email",
+          "placeholder": "Your EzManga email"
+        },
+        {
+          "type": "text",
+          "key": "password",
+          "label": "Password",
+          "secure": true,
+          "placeholder": "Not for Google or Discord sign-ins"
+        }
+      ],
+      "sha256": "1d98baa4ac94befebbb33a6cff50355c88a81f997b0f9d73b1d49099fd1c313b"
+    },
+    {
       "id": "anizone",
       "name": "AniZone",
       "version": "1.0.0",

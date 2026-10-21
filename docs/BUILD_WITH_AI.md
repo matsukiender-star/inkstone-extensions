@@ -297,10 +297,11 @@ Some sites open more chapters to a signed-in or paying reader. An extension can 
 - Declare the fields in `settingsSchema` (`secure: true` hides a password). Never put credentials in the code, and never log a password or a token.
 - Find the exact sign-in calls in the site's own login page script instead of guessing them. Keep the token with `App.createSourceStateManager()`, reuse it for a few hours, and renew it once when a request is refused. Put a ceiling on every retry (one sign-in attempt a minute, say), so a site that never signs you in can't cause a loop. List the login host in `hosts` as well.
 - If the site's sign-in is built to resist scripts (an encrypted password, captchas, security emails, device checks), don't script it, because that can lock the reader's account. Take the session cookies from a browser the reader is already signed in with, as `secure` settings, and send them only to that site.
+- A site that keeps the login in cookies (its own client sends every call "with credentials" and sets no Authorization header) needs its cookies handled by hand: the app has no cookie jar for an ordinary extension. Read `set-cookie` from the sign-in reply (several arrive as one string joined by a bare comma, and an `Expires` date has a comma in it too, so split only at a comma that is followed by `name=`), keep the name and value pairs with `App.createSourceStateManager()`, send them as a `Cookie` header only on the calls that depend on the account (and only to that site's own hosts), merge any fresh `set-cookie` a later reply brings, drop one the site expires (`Max-Age=0`), and when a call answers 401 try the site's refresh call once, then sign in once more, then read anonymously. Never call a site's buy or unlock endpoint: the account is for reading what the reader already has.
 - Content that only a login opens keeps its rating (a 19+ title is `ageRating: 18`).
 - Never ask the user for a password or a cookie in the chat. You can't test a signed-in path without an account, so test it against a mock server, and write "not tested with a real account" in your report and in the `description`.
 
-`asurascans` and `mangatoon` sign in with an email and password, and `navercomic` uses session cookies.
+`asurascans` and `mangatoon` sign in with an email and password, `navercomic` uses session cookies, and `qimanga`, `exnovels` and `ezmanga` sign in with an email and password and keep the login in cookies (not tried with a real account).
 
 ### When the site needs the web view
 
