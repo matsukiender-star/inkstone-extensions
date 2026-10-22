@@ -1,7 +1,7 @@
 # extensions/chikari Specification
 
 ## Purpose
-Chikari (chikari.moe): Manga, manhwa, manhua and light novels from Chikari's on-site JSON API: two real catalogs, not one relabeled as the other. Four browse feeds, genre filtering, full in-app reading for both comics and light novels.
+Chikari (chikari.moe): Manga, Manhwa, Manhua and Light Novels; catalog of 3,000+ titles
 
 ## Requirements
 

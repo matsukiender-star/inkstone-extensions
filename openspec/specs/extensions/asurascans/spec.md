@@ -1,7 +1,7 @@
 # extensions/asurascans Specification
 
 ## Purpose
-AsuraScans (asurascans.com): Manhwa, manhua and the new Asura novels from AsuraScans' public JSON API: two real catalogs. Five browse feeds, genre filtering, search, and full reading for both. Locked chapters are marked: comics still in the 6-hour early-access window show a live countdown, and premium novel chapters show their shard price, with a clear note when you open one. Optionally sign in with your Asura account in the source's settings and a premium plan reads them in the app.
+AsuraScans (asurascans.com): Manhwa, Manhua and Novels; catalog of 300+ titles; restrictions: Locked Chapters
 
 ## Requirements
 

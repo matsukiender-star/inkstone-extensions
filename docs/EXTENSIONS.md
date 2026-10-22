@@ -248,12 +248,38 @@ your-repo/
 
 The app resolves each bundle as `<repo>/<id>/index.js`, so the folder name must
 equal the `id`. In the Inkstone repository the folder sits inside `comics/`, `novels/`,
-`mixed/` or `anime/`, and the site serves it without that folder. `description` and `capabilities` are landing-page-only and
-never read by the app itself, but `medium`, `website`, `iconUrl`, `language`,
-`contentRating`, `minApiVersion` and `settingsSchema` are all read and copied
+`mixed/` or `anime/`, and the site serves it without that folder. `capabilities` is a
+landing-page-only label the app never reads, but `description`, `medium`, `website`,
+`iconUrl`, `language`, `contentRating`, `minApiVersion` and `settingsSchema` are all read and copied
 onto the installed record at install/update time. They drive real
 in-app behavior (category filtering, the source icon, content-rating gating,
 per-source settings screens), not just this repo's own listing pages.
+
+`description` is shown by the app (its first line on the source cards, the whole text on
+the source's own page) and on the website, so it has a short fixed shape:
+
+```
+Manga・Manhwa・Manhua・Light Novels
+
+Catalog・10,000+
+
+Restrictions:
+・Cloudflare Checks
+・Rate Limit
+```
+
+- Line one lists what the source offers, joined with the middle dot `・`: Manga, Manhwa, Manhua,
+  Webtoons, Comics, Web Novels, Light Novels, Novels.
+- `Catalog・` is how many titles the source lists, rounded down to one significant digit with a
+  plus (`300+`, `1,000+`, `20,000+`, `100,000+`). Count it, do not guess it: leave the line out if you
+  could not measure it.
+- `Restrictions:` names only real ones you saw, one per line: `Cloudflare Checks` (the app has to
+  clear a Cloudflare challenge first), `Rate Limit` (the extension holds its requests back, or the
+  site slows you down), `Locked Chapters` (paid or on a timer), `Web View` (pages load in a web
+  view, so it is slower). Leave the whole section out when there is none.
+
+Anything longer, such as what you could not test, belongs in the comment at the top of
+`index.js` and in your pull request report, not in the description.
 
 ### Settings: the optional `settingsSchema` field
 

@@ -66,7 +66,7 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [ComicLand](comics/comicland/index.js) | comicland.org | English | Adult | 1.0.0 |
 | [Dynasty Scans](comics/dynastyscans/index.js) | dynasty-scans.com | English | Mature | 1.0.0 |
 | [Eva Scans](comics/evascans/index.js) | evascans.net | English | Safe | 1.0.0 |
-| [EzManga](mixed/ezmanga/index.js) | ezmanga.org | English | Safe | 1.0.0 |
+| [EzManga](mixed/ezmanga/index.js) | ezmanga.org | English | Safe | 1.0.1 |
 | [Flame Scans](comics/flamescans/index.js) | flamecomics.xyz | English | Safe | 1.0.0 |
 | [GakaMangas](comics/gakamangas/index.js) | gakamangas.com | English | Safe | 1.0.0 |
 | [GD Scans](comics/gdscans/index.js) | gdscans.com | English | Adult | 1.0.0 |
@@ -136,7 +136,7 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [Nyx Scans](comics/nyxscans/index.js) | nyxscans.com | English | Safe | 1.0.0 |
 | [Olympus Scanlation](comics/olympusscans/index.js) | olympusbiblioteca.com | Spanish | Adult | 1.0.2 |
 | [Orion Scans](comics/orionscans/index.js) | orion-scans.com | English | Safe | 1.0.0 |
-| [Qi Manga](mixed/qimanga/index.js) | qimanga.com | English | Safe | 1.1.0 |
+| [Qi Manga](mixed/qimanga/index.js) | qimanga.com | English | Safe | 1.1.1 |
 | [Rackus](comics/rackus/index.js) | rackusreads.com | English | Safe | 1.0.0 |
 | [Raven Scans](comics/ravenscans/index.js) | ravenscans.org | English | Adult | 1.0.0 |
 | [Rawkuma](comics/rawkuma/index.js) | rawkuma.net | Japanese | Adult | 1.0.1 |
@@ -174,8 +174,8 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [Atsumaru](mixed/atsu/index.js) | atsu.moe | English | Mature | 1.0.1 |
 | [Chikari](mixed/chikari/index.js) | chikari.moe | English | Adult | 4.4.0 |
 | [Dreame](novels/dreame/index.js) | dreame.com | English | Adult | 1.2.0 |
-| [Exnovels](novels/exnovels/index.js) | exnovels.com | English | Safe | 1.0.0 |
-| [EzManga](mixed/ezmanga/index.js) | ezmanga.org | English | Safe | 1.0.0 |
+| [Exnovels](novels/exnovels/index.js) | exnovels.com | English | Safe | 1.0.1 |
+| [EzManga](mixed/ezmanga/index.js) | ezmanga.org | English | Safe | 1.0.1 |
 | [FreeWebNovel](novels/freewebnovel/index.js) | freewebnovel.com | English | Adult | 1.2.2 |
 | [GoodNovel](novels/goodnovel/index.js) | goodnovel.com | English | Adult | 1.2.1 |
 | [JJWXC](novels/jjwxc/index.js) | jjwxc.net | Chinese | Mature | 1.3.0 |
@@ -185,7 +185,7 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [NovelBuddy](novels/novelbuddy/index.js) | novelbuddy.me | English | Adult | 1.2.0 |
 | [NovelFire](novels/novelfire/index.js) | novelfire.net | English | Adult | 2.6.0 |
 | [NovelFull](novels/novelfull/index.js) | novelfull.net | English | Adult | 1.1.0 |
-| [Qi Manga](mixed/qimanga/index.js) | qimanga.com | English | Safe | 1.1.0 |
+| [Qi Manga](mixed/qimanga/index.js) | qimanga.com | English | Safe | 1.1.1 |
 | [Qidian](novels/qidian/index.js) | qidian.com | Chinese | Safe | 1.2.0 |
 | [Ranobes](novels/ranobes/index.js) | ranobes.top | English | Adult | 1.1.1 |
 | [ReadNovelFull](novels/readnovelfull/index.js) | readnovelfull.com | English | Adult | 1.1.1 |

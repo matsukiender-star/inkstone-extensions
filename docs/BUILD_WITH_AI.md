@@ -489,6 +489,7 @@ if (existsSync(listPath)) {
     check(isUrl(entry.website), 'website is a full URL');
     check(/^[a-z]{2,3}$/.test(entry.language ?? ''), 'language is a short code like en', entry.language);
     check(entry.description && entry.capabilities?.length, 'has a description and capabilities');
+    if ((entry.description ?? '').length > 300) say('warn', 'description is long', `${entry.description.length} characters: keep the short shape (a line of types, a Catalog line, a Restrictions list) and put the rest in the file header and your report`);
     const digest = createHash('sha256').update(readFileSync(file)).digest('hex');
     if (entry.sha256) check(entry.sha256 === digest, 'sha256 matches the file', entry.sha256 === digest ? '' : 'run shasum -a 256 and update it');
     else say('warn', 'no sha256 yet', `shasum -a 256 gives ${digest.slice(0, 12)}...`);
@@ -701,7 +702,7 @@ Add an entry to `versioning.json`, and make the folder name equal the `id`:
   "medium": "comics",
   "website": "https://mysite.com",
   "iconUrl": "https://mysite.com/apple-touch-icon.png",
-  "description": "What it covers, which feeds it has, and anything that doesn't work.",
+  "description": "Manga・Manhwa・Manhua\n\nCatalog・1,000+\n\nRestrictions:\n・Rate Limit",
   "capabilities": ["browse", "search", "genres", "details", "chapters", "reader"],
   "language": "en",
   "contentRating": "safe",
@@ -713,7 +714,19 @@ Add an entry to `versioning.json`, and make the folder name equal the `id`:
 - `medium` is `comics`, `novel` or `both`. `language` is a two-letter code. `capabilities` lists what really works.
 - `contentRating` is `safe`, `mature` or `adult`, based on what you saw in Step 1. When in doubt, go one step stricter.
 - `hosts` lists every host the extension talks to. Boundless refuses requests to anything else. Image hosts aren't covered by it, but list them anyway.
-- `description` should say what's missing, and what you couldn't test (no real account, a browser tab instead of the app). A description that overclaims costs the next person a debugging session.
+- `description` is shown in the app (the first line on the source cards, the whole text on the source's page) and on the website, so it is short and has a fixed shape:
+
+  ```
+  Manga・Manhwa・Manhua・Light Novels
+
+  Catalog・10,000+
+
+  Restrictions:
+  ・Cloudflare Checks
+  ・Rate Limit
+  ```
+
+  Line one lists what the source offers, joined with the middle dot `・`: Manga, Manhwa, Manhua, Webtoons, Comics, Web Novels, Light Novels, Novels. `Catalog・` is how many titles the source lists, rounded down to one significant digit with a plus (`300+`, `1,000+`, `20,000+`, `100,000+`): count it by paging the source's own list, never guess, and leave the line out when you could not measure it. `Restrictions:` names only real ones you saw, one per line: `Cloudflare Checks` (the app has to clear a Cloudflare challenge first), `Rate Limit` (the extension holds requests back, or the site slows you down), `Locked Chapters` (paid or on a timer), `Web View` (pages load in a web view, so it is slower). Leave the whole section out when there is none. What is missing and what you couldn't test (no real account, a browser tab instead of the app) goes in the comment at the top of `index.js` and in your report below, not in the description. An extension that overclaims costs the next person a debugging session, so say it there.
 - If your code reads a setting, declare it in `settingsSchema` (see Settings above), or nobody can change it. `capabilities` only labels the listing: the app never reads it.
 - `author` is optional. Add your name or handle to get credit on the catalog. `authorUrl` can link it to your profile.
 - Get the hash with `shasum -a 256 mysite/index.js`. **Redo it every time the file changes.** A stale hash makes Boundless refuse the install.

@@ -9,7 +9,7 @@
       "version": "2.4.0",
       "medium": "both",
       "website": "https://asurascans.com",
-      "description": "Manhwa, manhua and the new Asura novels from AsuraScans' public JSON API: two real catalogs. Five browse feeds, genre filtering, search, and full reading for both. Locked chapters are marked: comics still in the 6-hour early-access window show a live countdown, and premium novel chapters show their shard price, with a clear note when you open one. Optionally sign in with your Asura account in the source's settings and a premium plan reads them in the app.",
+      "description": "Manhwa・Manhua・Novels\n\nCatalog・300+\n\nRestrictions:\n・Locked Chapters",
       "capabilities": [
         "browse",
         "search",
@@ -50,7 +50,7 @@
       "version": "4.4.0",
       "medium": "both",
       "website": "https://chikari.moe",
-      "description": "Manga, manhwa, manhua and light novels from Chikari's on-site JSON API: two real catalogs, not one relabeled as the other. Four browse feeds, genre filtering, full in-app reading for both comics and light novels.",
+      "description": "Manga・Manhwa・Manhua・Light Novels\n\nCatalog・3,000+",
       "capabilities": [
         "browse",
         "search",
@@ -70,7 +70,7 @@
       "version": "2.6.0",
       "medium": "novel",
       "website": "https://novelfire.net",
-      "description": "Web and light novels scraped from NovelFire. Browse, search, genres, details, chapter lists and full in-app prose reading all work.",
+      "description": "Web Novels・Light Novels\n\nCatalog・10,000+\n\nRestrictions:\n・Rate Limit",
       "capabilities": [
         "browse",
         "search",
@@ -90,7 +90,7 @@
       "version": "1.2.1",
       "medium": "comics",
       "website": "https://toonily.com",
-      "description": "Actively maintained manhwa and webtoon platform. Browse latest and trending, search, full chapter reading, and related-title suggestions from the site's own \"Similar Manhwa\" recommendations, verified end to end against the live site.",
+      "description": "Manhwa・Webtoons\n\nRestrictions:\n・Cloudflare Checks",
       "capabilities": [
         "browse",
         "search",
@@ -110,7 +110,7 @@
       "version": "1.1.3",
       "medium": "comics",
       "website": "https://mangakatana.com",
-      "description": "Manga and manhwa with a smooth reading experience and a large catalog. Browse, search, genre filtering, and full chapter reading.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・10,000+",
       "capabilities": [
         "browse",
         "search",
@@ -130,7 +130,7 @@
       "version": "1.3.0",
       "medium": "comics",
       "website": "https://mangabuddy1.co.uk",
-      "description": "Fast-updating manga and manhwa platform known for same-day releases. Browse, search, and full chapter reading via JSON API.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・60,000+",
       "capabilities": [
         "browse",
         "search",
@@ -149,7 +149,7 @@
       "version": "1.2.0",
       "medium": "comics",
       "website": "https://www.mangakakalot.gg",
-      "description": "Manhua-focused platform with a real chapters API and daily-updated releases. Browse, search, genre filtering, and full chapter reading.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・90,000+\n\nRestrictions:\n・Cloudflare Checks",
       "capabilities": [
         "browse",
         "search",
@@ -168,7 +168,7 @@
       "version": "1.2.0",
       "medium": "comics",
       "website": "https://natomanga.com",
-      "description": "Manganato's official successor site. Sits behind a Cloudflare check that doesn't always clear automatically. If a library won't load, open it once and solve the prompt when it appears.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・90,000+\n\nRestrictions:\n・Cloudflare Checks",
       "capabilities": [
         "browse",
         "search",
@@ -188,7 +188,7 @@
       "version": "1.0.0",
       "medium": "novel",
       "website": "https://www.royalroad.com",
-      "description": "The largest original web fiction platform. Eight browse feeds, genre and tags filtering, search, and full in-app prose reading.",
+      "description": "Web Novels\n\nRestrictions:\n・Cloudflare Checks",
       "capabilities": [
         "browse",
         "search",
@@ -208,7 +208,7 @@
       "version": "1.0.1",
       "medium": "comics",
       "website": "https://mangafreak.me",
-      "description": "Accessible manga platform with no Cloudflare blocks. Browse feeds (New Release, Manga List, Genre), genre filtering, search, and full chapter reading.",
+      "description": "Manga・Manhwa\n\nCatalog・9,000+",
       "capabilities": [
         "browse",
         "search",
@@ -228,7 +228,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://flamecomics.xyz",
-      "description": "Manhwa, manhua and manga platform served via Next.js data. Browse, latest updates, genre filtering, search, and full chapter reading.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・100+",
       "capabilities": [
         "browse",
         "search",
@@ -250,7 +250,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://mangapill.com",
-      "description": "Manga platform (note: dropped manhwa support). Two browse feeds, a 46-entry genre search with pagination, and full chapter reading.",
+      "description": "Manga",
       "capabilities": [
         "browse",
         "search",
@@ -270,7 +270,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://www.mgeko.cc",
-      "description": "Manga, manhwa and manhua platform with nine sort-based browse feeds, genre filtering, search, and full chapter reading.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・8,000+",
       "capabilities": [
         "browse",
         "search",
@@ -290,7 +290,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://manhuaplus.org",
-      "description": "Manga, manhua and manhwa platform with four browse feeds, genre filtering, search, and full chapter reading.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・700+",
       "capabilities": [
         "browse",
         "search",
@@ -310,7 +310,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://kingofshojo.com",
-      "description": "Shoujo and romance-focused manga, manhwa and manhua platform. Five browse feeds, 152-entry genre filter, search, and full chapter reading.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・4,000+",
       "capabilities": [
         "browse",
         "search",
@@ -330,7 +330,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://weebcentral.com",
-      "description": "Advanced manga, manhwa and manhua platform with five browse feeds, 38-tag genre filter, search, and full chapter reading.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・10,000+",
       "capabilities": [
         "browse",
         "search",
@@ -350,7 +350,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://komiku.org",
-      "description": "Indonesian-language manga, manhwa and manhua platform. Six browse feeds, 108-entry genre filter, search, and full chapter reading.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・7,000+",
       "capabilities": [
         "browse",
         "search",
@@ -370,7 +370,7 @@
       "version": "1.1.0",
       "medium": "comics",
       "website": "https://hivetoons.org",
-      "description": "Manhwa and manhua platform with six browse feeds, a live genre filter, search, and full chapter reading.",
+      "description": "Manhwa・Manhua\n\nCatalog・300+\n\nRestrictions:\n・Locked Chapters",
       "capabilities": [
         "browse",
         "search",
@@ -390,7 +390,7 @@
       "version": "1.1.0",
       "medium": "comics",
       "website": "https://www.mangahere.cc",
-      "description": "Long-running English manga platform. Seven browse feeds, 37-entry genre filter, search, and full chapter reading.",
+      "description": "Manga\n\nCatalog・30,000+",
       "capabilities": [
         "browse",
         "search",
@@ -410,7 +410,7 @@
       "version": "1.0.1",
       "medium": "comics",
       "website": "https://rawkuma.net",
-      "description": "Raw (untranslated) Japanese manga platform. Five browse feeds, 47-entry genre filter, search, and full chapter reading.",
+      "description": "Manga\n\nCatalog・9,000+",
       "capabilities": [
         "browse",
         "search",
@@ -429,7 +429,7 @@
       "version": "1.0.1",
       "medium": "comics",
       "website": "https://tritinia.org",
-      "description": "Manga platform with six browse feeds, 46-entry genre filter, search, and full chapter reading.",
+      "description": "Manga\n\nCatalog・50+",
       "capabilities": [
         "browse",
         "search",
@@ -449,7 +449,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://mangadistrict.com",
-      "description": "Manga and manhwa platform with 104-entry genre list including adult content. Six browse feeds, genre filtering, search, and full chapter reading.",
+      "description": "Manga・Manhwa\n\nCatalog・5,000+",
       "capabilities": [
         "browse",
         "search",
@@ -469,7 +469,7 @@
       "version": "1.0.1",
       "medium": "comics",
       "website": "https://m.manhuagui.com",
-      "description": "Simplified Chinese comics platform. Three browse feeds, 40-entry region/genre filter, search, and full chapter reading.",
+      "description": "Manga・Manhua\n\nRestrictions:\n・Rate Limit",
       "capabilities": [
         "browse",
         "search",
@@ -489,7 +489,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://www.scan-vf.net",
-      "description": "French-language fan-scan platform. 26 titles with catalog browsing, genre filtering, search, and full chapter reading.",
+      "description": "Manga\n\nCatalog・20+",
       "capabilities": [
         "browse",
         "search",
@@ -509,7 +509,7 @@
       "version": "1.1.0",
       "medium": "comics",
       "website": "https://inmanga.com",
-      "description": "Spanish-language manga platform. Six browse feeds, title search, and full chapter reading.",
+      "description": "Manga\n\nCatalog・5,000+",
       "capabilities": [
         "browse",
         "search",
@@ -528,7 +528,7 @@
       "version": "1.0.2",
       "medium": "comics",
       "website": "https://olympusbiblioteca.com",
-      "description": "Spanish-language manhwa and manhua platform. Three browse feeds, 69-entry genre filter, search, and full chapter reading.",
+      "description": "Manhwa・Manhua\n\nCatalog・800+",
       "capabilities": [
         "browse",
         "search",
@@ -548,7 +548,7 @@
       "version": "1.2.0",
       "medium": "novel",
       "website": "https://novelbuddy.me",
-      "description": "Web and light novel platform with Latest and Ranking feeds, 45-entry genre filter, search, and full in-app prose reading.",
+      "description": "Web Novels・Light Novels\n\nCatalog・10,000+",
       "capabilities": [
         "browse",
         "search",
@@ -568,7 +568,7 @@
       "version": "1.2.0",
       "medium": "comics",
       "website": "https://www.mangatown.com",
-      "description": "Long-running English manga platform. Five browse feeds, 34-entry genre filter, search, and full chapter reading.",
+      "description": "Manga\n\nCatalog・20,000+",
       "capabilities": [
         "browse",
         "search",
@@ -588,7 +588,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://manhwatop.com",
-      "description": "Manhwa, manhua and manga platform with six browse feeds, 41-entry genre filter, search, and full chapter reading.",
+      "description": "Manga・Manhwa・Manhua\n\nRestrictions:\n・Cloudflare Checks",
       "capabilities": [
         "browse",
         "search",
@@ -607,7 +607,7 @@
       "version": "1.1.0",
       "medium": "comics",
       "website": "https://kunmanga.com",
-      "description": "Manhwa platform with six browse feeds, 98-entry genre filter, search, and full chapter reading.",
+      "description": "Manhwa\n\nRestrictions:\n・Cloudflare Checks",
       "capabilities": [
         "browse",
         "search",
@@ -626,7 +626,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://manhwaclan.com",
-      "description": "Manga, manhwa and manhua platform with six browse feeds, 44-entry genre filter, search, and full chapter reading.",
+      "description": "Manga・Manhwa・Manhua\n\nRestrictions:\n・Cloudflare Checks",
       "capabilities": [
         "browse",
         "search",
@@ -645,7 +645,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://www.webtoons.com",
-      "description": "Naver's official WEBTOON Originals platform. Eight weekday-schedule browse feeds, 17-genre filter, search, and full chapter reading.",
+      "description": "Webtoons",
       "capabilities": [
         "browse",
         "search",
@@ -665,7 +665,7 @@
       "version": "1.1.0",
       "medium": "novel",
       "website": "https://novelfull.net",
-      "description": "Web and light novel platform with four browse feeds, 56-entry genre filter, search, and full in-app prose reading.",
+      "description": "Web Novels・Light Novels\n\nRestrictions:\n・Cloudflare Checks",
       "capabilities": [
         "browse",
         "search",
@@ -685,7 +685,7 @@
       "medium": "novel",
       "website": "https://readnovelfull.com",
       "iconUrl": "https://readnovelfull.com/img/favicon.ico",
-      "description": "Web and light novel platform with four browse feeds, live genre filter, search, and full in-app prose reading.",
+      "description": "Web Novels・Light Novels\n\nCatalog・2,000+",
       "capabilities": [
         "browse",
         "search",
@@ -705,7 +705,7 @@
       "medium": "comics",
       "website": "https://truyenqqgo.com",
       "iconUrl": "https://st.truyenqqko.com/template/frontend/images/icon/apple-touch-icon-144x144.png",
-      "description": "Vietnamese-language manga, manhwa and manhua platform. Eight browse feeds, 46-entry genre filter, search, and full chapter reading.",
+      "description": "Manga・Manhwa・Manhua\n\nRestrictions:\n・Cloudflare Checks",
       "capabilities": [
         "browse",
         "search",
@@ -724,7 +724,7 @@
       "version": "1.2.2",
       "medium": "novel",
       "website": "https://freewebnovel.com",
-      "description": "Web and light novel platform with four browse feeds, a 38 entry genre filter, search, full details, complete chapter lists and in-app prose reading. The site writes its own address into chapter text in a different styled-letter spelling on every request; that watermark is removed from the text you read.",
+      "description": "Web Novels・Light Novels\n\nRestrictions:\n・Cloudflare Checks\n・Web View",
       "capabilities": [
         "browse",
         "search",
@@ -748,7 +748,7 @@
       "version": "1.0.0",
       "medium": "novel",
       "website": "https://www.scribblehub.com",
-      "description": "Original web fiction platform. Five browse feeds with time filters, 31-entry genre filter, search, and full in-app prose reading.",
+      "description": "Web Novels\n\nRestrictions:\n・Cloudflare Checks",
       "capabilities": [
         "browse",
         "search",
@@ -767,7 +767,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://toongod.org",
-      "description": "Adult-focused manhwa platform. Seven browse feeds, 27-entry genre filter, search, and full chapter reading.",
+      "description": "Manhwa\n\nRestrictions:\n・Cloudflare Checks",
       "capabilities": [
         "browse",
         "search",
@@ -786,7 +786,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://nettruyenvia.com",
-      "description": "Vietnamese-language manga, manhwa and manhua platform. Eight browse feeds, 42-entry genre filter, search, and full chapter reading.",
+      "description": "Manga・Manhwa・Manhua\n\nRestrictions:\n・Cloudflare Checks",
       "capabilities": [
         "browse",
         "search",
@@ -805,7 +805,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://www.viz.com",
-      "description": "VIZ Media's official Shonen Jump reader (~280 series). Eight browse feeds, search, full series details, and chapter history.",
+      "description": "Manga\n\nCatalog・200+",
       "capabilities": [
         "browse",
         "search",
@@ -824,7 +824,7 @@
       "version": "1.1.0",
       "medium": "comics",
       "website": "https://www.mangago.me",
-      "description": "Yaoi/BL-focused manga and manhwa platform. Four browse feeds, 36-entry genre filter, search, and full chapter reading.",
+      "description": "Manga・Manhwa\n\nRestrictions:\n・Cloudflare Checks",
       "capabilities": [
         "browse",
         "search",
@@ -844,7 +844,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://manhuafast.net",
-      "description": "Manhua and manhwa platform. Six browse feeds, 46-entry genre filter, search, and full chapter reading.",
+      "description": "Manhwa・Manhua\n\nRestrictions:\n・Cloudflare Checks",
       "capabilities": [
         "browse",
         "search",
@@ -863,7 +863,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://manhwa18.cc",
-      "description": "Korean webtoon and manhwa platform. Four browse feeds, 39-entry genre filter, search, and full chapter reading.",
+      "description": "Manhwa・Webtoons\n\nCatalog・6,000+",
       "capabilities": [
         "browse",
         "search",
@@ -882,7 +882,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://mangahub.io",
-      "description": "Manga reader with React interface. Five browse feeds, 132-entry genre filter, search, and full chapter reading.",
+      "description": "Manga\n\nRestrictions:\n・Cloudflare Checks",
       "capabilities": [
         "browse",
         "search",
@@ -901,7 +901,7 @@
       "version": "1.2.0",
       "medium": "comics",
       "website": "https://tapas.io",
-      "description": "Webcomic platform with weekday schedules and Popular/New/Completed/All Genres feeds. Seven browse options, search, and full chapter reading.",
+      "description": "Comics・Webtoons\n\nCatalog・40,000+\n\nRestrictions:\n・Locked Chapters",
       "capabilities": [
         "browse",
         "search",
@@ -921,7 +921,7 @@
       "version": "1.1.0",
       "medium": "novel",
       "website": "https://www.wuxiaworld.com",
-      "description": "Translated Chinese/Korean/Japanese web and light novels. Five browse feeds, search, and full in-app prose reading.",
+      "description": "Web Novels・Light Novels\n\nCatalog・200+",
       "capabilities": [
         "browse",
         "search",
@@ -940,7 +940,7 @@
       "version": "1.2.1",
       "medium": "novel",
       "website": "https://www.wuxiabox.com",
-      "description": "Web and light novels (ReadWN). Four browse feeds, 52-entry genre filter, search, and full in-app prose reading.",
+      "description": "Web Novels・Light Novels\n\nCatalog・100,000+",
       "capabilities": [
         "browse",
         "search",
@@ -961,7 +961,7 @@
       "medium": "novel",
       "website": "https://www.webnovel.com",
       "iconUrl": "https://www.yueimg.com/en/favicon/favicon.d3f6a.ico",
-      "description": "Qidian International's serialized fiction platform. Eleven genre browse feeds, genre filter, search, and free chapter reading.",
+      "description": "Web Novels\n\nRestrictions:\n・Cloudflare Checks",
       "capabilities": [
         "browse",
         "search",
@@ -980,7 +980,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://manhuahot.com",
-      "description": "Manhua platform with six browse feeds, genre filter, search, and full chapter reading.",
+      "description": "Manhua\n\nCatalog・300+\n\nRestrictions:\n・Cloudflare Checks",
       "capabilities": [
         "browse",
         "search",
@@ -1000,7 +1000,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://manhuaus.club",
-      "description": "Manga/manhwa/manhua platform. Four browse feeds, 40-entry genre filter, search, and full chapter reading.",
+      "description": "Manga・Manhwa・Manhua\n\nRestrictions:\n・Cloudflare Checks",
       "capabilities": [
         "browse",
         "search",
@@ -1020,7 +1020,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://gdscans.com",
-      "description": "Manga platform with six browse feeds, 58-entry genre filter, search, and full chapter reading.",
+      "description": "Manga",
       "capabilities": [
         "browse",
         "search",
@@ -1040,7 +1040,7 @@
       "version": "1.1.0",
       "medium": "comics",
       "website": "https://lelscans.net",
-      "description": "French-language fan-scan platform with 34 mainstream titles. Browse, search, and full chapter reading.",
+      "description": "Manga\n\nCatalog・30+",
       "capabilities": [
         "browse",
         "search",
@@ -1059,7 +1059,7 @@
       "version": "1.1.0",
       "medium": "comics",
       "website": "https://globalcomix.com",
-      "description": "Licensed and creator-hosted comics, manga and graphic novels. Popular and type feeds, 24-entry genre filter, and full chapter reading.",
+      "description": "Manga・Comics",
       "capabilities": [
         "browse",
         "search",
@@ -1079,7 +1079,7 @@
       "version": "1.0.1",
       "medium": "comics",
       "website": "https://anime-sama.to",
-      "description": "French-language manga/manhwa/manhua section. Real browse feeds, 109-entry genre filter, search, and full chapter reading.",
+      "description": "Manga・Manhwa・Manhua",
       "capabilities": [
         "browse",
         "search",
@@ -1099,7 +1099,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://cmangavn.com",
-      "description": "Vietnamese-language manga, manhwa and manhua platform. Seven browse feeds, 272-entry genre filter, search, and full chapter reading.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・2,000+",
       "capabilities": [
         "browse",
         "search",
@@ -1119,7 +1119,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://comicfury.com",
-      "description": "Free webcomic hosting platform. Five browse feeds, 20-tag filter, search, and full chapter reading.",
+      "description": "Comics\n\nCatalog・900+",
       "capabilities": [
         "browse",
         "search",
@@ -1139,7 +1139,7 @@
       "version": "1.2.1",
       "medium": "comics",
       "website": "https://lectormangass.net",
-      "description": "Spanish-language comics, manhwa and manhua platform. Four browse feeds, 43-entry genre filter, search, and full chapter reading.",
+      "description": "Manhwa・Manhua・Comics\n\nCatalog・10,000+",
       "capabilities": [
         "browse",
         "search",
@@ -1159,7 +1159,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://komikindo.ch",
-      "description": "Indonesian-language manga, manhwa and manhua platform. Five browse feeds, 50-genre/40-theme filter, search, and full chapter reading.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・7,000+",
       "capabilities": [
         "browse",
         "search",
@@ -1181,7 +1181,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://indomanhwa.com",
-      "description": "Indonesian-language manga, manhwa and manhua platform. Six browse feeds, search, and full chapter reading.",
+      "description": "Manga・Manhwa・Manhua\n\nRestrictions:\n・Cloudflare Checks",
       "capabilities": [
         "browse",
         "search",
@@ -1199,7 +1199,7 @@
       "version": "1.2.0",
       "medium": "comics",
       "website": "https://manhuavn.top",
-      "description": "Vietnamese-language manhua, manhwa and manga platform. Four browse feeds, 19-entry genre filter, search, and chapter reading. Chapters the site keeps for its own app are marked (Locked, App Only) and don't open.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・1,000+\n\nRestrictions:\n・Locked Chapters",
       "capabilities": [
         "browse",
         "search",
@@ -1220,7 +1220,7 @@
       "medium": "comics",
       "website": "https://sereinscan.net",
       "iconUrl": "https://sereinscan.net/wp-content/uploads/2025/06/cropped-SEREINSCANS-192x192.webp",
-      "description": "Turkish-language manga, manhwa and manhua platform. Five browse feeds, 33-entry genre filter, search, and full chapter reading.",
+      "description": "Manga・Manhwa・Manhua",
       "capabilities": [
         "browse",
         "search",
@@ -1239,7 +1239,7 @@
       "version": "1.2.0",
       "medium": "comics",
       "website": "https://wamanga.ru",
-      "description": "Russian-language manga, manhwa and manhua platform with distinct browse feeds, search, and full chapter reading.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・2,000+",
       "capabilities": [
         "browse",
         "search",
@@ -1259,7 +1259,7 @@
       "medium": "comics",
       "website": "https://nirvanamanga.com",
       "iconUrl": "https://nirvanamanga.com/wp-content/uploads/2024/03/cropped-NirvanaManga-Logo-192x192.png",
-      "description": "Turkish-language manga, manhwa and manhua platform. Five browse feeds, 20-entry genre filter, search, and full chapter reading.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・20+",
       "capabilities": [
         "browse",
         "search",
@@ -1279,7 +1279,7 @@
       "medium": "comics",
       "website": "https://remanga.org",
       "iconUrl": "https://api.remanga.org/media/favicon.ico",
-      "description": "Russian-language manga, manhwa and manhua platform. Three browse feeds, genre filter, search, and full chapter reading.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・50,000+",
       "capabilities": [
         "browse",
         "search",
@@ -1299,7 +1299,7 @@
       "medium": "comics",
       "website": "https://turkmanga.org",
       "iconUrl": "https://turkmanga.org/logo.ico",
-      "description": "Turkish-language manga, manhwa, manhua and webtoon platform. Three browse feeds, 33-entry genre filter, search, and full chapter reading.",
+      "description": "Manga・Manhwa・Manhua・Webtoons\n\nRestrictions:\n・Cloudflare Checks",
       "capabilities": [
         "browse",
         "search",
@@ -1319,7 +1319,7 @@
       "medium": "comics",
       "website": "https://www.tilkiscans.com",
       "iconUrl": "https://www.tilkiscans.com/wp-content/uploads/2025/03/cropped-TILKISCANS-192x192.webp",
-      "description": "Turkish-language manga and manhwa platform. Six browse feeds, 33-entry genre filter, search, and full chapter reading.",
+      "description": "Manga・Manhwa\n\nCatalog・70+",
       "capabilities": [
         "browse",
         "search",
@@ -1339,7 +1339,7 @@
       "medium": "comics",
       "website": "https://inkstory.net",
       "iconUrl": "https://inkstory.net/inkstory/apple-touch-icon.png",
-      "description": "Russian-language manga, manhwa and manhua platform. Four browse feeds, 39-entry genre filter, search, and full chapter reading.",
+      "description": "Manga・Manhwa・Manhua",
       "capabilities": [
         "browse",
         "search",
@@ -1359,7 +1359,7 @@
       "medium": "comics",
       "website": "https://yurimanga.net",
       "iconUrl": "https://yurimanga.net/favicon.ico",
-      "description": "Small yuri-only fan platform with a ~2007-era table-layout design and no Cloudflare anywhere. Has no series/chapter-list concept at all: each of the 763 real entries in its own /mangalist/ catalog is an independent, standalone old-school multi-page image reader, so this source honestly models each entry as its own single-chapter manga rather than inventing a series layer the site itself doesn't have. Two curated homepage feeds (Most Viewed, Most Viewed 18+) plus the full A-Z catalog, client-side search and an 18+ content filter (the one real flag this site has), full manga details, and full chapter reading that fetches every page individually since page-image filenames aren't a predictable function of the page number.",
+      "description": "Manga",
       "capabilities": [
         "browse",
         "search",
@@ -1379,7 +1379,7 @@
       "medium": "comics",
       "website": "https://keikomik.net",
       "iconUrl": "https://keikomik.net/favicon.ico",
-      "description": "Indonesian-language manga/manhwa/manhua platform on Vercel/Next.js, read through its own real JSON API and each page's embedded __NEXT_DATA__ payload rather than scraped markup. No Cloudflare anywhere on the main site. Six sort-based browse feeds each confirmed to genuinely reorder results (two cross-checked against the homepage's own server-rendered Popular/Update sections), a live-scraped 11-entry genre filter, search (a real but prefix-only, 10-result-capped title match), full manga details, and full chapter reading sourced from each detail/chapter page's own complete embedded chapter history rather than its client-side-paginated visible HTML list, which was confirmed live to undercount the real total.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・200+",
       "capabilities": [
         "browse",
         "search",
@@ -1399,7 +1399,7 @@
       "medium": "comics",
       "website": "https://blvillage.com",
       "iconUrl": "https://blvillage.com/favicon.ico",
-      "description": "Real, server-rendered Astro site (no Cloudflare challenge) hosting two distinct BL catalogs under one URL space: ~12680 untranslated Japanese doujinshi one-shots browsable by the homepage's own paginated catalog or by 359 real fandom categories, and 4725 translated multi-chapter series with a real server-side title search. Doujin page counts are read from each work's embedded astro-island payload rather than the raw HTML, which was confirmed live to server-render only the first 10 pages of every work regardless of its real length. Four browse feeds, title search (plus a fandom-category discovery bonus), full manga details, and full chapter reading for both catalogs.",
+      "description": "Manga\n\nCatalog・20,000+",
       "capabilities": [
         "browse",
         "search",
@@ -1418,7 +1418,7 @@
       "medium": "comics",
       "website": "https://lelmanga.com",
       "iconUrl": "https://i0.wp.com/www.lelmanga.com/wp-content/uploads/2026/06/cropped-cropped-lelmanga-favicon-192x192-1-192x192.webp",
-      "description": "French-language ('VF') manga/manhwa/manhua platform on the 'mangareader' WordPress theme. Five order-based browse feeds, an 89-entry genre filter, a real WordPress search with reliable pagination, full manga details, and full chapter reading sourced from each chapter page's own embedded ts_reader reader-state JSON. Detail/chapter URLs use a type-specific path (/manga/, /manhwa/ or /manhua/) rather than one fixed prefix, tracked as part of each title's own id. A manga's own chapter list is capped to roughly its most recent chapters for the handful of very long-running series (e.g. only chapters 1009-1191 for a title at 1191), a confirmed site-side limitation.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・300+",
       "capabilities": [
         "browse",
         "search",
@@ -1438,7 +1438,7 @@
       "medium": "comics",
       "website": "https://manga-scantrad.io",
       "iconUrl": "https://manga-scantrad.io/wp-content/uploads/2020/03/manga-scantrad-logo-2-e1584734306602.png",
-      "description": "French-language manga platform on the Madara/WordPress theme, behind a real interactive Cloudflare Turnstile challenge (handled by the app's own solver, not this extension), with page structure confirmed against real site HTML recovered from the Wayback Machine after the challenge blocked direct live fetches. Six order-based browse feeds, a 70-entry genre filter, search, full manga details (tolerant of the site's own French/English field-label inconsistency across pages), and full chapter reading, with the chapter list fetched from the theme's own ajax/chapters/ endpoint since it is not server-rendered on the detail page.",
+      "description": "Manga\n\nRestrictions:\n・Cloudflare Checks",
       "capabilities": [
         "browse",
         "search",
@@ -1458,7 +1458,7 @@
       "medium": "comics",
       "website": "https://mangaread.org",
       "iconUrl": "https://www.mangaread.org/wp-content/uploads/2017/10/cropped-unnamed-32x32.png",
-      "description": "Manga and manhwa platform on the stock Madara/WordPress theme. Five order-based browse feeds (a sixth, 'trending', was confirmed broken site-side and excluded), a 48-entry genre filter combinable with search, reliable WordPress-native search pagination, full manga details, and full chapter reading sourced directly from each chapter page's own server-rendered image list.",
+      "description": "Manga・Manhwa\n\nCatalog・3,000+",
       "capabilities": [
         "browse",
         "search",
@@ -1477,7 +1477,7 @@
       "version": "1.1.1",
       "medium": "novel",
       "website": "https://ranobes.top",
-      "description": "English-translated web/light novel platform on the DataLifeEngine CMS, confirmed directly plain-fetchable end to end (a mobile Safari UA gets real HTML straight through despite the `cloudflare` server header, no challenge encountered on any page type). Two real browse feeds, a live-fetched genre filter, search, and full in-app prose reading sourced from the site's own inline chapter-list JSON and paragraph-tagged reader markup.",
+      "description": "Web Novels・Light Novels\n\nRestrictions:\n・Cloudflare Checks\n・Rate Limit",
       "capabilities": [
         "browse",
         "search",
@@ -1498,7 +1498,7 @@
       "medium": "comics",
       "website": "https://manhwahq.com",
       "iconUrl": "https://manhwahq.com/Logo/favicon.png",
-      "description": "Next.js manga/manhwa/manhua reader, confirmed directly plain-fetchable end to end with no Cloudflare challenge and no image hotlink protection encountered anywhere. Its /browse listing is fully server-rendered with four real sort-based feeds, a live-fetched 16-entry genre filter, and working search/pagination, all independently confirmed to change the result set; the chapter reader itself ships empty and hydrates against the site's own separate, fully open JSON API (b.toonking.xyz) for page images hotlinked from mangaread.org.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・9,000+",
       "capabilities": [
         "browse",
         "search",
@@ -1517,7 +1517,7 @@
       "version": "1.2.0",
       "medium": "novel",
       "website": "https://libread.com",
-      "description": "Translated web novel platform. Four real nav-based browse feeds, a live-fetched 36-entry genre filter, search, full manga details, and a real paginated chapter list; actual chapter reading pages redirect cross-domain to freewebnovel.com, which sits behind a Cloudflare managed challenge passed transparently by the app's own solver, not this extension.",
+      "description": "Web Novels\n\nCatalog・1,000+\n\nRestrictions:\n・Cloudflare Checks",
       "capabilities": [
         "browse",
         "search",
@@ -1537,7 +1537,7 @@
       "version": "1.1.0",
       "medium": "novel",
       "website": "https://www.wattpad.com",
-      "description": "Reads Wattpad entirely through its own unauthenticated JSON API, confirmed live end to end with zero Cloudflare/challenge markers on any request, not scraped HTML: /api/v3/stories for the Hot/New/Featured browse feeds with real numeric-category genre filtering (the site's own tag= query param is a confirmed no-op), /v4/search/stories for search, /api/v3/stories/{id} for full details plus its complete inline chapter list, and /apiv2/storytext for chapter prose. Paywalled Paid Stories chapters are detected by their own boilerplate and shown as an honest placeholder instead.",
+      "description": "Web Novels\n\nCatalog・1,000+",
       "iconUrl": "https://www.wattpad.com/favicon.ico",
       "capabilities": [
         "browse",
@@ -1557,7 +1557,7 @@
       "version": "1.3.0",
       "medium": "novel",
       "website": "https://www.webfic.com",
-      "description": "Web novels from Webfic (DianZhong Technology, sibling to DramaBox/GoodNovel), read straight out of its own Next.js __NEXT_DATA__ hydration JSON on every page type, with no Cloudflare or other bot-check encountered. Genre browsing, real keyword search, full details and complete chapter lists (paging the site's own 18-per-page catalog), and in-app prose reading.",
+      "description": "Web Novels\n\nCatalog・2,000+",
       "iconUrl": "https://www.webfic.com/images/logo.png",
       "capabilities": [
         "browse",
@@ -1577,7 +1577,7 @@
       "version": "1.2.0",
       "medium": "novel",
       "website": "https://www.qidian.com",
-      "description": "起点中文网 (China Literature/Yuewen Group's flagship Chinese web-novel platform), scraped via its mobile site (m.qidian.com), which is fully server-rendered with no Cloudflare or other bot-check, unlike the stub-blocked desktop domain. Real page-state JSON embedded on every page type drives details, chapter lists and full in-app prose reading; VIP/paid chapters are correctly detected from that same JSON and shown as locked rather than as the site's own truncated preview text. Bestseller/new/free/completed feeds, a 15-genre filter, and real paginated search.",
+      "description": "Web Novels",
       "iconUrl": "https://imgservices-1252317822.image.myqcloud.com/coco/s03102023/b7b10602.w663ve.ico",
       "capabilities": [
         "browse",
@@ -1597,7 +1597,7 @@
       "version": "1.2.1",
       "medium": "novel",
       "website": "https://www.goodnovel.com",
-      "description": "Mobile-first serialized-fiction platform (mafia/werewolf/billionaire romance is its dominant catalog), fully server-rendered with no Cloudflare or other bot-check. Real, unauthenticated JSON API endpoints (confirmed live) drive book details, complete chapter lists in one call, and full in-app prose reading; the site's own embedded page-state JSON backs genre and tag browsing. Real paginated search via the same endpoint that powers the site's own search page, an 18-genre feed list, and a live-fetched tag filter. Coin-gated chapters are correctly detected and shown as an honest locked notice alongside the site's own real preview teaser, never as fabricated or garbled text.",
+      "description": "Web Novels\n\nCatalog・2,000+",
       "iconUrl": "https://www.goodnovel.com/public/favicon.ico",
       "capabilities": [
         "browse",
@@ -1617,7 +1617,7 @@
       "version": "1.3.0",
       "medium": "novel",
       "website": "https://www.17k.com",
-      "description": "17K小说网, 中文在线's Chinese web-novel platform. Male, female and completed browse feeds, a genre filter across both channels, search, full novel details, and chapter reading. Free and VIP chapters are told apart, and paid chapters show a locked notice instead of the site's cut-off preview. The site checks visitors with a browser challenge, so book and chapter pages load through Boundless's built-in web view.",
+      "description": "Web Novels\n\nCatalog・10,000+\n\nRestrictions:\n・Web View",
       "iconUrl": "https://www.17k.com/favicon.ico",
       "capabilities": [
         "browse",
@@ -1637,7 +1637,7 @@
       "version": "1.0.0",
       "medium": "comics",
       "website": "https://mangaowl.io",
-      "description": "Madara/WordPress manga, manhwa and manhua platform with no Cloudflare challenge encountered live (only the passive JS-detection snippet common to any CF-proxied site). Six sort-based browse feeds, a 44-entry genre filter read live off the site's own nav menu, and free-text search, all. The chapter list is not server-rendered on the manga page itself here (unlike this repo's toonily.com source). It is fetched from the theme's own chapters-AJAX endpoint, confirmed live to return the complete list in one call. Full chapter reading sourced directly from each chapter page's own server-rendered image list, with no hotlink protection on page images.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・2,000+",
       "iconUrl": "https://mangaowl.io/wp-content/uploads/2017/10/logo.png",
       "capabilities": [
         "browse",
@@ -1657,7 +1657,7 @@
       "version": "1.2.0",
       "medium": "novel",
       "website": "https://www.moboreader.com",
-      "description": "English-language romance and werewolf web novels from MoboReader's own unauthenticated JSON API (browse by genre with Popular/Latest/Most Read/Completed sorting, full genre picker, search, book details, and complete chapter lists fetched in bounded pages). Full in-app prose reading, including deobfuscating the site's chapter text: each paragraph's real content is deliberately split across the tag's own text plus two custom attributes, reassembled per a per-request-randomized CSS attr() map read live off each chapter page.",
+      "description": "Web Novels\n\nCatalog・8,000+",
       "iconUrl": "https://www.moboreader.com/favicon.ico",
       "capabilities": [
         "browse",
@@ -1677,7 +1677,7 @@
       "version": "1.2.0",
       "medium": "novel",
       "website": "https://www.dreame.com",
-      "description": "Mobile-first serialized-romance platform (werewolf/alpha/luna/billionaire fiction is its dominant catalog), fully server-rendered Next.js with no Cloudflare or other bot-check. A real, unauthenticated JSON API drives search, the complete chapter list in one call, and full in-app prose reading; the site's own embedded page-state JSON backs Genre and Ranking browsing. Six real Ranking feeds, a live-fetched genre filter, and real paginated search. Paid/coins-only chapters are correctly detected and shown as the site's own real (sentence-trimmed) preview text alongside an honest locked notice, never as fabricated, garbled, or silently truncated mid-word text.",
+      "description": "Web Novels\n\nCatalog・10,000+",
       "iconUrl": "https://file.dreame.com/group1/M00/00/DF/rB84XVxrwj-AM46tAAAEfjCRxvU122.ico",
       "capabilities": [
         "browse",
@@ -1697,7 +1697,7 @@
       "version": "1.3.0",
       "medium": "novel",
       "website": "https://www.jjwxc.net",
-      "description": "晋江文学城 (Jinjiang Literature City), China's leading female-oriented web-novel platform. The desktop/mobile site's own HTML is GB18030-encoded and unreadable through this app's UTF-8-only fetch, so this source instead drives the site's real, unauthenticated Android-app JSON API for book details, the complete chapter list, and full in-app prose reading, with genre browsing and search via the site's own live HTML/AJAX endpoints (read only for their numeric ids, never their text). VIP/paywalled and not-yet-approved chapters are correctly detected and shown as an honest locked notice rather than fabricated or garbled text.",
+      "description": "Web Novels",
       "iconUrl": "https://www.jjwxc.net/favicon.ico",
       "capabilities": [
         "browse",
@@ -1717,7 +1717,7 @@
       "version": "1.1.1",
       "medium": "comics",
       "website": "https://mangaplaza.com",
-      "description": "Kodansha/C'moA's official licensed digital manga storefront. Full genre-filtered search/browse across three real sort feeds and a 22-genre catalog, real series details, and the complete real chapter list per title (locked past each title's own free-preview count). A free chapter's real, correctly-ordered page-image URLs are now returned reliably (the CloudFront-signed cookies this needs are forwarded correctly), but actually displaying the pages still needs reversing the site's own SpeedBinB client-side pixel-tile DRM scramble (no canvas primitive available), the same category of limitation as this repo's mangago.me and viz.com sources.",
+      "description": "Manga\n\nCatalog・10,000+\n\nRestrictions:\n・Locked Chapters",
       "iconUrl": "https://c.mangaplaza.com/s/images/common/favicon.png",
       "capabilities": [
         "browse",
@@ -1737,7 +1737,7 @@
       "version": "1.2.0",
       "medium": "comics",
       "website": "https://comic.naver.com",
-      "description": "Naver's own official Korean webtoon platform (the sister site, same company/CDN family, to this repo's webtoons.com source), read through its real server-rendered mobile pages with no Cloudflare challenge and no mobile/desktop UA split needed. Eight real weekday-schedule feeds plus a Completed listing, a 13-entry genre filter, search, full series details, and complete chapter reading via the site's own paginated episode list. Naver's real 19+ account-and-login wall is respected: anonymously, age-restricted titles are dropped from every listing rather than surfaced unopenable, and individually-paywalled recent episodes are listed and clearly marked. Optional: paste your signed-in NID_AUT and NID_SES cookies in the source's settings to list 19+ titles (marked 18+, so your content settings apply) and read episodes your account owns. Not yet confirmed with a real account.",
+      "description": "Manhwa・Webtoons\n\nRestrictions:\n・Locked Chapters",
       "iconUrl": "https://shared-comic.pstatic.net/favicon/favicon_152x152.ico",
       "capabilities": [
         "browse",
@@ -1780,7 +1780,7 @@
       "medium": "comics",
       "website": "https://mangatoon.mobi",
       "iconUrl": "https://mangatoon.mobi/images/icon-128.png",
-      "description": "MangaToon's own PHP-rendered web reader, real server HTML with no Cloudflare challenge encountered anywhere. Three sort-based browse feeds (Hottest/Updated/Completed) combinable with a live-read, numeric-id genre filter, search (capped at the site's own real 18-result limit), full series details, and complete chapter reading straight off the detail page's own embedded episode list. Most episodes on long-running series are genuinely gated behind a coins paywall; this source lists every episode honestly, marks locked ones by name, and returns only the pages the site serves for one rather than fabricating access. Optional: sign in with a MangaToon email account in the source's settings (Google, Facebook and Apple accounts have no password). Not yet confirmed with a real account, and the site's web reader may still send paid episodes to the app.",
+      "description": "Webtoons\n\nCatalog・2,000+\n\nRestrictions:\n・Locked Chapters",
       "capabilities": [
         "browse",
         "search",
@@ -1821,7 +1821,7 @@
       "medium": "comics",
       "website": "https://mangadex.org",
       "iconUrl": "https://mangadex.org/pwa/icons/icon-180.png",
-      "description": "MangaDex's official, fully public JSON API, with no scraping, no bot protection encountered anywhere. Browse (Latest/Most Followed/Top Rated/Recently Added), grouped genre/theme/format/content tag filtering, search, full details, and complete chapter reading via MangaDex's own at-home image CDN (no referer needed, real un-DRM'd images). A small number of chapters on some titles are metadata-only entries pointing at an official publisher's own site (VIZ, MangaPlus) with no page images MangaDex itself can serve. These are left out of the chapter list entirely rather than listed as a dead end. Chapters show in your chosen language (English by default, changeable in the source's settings, or all languages); a title with none in it lists the language it does have instead of showing no chapters, with that language named beside each chapter. Per-title content rating (MangaDex serves everything from all-ages to explicit, correctly tagged) is reflected per manga rather than hiding the whole source.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・90,000+",
       "capabilities": [
         "browse",
         "search",
@@ -1950,7 +1950,7 @@
         "*.kagane.net",
         "kstatic.to"
       ],
-      "description": "Community reader aggregator (many scanlation groups upload to one platform, similar in spirit to MangaDex). The site now lives on four mirror addresses (kagane.si, kagane.cx, kagane.moe and kagane.net; kagane.org only lists them behind a Cloudflare check): this source uses the first one that answers and moves to the next when it stops. Browse feeds, search, details and chapter lists use the site's own JSON API with plain requests, with a call made inside a page of the site as the fallback when the app's own request is refused. A chapter's full page list comes from the site's own reader page, since the request that returns it needs a token only the site's real page code can mint; the images then load from kstatic.to with no Referer. The site's Content and language settings are source settings here: content rating (Safe, 15+ or 18+, default 18+ so the app's own content settings blur or hide each title by its rating) and preferred chapter language (default English, or Any). Genre filters work (several included genres list titles with any of them). Per-title content rating is reflected per manga rather than hiding the whole source. Not yet tried inside the Boundless or Sumizuri app itself: the API, the reader page and the extension's own reader script were run against the live mirrors in a real browser. Titles rated 18+ show an age prompt in the site's reader; this source presses its 'Only this time' button for the reader, and that one step has only been tried against a stand-in page.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・1,000+\n\nRestrictions:\n・Cloudflare Checks\n・Web View",
       "capabilities": [
         "browse",
         "search",
@@ -2255,7 +2255,7 @@
       "hosts": [
         "mangafire.to"
       ],
-      "description": "Large aggregator, back up after being down. Not Cloudflare-challenge-gated (a plain request reaches it fine); every real endpoint instead requires a site-issued token only its own page JS can mint, so search, title details, chapter lists, and chapter pages all run through the app's real in-page execution the first time. Those tokens never change for a given URL, so every URL the page produced is remembered and replayed with a plain request afterwards: a title, chapter or volume you have opened before, the Latest Updates pages and repeated searches open without loading the site's page at all. Chapter lists that span more than one page are fetched by paging through the site's own real UI, not truncated to page 1, in the same single visit that returns the title's details. Titles that have volumes also list them (English): the app shows a Chapters / Volumes switch, and each volume reads as one long chapter. Search-result cards don't carry a content rating (the site's own API doesn't return one at that shape); only a title's own details page does, and is reflected per manga rather than hiding the whole source. Two feeds: Trending (a plain request) and Latest Updates (the homepage's fresh chapters list, paged). Not yet timed inside the Boundless app itself: the web view part is measured in a real WKWebView, and the Chapters / Volumes switch needs a Boundless build that has it.",
+      "description": "Manga・Manhwa・Manhua\n\nRestrictions:\n・Web View",
       "capabilities": [
         "browse",
         "search",
@@ -2280,7 +2280,7 @@
       ],
       "author": "omfgitsjesus",
       "authorUrl": "https://discord.com/users/177424485526274048",
-      "description": "Manhwa, manga and manhua platform with a large adult catalog. Five browse feeds, a live genre filter, search, and chapter reading. Every title carries the site's own content rating. Chapter pages load through Boundless's built-in web view, since the site only serves them to its own pages.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・4,000+\n\nRestrictions:\n・Web View",
       "capabilities": [
         "browse",
         "search",
@@ -2305,7 +2305,7 @@
         "*.toongrab.com",
         "*.r2.dev"
       ],
-      "description": "Manhwa, manhua and manga from ToonGrab's own public JSON API, with no browser step and no sign-in: five browse feeds (Latest Updates, Trending, Most Popular, Highest Rated, Newly Added), sort options, genre filtering (several genres list titles with any of them), search that also matches alternative titles, full details, complete chapter lists and the reader. Covers come through the site's own image resizer (about 45 KB instead of up to 380 KB) so Browse stays light. Fractional chapters such as 219.5 open correctly. The site has no content rating: the one title with the Ecchi genre is marked 16 on its details page. The icon is the site's own logo, drawn to a PNG because the site only publishes it as SVG.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・300+",
       "capabilities": [
         "browse",
         "search",
@@ -2329,7 +2329,7 @@
         "dynasty-scans.com",
         "*.dynasty-scans.com"
       ],
-      "description": "Yuri manga from Dynasty Scans, read from the site's own JSON pages with no browser step and no sign-in: Latest Updates (folded into series), All Series, Anthologies, Doujins and Magazine Issues, search with the site's tag filters and sort order, full details with volume numbers and scanlator names, complete chapter lists and the reader. The site has no rating field, so titles tagged NSFW, with sex or rape or futanari are marked 18 and Ecchi, Mature or Violence 16 on their details page (grids carry no tags). The site refuses more than about 3 requests a second, so the extension paces itself.",
+      "description": "Manga\n\nCatalog・1,000+\n\nRestrictions:\n・Rate Limit",
       "capabilities": [
         "browse",
         "search",
@@ -2353,7 +2353,7 @@
         "comicland.org",
         "*.comicland.org"
       ],
-      "description": "Manhwa and webtoons from ComicLand's own JSON API, with no browser step and no sign-in: Ongoing, Popular, Official, Uncensored, All Titles, Completed and On Hiatus feeds, search, genre filtering (the site filters by one genre at a time), full details with status, complete chapter lists and the reader. About half the catalog is explicit (Explicit Sex, Smut, Uncensored), so the whole source is rated adult and a title's details also rate it 18 or 16 from its genres. The site gives no chapter dates.",
+      "description": "Manhwa・Webtoons\n\nCatalog・2,000+",
       "capabilities": [
         "browse",
         "search",
@@ -2377,7 +2377,7 @@
         "arenascan.com",
         "*.arenascan.com"
       ],
-      "description": "Arena Scans read from its own MangaThemesia pages, with no browser step and no sign-in: Latest Updates, Popular, A-Z feeds, search, genre filtering, full details, chapter lists with dates and the reader. Titles tagged Mature or Ecchi are marked 16 and Adult or Smut 18 on their details page (the grids carry no genres).",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・5,000+",
       "capabilities": [
         "browse",
         "search",
@@ -2401,7 +2401,7 @@
         "anisascans.in",
         "*.anisascans.in"
       ],
-      "description": "Anisa Scans read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・6,000+",
       "capabilities": [
         "browse",
         "search",
@@ -2425,7 +2425,7 @@
         "athreascans.com",
         "*.athreascans.com"
       ],
-      "description": "Athrea Scans read from its own MangaThemesia pages, with no browser step and no sign-in: Latest Updates, Popular, Newly Added, A-Z feeds, search, genre filtering, full details, chapter lists with dates and the reader. Mostly adult content, so the whole source is rated adult; titles tagged Adult or Smut are also marked 18 on their details page.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・300+",
       "capabilities": [
         "browse",
         "search",
@@ -2449,7 +2449,7 @@
         "cocomic.co",
         "*.cocomic.co"
       ],
-      "description": "Cocomic read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・1,000+",
       "capabilities": [
         "browse",
         "search",
@@ -2473,7 +2473,7 @@
         "evascans.net",
         "*.evascans.net"
       ],
-      "description": "Eva Scans read from its own MangaThemesia pages, with no browser step and no sign-in: Latest Updates, Popular, Newly Added, A-Z feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・200+",
       "capabilities": [
         "browse",
         "search",
@@ -2497,7 +2497,7 @@
         "gakamangas.com",
         "*.gakamangas.com"
       ],
-      "description": "GakaMangas read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled. The newest chapter of a title is sometimes listed before its images are uploaded and then shows an error until they are.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・10+\n\nRestrictions:\n・Cloudflare Checks",
       "capabilities": [
         "browse",
         "search",
@@ -2521,7 +2521,7 @@
         "hunlightcomics.com",
         "*.hunlightcomics.com"
       ],
-      "description": "Hunlight Comics read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled. The site has no genre list, so the genre filter is not offered.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・30+",
       "capabilities": [
         "browse",
         "search",
@@ -2544,7 +2544,7 @@
         "kokomangas.com",
         "*.kokomangas.com"
       ],
-      "description": "KokoMangas read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. Mostly adult content, so the whole source is rated adult; titles tagged Adult or Smut are also marked 18 on their details page. The site prints no genres, so no title can be rated one by one; its first archive page carries several explicitly titled works, so the whole source is rated adult.",
+      "description": "Manga・Manhwa・Manhua",
       "capabilities": [
         "browse",
         "search",
@@ -2567,7 +2567,7 @@
         "ksgroupscans.com",
         "*.ksgroupscans.com"
       ],
-      "description": "KSGroupScans read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. Titles tagged Mature or Ecchi are marked 16 and Adult or Smut 18 on their details page (the grids carry no genres).",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・50+",
       "capabilities": [
         "browse",
         "search",
@@ -2591,7 +2591,7 @@
         "lagoonscans.com",
         "*.lagoonscans.com"
       ],
-      "description": "Lagoon Scans read from its own MangaThemesia pages, with no browser step and no sign-in: Latest Updates, Popular, Newly Added, A-Z feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "description": "Manga・Manhwa・Manhua",
       "capabilities": [
         "browse",
         "search",
@@ -2615,7 +2615,7 @@
         "lhtranslation.net",
         "*.lhtranslation.net"
       ],
-      "description": "LHTranslation read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. Titles tagged Mature or Ecchi are marked 16 and Adult or Smut 18 on their details page (the grids carry no genres).",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・90+",
       "capabilities": [
         "browse",
         "search",
@@ -2639,7 +2639,7 @@
         "mangaeclipse.com",
         "*.mangaeclipse.com"
       ],
-      "description": "Manga Eclipse read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. Titles tagged Mature or Ecchi are marked 16 and Adult or Smut 18 on their details page (the grids carry no genres).",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・10+",
       "capabilities": [
         "browse",
         "search",
@@ -2663,7 +2663,7 @@
         "mangasushi.org",
         "*.mangasushi.org"
       ],
-      "description": "Mangasushi read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・40+",
       "capabilities": [
         "browse",
         "search",
@@ -2687,7 +2687,7 @@
         "mangatrend.org",
         "*.mangatrend.org"
       ],
-      "description": "Manga Trend read from its own MangaThemesia pages, with no browser step and no sign-in: Latest Updates, Popular, Newly Added, A-Z feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled. The site has no genre list, so the genre filter is not offered.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・20+",
       "capabilities": [
         "browse",
         "search",
@@ -2710,7 +2710,7 @@
         "mangayy.org",
         "*.mangayy.org"
       ],
-      "description": "MangaYY read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. Titles tagged Mature or Ecchi are marked 16 and Adult or Smut 18 on their details page (the grids carry no genres).",
+      "description": "Manga・Manhwa・Manhua",
       "capabilities": [
         "browse",
         "search",
@@ -2734,7 +2734,7 @@
         "manhuanext.com",
         "*.manhuanext.com"
       ],
-      "description": "Manhuanext read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "description": "Manhua",
       "capabilities": [
         "browse",
         "search",
@@ -2758,7 +2758,7 @@
         "manhwanex.com",
         "*.manhwanex.com"
       ],
-      "description": "ManhwaNex read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "description": "Manhwa\n\nCatalog・100+",
       "capabilities": [
         "browse",
         "search",
@@ -2782,7 +2782,7 @@
         "manhwareads.com",
         "*.manhwareads.com"
       ],
-      "description": "Manhwa Reads read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. Titles tagged Mature or Ecchi are marked 16 and Adult or Smut 18 on their details page (the grids carry no genres).",
+      "description": "Manhwa\n\nCatalog・60+",
       "capabilities": [
         "browse",
         "search",
@@ -2806,7 +2806,7 @@
         "rackusreads.com",
         "*.rackusreads.com"
       ],
-      "description": "Rackus read from its own MangaThemesia pages, with no browser step and no sign-in: Latest Updates, Popular, Newly Added, A-Z feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・20+",
       "capabilities": [
         "browse",
         "search",
@@ -2830,7 +2830,7 @@
         "ravenscans.org",
         "*.ravenscans.org"
       ],
-      "description": "Raven Scans read from its own MangaThemesia pages, with no browser step and no sign-in: Latest Updates, Popular, Newly Added, A-Z feeds, search, genre filtering, full details, chapter lists with dates and the reader. Mostly adult content, so the whole source is rated adult; titles tagged Adult or Smut are also marked 18 on their details page. Its page script declares no charset, so text with accents or symbols is repaired before it is read.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・10,000+",
       "capabilities": [
         "browse",
         "search",
@@ -2854,7 +2854,7 @@
         "s2read.com",
         "*.s2read.com"
       ],
-      "description": "S2Manga read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・7,000+",
       "capabilities": [
         "browse",
         "search",
@@ -2878,7 +2878,7 @@
         "en-thunderscans.com",
         "*.en-thunderscans.com"
       ],
-      "description": "Thunder Scans read from its own MangaThemesia pages, with no browser step and no sign-in: Latest Updates, Popular, Newly Added, A-Z feeds, search, genre filtering, full details, chapter lists with dates and the reader. Titles tagged Mature or Ecchi are marked 16 and Adult or Smut 18 on their details page (the grids carry no genres).",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・1,000+",
       "capabilities": [
         "browse",
         "search",
@@ -2902,7 +2902,7 @@
         "violetmanga.com",
         "*.violetmanga.com"
       ],
-      "description": "Violet Scans read from its own MangaThemesia pages, with no browser step and no sign-in: Latest Updates, Popular, Newly Added, A-Z feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・700+",
       "capabilities": [
         "browse",
         "search",
@@ -2926,7 +2926,7 @@
         "yakshacomics.com",
         "*.yakshacomics.com"
       ],
-      "description": "YakshaComics read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled. The site has no genre list, so the genre filter is not offered. Its pages are very large (several megabytes each).",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・60+",
       "capabilities": [
         "browse",
         "search",
@@ -2949,7 +2949,7 @@
         "bunmanga.com",
         "*.bunmanga.com"
       ],
-      "description": "Bun Manga read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled. The site locks its newest few chapters of each title behind a password prompt (a sum to solve); those answer HTTP 403, are reported as locked, and are not bypassed.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・200+\n\nRestrictions:\n・Cloudflare Checks",
       "capabilities": [
         "browse",
         "search",
@@ -2973,7 +2973,7 @@
         "zinmanga.net",
         "*.zinmanga.net"
       ],
-      "description": "Zinmanga read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・90,000+",
       "capabilities": [
         "browse",
         "search",
@@ -2997,7 +2997,7 @@
         "vortexscans.org",
         "*.vortexscans.org"
       ],
-      "description": "Vortex Scans read from its own web app and JSON api, with no browser step and no sign-in: Latest Chapters, Recently Updated, Most Popular, Newest Added, Oldest First, A-Z feeds, search, genre filtering, full details, chapter lists with dates and the reader. No title in the whole catalog carries an adult genre. Some covers are served unresized and weigh over 2 MB (the resizing proxy the site itself uses did not shrink the biggest ones), so a Browse grid can load slowly. Chapters marked Locked are paid with the site's coins and are not opened.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・400+\n\nRestrictions:\n・Locked Chapters",
       "capabilities": [
         "browse",
         "search",
@@ -3021,7 +3021,7 @@
         "nyxscans.com",
         "*.nyxscans.com"
       ],
-      "description": "Nyx Scans read from its own web app and JSON api, with no browser step and no sign-in: Latest Chapters, Recently Updated, Most Popular, Newest Added, Oldest First, A-Z feeds, search, genre filtering, full details, chapter lists with dates and the reader. No title in the whole catalog carries an adult genre. Some covers are served unresized and weigh over 2 MB (the resizing proxy the site itself uses did not shrink the biggest ones), so a Browse grid can load slowly. Chapters marked Locked are paid with the site's coins and are not opened.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・600+\n\nRestrictions:\n・Locked Chapters",
       "capabilities": [
         "browse",
         "search",
@@ -3045,7 +3045,7 @@
         "sanascans.com",
         "*.sanascans.com"
       ],
-      "description": "Sana Scans read from its own web app and JSON api, with no browser step and no sign-in: Latest Chapters, Recently Updated, Most Popular, Newest Added, Oldest First, A-Z feeds, search, genre filtering, full details, chapter lists with dates and the reader. No title in the whole catalog carries an adult genre. Chapters marked Locked are paid with the site's coins and are not opened.",
+      "description": "Manga・Manhwa\n\nCatalog・700+\n\nRestrictions:\n・Locked Chapters",
       "capabilities": [
         "browse",
         "search",
@@ -3069,7 +3069,7 @@
         "en-hijala.com",
         "*.en-hijala.com"
       ],
-      "description": "Hijala Scans read from its own web app and JSON api, with no browser step and no sign-in: Latest Chapters, Recently Updated, Most Popular, Newest Added, Oldest First, A-Z feeds, search, genre filtering, full details, chapter lists with dates and the reader. No title in the whole catalog carries an adult genre. Chapters marked Locked are paid with the site's coins and are not opened.",
+      "description": "Manhwa・Manhua\n\nCatalog・100+\n\nRestrictions:\n・Locked Chapters",
       "capabilities": [
         "browse",
         "search",
@@ -3093,7 +3093,7 @@
         "orion-scans.com",
         "*.orion-scans.com"
       ],
-      "description": "Orion Scans read from its own web app and JSON api, with no browser step and no sign-in: Latest Chapters, Recently Updated, Most Popular, Oldest First, A-Z feeds, search, genre filtering, full details, chapter lists with dates and the reader. No title in the whole catalog carries an adult genre. Some covers are served unresized and weigh over 2 MB (the resizing proxy the site itself uses did not shrink the biggest ones), so a Browse grid can load slowly. Chapters marked Locked are paid with the site's coins and are not opened.",
+      "description": "Manga・Manhwa\n\nCatalog・300+\n\nRestrictions:\n・Locked Chapters",
       "capabilities": [
         "browse",
         "search",
@@ -3117,7 +3117,7 @@
         "renascans.net",
         "*.renascans.net"
       ],
-      "description": "Renascans read from its own web app and JSON api, with no browser step and no sign-in: Latest Chapters, Recently Updated, Most Popular, Newest Added, Oldest First, A-Z feeds, search, genre filtering, full details, chapter lists with dates and the reader. No title in the whole catalog carries an adult genre. Chapters marked Locked are paid with the site's coins and are not opened.",
+      "description": "Manhwa\n\nRestrictions:\n・Locked Chapters",
       "capabilities": [
         "browse",
         "search",
@@ -3141,7 +3141,7 @@
         "magustoon.org",
         "*.magustoon.org"
       ],
-      "description": "Magus Manga read from its own web app and JSON api, with no browser step and no sign-in: Latest Chapters, Recently Updated, Most Popular, Newest Added, Oldest First, A-Z feeds, search, genre filtering, full details, chapter lists with dates and the reader. No title in the whole catalog carries an adult genre. Chapters marked Locked are paid with the site's coins and are not opened.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・800+\n\nRestrictions:\n・Locked Chapters",
       "capabilities": [
         "browse",
         "search",
@@ -3165,7 +3165,7 @@
         "kencomics.com",
         "*.kencomics.com"
       ],
-      "description": "Ken Scans read from its own web app and JSON api, with no browser step and no sign-in: Latest Chapters, Recently Updated, Most Popular, Newest Added, Oldest First, A-Z feeds, search, genre filtering, full details, chapter lists with dates and the reader. Every title is rated from its own genres: Mature or Ecchi 16, Adult or Smut 18. Some covers are served unresized and weigh over 2 MB (the resizing proxy the site itself uses did not shrink the biggest ones), so a Browse grid can load slowly. Chapters marked Locked are paid with the site's coins and are not opened.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・200+\n\nRestrictions:\n・Locked Chapters",
       "capabilities": [
         "browse",
         "search",
@@ -3191,7 +3191,7 @@
         "*.2xstorage.com",
         "storage.waitst.com"
       ],
-      "description": "Manga, manhwa and manhua from Mangabat, which runs the same template as the Natomanga and Mangakakalot sources: Latest, New, Hot and Completed lists, genre filtering (one genre at a time), search, full details, complete chapter lists and the reader. Search uses the site's own quick search (up to 20 titles, no paging) because the full results page is a Cloudflare challenge. The catalog includes Adult, Smut and Hentai titles, so the whole source is rated adult, and a title's details also rate it from its genres (18 or 16).",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・90,000+",
       "capabilities": [
         "browse",
         "search",
@@ -3215,7 +3215,7 @@
         "novelarchive.cc",
         "*.novelarchive.cc"
       ],
-      "description": "A large novel aggregator (112,231 titles when this was written, English, many of them machine translations marked MTL in the title) with six browse feeds (latest updates, popular, trending, new additions, top rated, editor's choice), a 535 entry genre filter with include and exclude, search, full details, complete chapter lists and in-app prose reading. About one title in ten carries an explicit tag, so the source is rated mature and every title is rated from its own genres (18 for the explicit tags, 16 for mature, ecchi and similar), which the app's content settings then blur or hide. Shota and loli categories are never served. Light novels copied from other sites can have chapters that are only illustrations: those open with a short note, and because the text reader cannot draw pictures, each picture in a copy from another site leaves an [Illustration] mark where it sits. A few titles list chapters the site itself has no text for: those open as a note that says so, not as an error. Chapters are read with the site's lighter prefetch form, which does not count a view for the title. The site gives its API a budget of 900 requests per 5 minutes, so requests are held to 3 a second. Not yet tried inside the Boundless or Sumizuri app itself: the whole API was run against the live site with plain requests.",
+      "description": "Web Novels・Light Novels\n\nCatalog・100,000+\n\nRestrictions:\n・Rate Limit",
       "capabilities": [
         "browse",
         "search",
@@ -3231,7 +3231,7 @@
     {
       "id": "qimanga",
       "name": "Qi Manga",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "medium": "both",
       "website": "https://qimanga.com",
       "iconUrl": "https://inkstone.web.app/qimanga/icon.png",
@@ -3245,7 +3245,7 @@
         "quantumscans.org",
         "*.quantumscans.org"
       ],
-      "description": "The reading site of the Qi Scans group, the merger of Night Scans, Aurora Scans, Quantum Scans and LS Comic (about a thousand series: manhwa, manhua, manga and a few novels), with four browse feeds (latest updated, newest, popular, A-Z), a 65 entry genre filter (one genre at a time), search, full details, complete chapter lists and reading, comics as images and novels as text. The site has no adult category; its only sensitive tags are Ecchi and Mature (17 series), which are rated 16 per title, so the source is rated safe. The newest chapters of a series cost coins on the site: those are named (Locked, 50 coins), a paid comic chapter opens as an error that says so and a paid novel chapter as a short note; the site makes them free later and the API does not say when, so no countdown is shown. Optional sign-in: enter your Qi Manga email and password in this source's settings and the chapters your account has unlocked open here (email accounts only, not Google or Discord; it never buys anything, and this part has not been tried with a real account). Eight novels the site has moved to its sister sites are left out (Exnovels has them). Covers are the site's original files (median about 200 KB, some over 1 MB) and it offers no thumbnail size. The site allows 60 requests per 30 seconds, so requests are held to 2 a second. Not yet tried inside the Boundless or Sumizuri app itself: the whole API was run against the live site with plain requests and in the app's own engine on a Mac.",
+      "description": "Manga・Manhwa・Manhua・Novels\n\nCatalog・1,000+\n\nRestrictions:\n・Rate Limit\n・Locked Chapters",
       "capabilities": [
         "browse",
         "search",
@@ -3275,12 +3275,12 @@
           "placeholder": "Not for Google or Discord sign-ins"
         }
       ],
-      "sha256": "7ac2bfd4cb3f7f9c6d4a8b6124bfb5ec497db9322fa26416fc19bb58434deb92"
+      "sha256": "e75a04d4e781d412a7f0e92065c311bcfc6e3f746f4f17a050d9998f7c4c4120"
     },
     {
       "id": "exnovels",
       "name": "Exnovels",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "novel",
       "website": "https://exnovels.com",
       "iconUrl": "https://inkstone.web.app/exnovels/icon.png",
@@ -3290,7 +3290,7 @@
         "shadownovels.com",
         "*.shadownovels.com"
       ],
-      "description": "EXTRA novels, the novel sister site of Qi Manga (191 translated web novels) with four browse feeds (latest updated, newest, popular, A-Z), a 26 entry genre filter (one genre at a time), search, full details, complete chapter lists and in-app prose reading. The site has no adult or suggestive category, so the source is rated safe. Many chapters cost coins on the site (30 to 50 each): those are named (Locked, 30 coins) and open as a short note that says so; the site makes them free later and the API does not say when, so no countdown is shown. Optional sign-in: enter your Exnovels email and password in this source's settings and the chapters your account has unlocked open here (email accounts only, not Google or Discord; it never buys anything, and this part has not been tried with a real account). The site allows 60 requests per 30 seconds, so requests are held to 2 a second. Not yet tried inside the Boundless or Sumizuri app itself: the API was run against the live site with plain requests.",
+      "description": "Web Novels\n\nCatalog・100+\n\nRestrictions:\n・Rate Limit\n・Locked Chapters",
       "capabilities": [
         "browse",
         "search",
@@ -3320,12 +3320,12 @@
           "placeholder": "Not for Google or Discord sign-ins"
         }
       ],
-      "sha256": "889bd8ee17a9a74fb096758a07d640a2eb8d3b9ead45a4b32108fb0e294977c8"
+      "sha256": "95b1cafff06dfd8994a68f9bc16628182d66789029310970f83b4f39ee528574"
     },
     {
       "id": "ezmanga",
       "name": "EzManga",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "both",
       "website": "https://ezmanga.org",
       "iconUrl": "https://inkstone.web.app/ezmanga/icon.png",
@@ -3333,7 +3333,7 @@
         "ezmanga.org",
         "*.ezmanga.org"
       ],
-      "description": "A manhwa reading site (about 800 series, mostly shoujo and josei romance and fantasy) with four browse feeds (latest updated, newest, popular, A-Z), a 40 entry genre filter (one genre at a time), search, full details, complete chapter lists and reading. The site has no adult category (its only sensitive tag is GORE on one series, rated 16 per title), so the source is rated safe. The newest chapters of a series cost coins on the site: those are named (Locked, 100 coins), a paid chapter opens as an error that says so and the site makes them free later; the API does not say when, so no countdown is shown. Optional sign-in: enter your EzManga email and password in this source's settings and the chapters your account has unlocked open here (email accounts only, not Google or Discord; it never buys anything, and this part has not been tried with a real account). The website itself refuses anything that is not a browser, so this source talks to the site's own API host only. One series the site has moved to another site is left out. Covers are the site's original files (median about 340 KB, some over 1 MB) and it offers no thumbnail size. The site allows 60 requests per 30 seconds, so requests are held to 2 a second. Not yet tried inside the Boundless or Sumizuri app itself: the API was run against the live site with plain requests.",
+      "description": "Manhwa\n\nCatalog・800+\n\nRestrictions:\n・Rate Limit\n・Locked Chapters",
       "capabilities": [
         "browse",
         "search",
@@ -3363,7 +3363,7 @@
           "placeholder": "Not for Google or Discord sign-ins"
         }
       ],
-      "sha256": "1d98baa4ac94befebbb33a6cff50355c88a81f997b0f9d73b1d49099fd1c313b"
+      "sha256": "026b280b776826c53a46c19bc551ea9e60694a8ead889836ce0cf4e97900e043"
     },
     {
       "id": "atsu",
@@ -3376,7 +3376,7 @@
         "atsu.moe",
         "*.atsu.moe"
       ],
-      "description": "A large reader for manga, manhwa, manhua and web novels (27,291 titles when this was written: 24,622 comics and 2,669 novels, English), with six browse feeds (latest updates, hot updates, popular, trending, new additions, top rated), a 21 entry genre filter that can combine several genres and exclude some, typo tolerant search, full details, complete chapter lists and reading, comics as images and novels as text. Popular titles come in several copies from different groups, and the chapter list shows one per chapter number, taken from the group the site ranks first (the group is shown on each chapter). About one title in five is flagged adult by the site, so the source is rated mature and every title is rated from its own data (18 for adult, erotica and pornographic, 16 for suggestive), which the app's content settings then blur or hide. The explicit shota and loli tags (Lolicon, Shotacon and their variants such as Legal Loli) are never served; the plain Loli and Shota character tags, which sit on mainstream series such as One Piece, are not blocked. Pictures are AVIF or WebP depending on the chapter; very tall AVIF pages may show at reduced sharpness. The site pushed back on nothing in testing, so requests are not rate limited. Not yet tried inside the Boundless or Sumizuri app itself: the whole API was run against the live site with plain requests.",
+      "description": "Manga・Manhwa・Manhua・Web Novels\n\nCatalog・20,000+",
       "capabilities": [
         "browse",
         "search",

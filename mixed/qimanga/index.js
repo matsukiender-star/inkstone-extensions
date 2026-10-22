@@ -8,7 +8,8 @@ const CONFIG = {
   "suggestiveSlugs": [
     "ecchi",
     "mature"
-  ]
+  ],
+  "medium": "both"
 };
 
 const SITE_BASE = CONFIG.siteBase;
@@ -16,6 +17,8 @@ const API_V1 = `${CONFIG.apiBase}/v1`;
 const API_V2 = `${CONFIG.apiBase}/v2`;
 const NAME = CONFIG.name;
 const PAGE_SIZE = 30;
+const MIN_FILTERED_RESULTS = 10;
+const MAX_FILTER_PAGES = 6;
 const CHAPTER_PAGE = 100;
 const MAX_CHAPTER_REQUESTS = 60;
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -210,25 +213,35 @@ class Source {
     const tagIds = ((request && request.includedTags) || []).map((t) => t && t.id).filter(Boolean);
     const feed = FEEDS.find((f) => f.id === (request && request.feed)) || FEEDS[0];
 
-    let path;
-    if (query) {
-      if (query.length < 2) return { results: [], metadata: undefined };
-      path = `${API_V1}/series/search?q=${encodeURIComponent(query)}&page=${page}&perPage=${PAGE_SIZE}`;
-    } else {
-      const params = [`page=${page}`, `perPage=${PAGE_SIZE}`, `sort=${feed.id}`];
+    if (CONFIG.medium === 'novel' && wantedMedium === 'comics') return { results: [], metadata: undefined };
+
+    const pathFor = (p) => {
+      if (query) return `${API_V1}/series/search?q=${encodeURIComponent(query)}&page=${p}&perPage=${PAGE_SIZE}`;
+      const params = [`page=${p}`, `perPage=${PAGE_SIZE}`, `sort=${feed.id}`];
       if (tagIds.length) params.push(`genre=${encodeURIComponent(tagIds[0])}`);
       if (wantedMedium === 'novel') params.push('type=NOVEL');
-      path = `${API_V1}/series?${params.join('&')}`;
-    }
+      return `${API_V1}/series?${params.join('&')}`;
+    };
+    if (query && query.length < 2) return { results: [], metadata: undefined };
 
-    const [json, rated] = await Promise.all([this._get(path), this._ratedSlugs()]);
-    const list = Array.isArray(json && json.data) ? json.data : [];
-    const results = list
-      .filter((s) => s && s.slug && !s.redirectUrl)
-      .filter((s) => !wantedMedium || mediumOf(s) === wantedMedium)
-      .map((s) => this._toPartial(s, rated));
-    const next = json && json.next;
-    return { results, metadata: next ? { page: Number(next) || page + 1 } : undefined };
+    const ratedLookup = this._ratedSlugs();
+    const pagesToRead = query && wantedMedium ? MAX_FILTER_PAGES : 1;
+    const results = [];
+    let current = page;
+    let next = 0;
+    for (let read = 0; read < pagesToRead; read += 1) {
+      const json = await this._get(pathFor(current));
+      const rated = await ratedLookup;
+      const list = Array.isArray(json && json.data) ? json.data : [];
+      list
+        .filter((s) => s && s.slug && !s.redirectUrl)
+        .filter((s) => !wantedMedium || mediumOf(s) === wantedMedium)
+        .forEach((s) => results.push(this._toPartial(s, rated)));
+      next = json && json.next ? Number(json.next) || current + 1 : 0;
+      if (!next || results.length >= MIN_FILTERED_RESULTS) break;
+      current = next;
+    }
+    return { results, metadata: next ? { page: next } : undefined };
   }
 
   async getMangaDetails(mangaId) {
