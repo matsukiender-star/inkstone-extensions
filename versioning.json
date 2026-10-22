@@ -3366,6 +3366,30 @@
       "sha256": "1d98baa4ac94befebbb33a6cff50355c88a81f997b0f9d73b1d49099fd1c313b"
     },
     {
+      "id": "atsu",
+      "name": "Atsumaru",
+      "version": "1.0.0",
+      "medium": "both",
+      "website": "https://atsu.moe",
+      "iconUrl": "https://inkstone.web.app/atsu/icon.png",
+      "hosts": [
+        "atsu.moe",
+        "*.atsu.moe"
+      ],
+      "description": "A large reader for manga, manhwa, manhua and web novels (27,291 titles when this was written: 24,622 comics and 2,669 novels, English), with six browse feeds (latest updates, hot updates, popular, trending, new additions, top rated), a 21 entry genre filter that can combine several genres and exclude some, typo tolerant search, full details, complete chapter lists and reading, comics as images and novels as text. Popular titles come in several copies from different groups, and the chapter list shows one per chapter number, taken from the group the site ranks first (the group is shown on each chapter). About one title in five is flagged adult by the site, so the source is rated mature and every title is rated from its own data (18 for adult, erotica and pornographic, 16 for suggestive), which the app's content settings then blur or hide. Shota and loli categories are never served: that also hides a few mainstream series that carry the character tag Loli or Shota, such as One Piece. Pictures are AVIF or WebP depending on the chapter; very tall AVIF pages may show at reduced sharpness. The site pushed back on nothing in testing, so requests are not rate limited. Not yet tried inside the Boundless or Sumizuri app itself: the whole API was run against the live site with plain requests.",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "b41abde585375aa2964352b9630f8a96b86dae2ef7566b0b742c008eb699c020"
+    },
+    {
       "id": "anizone",
       "name": "AniZone",
       "version": "1.0.0",

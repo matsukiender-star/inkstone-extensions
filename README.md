@@ -43,7 +43,7 @@ Prefer to review a written plan before any code is written? This repo works with
 
 ## Extensions
 
-137 extensions right now. Ratings are Safe, Mature or Adult, and some extensions also rate each title on its own.
+138 extensions right now. Ratings are Safe, Mature or Adult, and some extensions also rate each title on its own.
 
 Each extension lives in the folder for what it offers: `comics`, `novels`, `mixed` for those that do both, or `anime`. The site still serves every one at `inkstone.web.app/<id>/index.js`, so the folders change nothing in the apps.
 
@@ -56,6 +56,7 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [Arena Scans](comics/arenascans/index.js) | arenascan.com | English | Mature | 1.0.0 |
 | [AsuraScans](mixed/asurascans/index.js) | asurascans.com | English | Safe | 2.4.0 |
 | [Athrea Scans](comics/athreascans/index.js) | athreascans.com | English | Adult | 1.0.0 |
+| [Atsumaru](mixed/atsu/index.js) | atsu.moe | English | Mature | 1.0.0 |
 | [BL village](comics/blvillage/index.js) | blvillage.com | Japanese | Adult | 1.1.1 |
 | [Bun Manga](comics/bunmanga/index.js) | bunmanga.com | English | Safe | 1.0.0 |
 | [Chikari](mixed/chikari/index.js) | chikari.moe | English | Adult | 4.4.0 |
@@ -170,6 +171,7 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | --- | --- | --- | --- | --- |
 | [17K Novel Network](novels/17k/index.js) | 17k.com | Chinese | Mature | 1.3.0 |
 | [AsuraScans](mixed/asurascans/index.js) | asurascans.com | English | Safe | 2.4.0 |
+| [Atsumaru](mixed/atsu/index.js) | atsu.moe | English | Mature | 1.0.0 |
 | [Chikari](mixed/chikari/index.js) | chikari.moe | English | Adult | 4.4.0 |
 | [Dreame](novels/dreame/index.js) | dreame.com | English | Adult | 1.2.0 |
 | [Exnovels](novels/exnovels/index.js) | exnovels.com | English | Safe | 1.0.0 |
