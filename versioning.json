@@ -3368,7 +3368,7 @@
     {
       "id": "atsu",
       "name": "Atsumaru",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "both",
       "website": "https://atsu.moe",
       "iconUrl": "https://inkstone.web.app/atsu/icon.png",
@@ -3376,7 +3376,7 @@
         "atsu.moe",
         "*.atsu.moe"
       ],
-      "description": "A large reader for manga, manhwa, manhua and web novels (27,291 titles when this was written: 24,622 comics and 2,669 novels, English), with six browse feeds (latest updates, hot updates, popular, trending, new additions, top rated), a 21 entry genre filter that can combine several genres and exclude some, typo tolerant search, full details, complete chapter lists and reading, comics as images and novels as text. Popular titles come in several copies from different groups, and the chapter list shows one per chapter number, taken from the group the site ranks first (the group is shown on each chapter). About one title in five is flagged adult by the site, so the source is rated mature and every title is rated from its own data (18 for adult, erotica and pornographic, 16 for suggestive), which the app's content settings then blur or hide. Shota and loli categories are never served: that also hides a few mainstream series that carry the character tag Loli or Shota, such as One Piece. Pictures are AVIF or WebP depending on the chapter; very tall AVIF pages may show at reduced sharpness. The site pushed back on nothing in testing, so requests are not rate limited. Not yet tried inside the Boundless or Sumizuri app itself: the whole API was run against the live site with plain requests.",
+      "description": "A large reader for manga, manhwa, manhua and web novels (27,291 titles when this was written: 24,622 comics and 2,669 novels, English), with six browse feeds (latest updates, hot updates, popular, trending, new additions, top rated), a 21 entry genre filter that can combine several genres and exclude some, typo tolerant search, full details, complete chapter lists and reading, comics as images and novels as text. Popular titles come in several copies from different groups, and the chapter list shows one per chapter number, taken from the group the site ranks first (the group is shown on each chapter). About one title in five is flagged adult by the site, so the source is rated mature and every title is rated from its own data (18 for adult, erotica and pornographic, 16 for suggestive), which the app's content settings then blur or hide. The explicit shota and loli tags (Lolicon, Shotacon and their variants such as Legal Loli) are never served; the plain Loli and Shota character tags, which sit on mainstream series such as One Piece, are not blocked. Pictures are AVIF or WebP depending on the chapter; very tall AVIF pages may show at reduced sharpness. The site pushed back on nothing in testing, so requests are not rate limited. Not yet tried inside the Boundless or Sumizuri app itself: the whole API was run against the live site with plain requests.",
       "capabilities": [
         "browse",
         "search",
@@ -3387,7 +3387,7 @@
       ],
       "language": "en",
       "contentRating": "mature",
-      "sha256": "b41abde585375aa2964352b9630f8a96b86dae2ef7566b0b742c008eb699c020"
+      "sha256": "1684fdbbd9a0d3279ae47e19956471d7158a45678e397a6435c39a760fddf33f"
     },
     {
       "id": "anizone",

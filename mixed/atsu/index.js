@@ -5,8 +5,14 @@ const CDN_BASE = 'https://cdn.atsu.moe';
 const PAGE_SIZE = 40;
 const CACHE_MS = 60000;
 
-const BLOCKED_TAG_IDS = ['1769', '1770', '28', '35', '6121', '5516', '6779', '2190', '4075', '4731', '6608', '4455', '3636'];
+const BLOCKED_TAG_IDS = ['28', '35', '6121', '5516', '6779', '2190', '4075', '4731', '6608', '4455', '3636'];
 const BLOCKED_TAG_NAME = /(^|[^a-z])(loli|lolicon|shota|shotacon)([^a-z]|$)/i;
+
+function isBlockedTagName(name) {
+  const n = String(name || '').trim().toLowerCase();
+  if (n === 'loli' || n === 'shota') return false;
+  return BLOCKED_TAG_NAME.test(n);
+}
 
 const GENRES = [
   { id: '39', label: 'Action' },
@@ -362,8 +368,8 @@ class Source {
         const mp = json && json.mangaPage;
         if (!mp) throw new Error('Atsumaru: no such title');
         const blocked =
-          (mp.tags || []).some((t) => t && (isBlockedIds([t.id]) || BLOCKED_TAG_NAME.test(String(t.name || '')))) ||
-          (mp.genres || []).some((g) => g && BLOCKED_TAG_NAME.test(String(g.name || '')));
+          (mp.tags || []).some((t) => t && (isBlockedIds([t.id]) || isBlockedTagName(t.name))) ||
+          (mp.genres || []).some((g) => g && isBlockedTagName(g.name));
         if (blocked) throw new Error('This title is not available in this source.');
         if (mediumOf(mp.medium) === 'novel') this._novels.add(mangaId);
         return mp;
