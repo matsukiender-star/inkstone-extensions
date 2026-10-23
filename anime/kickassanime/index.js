@@ -149,6 +149,7 @@ class Source {
   async getVideos(mangaId, chapterId) {
     const episode = await this.json(`${SITE}/api/show/${encodeURIComponent(mangaId)}/episode/${encodeURIComponent(chapterId)}`);
     const servers = Array.isArray(episode.servers) ? episode.servers : [];
+    if (!servers.length) throw new Error('KickAssAnime lists this episode with no server, so the site has no stream for it');
     const videos = [];
     for (const server of servers) {
       if (!server || !server.src) continue;
@@ -168,7 +169,7 @@ class Source {
       } catch (e) {
       }
     }
-    if (!videos.length) throw new Error('KickAssAnime: no server of this episode gave a video');
+    if (!videos.length) throw new Error(`KickAssAnime: none of this episode's ${servers.length} servers gave a video`);
     return videos;
   }
 

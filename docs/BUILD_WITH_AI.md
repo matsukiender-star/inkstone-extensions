@@ -15,6 +15,8 @@ If your AI can't open links, paste this whole file into the chat first, then add
 
 The extensions you build load in Boundless Reader and in Sumizuri. The details below describe Boundless's runtime, so test in Boundless, and in Sumizuri too if you can.
 
+**Anime extensions are for Sumizuri.** An extension with `medium: "anime"` plays video through a `getVideos` method that only [Sumizuri](https://sumizuri.notakari.com/) has. Boundless is not compatible with anime extensions, so these are built for Sumizuri compatibility: use Sumizuri to install, play and test them. The section "Anime (video) extensions (Sumizuri only)" in Step 2 says how to build one.
+
 Works with Claude, ChatGPT, Cursor, Codex, Gemini and anything else that can write code. It works best when the AI can run commands (curl, node), so it can check the real site instead of guessing.
 
 **Why the instructions are so specific.** Every rule below comes from building and repairing real extensions in this catalog: blank screens, chapters that never loaded, covers that came back 403, lists that quietly stopped at page 5. Each rule is here because skipping it once broke a real extension.
@@ -27,7 +29,7 @@ Inkstone is an independent project. It isn't part of Boundless Reader and isn't 
 
 # Instructions for the AI
 
-You're building one extension for Boundless Reader: a single JavaScript file that lets the app browse, search and read one site. Work through the steps in order. Ask the user a question only when you're truly blocked.
+You're building one extension for Boundless Reader: a single JavaScript file that lets the app browse, search and read one site. If the site is an anime site, the extension is for Sumizuri and plays video instead: read "Anime (video) extensions (Sumizuri only)" in Step 2 before you start. Work through the steps in order. Ask the user a question only when you're truly blocked.
 
 If the user asked for OpenSpec, or this repository has an `openspec/` folder and they want a plan first, follow [OPENSPEC.md](https://inkstone.web.app/docs/OPENSPEC.md) instead: propose a change named `add-<id>-extension`, stop for review, then apply. The steps below still apply. Step 1 becomes the findings in the proposal and design, Step 2 becomes the spec and tasks, and Steps 3 to 5 become the tasks you check off.
 
@@ -83,8 +85,21 @@ Do these checks in one batch (one script, or a few curl calls sent together), th
 | `mangatoon` | HTML and embedded JSON, paid episodes marked locked, an optional email sign-in |
 | `navercomic` | Server-rendered pages, an age wall, and an optional login with session cookies |
 | `mangafire` | A site that needs the web view: one page visit per title, shared by details and chapters (not yet timed inside the app) |
+| `anizone` | Anime, for Sumizuri only: HTML pages with the player's data embedded, an HLS master playlist, ASS subtitles, and intro and outro times read from a chapters track |
+| `uniquestream` | Anime, for Sumizuri only: a JSON API, titles with several seasons (the season fields), the audio language in the quality label |
+| `kickassanime` | Anime, for Sumizuri only: a JSON API with several servers per episode, each behind a player page that needs a Referer |
 
 `asurascans`, `chikari` and `mangadex` read from a JSON API. For a site that only serves HTML, follow the `cheerio` guidance in Step 2 and look at `mangatoon`. Other extensions in the repo are fine for ideas, but some have rough edges, so don't copy them blindly.
+
+**For an anime site, also check these** (the extension is for Sumizuri, see Step 2):
+
+- **Where the stream comes from.** Open an episode page and watch its network calls, or read the player's embedded data. You want the stream address (usually a `.m3u8` playlist) and the call that gives it.
+- **What the stream host wants.** Fetch the playlist with no headers, then with `Referer` and `Origin` set to the site, then to the player's own page. KickAssAnime's playlist answers 403 without its player's Referer; AniZone's and UniqueStream's answer either way. Return the headers that work.
+- **Master or single.** A master playlist lists the qualities (count the `#EXT-X-STREAM-INF` lines); a media playlist is one quality.
+- **Subtitles and audio.** Which languages, which file type (`.vtt` or `.ass`), and whether sub and dub are separate streams or separate audio tracks.
+- **Skip times.** Does the player data carry intro and outro times, or a WebVTT chapters track with cues called Intro, Opening, Credits or Ending?
+- **An episode with no stream yet.** Sites list episodes before they are encoded. Find out what that answers, so it can be an error with a clear message and not an empty list.
+- **Whether addresses expire.** Fetch a stream address again a few minutes later.
 
 **Decide go or no-go.** A TLS-level block, or a whole catalog behind a login, is a real "no". Say so plainly and stop. A login that only opens extra chapters is not: see Accounts in Step 2.
 
@@ -323,9 +338,58 @@ Some sites open more chapters to a signed-in or paying reader. An extension can 
 - A web view script is usually built inside a JavaScript template literal, and a template literal swallows backslash escapes: a `\s` or `\d` in your script reaches the page as `s` or `d`, so a regex silently matches the wrong thing (here it would have rewritten every `s` in the chapter names). Print the generated script and read it, or avoid escapes in the page code and tidy the data on the extension side.
 - A site where every page image needs its own request can return the text `boundless-lazy-page` for each page, and answer `getPageData(mangaId, chapterId, pageIndex)` with `{ uri, referer, headers }` for a URL, `{ base64, mimeType }` for the image itself, or `{ error }`. No published extension uses it right now (one did until its page images turned out to be plain URLs again, with no Referer).
 
+### Anime (video) extensions (Sumizuri only)
+
+**These extensions are for Sumizuri compatibility.** Boundless Reader is not compatible with anime extensions: it has no video player and does not call `getVideos`. Use [Sumizuri](https://sumizuri.notakari.com/) to install, play and test them. The rules below are from Sumizuri's own extension documentation and engine source (version 0.2.0), checked against the three anime extensions in this catalog (`anizone`, `uniquestream`, `kickassanime`). Everything else in this guide (feeds, search, details, episode lists, rate limits, the `App` object, the test script) applies to them unchanged. This section is only what is different.
+
+- **Manifest.** `medium` is `anime` and `capabilities` is `["browse", "search", "details", "chapters", "videos"]` (there is no `reader`). In the public repository the file lives in `anime/<id>/index.js`.
+- **Episodes are chapters.** `getChapters(mangaId)` returns the usual shape, newest first: `id` (or `chapterId`), `name` such as `Episode 12: Title`, `number`, `time` in milliseconds. `language`, `group`, `isLocked` and `unlockAt` work as for chapters. Nothing is read from `getChapterDetails` to play an episode; the catalog extensions return `{ id, mangaId, pages: [] }` from it. Titles may carry `medium: 'anime'`.
+- **`getVideos(mangaId, chapterId)` plays an episode.** It returns a list, one entry per stream. It must be an array: `{ videos: [...] }` gives no video.
+
+```js
+async getVideos(mangaId, chapterId) {
+  const episode = await this.json(`${API}/episode/${encodeURIComponent(chapterId)}`);
+  if (!episode.stream) throw new Error('This episode has no stream yet');
+  return [
+    {
+      url: episode.stream,
+      quality: 'Auto',
+      headers: { Referer: 'https://example.com/' },
+      subtitles: [{ url: episode.vtt, label: 'English', language: 'en' }],
+      intro: { start: 90000, end: 180000 },
+      outro: { start: 1300000, end: 1390000 },
+    },
+  ];
+}
+```
+
+| Field | Needed | What Sumizuri does with it |
+| --- | --- | --- |
+| `url` | yes | The stream, a full address. An entry without one is dropped silently. |
+| `quality` | no | A text label. Sumizuri reads it (see below). |
+| `headers` | no | An object of strings sent with the stream requests, such as `Referer` and `Origin`. |
+| `subtitles` | no | `[{ url, label, language }]`. A track without a full `url` is dropped. `language` is a code such as `en`; the player picks the person's language by code or label. |
+| `audio` | no | Separate audio tracks, the same shape as `subtitles`. |
+| `intro`, `outro` | no | `{ start, end }` in **milliseconds**, with `end` after `start` or the range is ignored. The player offers to skip them. |
+
+- **Label `quality` for the player.** Sumizuri ranks videos by a height in the label (`1080p`, `720p`, `4k`) and recognizes the words `Sub`, `Dub`, `Softsub` and `Hardsub`: they drive the person's audio preference and the switch between a subbed and a dubbed version. A stream with several qualities is `Auto` (add the word, for example `Auto Dub`). If you offer both a sub and a dub, say which is which in the label.
+- **Return an HLS master playlist once.** Sumizuri fetches an address whose path ends in `.m3u8` (with your `headers`) and offers each quality itself, tallest first. Do not list the qualities yourself. An address that does not end in `.m3u8` (UniqueStream's ends in `/hls/m3u8`) is played as given.
+- **Headers.** Put `Referer` (and `Origin`) in `headers` when the stream host checks them, and test with and without, as in Step 1.
+- **Several servers.** Return one entry per working server, each labeled (KickAssAnime returns `VidStreaming` and `BirdStream`). Skip a server that fails and keep the others.
+- **An episode with no stream yet** is an `Error` with a message that says so, not an empty list (which shows "no videos" with no reason). Check the newest episodes of a new show and a few old ones: KickAssAnime lists some episodes with an empty server list (19 of 76 episodes sampled on 2026-10-23, new shows and old ones alike), and there the site has no stream to read. Say which case it is in the message (no server listed, or servers that gave no video).
+- **Skip times.** Use the site's own intro and outro times when it has them. AniZone reads them from a WebVTT chapters track whose cues are named Intro or Opening, and Credits, Outro or Ending.
+- **Seasons.** When a title has more than one season, give each episode `season` (an id as text), `seasonName` and optionally `seasonCover`; the title page groups by season (`uniquestream` does this). Leave them out for a single season.
+- **Banner.** `mangaInfo` can carry a `banner`, a wide picture shown behind the title page.
+- **Content rating.** Sumizuri treats only `contentRating: "adult"` as adult; `safe` and `mature` show without the gate. The Inkstone website hides `adult` sources.
+- **How Sumizuri differs as a runtime.** It runs sources in QuickJS (Boundless uses JavaScriptCore), can reach only public `http` and `https` addresses and never the local network, keeps cookies between a source's requests, and accepts a number written as text where Boundless would throw. Keep real numbers anyway. If the site needs a `Cookie`, send it yourself as AniZone does, so it works everywhere. `hosts` limits what your extension requests; keep listing the site, its API and the stream hosts.
+- **Test it.** The Step 3 script plays instead of opening chapters: it fetches the first video's address with its headers and expects an HLS playlist or a video content type, tries up to four of the newest episodes, and warns about video fields Sumizuri would drop. Then try it in Sumizuri: in **Browse**, open **Extensions**, tap **Create a source** or add your repository (the editor has a **Test** tab with **Run all**), or add the repository with the link `sumizuri://add-repo?url=` followed by the encoded repository address.
+- **Other Sumizuri additions** that Boundless ignores: tag sections with `single: true` (the person picks one tag of the section or none) in `getSearchTags`, and `getSortOptions()` with `request.sortId`.
+
 ## Step 3: Test it on the real site
 
 Run the test script. It does two jobs: it checks the extension is **compatible** with Boundless (loads in a bare sandbox, exports the right methods, has a valid `versioning.json` entry, matching `sha256`), and it checks the extension can **fetch real results** (browse, search, details, chapters and actually opening chapters, for two titles). The full guide is in [TESTING.md](https://inkstone.web.app/docs/TESTING.md).
+
+For an anime extension the script plays an episode instead of opening a chapter, and passing it means the stream answered, not that Sumizuri played it: say so in your report.
 
 Save this as `test-extension.mjs` next to your extension folder (or download it from https://inkstone.web.app/docs/test-extension.mjs):
 
@@ -358,6 +422,7 @@ const warnIgnoredRating = (what) => {
   say('warn', `${what} set contentRating, which Boundless ignores`, 'to rate titles one by one, set ageRating to a minimum age such as 0, 16 or 18');
 };
 let skippedInApp = false;
+const shapeWarned = new Set();
 const finish = () => {
   console.log(`\n${tally.pass} passed, ${tally.fail} failed, ${tally.warn} warnings.`);
   if (tally.fail) console.log('Not ready yet.');
@@ -595,7 +660,24 @@ for (const item of (found?.value.results ?? []).slice(0, 2)) {
     const subtitles = (first.subtitles ?? []).length;
     const took = `${((Date.now() - started) / 1000).toFixed(1)}s`;
     const skip = first.intro ? `, intro ${Math.round(first.intro.start / 1000)}s to ${Math.round(first.intro.end / 1000)}s` : '';
-    return { ok: plays, label, detail: plays ? `${videos.length} video, ${subtitles} subtitle tracks${skip}, in ${took}` : `the stream answered ${answer.status}` };
+    // Sumizuri drops these silently: a track with no full URL, headers that are not strings, a skip range
+    // with no start and end in milliseconds or an end that is not after its start.
+    const problems = [];
+    for (const video of videos) {
+      const quality = video.quality === undefined ? 'a video' : `"${video.quality}"`;
+      if (video.quality !== undefined && typeof video.quality !== 'string') problems.push(`${quality}: quality is not a string`);
+      if (video.headers !== undefined && (typeof video.headers !== 'object' || video.headers === null || Object.values(video.headers).some((v) => typeof v !== 'string'))) problems.push(`${quality}: headers must be an object of strings`);
+      for (const kind of ['subtitles', 'audio']) {
+        if (video[kind] === undefined) continue;
+        if (!Array.isArray(video[kind])) problems.push(`${quality}: ${kind} must be a list`);
+        else if (video[kind].some((track) => !track || !isUrl(track.url))) problems.push(`${quality}: a ${kind} track has no full URL`);
+      }
+      for (const kind of ['intro', 'outro']) {
+        const range = video[kind];
+        if (range !== undefined && !(range && Number.isFinite(range.start) && Number.isFinite(range.end) && range.end > range.start)) problems.push(`${quality}: ${kind} needs numbers start and end in milliseconds, with end after start`);
+      }
+    }
+    return { ok: plays, label, problems, detail: plays ? `${videos.length} video, ${subtitles} subtitle tracks${skip}, in ${took}` : `the stream answered ${answer.status}` };
   };
   const tryOpen = async (chapter) => {
     const label = `chapter "${chapter.name ?? chapter.id}"`;
@@ -631,6 +713,11 @@ for (const item of (found?.value.results ?? []).slice(0, 2)) {
   }
   if (first.ok) {
     say('pass', `${first.label} opens`, first.detail);
+    for (const problem of first.problems ?? []) {
+      if (shapeWarned.has(problem)) continue;
+      shapeWarned.add(problem);
+      say('warn', 'a video has a field Sumizuri would drop', problem);
+    }
   } else if (opened.ok) {
     say('warn', `${first.label} did not open (${first.detail}), maybe locked or not published yet`);
     say('pass', `${opened.label} opens`, opened.detail);
@@ -711,7 +798,7 @@ Add an entry to `versioning.json`, and make the folder name equal the `id`:
 }
 ```
 
-- `medium` is `comics`, `novel` or `both`. `language` is a two-letter code. `capabilities` lists what really works.
+- `medium` is `comics`, `novel`, `both` or `anime` (anime is for Sumizuri only, see Step 2). An anime entry lists `videos` in `capabilities` and has no `reader`. `language` is a two-letter code. `capabilities` lists what really works.
 - `contentRating` is `safe`, `mature` or `adult`, based on what you saw in Step 1. When in doubt, go one step stricter.
 - `hosts` lists every host the extension talks to. Boundless refuses requests to anything else. Image hosts aren't covered by it, but list them anyway.
 - `description` is shown in the app (the first line on the source cards, the whole text on the source's page) and on the website, so it is short and has a fixed shape:
@@ -750,6 +837,7 @@ End with something the user can read in thirty seconds:
 - **What doesn't:** limitations, honestly. Scrambled images, a missing feed, chapters that need a login.
 - **Protection:** Cloudflare, rate limits, hotlink protection, and what you did about each.
 - **Locked chapters:** how many, whether they are timed or paid, and what opening one does.
+- **Anime** (for an anime source): which episode played, with which headers, how many qualities, subtitle tracks and skip times it had, and whether you tried it in Sumizuri or only fetched the stream.
 - **Content rating** you chose, and why.
 - **Test output** from the script.
 - **Not tested:** anything you could only check against a mock or in a browser tab (sign-in, web view code, Cloudflare), so the user knows what to try in the app.
@@ -763,6 +851,14 @@ End with something the user can read in thirty seconds:
 | Relative image URLs | Covers or pages fail to load |
 | `time` as a `Date`, or in seconds | Wrong or missing dates |
 | `description` instead of `desc` | Blank summary |
+| `getVideos` returns `{ videos: [...] }` or one object | Sumizuri reads only a list, so there is no video |
+| A video, subtitle or audio entry with no full `url` | Dropped silently |
+| `intro` or `outro` in seconds, or with `end` not after `start` | Ignored |
+| Listing every HLS quality as its own video | Return the master playlist once; Sumizuri offers the qualities |
+| The stream host checks `Referer` and `headers` is left out | The stream answers 403 and nothing plays |
+| Sub and dub offered with no `Sub` or `Dub` in `quality` | The sub and dub switch is missing |
+| An empty list for an episode with no stream yet | "No videos" with no reason: throw an `Error` that says why |
+| Testing an anime extension only in Boundless | Boundless is not compatible with anime: test in Sumizuri |
 | A `status` that isn't an allowed word | Shows as Unknown |
 | Always returning `metadata` | Browse loads the last page forever |
 | `getSourceFeeds()` that's `async` or fetches | Feeds never appear |

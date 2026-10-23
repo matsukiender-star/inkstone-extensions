@@ -78,7 +78,7 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [Indomanhwa](comics/indomanhwa/index.js) | indomanhwa.com | Indonesian | Mature | 1.0.0 |
 | [InkStory](comics/inkstory/index.js) | inkstory.net | Russian | Mature | 1.1.0 |
 | [InManga](comics/inmanga/index.js) | inmanga.com | Spanish | Safe | 1.1.0 |
-| [Kagane](comics/kagane/index.js) | kagane.org | English | Safe | 1.3.0 |
+| [Kagane](comics/kagane/index.js) | kagane.org | English | Safe | 1.3.1 |
 | [Keikomik](comics/keikomik/index.js) | keikomik.net | Indonesian | Adult | 1.0.0 |
 | [Ken Scans](comics/kenscans/index.js) | kencomics.com | English | Mature | 1.0.0 |
 | [Kingofshojo](comics/kingofshojo/index.js) | kingofshojo.com | English | Adult | 1.0.0 |
@@ -204,7 +204,7 @@ Anime extensions use `medium: "anime"` and a `getVideos` method. Sumizuri plays 
 | Extension | Site | Language | Rating | Version |
 | --- | --- | --- | --- | --- |
 | [AniZone](anime/anizone/index.js) | anizone.to | English | Mature | 1.0.0 |
-| [KickAssAnime](anime/kickassanime/index.js) | kaa.lt | English | Mature | 1.0.0 |
+| [KickAssAnime](anime/kickassanime/index.js) | kaa.lt | English | Mature | 1.0.1 |
 | [UniqueStream](anime/uniquestream/index.js) | anime.uniquestream.net | English | Mature | 1.0.1 |
 
 ## Credits

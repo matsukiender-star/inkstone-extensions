@@ -46,6 +46,12 @@ function coverUrl(id) {
   return id ? `${siteBase()}/api/v2/image/${id}/compressed` : undefined;
 }
 
+function mainCoverImageId(series) {
+  const covers = Array.isArray(series.series_covers) ? series.series_covers : [];
+  const main = covers.find((c) => c && c.is_main && c.image_id) || covers.find((c) => c && c.image_id);
+  return main ? main.image_id : series.main_cover_id;
+}
+
 function names(list, pick) {
   return (Array.isArray(list) ? list : []).map(pick).filter((n) => typeof n === 'string' && n);
 }
@@ -227,7 +233,7 @@ class Source {
     return {
       mangaInfo: {
         title: series.title,
-        image: coverUrl(series.main_cover_id || (Array.isArray(series.series_covers) && series.series_covers[0] && series.series_covers[0].cover_id)),
+        image: coverUrl(mainCoverImageId(series)),
         desc: series.description,
         status: mapStatus(series.publication_status),
         ageRating: ageRatingFor(series),

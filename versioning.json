@@ -1929,7 +1929,7 @@
     {
       "id": "kagane",
       "name": "Kagane",
-      "version": "1.3.0",
+      "version": "1.3.1",
       "medium": "comics",
       "website": "https://kagane.org",
       "iconUrl": "https://inkstone.web.app/kagane/icon.png",
@@ -2239,7 +2239,7 @@
       ],
       "language": "en",
       "contentRating": "safe",
-      "sha256": "afd3faabcc353a4747103eadbea3ffadbc8fc49dfbb0f9967d0603912912f377"
+      "sha256": "d7698c238cf593cdc1a7ffd907d42dc933b80a4da1e938c0122f0dba00ce70c8"
     },
     {
       "id": "mangafire",
@@ -3412,7 +3412,7 @@
     {
       "id": "kickassanime",
       "name": "KickAssAnime",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "anime",
       "website": "https://kaa.lt",
       "iconUrl": "https://kaa.lt/favicon.ico",
@@ -3430,7 +3430,7 @@
       ],
       "language": "en",
       "contentRating": "mature",
-      "sha256": "6dabf9b5909565454bff9234c71c2dd888af601a4bb026bf40f5364589e0a039"
+      "sha256": "7fb2a3e2a5d1868c0c2b27a59378493ac8f42884c36c82586843fff611598072"
     },
     {
       "id": "uniquestream",

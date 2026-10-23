@@ -24,6 +24,7 @@ const warnIgnoredRating = (what) => {
   say('warn', `${what} set contentRating, which Boundless ignores`, 'to rate titles one by one, set ageRating to a minimum age such as 0, 16 or 18');
 };
 let skippedInApp = false;
+const shapeWarned = new Set();
 const finish = () => {
   console.log(`\n${tally.pass} passed, ${tally.fail} failed, ${tally.warn} warnings.`);
   if (tally.fail) console.log('Not ready yet.');
@@ -261,7 +262,24 @@ for (const item of (found?.value.results ?? []).slice(0, 2)) {
     const subtitles = (first.subtitles ?? []).length;
     const took = `${((Date.now() - started) / 1000).toFixed(1)}s`;
     const skip = first.intro ? `, intro ${Math.round(first.intro.start / 1000)}s to ${Math.round(first.intro.end / 1000)}s` : '';
-    return { ok: plays, label, detail: plays ? `${videos.length} video, ${subtitles} subtitle tracks${skip}, in ${took}` : `the stream answered ${answer.status}` };
+    // Sumizuri drops these silently: a track with no full URL, headers that are not strings, a skip range
+    // with no start and end in milliseconds or an end that is not after its start.
+    const problems = [];
+    for (const video of videos) {
+      const quality = video.quality === undefined ? 'a video' : `"${video.quality}"`;
+      if (video.quality !== undefined && typeof video.quality !== 'string') problems.push(`${quality}: quality is not a string`);
+      if (video.headers !== undefined && (typeof video.headers !== 'object' || video.headers === null || Object.values(video.headers).some((v) => typeof v !== 'string'))) problems.push(`${quality}: headers must be an object of strings`);
+      for (const kind of ['subtitles', 'audio']) {
+        if (video[kind] === undefined) continue;
+        if (!Array.isArray(video[kind])) problems.push(`${quality}: ${kind} must be a list`);
+        else if (video[kind].some((track) => !track || !isUrl(track.url))) problems.push(`${quality}: a ${kind} track has no full URL`);
+      }
+      for (const kind of ['intro', 'outro']) {
+        const range = video[kind];
+        if (range !== undefined && !(range && Number.isFinite(range.start) && Number.isFinite(range.end) && range.end > range.start)) problems.push(`${quality}: ${kind} needs numbers start and end in milliseconds, with end after start`);
+      }
+    }
+    return { ok: plays, label, problems, detail: plays ? `${videos.length} video, ${subtitles} subtitle tracks${skip}, in ${took}` : `the stream answered ${answer.status}` };
   };
   const tryOpen = async (chapter) => {
     const label = `chapter "${chapter.name ?? chapter.id}"`;
@@ -297,6 +315,11 @@ for (const item of (found?.value.results ?? []).slice(0, 2)) {
   }
   if (first.ok) {
     say('pass', `${first.label} opens`, first.detail);
+    for (const problem of first.problems ?? []) {
+      if (shapeWarned.has(problem)) continue;
+      shapeWarned.add(problem);
+      say('warn', 'a video has a field Sumizuri would drop', problem);
+    }
   } else if (opened.ok) {
     say('warn', `${first.label} did not open (${first.detail}), maybe locked or not published yet`);
     say('pass', `${opened.label} opens`, opened.detail);

@@ -7,7 +7,7 @@ and calls its methods to fill the Browse, Search, Detail and Reader screens.
 The format keeps the surface area small: implement a handful of methods on
 that class and the app can browse, search and read through your source.
 
-Boundless Reader and Sumizuri both load Inkstone extensions. This page describes Boundless's runtime.
+Boundless Reader and Sumizuri both load Inkstone extensions. This page describes Boundless's runtime. Anime extensions are for Sumizuri only: Boundless is not compatible with them (see [Anime sources](#anime-sources-sumizuri-only)).
 Building with an AI assistant? Give it [BUILD_WITH_AI.md](BUILD_WITH_AI.md).
 To check an extension works, see [TESTING.md](TESTING.md).
 
@@ -229,6 +229,34 @@ one page URL with and without a `Referer` header matching your site and
 compare the status codes. If covers are blocked the same way, put `referer` on
 the title as well, on Browse results and in `mangaInfo` (a `headers` object
 works too).
+
+### Anime sources (Sumizuri only)
+
+**Anime extensions are for Sumizuri compatibility.** Boundless is not compatible with them: it has no video player and does not call `getVideos`. Use [Sumizuri](https://sumizuri.notakari.com/) to install and test them. The details here follow Sumizuri's own documentation and engine (version 0.2.0); the full walk-through is in [BUILD_WITH_AI.md](BUILD_WITH_AI.md).
+
+Set `medium` to `anime` and list `videos` in `capabilities`. Episodes are chapters (`getChapters` as usual, newest first), and one extra method plays an episode. It returns a **list**, not an object:
+
+```js
+async getVideos(mangaId, chapterId) {
+  return [
+    {
+      url: 'https://.../master.m3u8',     // required, a full address
+      quality: 'Auto',                     // a label the player reads
+      headers: { Referer: 'https://example.com/' },
+      subtitles: [{ url: 'https://.../en.vtt', label: 'English', language: 'en' }],
+      audio: [{ url: 'https://.../ja.m3u8', label: 'Japanese', language: 'ja' }],
+      intro: { start: 90000, end: 180000 },   // milliseconds, end after start
+      outro: { start: 1300000, end: 1390000 },
+    },
+  ];
+}
+```
+
+- An entry, subtitle track or audio track without a full `url` is dropped silently. `headers` is an object of strings.
+- `quality` is read by the player: a height (`1080p`, `720p`, `4k`) ranks videos, and the words `Sub`, `Dub`, `Softsub` and `Hardsub` drive the audio preference and the sub and dub switch. Return an HLS master playlist once, as `Auto`; Sumizuri lists its qualities itself (only for an address whose path ends in `.m3u8`).
+- An episode with no stream yet should throw an `Error` with a clear message, not return an empty list.
+- Episodes of a title with several seasons can carry `season`, `seasonName` and `seasonCover`. `mangaInfo` can carry a `banner`.
+- Sumizuri treats only `contentRating: "adult"` as adult.
 
 ## 5. Publishing to a repo
 
