@@ -240,9 +240,7 @@
       "language": "en",
       "contentRating": "safe",
       "iconUrl": "https://flamecomics.xyz/favicon.ico",
-      "sha256": "37f02b5ea55dee9a0ed2817b9fbe75de9bcaabc307af45f3e6208fb71027def4",
-      "status": "broken",
-      "statusNote": "The site's domain now redirects to a Discord invite, and its image host is offline."
+      "sha256": "37f02b5ea55dee9a0ed2817b9fbe75de9bcaabc307af45f3e6208fb71027def4"
     },
     {
       "id": "mangapill",
@@ -1156,7 +1154,7 @@
     {
       "id": "komikindo",
       "name": "Komikindo",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://komikindo.ch",
       "description": "Manga・Manhwa・Manhua\n\nCatalog・7,000+",
@@ -1171,9 +1169,7 @@
       "language": "id",
       "contentRating": "adult",
       "iconUrl": "https://komikindo.ch/wp-content/uploads/2020/12/fav.png",
-      "sha256": "4f8a31a49b8385e8c10c040811a125d4395a38a61fc3d6ca157f889a3bb5ae1d",
-      "status": "broken",
-      "statusNote": "The site is down for maintenance."
+      "sha256": "e1930e5f652858239b82b69edf08bb9b4cab5967815934cbc72db20b240a22b4"
     },
     {
       "id": "indomanhwa",

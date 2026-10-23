@@ -261,7 +261,7 @@ class Source {
     const pages = [];
     $('#Baca_Komik img').each((_, el) => {
       const src = ($(el).attr('src') || '').trim();
-      if (src && /\/data\/\d+\/[^/]+\//.test(src)) pages.push(src);
+      if (src && /\/(?:data|media)\/\d+\/[^/]+\//.test(src)) pages.push(src);
     });
 
     return { id: chapterId, mangaId, pages };

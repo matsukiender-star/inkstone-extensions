@@ -83,7 +83,7 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [Ken Scans](comics/kenscans/index.js) | kencomics.com | English | Mature | 1.0.0 |
 | [Kingofshojo](comics/kingofshojo/index.js) | kingofshojo.com | English | Adult | 1.0.0 |
 | [KokoMangas](comics/kokomangas/index.js) | kokomangas.com | English | Adult | 1.0.0 |
-| [Komikindo](comics/komikindo/index.js) | komikindo.ch | Indonesian | Adult | 1.0.0 |
+| [Komikindo](comics/komikindo/index.js) | komikindo.ch | Indonesian | Adult | 1.0.1 |
 | [Komiku](comics/komiku/index.js) | komiku.org | Indonesian | Adult | 1.0.0 |
 | [KSGroupScans](comics/ksgroupscans/index.js) | ksgroupscans.com | English | Mature | 1.0.0 |
 | [KunManga](comics/kunmanga/index.js) | kunmanga.com | English | Adult | 1.1.0 |
@@ -206,13 +206,6 @@ Anime extensions use `medium: "anime"` and a `getVideos` method. Sumizuri plays 
 | [AniZone](anime/anizone/index.js) | anizone.to | English | Mature | 1.0.0 |
 | [KickAssAnime](anime/kickassanime/index.js) | kaa.lt | English | Mature | 1.0.0 |
 | [UniqueStream](anime/uniquestream/index.js) | anime.uniquestream.net | English | Mature | 1.0.1 |
-
-## Known issues
-
-These extensions are known to be broken right now:
-
-- **Flame Scans** (`flamescans`): The site's domain now redirects to a Discord invite, and its image host is offline.
-- **Komikindo** (`komikindo`): The site is down for maintenance.
 
 ## Credits
 
