@@ -3401,7 +3401,7 @@
         "*.xin-cdn.xyz",
         "*.vid-cdn.xyz"
       ],
-      "description": "Anime with English and many other soft subtitles. Three browse feeds (Recently Added, Newest, A to Z), search, details and every regular episode, paged through the site's own list (long shows like One Piece take a while the first time). Episodes play as HLS in Sumizuri with ASS subtitles, and the intro and credits from the site's chapter markers can be skipped. Anime needs an app that plays video, such as Sumizuri; Boundless skips it.",
+      "description": "Anime\n\nCatalog・2,000+\n\nRestrictions:\n・Rate Limit",
       "capabilities": [
         "browse",
         "search",
@@ -3424,7 +3424,7 @@
         "kaa.lt",
         "krussdomi.com"
       ],
-      "description": "Anime from the KickAssAnime JSON API. A Latest feed, search, details with banner, and the full Japanese-audio episode list in one go. Each episode lists every player server the site offers, as HLS up to 1080p with VTT or SRT subtitles. Anime needs an app that plays video, such as Sumizuri; Boundless skips it.",
+      "description": "Anime\n\nCatalog・3,000+",
       "capabilities": [
         "browse",
         "search",
@@ -3446,7 +3446,7 @@
       "hosts": [
         "anime.uniquestream.net"
       ],
-      "description": "Anime from the UniqueStream (AnimeStream) JSON API. New and Popular feeds, search across series and movies, details with poster and banner, and episodes grouped by the site's own seasons and arcs. Episodes play as HLS with separate subtitle tracks. Anime needs an app that plays video, such as Sumizuri; Boundless skips it.",
+      "description": "Anime\n\nCatalog・3,000+",
       "capabilities": [
         "browse",
         "search",
