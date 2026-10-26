@@ -27,7 +27,8 @@ It looks for `versioning.json` one folder above your extension, the same layout 
 
 **Compatibility (no network)**
 
-- The file loads in a bare sandbox like Boundless's: no `fetch`, `URL`, `setTimeout`, `document` or `require`.
+- The file loads in a bare sandbox like Boundless's: no `fetch`, `URL`, `btoa`, `document` or `require`, and the globals the app does provide (`App`, `cheerio`, `CryptoJS`, `console`, `setTimeout`, `clearTimeout`, `atob`).
+- The code does not use something that differs between the engines Boundless runs on (JavaScriptCore on iPhone, iPad and Mac, QuickJS on Android): `Intl`, `toLocaleString()`, `WeakRef`, `queueMicrotask`. These are warnings, because Node cannot show the difference.
 - It exports a `Source` class with `getSearchResults`, `getMangaDetails`, `getChapters` and `getChapterDetails`.
 - `getSourceFeeds()` is synchronous and every feed has an `id` and `name`.
 - Your `versioning.json` entry exists and has a version, `medium`, `contentRating`, `website`, `language`, `description` and `capabilities`.
@@ -37,8 +38,10 @@ It looks for `versioning.json` one folder above your extension, the same layout 
 
 - Browse returns titles with a `mangaId`, a `title` and an absolute `image` URL.
 - If titles carry their own rating, it is an `ageRating` number. A `contentRating` word on a title is ignored by Boundless, so the script warns about it.
+- Every title has the field types the app reads (text for `title`, `image`, `author`, `status`, `desc`; numbers for `ageRating`, `rating`, `chapters`; a list for `tags`). The app drops a title with a wrong type, so a whole page can come up empty. The `metadata` you return is an object or nothing.
 - Page 2 really differs from page 1.
 - Genre list (if you have one) has ids and labels. An empty list is a warning, because some sites have no working genre filter. In that case don't declare `genres` in `versioning.json`, and the script checks the two agree.
+- Search and a genre filter ask feed `recent`, as the app does when a reader types or picks a genre, and still return a list.
 - Search returns titles, and a search for a nonsense word returns an empty list instead of an error.
 - For two titles: details have a `desc` and an allowed `status`, and the title, author and description are plain strings. The chapter list isn't empty, every chapter id is unique, chapter fields have the types the app casts to (strings for `name`, `group` and `volume`, numbers for `number` and `time`), chapter times are in milliseconds, and the first and last chapters open with real image URLs (or text, for novels).
 - Every host your extension called is listed in `hosts`.
@@ -61,7 +64,8 @@ Aim for zero `FAIL`. Try a few different search words, including one that should
 
 | You see | Usually means |
 | --- | --- |
-| `fetch is not defined` (or `URL`, `setTimeout`, `document`) | Something Boundless doesn't provide. Use `App.createRequestManager()` and `cheerio` instead. |
+| `fetch is not defined` (or `URL`, `btoa`, `document`) | Something Boundless doesn't provide. Use `App.createRequestManager()`, `App.base64Encode()` and `cheerio` instead. |
+| `uses something that differs between the engines` | `Intl` and `toLocaleString()` give different results on iPhone and Android, and `Date.parse` reads text such as `12-01-2024` differently. Format numbers yourself and build dates with `Date.UTC`. |
 | `every cover is an absolute URL in "image"` fails | You used `coverURL`, or returned relative URLs. |
 | `page 2 differs from page 1` fails | The site ignores `page=`. Try an `offset` or a different pagination style. |
 | `chapter times are in milliseconds` fails | `time` is a `Date`, or in seconds. |
@@ -76,6 +80,7 @@ Aim for zero `FAIL`. Try a few different search words, including one that should
 ## What it can't test
 
 - **Cloudflare challenges.** Boundless solves these in a hidden browser view, but plain Node can't, so a protected site may show `HTTP 403` here even though it works in the app. Test those in Boundless.
+- **The engines.** The script runs your file in Node. Boundless runs it on JavaScriptCore (iPhone, iPad, Mac) and QuickJS (Android), which differ from Node and from each other in `Intl`, number formatting and how date text is read. The script reads your code for the known differences; it cannot run it on both. If you can, try the extension on an iPhone or Mac and on Android.
 - **`App.executeInWebView`.** That only runs inside the app. The script skips those steps with a warning and tells you so at the end.
 - **How it looks.** The script checks the data, not the screen. Open the extension in Boundless and look at it.
 

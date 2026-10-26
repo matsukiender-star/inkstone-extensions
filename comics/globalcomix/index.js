@@ -116,7 +116,7 @@ class Source {
     if (metadata) return { results: [] };
 
     const feedId = (request && request.feed) || '';
-    const typeSlug = feedId && feedId !== 'popular' ? feedId : '';
+    const typeSlug = TYPE_FEEDS.some((f) => f.id === feedId) ? feedId : '';
     const includedTags = (request && request.includedTags) || [];
     const genreSlug = includedTags[0] && includedTags[0].id;
 

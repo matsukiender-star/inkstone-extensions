@@ -43,8 +43,6 @@ const gated = (chapter) => /\b(locked|paid|premium|join to read|early access|coi
 const requests = [];
 const App = {
   createRequestManager: (options = {}) => {
-    // Boundless spaces a manager's requests by its declared rateLimit (the stricter of
-    // requestsPerSecond and requestsPerMinute), so the test does the same.
     const limit = options.rateLimit ?? {};
     const gaps = [limit.requestsPerSecond > 0 ? 1000 / limit.requestsPerSecond : 0, limit.requestsPerMinute > 0 ? 60000 / limit.requestsPerMinute : 0];
     const gap = Math.max(...gaps);
@@ -82,24 +80,41 @@ const App = {
   executeInWebView: async () => {
     throw new Error('App.executeInWebView only works inside Boundless. Test that part in the app.');
   },
+  requestBrowserVerification: async () => {
+    throw new Error('App.requestBrowserVerification only works inside Boundless. Test that part in the app.');
+  },
+  descrambleImage: async () => ({ error: 'App.descrambleImage only works inside Boundless. Test that part in the app.' }),
 };
 
 const code = readFileSync(file, 'utf8');
 
 console.log('Compatibility (no network)\n');
 
-const banned = ['fetch', 'XMLHttpRequest', 'URL', 'URLSearchParams', 'setTimeout', 'setInterval', 'btoa', 'atob', 'TextDecoder', 'document', 'DOMParser', 'structuredClone', 'require'];
+const banned = ['fetch', 'XMLHttpRequest', 'URL', 'URLSearchParams', 'setInterval', 'btoa', 'TextEncoder', 'TextDecoder', 'Buffer', 'document', 'DOMParser', 'structuredClone', 'require'];
+const engineDiffers = [
+  ['Intl', /(^|[^\w.$])Intl\b/, 'Intl does not exist on Android'],
+  ['toLocale...String()', /\.toLocale(Date|Time)?String\s*\(/, 'gives different text on iPhone and Android'],
+  ['WeakRef', /(^|[^\w.$])WeakRef\b/, 'only exists on iPhone and Mac'],
+  ['queueMicrotask', /(^|[^\w.$])queueMicrotask\s*\(/, 'exists on neither'],
+];
 const hits = [];
+const engineHits = [];
 code.split('\n').forEach((line, i) => {
   if (/^\s*(\/\/|\/\*|\*)/.test(line)) return;
   for (const name of banned) {
     if (new RegExp(`(^|[^\\w.$])${name}\\s*[(.]|new ${name}\\b`).test(line)) hits.push(`${name} on line ${i + 1}`);
   }
+  for (const [name, pattern, why] of engineDiffers) {
+    if (pattern.test(line)) engineHits.push(`${name} on line ${i + 1} (${why})`);
+  }
 });
 if (hits.length) {
   say('warn', 'uses something Boundless does not provide', `${hits.slice(0, 4).join(', ')}. Fine inside a string for a WebView script, a bug anywhere else`);
 } else {
-  say('pass', 'no fetch, URL, setTimeout, document or require in the code');
+  say('pass', 'no fetch, URL, btoa, document or require in the code');
+}
+if (engineHits.length) {
+  say('warn', 'uses something that differs between the engines Boundless runs on', `${engineHits.slice(0, 3).join(', ')}. Format numbers and dates yourself`);
 }
 const usesWebView = code.includes('executeInWebView');
 if (usesWebView) {
@@ -112,7 +127,8 @@ try {
 } catch {
   CryptoJS = undefined;
 }
-const sandbox = { module: { exports: {} }, App, cheerio, ...(CryptoJS ? { CryptoJS } : {}), console };
+const atob = (input) => Buffer.from(String(input).replace(/[^A-Za-z0-9+/]/g, ''), 'base64').toString('latin1');
+const sandbox = { module: { exports: {} }, App, cheerio, ...(CryptoJS ? { CryptoJS } : {}), console, setTimeout, clearTimeout, atob };
 sandbox.exports = sandbox.module.exports;
 try {
   vm.runInNewContext(code, sandbox, { filename: file });
@@ -186,19 +202,35 @@ async function step(label, run) {
   }
 }
 
-const browse = await step('browse', () => source.getSearchResults({ title: '', feed: feeds[0]?.id }, null));
+const browseRequest = { feed: feeds[0]?.id ?? 'recent' };
+const typeProblem = (m) => {
+  for (const key of ['title', 'image', 'author', 'status', 'publisher', 'medium', 'volumesId', 'desc', 'summary']) {
+    if (m[key] !== undefined && m[key] !== null && typeof m[key] !== 'string') return `${key} is ${typeof m[key]}, the app needs text`;
+  }
+  for (const key of ['ageRating', 'rating', 'chapters']) {
+    if (m[key] !== undefined && m[key] !== null && typeof m[key] !== 'number') return `${key} is ${typeof m[key]}, the app needs a number`;
+  }
+  if (m.completed !== undefined && m.completed !== null && typeof m.completed !== 'boolean') return 'completed is not true or false';
+  if (m.tags !== undefined && m.tags !== null && !Array.isArray(m.tags)) return 'tags is not a list';
+  return null;
+};
+const browse = await step('browse', () => source.getSearchResults(browseRequest, undefined));
 if (browse) {
   const list = browse.value.results ?? [];
   if (usesWebView && list.length === 0) say('warn', 'browse returned nothing, expected if it needs Boundless (WebView)');
   else check(list.length > 0, 'browse returns titles', `${list.length} results in ${browse.took}`);
   check(list.every((r) => r.mangaId && r.title), 'every title has a mangaId and a title');
+  const badType = list.map(typeProblem).find(Boolean);
+  check(!badType, 'every title has the field types the app reads', badType ? `${badType}: the app drops the title` : 'a wrong type makes the app drop the title');
+  const metadata = browse.value.metadata;
+  check(metadata === undefined || metadata === null || (typeof metadata === 'object' && !Array.isArray(metadata)), 'metadata is an object, or nothing', 'the app rejects the whole page for any other value');
   check(list.every((r) => isUrl(r.image)), 'every cover is an absolute URL in "image"');
   if (list.some((r) => r.contentRating !== undefined && r.ageRating === undefined)) warnIgnoredRating('titles');
   if (list.some((r) => r.ageRating !== undefined)) {
     check(list.every((r) => r.ageRating === undefined || typeof r.ageRating === 'number'), 'ageRating is a number, a minimum age such as 0, 16 or 18');
   }
   if (browse.value.metadata) {
-    const next = await step('browse page 2', () => source.getSearchResults({ title: '', feed: feeds[0]?.id }, browse.value.metadata));
+    const next = await step('browse page 2', () => source.getSearchResults(browseRequest, browse.value.metadata));
     if (next) check(next.value.results?.[0]?.mangaId !== list[0]?.mangaId, 'page 2 differs from page 1');
   }
 }
@@ -211,18 +243,23 @@ if (typeof source.getSearchTags === 'function') {
     if (genreCount === 0) say('warn', 'genre list is empty', 'fine if the site has no working genre filter, but then do not declare "genres"');
     else if (tags.value.some((t) => Array.isArray(t.tags))) say('warn', 'genre list is grouped into sections', 'Boundless reads flat { id, label } entries, so return a flat list');
     else check(tags.value.every((t) => t.id && t.label), 'genre list has ids and labels', `${genreCount} genres`);
+    const usable = tags.value.find((t) => t && t.id);
+    if (usable) {
+      const filtered = await step('browse filtered by a genre', () => source.getSearchResults({ feed: 'recent', includedTags: [{ id: usable.id, label: usable.id }] }, undefined));
+      if (filtered) check(Array.isArray(filtered.value?.results), 'a genre filter returns a list', `genre "${usable.id}", ${filtered.value?.results?.length ?? 0} results`);
+    }
   }
 }
 
 const query = searchTerm || pickQuery(browse?.value.results?.[0]?.title) || 'a';
-const found = await step(`search "${query}"`, () => source.getSearchResults({ title: query }, null));
+const found = await step(`search "${query}"`, () => source.getSearchResults({ title: query, feed: 'recent' }, undefined));
 if (found) {
   const count = found.value.results?.length ?? 0;
   if (usesWebView && count === 0) say('warn', `search "${query}" returned nothing, expected if it needs Boundless (WebView)`);
   else check(count > 0, `search "${query}" returns titles`, `${count} results in ${found.took}`);
 }
 
-const nothing = await step('search for a word that matches nothing', () => source.getSearchResults({ title: 'zzqxkvjwpl' }, null));
+const nothing = await step('search for a word that matches nothing', () => source.getSearchResults({ title: 'zzqxkvjwpl', feed: 'recent' }, undefined));
 if (nothing) {
   const empty = nothing.value?.results;
   check(Array.isArray(empty), 'a search that matches nothing returns a list, not an error', 'some sites answer 404 for no match: treat that as an empty list');
@@ -262,8 +299,6 @@ for (const item of (found?.value.results ?? []).slice(0, 2)) {
     const subtitles = (first.subtitles ?? []).length;
     const took = `${((Date.now() - started) / 1000).toFixed(1)}s`;
     const skip = first.intro ? `, intro ${Math.round(first.intro.start / 1000)}s to ${Math.round(first.intro.end / 1000)}s` : '';
-    // Sumizuri drops these silently: a track with no full URL, headers that are not strings, a skip range
-    // with no start and end in milliseconds or an end that is not after its start.
     const problems = [];
     for (const video of videos) {
       const quality = video.quality === undefined ? 'a video' : `"${video.quality}"`;
@@ -287,7 +322,10 @@ for (const item of (found?.value.results ?? []).slice(0, 2)) {
     try {
       if (anime) return await tryPlay(chapter, label, started);
       const read = await withTimeout(source.getChapterDetails(item.mangaId, chapter.id));
-      const isText = Array.isArray(read.pages) && read.pages.length === 0 && read.text;
+      const isText = Array.isArray(read.pages) && read.pages.length === 0 && typeof read.text === 'string' && read.text.trim().length > 0;
+      if (Array.isArray(read.pages) && read.pages.length === 0 && Array.isArray(read.text)) {
+        return { ok: false, label, detail: 'text is an array; the app casts text to a string and throws, so join the paragraphs with a blank line' };
+      }
       const isImages = read.pages?.length > 0 && read.pages.every(isUrl);
       const took = `${((Date.now() - started) / 1000).toFixed(1)}s`;
       return { ok: Boolean(isText || isImages), label, detail: isText ? 'text' : `${read.pages?.length ?? 0} pages in ${took}` };

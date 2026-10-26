@@ -131,10 +131,6 @@ function readerScript(bookId) {
     } catch (e) {}
     return result;
   };
-  // The prompt is found by watching the page change (a MutationObserver is
-  // not a timer, so it still fires in a web view that is off screen, where
-  // timers can be held back: measured in a hidden WKWebView, a 500 ms interval
-  // stopped after 7 s), with a slow interval and the first look as backups.
   function lookForPrompt() {
     if (finished || gateClicked) return;
     var buttons = document.querySelectorAll('button');

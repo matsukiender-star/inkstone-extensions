@@ -59,23 +59,24 @@ Do these checks in one batch (one script, or a few curl calls sent together), th
 
 1. **Find the real domain.** `curl -sIL https://site` and follow every redirect. Build against the domain that actually serves the content, so the extension doesn't pay for a redirect on every request. If the name no longer resolves at all (`curl: Could not resolve host`), the site has probably moved: find its new address and confirm it is the same site before you build, because the API usually changes with the move (Kagane left `kagane.to` for `kagane.org` and renamed fields at the same time).
 2. **Check for bot protection.** With a normal browser User-Agent, request the homepage, a search page, a title page and a chapter page.
-   - A Cloudflare "Just a moment..." page or a `cf-mitigated` header is fine. Boundless solves those in a hidden browser view (and asks the user to tap if it has to), so the extension doesn't have to.
+   - A Cloudflare "Just a moment..." page or a `cf-mitigated: challenge` header is fine. Boundless tries to clear the check in a hidden browser view and, when it cannot, lists the site under Security checks (Settings, then Network) so the reader can finish it in the browser, so the extension doesn't have to. Plain curl and Node get a 403 from such a site, so you can't calibrate against it from the command line: build from what a real browser shows, put `Cloudflare Checks` in the description's restrictions, and say in your report that it was not tested in the app. A site can also start challenging halfway through your work (one answered its first 150 requests and then challenged everything), so keep the request count low.
    - If curl fails before any HTTP response arrives (a TLS error like `alert access denied`), the site is rejecting non-browser clients outright. Treat that as a no-go and say so.
    - Fire five requests at once at one endpoint. If you see 429s, add a `rateLimit` (see Step 2).
    - A limit can also hide behind a 503 or a page that says "Connection limit reached". Dynasty Scans let 16 requests through, then refused the next, then let about 1.3 a second pass; it only showed up when 40 requests ran one after another, and a retry inside the extension made the deep-check tool miss it. Measure with a longer run (40 requests, at two or three different paces) and say which pace passed.
    - A page that asks the reader to solve something (a sum, a password box, "verify you are human") is a gate, not a bug. Do not script around it: report the chapter as locked (a 403 with a short message in the error) and say so in the description. Bun Manga locks its newest four chapters of every title this way.
-3. **Look for a JSON API.** Many sites fetch their data from an API. Check the page source for `__NEXT_DATA__`, `__NUXT__` or hydration props (`astro-island` tags), search the site's JavaScript files for `/api/`, or watch the network calls in a real browser. Note whether the page uses `fetch` or `XMLHttpRequest`. A JSON API is far more stable than scraping markup. Check that a field you will read is a real name: a site can scramble the field names of the data it fetches in the browser (`dg`, `Cu`, `vl` for `items`, `id`, `name`) while its server-rendered pages keep the plain ones, and the scrambled names can change on any deploy. If you see that, read values by what they are instead (a chapter's own link carries its id and number, a list is the property holding an array of objects, a rating is one of a few known words) and check the result against the plain data on a few hundred items.
+3. **Look for a JSON API.** Many sites fetch their data from an API. Check the page source for `__NEXT_DATA__`, `__NUXT__` or hydration props (`astro-island` tags), search the site's JavaScript files for `/api/`, or watch the network calls in a real browser. Note whether the page uses `fetch` or `XMLHttpRequest`. A JSON API is far more stable than scraping markup. Check that a field you will read is a real name: a site can scramble the field names of the data it fetches in the browser (`dg`, `Cu`, `vl` for `items`, `id`, `name`) while its server-rendered pages keep the plain ones, and the scrambled names can change on any deploy. If you see that, read values by what they are instead (a chapter's own link carries its id and number, a list is the property holding an array of objects, a rating is one of a few known words) and check the result against the plain data on a few hundred items. A page's data can also hide in a script whose address is `data:text/javascript;base64,...` (a speed plugin does that to the page's own scripts): decode it with `atob` and search the result.
 4. **Sample widely.** Walk details, then the chapter list, then at least two chapters, for 3 to 5 different titles: a brand new one, an old one, different genres. This is the most valuable check there is. It catches sites that run two different reader layouts, and titles that are listed and searchable but have no chapters at all. Include a title that shows no chapters in your language: ask the API what that title does have (other languages, other sections) before you decide the request is wrong. Also find a fractional chapter (12.5, 219.5; scan the whole catalog for non-integers, a few titles have them) and open it: a site that addresses a chapter by its number can answer "219-5" or "219_5" with chapter 219 and no error, so compare the chapter you got with the one you asked for.
 5. **Check ids are stable.** Note the id or slug of a few titles. If they carry a date or a long random suffix, fetch the listing again a few minutes later and compare. If the ids change, the extension has to cope with that.
 6. **Read the raw HTML for each field.** Is the author plain text, or wrapped in a link or a span? A real HTML parser handles nesting, a regex quietly returns nothing.
-7. **Check the images.** Fetch a page image three ways: with no `Referer`, with `Referer` set to the site, and with an unrelated one. Sites differ, and the rule can flip: one image CDN went from needing the site's `Referer` to rejecting any `Referer` at all. If the results differ, return the `referer` that works, or none. Then actually look at a downloaded image. If it's a jumble of tiles, that's image scrambling the extension can't undo, so list it as a limitation. Boundless draws JPEG, PNG, GIF, WebP and BMP. AVIF is the grey case: the app's own engine decoded an AVIF page and cover to the right size in a headless test, but its tiler for very tall pages cannot read AVIF and nothing was checked on a device, so prefer the WebP or JPEG form of an image when the site offers one (a `<picture>` with an avif source and a webp img is common), and when AVIF is the only form, say so as a limitation. HEIC and JXL are not drawn. Cover size matters as well: Browse shows dozens at once, so if a cover is over about 300 KB and the site offers a thumbnail size, use it.
-8. **Check the encoding.** Look at real output for any site with accents or Chinese, Japanese or Korean text. A response with no charset is read as Latin-1, so UTF-8 text arrives as mojibake (`Ã©` instead of `é`). If you see it, repair it with the snippet in Step 2, or look for a mobile or app API that serves clean JSON.
-9. **Check the edges of pagination.** What does an empty search do? What does one page past the end do: an error, an empty list, or page 1 again?
+7. **Check the images.** Fetch a page image three ways: with no `Referer`, with `Referer` set to the site, and with an unrelated one. Sites differ, and the rule can flip: one image CDN went from needing the site's `Referer` to rejecting any `Referer` at all. If the results differ, return the `referer` that works, or none. Then actually look at a downloaded image. If it's a jumble of tiles, that's image scrambling. The app can put back only one scheme (see `App.descrambleImage`), so unless the site uses that one, list it as a limitation. Boundless draws JPEG, PNG, GIF, WebP and BMP. AVIF is the grey case: the app's own engine decoded an AVIF page and cover to the right size in a headless test, but its tiler for very tall pages cannot read AVIF and nothing was checked on a device, so prefer the WebP or JPEG form of an image when the site offers one (a `<picture>` with an avif source and a webp img is common), and when AVIF is the only form, say so as a limitation. HEIC and JXL are not drawn. Cover size matters as well: Browse shows dozens at once, so if a cover is over about 300 KB and the site offers a thumbnail size, use it. WordPress sites often serve covers through the Jetpack proxy (`i0.wp.com/...`): adding `?w=300` returned the same cover at a tenth of the size (430 KB to 47 KB). That proxy answers 429 when many images load at once, so open images from the start, the middle and the end of a chapter, not only the first page. Check that a 200 really is an image (content type and first bytes): sites hand out one placeholder file for every page, or an HTML page where an image should be.
+8. **Check the encoding.** Look at real output for any site with accents or Chinese, Japanese or Korean text. Current Boundless reads a page or JSON answer with no charset as UTF-8 and only images and other binary types as Latin-1, but older builds read any answer with no charset as Latin-1, and a site that names the wrong charset breaks every build, so UTF-8 text can arrive as mojibake (`Ã©` instead of `é`). If you see it, repair it with the snippet in Step 2, or look for a mobile or app API that serves clean JSON.
+9. **Check the edges of pagination.** What does an empty search do? What does one page past the end do: an error, an empty list, page 1 again, or the last page again? A site that answers any page number with its last page makes a catalog look endless when you measure it, so find the end with the site's own total or its "next" link.
 10. **Check that each parameter really does something.** Send the request with and without it and compare. Typical traps: a search word sent under the wrong name is ignored (`q=` where the site wants `search=`, so search seems to do nothing), `sort=title` can run Z to A unless you also give an order, several genres can mean AND rather than OR, and a `page=` is ignored in favor of `offset=`, and a page size over the maximum is clamped without a word (a chapter list asked for 2000 at a time came back 100 at a time).
 11. **Find how the site lists titles.** Watch how the homepage fills its latest, popular and new lists, and note the sort parameters. Every extension needs at least one feed that works with no search word.
 12. **Look at the locked chapters.** Count them across the whole catalog, not one title. Are they paid, on a timer, or for signed-in readers only? What does an anonymous request for one return: an empty page, a preview, an error page?
 13. **Look for a second catalog.** A site that adds novels, volumes or another language often has separate routes for them, with their own parameters and ids that can collide with the first catalog. The obvious-looking route can be a stub that ignores its parameters, so use the one the page itself calls.
-14. **Start from the reference extensions** in [github.com/realinkstone/inkstone-extensions](https://github.com/realinkstone/inkstone-extensions). Copy their structure:
+14. **Check whether the site runs a shared engine.** Many sites are installs of a few engines and answer the same way: Madara (a WordPress theme; search is `/?s=...&post_type=wp-manga` and chapters are `li.wp-manga-chapter` rows), MangaThemesia (a WordPress theme that keeps a chapter's pages in a `ts_reader.run({...})` script), PizzaReader (a JSON API where `/api/comics` lists every title in one answer). Do not guess the engine from the homepage: a `wp-content` path is on every WordPress site and mislabelled half the sites checked. Open source extension projects for other readers say which engine each site runs. The Keiyoushi extensions for Mihon (github.com/keiyoushi/extensions-source) name it in each extension's `build.gradle.kts` (`theme = "madara"`), and their Kotlin shows the endpoints, selectors and tokens. Use that as a starting map, then check every claim on the live site, because sites change theme, move behind another address or lock their pages.
+15. **Start from the reference extensions** in [github.com/realinkstone/inkstone-extensions](https://github.com/realinkstone/inkstone-extensions). Copy their structure:
 
 | Reference | What it shows |
 | --- | --- |
@@ -107,9 +108,15 @@ Do these checks in one batch (one script, or a few curl calls sent together), th
 
 ### The environment
 
-The code runs in JavaScriptCore inside the app, not a browser. You get modern JavaScript (`Promise`, `async/await`, `JSON`, `Math`, `Date`, `RegExp`, `Intl`, `encodeURIComponent`) plus three things Boundless provides: the `App` object, a `cheerio` global and a `CryptoJS` global.
+The code runs in a JavaScript engine inside the app, not a browser. Boundless uses JavaScriptCore on iPhone, iPad and Mac and QuickJS on Android, so one file has to work on both. You get modern JavaScript (`Promise`, `async/await`, `JSON`, `Math`, `Date`, `RegExp`, `encodeURIComponent`) plus what Boundless provides: the `App` object, a `cheerio` global, a `CryptoJS` global, `console`, `setTimeout` (with `clearTimeout`) and `atob`.
 
-There is **no** `fetch`, `XMLHttpRequest`, `URL`, `URLSearchParams`, `setTimeout`, `setInterval`, `btoa`, `atob`, `TextDecoder`, `document` or `DOMParser`. Using one throws a `ReferenceError`, and in the app that just looks like an empty screen. Don't `require` anything either.
+There is **no** `fetch`, `XMLHttpRequest`, `URL`, `URLSearchParams`, `setInterval`, `btoa`, `TextEncoder`, `TextDecoder`, `Buffer`, `structuredClone`, `document` or `DOMParser`. Using one throws a `ReferenceError`, and in the app that just looks like an empty screen. Don't `require` anything either. Where you would use `btoa`, use `App.base64Encode`. `setTimeout` exists, but it is not a way to wait for a site (see Speed below), and older builds of the app have no `clearTimeout`, so don't rely on cancelling a timer.
+
+**The two engines differ**, and the test script runs your file in Node, a third engine, so it cannot warn you. Each point below was checked by running the same code in JavaScriptCore and in QuickJS:
+
+- `Intl` does not exist on Android. Don't use it. Don't use `toLocaleString()` for anything you return either: it gives `1,234.5` on iPhone and `1234.5` on Android.
+- Date text is read differently. `Date.parse` and `new Date(text)` agree on ISO 8601 (`2024-01-12`, `2024-01-12T10:00:00Z`) and on `Jan 12, 2024`, but `12-01-2024` is not a date on iPhone and is December 1st on Android. Read any other date text yourself and build the time with `Date.UTC(year, month, day)`.
+- `WeakRef` exists only on iPhone and Mac, and `queueMicrotask` on neither.
 
 - Parse HTML with `cheerio.load(html)`. It's cheerio's slim build with the usual jQuery-style API (`$('.title').text()`, `.attr('href')`, `.each()`). Prefer it to regex. Being the slim build, `cheerio.load(fragment)` does not wrap a fragment in `<html><body>` like the full build does, so the test script uses `cheerio/slim` to match.
 - `CryptoJS` is the crypto-js library, for sites that encrypt or hash values in their pages.
@@ -130,10 +137,12 @@ function qs(params) {
 | --- | --- |
 | `App.createRequestManager({ rateLimit })` | Returns a manager with `schedule(request)`. All network access goes through it. `rateLimit` is optional: `{ requestsPerSecond, requestsPerMinute }`, and the stricter one wins. |
 | `App.createRequest({ url, method, headers, body })` | Describes a request. `method` defaults to `GET`. For a JSON `POST`, set `body` to a string and add a `Content-Type` header. |
-| `manager.schedule(request)` | Resolves to `{ status, headers, data }`. `data` is always a **string**, so `JSON.parse` it yourself. A 404 or 500 still resolves, so check `status`. Only network failures reject. |
+| `manager.schedule(request)` | Resolves to `{ status, headers, data }`. `data` is always a **string**, so `JSON.parse` it yourself. A 404 or 500 still resolves, so check `status`. Only network failures reject, and so does a host that is not in your `hosts`. The app waits out a 429 (or a 503 with a `Retry-After`) and retries it up to 3 times before you see the answer, and answers an identical GET (same address and headers) from a 90 second cache. |
 | `App.getSourceSetting(key)` | Reads a value the user set in your extension's settings. Always a string, or `undefined`. |
 | `App.createSourceStateManager()` | Returns `{ store(key, value), retrieve(key) }`, both async, for remembering things between calls. |
-| `App.base64Encode(text)` / `App.base64Decode(text)` | Base64 in and out. |
+| `App.base64Encode(text)` / `App.base64Decode(text)` | Base64 in and out, as UTF-8 text. `base64Decode` throws if the bytes are not valid UTF-8; use `atob` for binary data (one character per byte). |
+| `App.requestBrowserVerification({ url })` | Shows the page to the reader in the app's browser and resolves when they close it, or after 3 minutes. For a check that needs a person. The address must be on your `hosts`. Almost no extension needs it, because the app clears ordinary Cloudflare checks itself. |
+| `App.descrambleImage({ base64, headers })` | Puts back the pieces of one specific scrambled image scheme (a byte XOR and a 5 by 5 tile shuffle, switched on by `x-enc-*` and `x-scramble-*` response headers). Resolves to `{ base64 }` or `{ error }`. It is not a general descrambler. |
 | `App.executeInWebView({ url \| html + baseUrl, script, timeoutMs })` | Last resort. Runs your `script` inside a real browser view, for sites that only hand out a token through their own page scripts. It resolves to `{ value }` or `{ error }`. Read "When the site needs the web view" below first, because it is easy to make slow or flaky. |
 
 A request helper to start from:
@@ -172,22 +181,29 @@ Export it at the very end of the file: `module.exports = { Source };`
 
 | Method | Returns |
 | --- | --- |
-| `getSourceFeeds()` | `[{ id, name }]`, the Browse tabs. **Not async**: no `await`, no network. Leave it out for a single "Popular" feed. |
+| `getSourceFeeds()` | `[{ id, name }]`, the Browse tabs. **Not async**: no `await`, no network. Leave it out and the app browses with feed `recent`. |
 | `async getSearchTags()` | `[{ id, label }]`, the site's genres. Boundless matches a title's genre names against these labels to find related titles, so keep the labels the same as the names in your titles' `tags`. Return a flat list (not grouped sections), or `[]` if the site has no working genre filter. |
 
 `getSearchResults` powers both Browse and Search:
 
 ```js
 request = {
-  title: 'search text',          // '' when browsing
-  feed: 'popular',               // a getSourceFeeds() id (browse only)
-  includedTags: [{ id: 'action' }],
-  excludedTags: [],
+  title: 'search text',          // left out when browsing (it is never '')
+  feed: 'popular',               // a getSourceFeeds() id; 'recent' for a search, a genre filter, or a source with no feeds
+  includedTags: [{ id: 'action', label: 'action' }],   // left out when no genre is chosen; label is the id
   medium: 'comics' | 'novel',    // only if the user set the medium toggle
 }
-metadata = null                  // first page
-metadata = { page: 2 }           // whatever you returned last time
+metadata = undefined             // first page
+metadata = { page: 2 }           // whatever you returned last time (an object, or nothing)
 ```
+
+Read every field with a guard (`request.title || ''`, `request.includedTags || []`): the
+app leaves out what is empty. It does not send `excludedTags`, because it has no way to
+exclude a genre, so an exclusion option an extension supports is not used today. When the
+reader types a search or picks a genre the app asks feed `recent` whatever feeds you
+declare, so a search and a genre filter must work with any `feed` value. The `metadata`
+you return must be an object or nothing: a number or a string makes the whole page
+unreadable.
 
 Return `metadata: { page: n + 1 }` when there's another page and `undefined` when there isn't. A metadata that's always truthy makes Browse load the last page forever.
 
@@ -225,7 +241,7 @@ A wrong field *name* never throws. The field just shows up blank, which is harde
 { id, mangaId, pages: ['https://...'], referer: 'https://site.com' }   // referer only if needed
 
 // getChapterDetails: novels
-{ id, mangaId, pages: [], text: 'Chapter text' }   // or text: ['paragraph', 'paragraph']
+{ id, mangaId, pages: [], text: 'Chapter text' }   // one string, paragraphs joined with a blank line (an array is rejected)
 ```
 
 It's `desc` (or `summary`), not `description`, and `status` must be one of those exact uppercase words. If the site's description is markdown or HTML, pass it on as written: the app's own description cleaner turns bold, italics, links, headings and entities into styled text, so stripping them yourself only loses the emphasis. Remove only what it leaves behind, such as a backslash before punctuation.
@@ -273,16 +289,19 @@ These are the mistakes that broke real extensions. Check your code against each 
 
 - Boundless opens a title by asking for its details and its chapters at the same moment. If both come from the same page or request, fetch it once: keep the pending promise in a `Map` keyed by id for a few minutes, and delete the entry if it fails.
 - When the site pages its chapters, read the first page for the total, then fetch the remaining pages together with `Promise.all`, not one after another.
-- No `rateLimit`, and no waiting, unless the site really pushed back with a 429 or a "connection limit" 503. A fixed delay for something you could detect is a bug. There is no timer to sleep with, so a request that was refused is sent again through the same manager: its declared spacing is the pause. The test script spaces requests by your declared `rateLimit` the way the app does, so run it after you add one.
+- No `rateLimit`, and no waiting, unless the site really pushed back with a 429 or a "connection limit" 503. A fixed delay for something you could detect is a bug. `setTimeout` exists, but don't use it to sleep: a request that was refused is sent again through the same manager, and its declared spacing is the pause. The app already waits out a 429 (or a 503 with a `Retry-After`) and retries it up to 3 times, so a source that only works because of that is slow, not fixed. The test script spaces requests by your declared `rateLimit` the way the app does, so run it after you add one.
 
 **Language and region**
 
 - If the site filters by language, don't show "No chapters yet" for a title that has chapters in another language (one MangaDex title had 11, all Portuguese). Offer a `select` setting with an "All languages" option, and when the wanted language has nothing, fall back to the language the title does have and name it on each chapter. Ask the API what a title has (a list of languages, or a count per language) instead of guessing.
+- Read dates the way the site writes them. Sites in other languages print `hace 3 horas`, `3 saat önce`, `5 jam yang lalu`, `12 de enero de 2024` or `12 Ocak 2024`: turn the unit and month words into milliseconds yourself (a small table per language) and leave `time` out when you cannot read a date. Never fall back to today's date, because every chapter would then look new. Look at the first page of the real list for dates your code does not understand.
+- Rate adult content by the words the site uses for it in its own language (Adulto, Maduro, Yetişkin, Dewasa, Người lớn, ผู้ใหญ่, بالغين), and read the real titles and blurbs as well: some sites hide adult words behind spelling tricks and print no genres on the title page.
+- Set `language` in `versioning.json` to the site's own language, and leave titles and descriptions as the site wrote them.
 
 **Redirects and text**
 
 - Boundless doesn't follow a `POST` answered with a 301 or 302 (only a 303). Read the `Location` header and follow it yourself.
-- A response with no charset is read as Latin-1, so UTF-8 text such as `é` arrives as `Ã©`. Repair it when you see that:
+- Older builds read a response with no charset as Latin-1, and a site that names the wrong charset breaks any build, so UTF-8 text such as `é` can arrive as `Ã©`. Repair it when you see that:
 
 ```js
 function fixUtf8(text) {
@@ -323,7 +342,7 @@ Some sites open more chapters to a signed-in or paying reader. An extension can 
 `App.executeInWebView` is the last resort, for a site whose requests carry a token that only its own page scripts can make. These are the hardest extensions to get right, and they usually go wrong by being slow or flaky. What to know:
 
 - Boundless runs web view calls **one at a time** for the whole app, and each one is a full page load. Two calls per title (details, then chapters) cost two page loads in a queue. Make **one visit** that returns everything the screen needs (for example the details URL and every chapter page URL), remember it per title for a few minutes, and share it between `getMangaDetails` and `getChapters`. A signed URL can usually be replayed outside the page, so fetch the actual data with a plain request. Check that it really can be.
-- Your script gets three helpers: `__reportResult(value)`, `__reportError(message)` and `__fetchJSON(url, options)`, which throws `Error('HTTP ' + status)` on a non-2xx answer. End every path of your script with one of the two report functions. The call resolves to `{ value }` or `{ error }` and never throws, so check `'error' in result`.
+- Your script gets three helpers: `__reportResult(value)`, `__reportError(message)` and `__fetchJSON(url, options)`, which throws `Error('HTTP ' + status)` on a non-2xx answer. End every path of your script with one of the two report functions. The call resolves to `{ value }` or `{ error }` and never throws, so check `'error' in result`. A fourth, `__watchFetch(urlSubstring, idleMs, timeoutMs)`, collects the addresses of matching page requests, but it only sees `fetch` calls made after your script starts (see the next points). The address you open must be on your `hosts`, even when you pass `html` with a `baseUrl`, and a successful run is remembered for 45 seconds for the same page and script.
 - The script runs once the page has loaded. A site that makes its requests while the page starts has already made them (set `runBeforePageScripts: true` to inject earlier). Many sites use `XMLHttpRequest` rather than `fetch`, so wrapping `window.fetch` alone sees nothing. Read the page's own list of requests instead: `performance.getEntriesByType('resource')` holds every one, from before your script ran.
 - Timers get slow in a view nobody is looking at: in a hidden browser tab, a walk that took 0.3 seconds took 17. Poll with a `MessageChannel` tick for the first quarter second, then a short timer. In a test web view with no window, timers can stop altogether after a few seconds (a 500 ms interval stopped after 7 s), so wait for things with events (a wrapped `fetch`, a `MutationObserver` for a button that appears) and work out "how long has it been" from `Date.now()`, never by counting timer ticks.
 - A site that puts an age prompt in front of a reader needs the prompt cleared before it sends the page list. Find out what the button does before you press it for the reader, say in your report that the extension presses it (the app's own content settings already hide or blur 18+ titles), and do not press it yourself while testing unless the user said to.
@@ -381,7 +400,7 @@ async getVideos(mangaId, chapterId) {
 - **Seasons.** When a title has more than one season, give each episode `season` (an id as text), `seasonName` and optionally `seasonCover`; the title page groups by season (`uniquestream` does this). Leave them out for a single season.
 - **Banner.** `mangaInfo` can carry a `banner`, a wide picture shown behind the title page.
 - **Content rating.** Sumizuri treats only `contentRating: "adult"` as adult; `safe` and `mature` show without the gate. The Inkstone website hides `adult` sources.
-- **How Sumizuri differs as a runtime.** It runs sources in QuickJS (Boundless uses JavaScriptCore), can reach only public `http` and `https` addresses and never the local network, keeps cookies between a source's requests, and accepts a number written as text where Boundless would throw. Keep real numbers anyway. If the site needs a `Cookie`, send it yourself as AniZone does, so it works everywhere. `hosts` limits what your extension requests; keep listing the site, its API and the stream hosts.
+- **How Sumizuri differs as a runtime.** It runs sources in QuickJS (Boundless uses JavaScriptCore on iPhone, iPad and Mac and QuickJS on Android), can reach only public `http` and `https` addresses and never the local network, keeps cookies between a source's requests, and accepts a number written as text where Boundless would throw. Keep real numbers anyway. If the site needs a `Cookie`, send it yourself as AniZone does, so it works everywhere. `hosts` limits what your extension requests; keep listing the site, its API and the stream hosts.
 - **Test it.** The Step 3 script plays instead of opening chapters: it fetches the first video's address with its headers and expects an HLS playlist or a video content type, tries up to four of the newest episodes, and warns about video fields Sumizuri would drop. Then try it in Sumizuri: in **Browse**, open **Extensions**, tap **Create a source** or add your repository (the editor has a **Test** tab with **Run all**), or add the repository with the link `sumizuri://add-repo?url=` followed by the encoded repository address.
 - **Other Sumizuri additions** that Boundless ignores: tag sections with `single: true` (the person picks one tag of the section or none) in `getSearchTags`, and `getSortOptions()` with `request.sortId`.
 
@@ -441,8 +460,6 @@ const gated = (chapter) => /\b(locked|paid|premium|join to read|early access|coi
 const requests = [];
 const App = {
   createRequestManager: (options = {}) => {
-    // Boundless spaces a manager's requests by its declared rateLimit (the stricter of
-    // requestsPerSecond and requestsPerMinute), so the test does the same.
     const limit = options.rateLimit ?? {};
     const gaps = [limit.requestsPerSecond > 0 ? 1000 / limit.requestsPerSecond : 0, limit.requestsPerMinute > 0 ? 60000 / limit.requestsPerMinute : 0];
     const gap = Math.max(...gaps);
@@ -480,24 +497,41 @@ const App = {
   executeInWebView: async () => {
     throw new Error('App.executeInWebView only works inside Boundless. Test that part in the app.');
   },
+  requestBrowserVerification: async () => {
+    throw new Error('App.requestBrowserVerification only works inside Boundless. Test that part in the app.');
+  },
+  descrambleImage: async () => ({ error: 'App.descrambleImage only works inside Boundless. Test that part in the app.' }),
 };
 
 const code = readFileSync(file, 'utf8');
 
 console.log('Compatibility (no network)\n');
 
-const banned = ['fetch', 'XMLHttpRequest', 'URL', 'URLSearchParams', 'setTimeout', 'setInterval', 'btoa', 'atob', 'TextDecoder', 'document', 'DOMParser', 'structuredClone', 'require'];
+const banned = ['fetch', 'XMLHttpRequest', 'URL', 'URLSearchParams', 'setInterval', 'btoa', 'TextEncoder', 'TextDecoder', 'Buffer', 'document', 'DOMParser', 'structuredClone', 'require'];
+const engineDiffers = [
+  ['Intl', /(^|[^\w.$])Intl\b/, 'Intl does not exist on Android'],
+  ['toLocale...String()', /\.toLocale(Date|Time)?String\s*\(/, 'gives different text on iPhone and Android'],
+  ['WeakRef', /(^|[^\w.$])WeakRef\b/, 'only exists on iPhone and Mac'],
+  ['queueMicrotask', /(^|[^\w.$])queueMicrotask\s*\(/, 'exists on neither'],
+];
 const hits = [];
+const engineHits = [];
 code.split('\n').forEach((line, i) => {
   if (/^\s*(\/\/|\/\*|\*)/.test(line)) return;
   for (const name of banned) {
     if (new RegExp(`(^|[^\\w.$])${name}\\s*[(.]|new ${name}\\b`).test(line)) hits.push(`${name} on line ${i + 1}`);
   }
+  for (const [name, pattern, why] of engineDiffers) {
+    if (pattern.test(line)) engineHits.push(`${name} on line ${i + 1} (${why})`);
+  }
 });
 if (hits.length) {
   say('warn', 'uses something Boundless does not provide', `${hits.slice(0, 4).join(', ')}. Fine inside a string for a WebView script, a bug anywhere else`);
 } else {
-  say('pass', 'no fetch, URL, setTimeout, document or require in the code');
+  say('pass', 'no fetch, URL, btoa, document or require in the code');
+}
+if (engineHits.length) {
+  say('warn', 'uses something that differs between the engines Boundless runs on', `${engineHits.slice(0, 3).join(', ')}. Format numbers and dates yourself`);
 }
 const usesWebView = code.includes('executeInWebView');
 if (usesWebView) {
@@ -510,7 +544,8 @@ try {
 } catch {
   CryptoJS = undefined;
 }
-const sandbox = { module: { exports: {} }, App, cheerio, ...(CryptoJS ? { CryptoJS } : {}), console };
+const atob = (input) => Buffer.from(String(input).replace(/[^A-Za-z0-9+/]/g, ''), 'base64').toString('latin1');
+const sandbox = { module: { exports: {} }, App, cheerio, ...(CryptoJS ? { CryptoJS } : {}), console, setTimeout, clearTimeout, atob };
 sandbox.exports = sandbox.module.exports;
 try {
   vm.runInNewContext(code, sandbox, { filename: file });
@@ -584,19 +619,35 @@ async function step(label, run) {
   }
 }
 
-const browse = await step('browse', () => source.getSearchResults({ title: '', feed: feeds[0]?.id }, null));
+const browseRequest = { feed: feeds[0]?.id ?? 'recent' };
+const typeProblem = (m) => {
+  for (const key of ['title', 'image', 'author', 'status', 'publisher', 'medium', 'volumesId', 'desc', 'summary']) {
+    if (m[key] !== undefined && m[key] !== null && typeof m[key] !== 'string') return `${key} is ${typeof m[key]}, the app needs text`;
+  }
+  for (const key of ['ageRating', 'rating', 'chapters']) {
+    if (m[key] !== undefined && m[key] !== null && typeof m[key] !== 'number') return `${key} is ${typeof m[key]}, the app needs a number`;
+  }
+  if (m.completed !== undefined && m.completed !== null && typeof m.completed !== 'boolean') return 'completed is not true or false';
+  if (m.tags !== undefined && m.tags !== null && !Array.isArray(m.tags)) return 'tags is not a list';
+  return null;
+};
+const browse = await step('browse', () => source.getSearchResults(browseRequest, undefined));
 if (browse) {
   const list = browse.value.results ?? [];
   if (usesWebView && list.length === 0) say('warn', 'browse returned nothing, expected if it needs Boundless (WebView)');
   else check(list.length > 0, 'browse returns titles', `${list.length} results in ${browse.took}`);
   check(list.every((r) => r.mangaId && r.title), 'every title has a mangaId and a title');
+  const badType = list.map(typeProblem).find(Boolean);
+  check(!badType, 'every title has the field types the app reads', badType ? `${badType}: the app drops the title` : 'a wrong type makes the app drop the title');
+  const metadata = browse.value.metadata;
+  check(metadata === undefined || metadata === null || (typeof metadata === 'object' && !Array.isArray(metadata)), 'metadata is an object, or nothing', 'the app rejects the whole page for any other value');
   check(list.every((r) => isUrl(r.image)), 'every cover is an absolute URL in "image"');
   if (list.some((r) => r.contentRating !== undefined && r.ageRating === undefined)) warnIgnoredRating('titles');
   if (list.some((r) => r.ageRating !== undefined)) {
     check(list.every((r) => r.ageRating === undefined || typeof r.ageRating === 'number'), 'ageRating is a number, a minimum age such as 0, 16 or 18');
   }
   if (browse.value.metadata) {
-    const next = await step('browse page 2', () => source.getSearchResults({ title: '', feed: feeds[0]?.id }, browse.value.metadata));
+    const next = await step('browse page 2', () => source.getSearchResults(browseRequest, browse.value.metadata));
     if (next) check(next.value.results?.[0]?.mangaId !== list[0]?.mangaId, 'page 2 differs from page 1');
   }
 }
@@ -609,18 +660,23 @@ if (typeof source.getSearchTags === 'function') {
     if (genreCount === 0) say('warn', 'genre list is empty', 'fine if the site has no working genre filter, but then do not declare "genres"');
     else if (tags.value.some((t) => Array.isArray(t.tags))) say('warn', 'genre list is grouped into sections', 'Boundless reads flat { id, label } entries, so return a flat list');
     else check(tags.value.every((t) => t.id && t.label), 'genre list has ids and labels', `${genreCount} genres`);
+    const usable = tags.value.find((t) => t && t.id);
+    if (usable) {
+      const filtered = await step('browse filtered by a genre', () => source.getSearchResults({ feed: 'recent', includedTags: [{ id: usable.id, label: usable.id }] }, undefined));
+      if (filtered) check(Array.isArray(filtered.value?.results), 'a genre filter returns a list', `genre "${usable.id}", ${filtered.value?.results?.length ?? 0} results`);
+    }
   }
 }
 
 const query = searchTerm || pickQuery(browse?.value.results?.[0]?.title) || 'a';
-const found = await step(`search "${query}"`, () => source.getSearchResults({ title: query }, null));
+const found = await step(`search "${query}"`, () => source.getSearchResults({ title: query, feed: 'recent' }, undefined));
 if (found) {
   const count = found.value.results?.length ?? 0;
   if (usesWebView && count === 0) say('warn', `search "${query}" returned nothing, expected if it needs Boundless (WebView)`);
   else check(count > 0, `search "${query}" returns titles`, `${count} results in ${found.took}`);
 }
 
-const nothing = await step('search for a word that matches nothing', () => source.getSearchResults({ title: 'zzqxkvjwpl' }, null));
+const nothing = await step('search for a word that matches nothing', () => source.getSearchResults({ title: 'zzqxkvjwpl', feed: 'recent' }, undefined));
 if (nothing) {
   const empty = nothing.value?.results;
   check(Array.isArray(empty), 'a search that matches nothing returns a list, not an error', 'some sites answer 404 for no match: treat that as an empty list');
@@ -660,8 +716,6 @@ for (const item of (found?.value.results ?? []).slice(0, 2)) {
     const subtitles = (first.subtitles ?? []).length;
     const took = `${((Date.now() - started) / 1000).toFixed(1)}s`;
     const skip = first.intro ? `, intro ${Math.round(first.intro.start / 1000)}s to ${Math.round(first.intro.end / 1000)}s` : '';
-    // Sumizuri drops these silently: a track with no full URL, headers that are not strings, a skip range
-    // with no start and end in milliseconds or an end that is not after its start.
     const problems = [];
     for (const video of videos) {
       const quality = video.quality === undefined ? 'a video' : `"${video.quality}"`;
@@ -685,7 +739,10 @@ for (const item of (found?.value.results ?? []).slice(0, 2)) {
     try {
       if (anime) return await tryPlay(chapter, label, started);
       const read = await withTimeout(source.getChapterDetails(item.mangaId, chapter.id));
-      const isText = Array.isArray(read.pages) && read.pages.length === 0 && read.text;
+      const isText = Array.isArray(read.pages) && read.pages.length === 0 && typeof read.text === 'string' && read.text.trim().length > 0;
+      if (Array.isArray(read.pages) && read.pages.length === 0 && Array.isArray(read.text)) {
+        return { ok: false, label, detail: 'text is an array; the app casts text to a string and throws, so join the paragraphs with a blank line' };
+      }
       const isImages = read.pages?.length > 0 && read.pages.every(isUrl);
       const took = `${((Date.now() - started) / 1000).toFixed(1)}s`;
       return { ok: Boolean(isText || isImages), label, detail: isText ? 'text' : `${read.pages?.length ?? 0} pages in ${took}` };
@@ -761,7 +818,8 @@ node test-extension.mjs ./mysite/index.js "naruto"
 What to do with the results:
 
 - Keep going until there are no `FAIL` lines. Try a few different search words (the script picks one itself if you don't give it one), including one that should return nothing.
-- A `fetch is not defined` (or `URL`, `setTimeout`, `document`) means the code used something the app doesn't have.
+- A `fetch is not defined` (or `URL`, `btoa`, `document`) means the code used something the app doesn't have.
+- A `WARN` about "differs between the engines" means the code uses `Intl`, `toLocaleString()`, `WeakRef` or `queueMicrotask`, which behave differently on iPhone and Android. Replace them; Node cannot show the difference, so reading the code is the only check.
 - `WARN` lines are worth reading but aren't failures. A missing `hosts` list is the usual one.
 - The script checks data, not looks. Read the output yourself: do titles, covers and chapter names look like the real site? Are chapters in a sensible order?
 - A site behind a Cloudflare challenge may answer `403` to plain Node even though Boundless gets through. Say that in your report.
@@ -779,7 +837,7 @@ When it passes, try it in Boundless for real. A repository is just a folder of s
 
 ## Step 4: Package it
 
-Add an entry to `versioning.json`, and make the folder name equal the `id`:
+Add an entry to `versioning.json`, and make the extension's folder name equal the `id` (the folder sits inside `comics`, `novels`, `mixed` or `anime` in the repository, see Step 5):
 
 ```json
 {
@@ -822,7 +880,7 @@ Add an entry to `versioning.json`, and make the folder name equal the `id`:
 ## Step 5: List it on Inkstone
 
 1. Fork [realinkstone/inkstone-extensions](https://github.com/realinkstone/inkstone-extensions).
-2. Add your `<id>/index.js` folder and your `versioning.json` entry.
+2. Add your folder under the one that matches what it offers, as `comics/<id>/index.js` (manga, manhwa, webtoons), `novels/<id>/index.js`, `mixed/<id>/index.js` (both) or `anime/<id>/index.js`, and add your entry to the `versioning.json` at the top of the repository. The site serves every extension at `/<id>/index.js` whatever its folder, so the folder changes nothing in the app.
 3. Open a pull request. Your report (below) works as the description.
 
 No GitHub? Share the folder on the [Inkstone Discord](https://discord.gg/6pX2XgFYcs) instead. Every submission is tried against the live site before it's listed.
@@ -862,10 +920,14 @@ End with something the user can read in thirty seconds:
 | A `status` that isn't an allowed word | Shows as Unknown |
 | Always returning `metadata` | Browse loads the last page forever |
 | `getSourceFeeds()` that's `async` or fetches | Feeds never appear |
-| Using `fetch`, `URL` or `setTimeout` | Empty screens |
+| Using `fetch`, `URL`, `btoa` or `TextEncoder` | Empty screens |
+| Using `Intl` or `toLocaleString()` | Works on iPhone, `Intl is not defined` or different text on Android |
+| `new Date(text)` on date text that is not ISO 8601 | A different date (or none) on iPhone and Android: read it yourself and use `Date.UTC` |
+| Returning today's date for a chapter date you could not read | Every chapter looks new, on every refresh |
+| Waiting with `setTimeout` instead of declaring a `rateLimit` | A slow source that the app's own 429 retries hide |
 | Chapter list capped at 100 | Missing chapters |
 | Forgetting `referer` on hotlink-protected images | Chapters open but every page fails |
-| A CDN that refuses the app's own (Dart) user agent, with only `referer` returned | Chapters open but every page fails, though the same URL works in curl; return `headers` with a browser `User-Agent` on pages and covers |
+| A CDN that refuses the app's own user agent, with only `referer` returned | Chapters open but every page fails, though the same URL works in curl; return `headers` with a browser `User-Agent` on pages and covers |
 | Using the 110 by 150 thumbnail a WordPress grid names | Blurry covers; check whether the 175 by 238 or 350 by 476 size of the same file exists and use it |
 | Rating a site safe because it prints no genres | Explicit titles in a source the reader trusts; look at the titles and blurbs of the first listing page too |
 | Stale `sha256` | Install refused |

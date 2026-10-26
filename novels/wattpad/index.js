@@ -95,7 +95,7 @@ class Source {
     }
 
     const query = (request && request.title) || '';
-    const feed = (request && request.feed) || 'hot';
+    const feed = ['hot', 'new', 'featured'].includes(request && request.feed) ? request.feed : 'hot';
     const categoryId =
       request && request.includedTags && request.includedTags[0] && request.includedTags[0].id;
     const offset = (metadata && metadata.offset) || 0;

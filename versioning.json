@@ -385,7 +385,7 @@
     {
       "id": "mangahere",
       "name": "MangaHere",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "medium": "comics",
       "website": "https://www.mangahere.cc",
       "description": "Manga\n\nCatalog・30,000+",
@@ -400,7 +400,7 @@
       "language": "en",
       "contentRating": "adult",
       "iconUrl": "https://www.mangahere.cc/favicon.ico",
-      "sha256": "7011cae7c8fbd42bf8643b28400f006b15c3d0f96a4fb55ac1a7386e40f84743"
+      "sha256": "715ea34fbe98be0750650f12f58ac14e2ed19339aabdfb5e3e3118c9c055898a"
     },
     {
       "id": "rawkuma",
@@ -1054,7 +1054,7 @@
     {
       "id": "globalcomix",
       "name": "GlobalComix",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "medium": "comics",
       "website": "https://globalcomix.com",
       "description": "Manga・Comics",
@@ -1069,7 +1069,7 @@
       "language": "en",
       "contentRating": "adult",
       "iconUrl": "https://assets.globalcomix.com/static/images/header/homescreen.png",
-      "sha256": "7f1bead192e7f02e861f0afe8bb0b012dcc824eadc703bbc16e06b7caa15ca26"
+      "sha256": "097c3f3f3763abe0e01bc082258bfe6009e83e6b95b80cdea0d36a0d380384d1"
     },
     {
       "id": "animesama",
@@ -1530,7 +1530,7 @@
     {
       "id": "wattpad",
       "name": "Wattpad",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "medium": "novel",
       "website": "https://www.wattpad.com",
       "description": "Web Novels\n\nCatalog・1,000+",
@@ -1545,7 +1545,7 @@
       ],
       "language": "en",
       "contentRating": "adult",
-      "sha256": "f3e0603f1ebe05f5b47ec0952219384bdcd8ead29103e01f5a3b596114b70af0"
+      "sha256": "0a568666e6eaded6e128aa2ed52d89550e8f742f35823c2d570e70c162012f6d"
     },
     {
       "id": "webfic",
@@ -1929,7 +1929,7 @@
     {
       "id": "kagane",
       "name": "Kagane",
-      "version": "1.3.1",
+      "version": "1.3.2",
       "medium": "comics",
       "website": "https://kagane.org",
       "iconUrl": "https://inkstone.web.app/kagane/icon.png",
@@ -2239,7 +2239,7 @@
       ],
       "language": "en",
       "contentRating": "safe",
-      "sha256": "d7698c238cf593cdc1a7ffd907d42dc933b80a4da1e938c0122f0dba00ce70c8"
+      "sha256": "262b895bd8412aa8f16bd66a2d3d644f17b84a08eea3ef9a84efaa46989d3078"
     },
     {
       "id": "mangafire",
@@ -2408,7 +2408,9 @@
       ],
       "language": "en",
       "contentRating": "safe",
-      "sha256": "b8d5e45240bc467183d63fc7d2756f509e3712bde5d16d98079fc0e1b706ebdb"
+      "sha256": "b8d5e45240bc467183d63fc7d2756f509e3712bde5d16d98079fc0e1b706ebdb",
+      "status": "broken",
+      "statusNote": "The site's domain no longer points to a server."
     },
     {
       "id": "athreascans",
@@ -3124,7 +3126,9 @@
       ],
       "language": "en",
       "contentRating": "safe",
-      "sha256": "32fd53fb4b4b5a1c41f81489ef10d0e0f5007d9b25a9896d9c9148f219599eac"
+      "sha256": "32fd53fb4b4b5a1c41f81489ef10d0e0f5007d9b25a9896d9c9148f219599eac",
+      "status": "broken",
+      "statusNote": "The site's API address (api.renascans.net) no longer exists."
     },
     {
       "id": "magusmanga",
@@ -3453,6 +3457,1374 @@
       "language": "en",
       "contentRating": "mature",
       "sha256": "0705d46e4e7e3a02dfc02cd0212eb7989353d849bcb6fef8e4e26c43a4d13fa4"
+    },
+    {
+      "id": "akazascans",
+      "name": "Akaza Scans",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://akazascans.org",
+      "iconUrl": "https://akazascans.org/wp-content/uploads/2026/07/cropped-12d4c82893dd91e6c9f2855f101fdf84-180x180.webp",
+      "hosts": [
+        "akazascans.org",
+        "*.akazascans.org"
+      ],
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・20+\n\nRestrictions:\n・Locked Chapters",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "en",
+      "contentRating": "safe",
+      "sha256": "833627cd122100072afeac9f6ed594676523cd4469774f111758c01143d110e6"
+    },
+    {
+      "id": "asterscans",
+      "name": "Aster Scans",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://asterscans.com",
+      "iconUrl": "https://asterscans.com/wp-content/uploads/2026/08/cropped-astro-icon-180x180.png",
+      "hosts": [
+        "asterscans.com",
+        "*.asterscans.com"
+      ],
+      "description": "Manga・Manhwa\n\nCatalog・10+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "en",
+      "contentRating": "safe",
+      "sha256": "dac81b8abe1cd5d764ed695b6b3d134ff80f7406b7625f11a380881f4709d5a3"
+    },
+    {
+      "id": "decadencescans",
+      "name": "Decadence Scans",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://reader.decadencescans.com",
+      "iconUrl": "https://inkstone.web.app/decadencescans/icon.png",
+      "hosts": [
+        "reader.decadencescans.com",
+        "*.reader.decadencescans.com"
+      ],
+      "description": "Manga\n\nCatalog・70+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "en",
+      "contentRating": "safe",
+      "sha256": "8eb26168e6ade9dba2b364d15ecc194e0e8c2f8550bfecbd734b574e03f8724b"
+    },
+    {
+      "id": "grabberzone",
+      "name": "Grabber Zone",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://grabber.zone",
+      "iconUrl": "https://grabber.zone/wp-content/uploads/2022/12/cropped-grabba-180x180.png",
+      "hosts": [
+        "grabber.zone",
+        "*.grabber.zone"
+      ],
+      "description": "Comics\n\nCatalog・200+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "en",
+      "contentRating": "safe",
+      "sha256": "0b1483d32814f97a70068e769a854cb5588886d778843eaa2a563d0b7c269bd7"
+    },
+    {
+      "id": "madarascans",
+      "name": "Madara Scans",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://madarascans.net",
+      "iconUrl": "https://madarascans.net/wp-content/uploads/2026/09/2026-09-14-11-21-31-1789428091254-180x180.webp",
+      "hosts": [
+        "madarascans.net",
+        "*.madarascans.net"
+      ],
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・400+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "78537bec4b38043368d65da13e0af212ec2a70339f4bed6c186daff4c53a8ba9"
+    },
+    {
+      "id": "manhuapluscom",
+      "name": "Manhua Plus (.com)",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://manhuaplus.com",
+      "iconUrl": "https://manhuaplus.com/wp-content/uploads/2020/07/cropped-manhua-vuong-den-1-180x180.jpg",
+      "hosts": [
+        "manhuaplus.com",
+        "*.manhuaplus.com"
+      ],
+      "description": "Manhua\n\nCatalog・100+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "7c1c119f1b1357e7eeb4ed9c91775bf7230f736e1a602f9eaa3b8d52f0779c08"
+    },
+    {
+      "id": "rokaricomics",
+      "name": "RokariComics",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://rokaricomics.com",
+      "iconUrl": "https://rokaricomics.com/wp-content/uploads/2025/06/cropped-Untitled_Artwork-2-180x180.png",
+      "hosts": [
+        "rokaricomics.com",
+        "*.rokaricomics.com"
+      ],
+      "description": "Manga・Manhwa\n\nCatalog・300+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "en",
+      "contentRating": "safe",
+      "sha256": "a408b93696acab3523d0e7c17df6b0a5f23f3c4f0784eed14e3503320de7fd42"
+    },
+    {
+      "id": "toonizy",
+      "name": "Toonizy",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://toonizy.com",
+      "iconUrl": "https://inkstone.web.app/toonizy/icon.png",
+      "hosts": [
+        "toonizy.com",
+        "*.toonizy.com"
+      ],
+      "description": "Manhwa・Manhua\n\nCatalog・1,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "en",
+      "contentRating": "safe",
+      "sha256": "f4df10fb887600c4016d6389952abe6029ec9305d51c9e0da0c3ea48cd86a001"
+    },
+    {
+      "id": "scythescans",
+      "name": "Scythe Scans",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://scythescans.com",
+      "iconUrl": "https://inkstone.web.app/scythescans/icon.png",
+      "hosts": [
+        "scythescans.com",
+        "*.scythescans.com"
+      ],
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・60+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "en",
+      "contentRating": "safe",
+      "sha256": "d7e9334a49b50cf615bc12c4452a5ef722f76a3e42b3aa10bf6360f20e67c6e4"
+    },
+    {
+      "id": "mangafox",
+      "name": "MangaFox",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://fanfox.net",
+      "description": "Manga\n\nCatalog・30,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "en",
+      "contentRating": "adult",
+      "sha256": "7731927cb9a9dcfc10938232018c8c2faa27b4e966c237ea8849f95726312b8f",
+      "iconUrl": "https://inkstone.web.app/mangafox/icon.png"
+    },
+    {
+      "id": "mangak",
+      "name": "MangaK",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://mangak.io",
+      "hosts": [
+        "mangak.io",
+        "*.mangak.io"
+      ],
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・30,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "iconUrl": "https://mangak.io/static/sites/mangak/icons/apple-touch-icon.png",
+      "sha256": "963be57d40c0de1ed518580e7ec36d0b8acb7856595b12de7f2e6a48b0766828"
+    },
+    {
+      "id": "mangademon",
+      "name": "Manga Demon",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://demonicscans.org",
+      "hosts": [
+        "demonicscans.org",
+        "*.demonicscans.org"
+      ],
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・10,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "iconUrl": "https://inkstone.web.app/mangademon/icon.png",
+      "sha256": "7b702e581a46f12e81a6f90c30e8542ab8b09601e9948111af1ab302fbe51034"
+    },
+    {
+      "id": "roliascan",
+      "name": "Rolia Scan",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://roliascan.com",
+      "hosts": [
+        "roliascan.com",
+        "*.roliascan.com"
+      ],
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・1,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "iconUrl": "https://roliascan.com/content/media/cropped-favicon-192x192.png",
+      "sha256": "c5f9e0eff3d1855fd647ce77a4fbe27ebc055b3be630f93b09723d7e47ea0704"
+    },
+    {
+      "id": "manhwabuddy",
+      "name": "ManhwaBuddy",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://manhwabuddy.com",
+      "iconUrl": "https://manhwabuddy.com/images/180x180.jpg",
+      "hosts": [
+        "manhwabuddy.com",
+        "*.manhwabuddy.com"
+      ],
+      "description": "Manhwa\n\nCatalog・3,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "en",
+      "contentRating": "adult",
+      "sha256": "2ed21bc44447d5c66c12badc0dc908c5babae0ec903040b32074e221fe029e79"
+    },
+    {
+      "id": "manhwagalaxy",
+      "name": "ManhwaGalaxy",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://manhwagalaxy.com",
+      "iconUrl": "https://manhwagalaxy.com/images/180x180.jpg",
+      "hosts": [
+        "manhwagalaxy.com",
+        "*.manhwagalaxy.com"
+      ],
+      "description": "Manhwa\n\nCatalog・2,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "en",
+      "contentRating": "adult",
+      "sha256": "533cdad8608d8f12a3227a430cc10f2e00d0f7a9a42a1342e7483be7d35e3271"
+    },
+    {
+      "id": "manhwaonline",
+      "name": "ManhwaOnline",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://manhwaonline.org",
+      "iconUrl": "https://manhwaonline.org/images/180x180.jpg",
+      "hosts": [
+        "manhwaonline.org",
+        "*.manhwaonline.org"
+      ],
+      "description": "Manhwa\n\nCatalog・2,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "536c350f211945decd90b8970beb3413df59cebf8b435da45561b71b0ba0302f"
+    },
+    {
+      "id": "manhwaddict",
+      "name": "Manhwaddict",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://manhwaddict.com",
+      "iconUrl": "https://manhwaddict.com/images/180x180.png",
+      "hosts": [
+        "manhwaddict.com",
+        "*.manhwaddict.com"
+      ],
+      "description": "Manhwa\n\nCatalog・900+",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "en",
+      "contentRating": "adult",
+      "sha256": "65c1b20e6571b6c03fb70053197b3754fa3a6dcc5917f65071f68ce646716150"
+    },
+    {
+      "id": "tcbscans",
+      "name": "TCB Scans",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://tcbonepiecechapters.com",
+      "hosts": [
+        "tcbonepiecechapters.com",
+        "*.tcbonepiecechapters.com"
+      ],
+      "description": "Manga\n\nCatalog・10+",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "en",
+      "contentRating": "safe",
+      "iconUrl": "https://tcbonepiecechapters.com/files/apple-touch-icon.png",
+      "sha256": "dd5b62d9e3d7a961f82529c4edab098b64c81dfbd9cac1a61d0064efdeef327a"
+    },
+    {
+      "id": "hadesnofansub",
+      "name": "Hades no Fansub",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://lectorhades.latamtoon.com",
+      "hosts": [
+        "lectorhades.latamtoon.com",
+        "*.lectorhades.latamtoon.com"
+      ],
+      "description": "Hades no Fansub read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "safe",
+      "sha256": "619e8531422d7b1ba38b4fa078c0d3ecf27bd2d0cdd0f95c1b870c3b96ab8d79"
+    },
+    {
+      "id": "inventariooculto",
+      "name": "Inventario Oculto",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://inventariooculto.com",
+      "hosts": [
+        "inventariooculto.com",
+        "*.inventariooculto.com"
+      ],
+      "description": "Inventario Oculto read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "safe",
+      "sha256": "6393f930fc717c4445ca7fe6c5eb000163a2de9bd53cd952a6d772acb211c203"
+    },
+    {
+      "id": "kazokuden",
+      "name": "Kazoku Den",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://www.kazokuden.com",
+      "hosts": [
+        "kazokuden.com",
+        "*.kazokuden.com"
+      ],
+      "description": "Kazoku Den read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. Titles tagged Mature or Ecchi are marked 16 and Adult or Smut 18 on their details page (the grids carry no genres).",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "sha256": "de0048b4779a0577073d10c1983864728b851014821bb9c6e03cc269c31498b6"
+    },
+    {
+      "id": "mhscans",
+      "name": "MHScans",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://mhscans.com",
+      "hosts": [
+        "mhscans.com",
+        "*.mhscans.com"
+      ],
+      "description": "MHScans read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "safe",
+      "sha256": "ae3d1c893da157712d4fe82bf05099e1e364aeb28964d4f872e009ca395001f3"
+    },
+    {
+      "id": "monopolyscan",
+      "name": "Monopoly Scan",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://monopolymanhua.com",
+      "hosts": [
+        "monopolymanhua.com",
+        "*.monopolymanhua.com"
+      ],
+      "description": "Monopoly Scan read from its own Madara pages, with no browser step and no sign-in: Latest, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "safe",
+      "sha256": "62cc540a9fdd6eceef54bbab1058053fc94294e59095158d004fee32cd228a0b"
+    },
+    {
+      "id": "ragnarokscanlation",
+      "name": "Ragnarok Scanlation",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://ragnarokscanlation.org",
+      "hosts": [
+        "ragnarokscanlation.org",
+        "*.ragnarokscanlation.org"
+      ],
+      "description": "Ragnarok Scanlation read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "safe",
+      "sha256": "ac1d1a31a14886b0d69c8f3911ed3f1fbb4a7de2adf930f279fd8622d0e69937"
+    },
+    {
+      "id": "rakuentranslations",
+      "name": "Rakuen Translations",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://rakuentranslations.com",
+      "hosts": [
+        "rakuentranslations.com",
+        "*.rakuentranslations.com"
+      ],
+      "description": "Rakuen Translations read from its own MangaThemesia pages, with no browser step and no sign-in: Latest Updates, Popular, Newly Added, A-Z feeds, search, genre filtering, full details, chapter lists with dates and the reader. Titles tagged Mature or Ecchi are marked 16 and Adult or Smut 18 on their details page (the grids carry no genres).",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "sha256": "252a6d1dcb4adde8a76d5c56ee084f3ee073ab2056f76a6b60b5570502a23f93"
+    },
+    {
+      "id": "samuraiscan",
+      "name": "SamuraiScan",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://samurai.j5z.xyz",
+      "hosts": [
+        "samurai.j5z.xyz",
+        "*.samurai.j5z.xyz"
+      ],
+      "description": "SamuraiScan read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "safe",
+      "sha256": "53e257b1b2b48943420d4d86ab57f5ee2387d26d5e59ae195662aecba28660f7"
+    },
+    {
+      "id": "uchuujinprojects",
+      "name": "Uchuujin Projects",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://uchuujinmangas.com",
+      "hosts": [
+        "uchuujinmangas.com",
+        "*.uchuujinmangas.com"
+      ],
+      "description": "Uchuujin Projects read from its own MangaThemesia pages, with no browser step and no sign-in: Latest Updates, Popular, Newly Added, A-Z feeds, search, genre filtering, full details, chapter lists with dates and the reader. Titles tagged Mature or Ecchi are marked 16 and Adult or Smut 18 on their details page (the grids carry no genres).",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "sha256": "9996bde2ae8585c17e52d720478034a15b20b16b9973515acf6a65297b0d04b9"
+    },
+    {
+      "id": "undertranslations",
+      "name": "UnderTranslations",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://undertranslations.com",
+      "hosts": [
+        "undertranslations.com",
+        "*.undertranslations.com"
+      ],
+      "description": "UnderTranslations read from its own MangaThemesia pages, with no browser step and no sign-in: Latest Updates, Popular, Newly Added, A-Z feeds, search, genre filtering, full details, chapter lists with dates and the reader. Titles tagged Mature or Ecchi are marked 16 and Adult or Smut 18 on their details page (the grids carry no genres).",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "sha256": "c5138b10a886318df68a78419ba9a55fe5e9a2d11945291db23dd8415142e66b"
+    },
+    {
+      "id": "yurionline",
+      "name": "Yuri-Online",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://yuri-online.com",
+      "hosts": [
+        "yuri-online.com",
+        "*.yuri-online.com"
+      ],
+      "description": "Yuri-Online read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "safe",
+      "sha256": "2fb96da77b3368ffc95f474de284c44ec0268b498b5472cf02b60069395edd0c"
+    },
+    {
+      "id": "cafcomyaoi",
+      "name": "Café com Yaoi",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://cafecomyaoi.com.br",
+      "hosts": [
+        "cafecomyaoi.com.br",
+        "*.cafecomyaoi.com.br"
+      ],
+      "description": "Café com Yaoi read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views feeds, search, genre filtering, full details, chapter lists with dates and the reader. Titles tagged Mature or Ecchi are marked 16 and Adult or Smut 18 on their details page (the grids carry no genres).",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "pt-BR",
+      "contentRating": "mature",
+      "sha256": "9fe9f807f0b87c8a72923f84bd7417d56cacaf4d4af12522a18b436d6bfcf462"
+    },
+    {
+      "id": "hotcabaretscan",
+      "name": "Hot Cabaret Scan",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://hotcabaretscan.com",
+      "hosts": [
+        "hotcabaretscan.com",
+        "*.hotcabaretscan.com"
+      ],
+      "description": "Hot Cabaret Scan read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views feeds, search, genre filtering, full details, chapter lists with dates and the reader. Titles tagged Mature or Ecchi are marked 16 and Adult or Smut 18 on their details page (the grids carry no genres).",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "pt-BR",
+      "contentRating": "mature",
+      "sha256": "785f0778fe5438970052a0173dbacc90a037f1d93f45d09dd1fdb2dc3fa4442f"
+    },
+    {
+      "id": "kamisamaexplorer",
+      "name": "Kami Sama Explorer",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://leitor.kamisama.com.br",
+      "hosts": [
+        "leitor.kamisama.com.br",
+        "*.leitor.kamisama.com.br"
+      ],
+      "description": "Kami Sama Explorer read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "pt-BR",
+      "contentRating": "safe",
+      "sha256": "6ee6dc8ac03a0ae16cf760490c3ad53b10e0966ad0107064914f7f29242f70b4"
+    },
+    {
+      "id": "nebulosascan",
+      "name": "Nebulosa Scan",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://nebulosascan.com",
+      "hosts": [
+        "nebulosascan.com",
+        "*.nebulosascan.com"
+      ],
+      "description": "Nebulosa Scan read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. Titles tagged Mature or Ecchi are marked 16 and Adult or Smut 18 on their details page (the grids carry no genres).",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "pt-BR",
+      "contentRating": "mature",
+      "sha256": "fae6c436087dc541ccf6ea04480c11414b0bd3a9c2001128688d0b0a0673f21f"
+    },
+    {
+      "id": "tsundokutradues",
+      "name": "Tsundoku Traduções",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://tsundoku.com.br",
+      "hosts": [
+        "tsundoku.com.br",
+        "*.tsundoku.com.br"
+      ],
+      "description": "Tsundoku Traduções read from its own MangaThemesia pages, with no browser step and no sign-in: Latest Updates, Popular, Newly Added, A-Z feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "pt-BR",
+      "contentRating": "safe",
+      "sha256": "aa7df778e141a09e3da0f156814da5b74de7088cd156efdc11b99b38465da5c4"
+    },
+    {
+      "id": "anikiga",
+      "name": "Anikiga",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://anikiga.com",
+      "hosts": [
+        "anikiga.com",
+        "*.anikiga.com"
+      ],
+      "description": "Anikiga read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "tr",
+      "contentRating": "safe",
+      "sha256": "c3b4e3a8af5bf78189dcd5bc881147ba617400db689ea0e1f395ad4e8a8020fe"
+    },
+    {
+      "id": "ghostoon",
+      "name": "GhosToon",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://ghostoon.com",
+      "hosts": [
+        "ghostoon.com",
+        "*.ghostoon.com"
+      ],
+      "description": "GhosToon read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "tr",
+      "contentRating": "safe",
+      "sha256": "add9727edc8a141931f952567fdb70be2d7746ba96d0df806c1c4af0c7b9d22a"
+    },
+    {
+      "id": "koreliscans",
+      "name": "Koreli Scans",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://www.nabicix.com",
+      "hosts": [
+        "nabicix.com",
+        "*.nabicix.com"
+      ],
+      "description": "Koreli Scans read from its own MangaThemesia pages, with no browser step and no sign-in: Latest Updates, Popular, Newly Added, A-Z feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "tr",
+      "contentRating": "safe",
+      "sha256": "09a208ff8ed2ede1a70f22ee405a8ed0a1bada63c545b4f13ced24d9d96f5434"
+    },
+    {
+      "id": "mangawow",
+      "name": "MangaWOW",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://mangawow.org",
+      "hosts": [
+        "mangawow.org",
+        "*.mangawow.org"
+      ],
+      "description": "MangaWOW read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. Titles tagged Mature or Ecchi are marked 16 and Adult or Smut 18 on their details page (the grids carry no genres).",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "tr",
+      "contentRating": "mature",
+      "sha256": "9e2c9000008d91f256de96920e1cb6efecc6e997628da2cc407a5cccd667f620"
+    },
+    {
+      "id": "ryamanga",
+      "name": "Rüya Manga",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://www.ruyamanga2.com",
+      "hosts": [
+        "ruyamanga2.com",
+        "*.ruyamanga2.com"
+      ],
+      "description": "Rüya Manga read from its own Madara pages, with no browser step and no sign-in: Latest, A-Z, Rating, Most Views feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "tr",
+      "contentRating": "safe",
+      "sha256": "8da79c74cbe166279951fbf3bbfc07e97710806044ac3a4df5abba2e70222e0f"
+    },
+    {
+      "id": "tarotscans",
+      "name": "Tarot Scans",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://www.tarotscans.com",
+      "hosts": [
+        "tarotscans.com",
+        "*.tarotscans.com"
+      ],
+      "description": "Tarot Scans read from its own Madara pages, with no browser step and no sign-in: Latest, A-Z, Rating, Most Views feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "tr",
+      "contentRating": "safe",
+      "sha256": "2c594d5c272c588d8cb11820e2e486e6594b915376f959b621a43356896717b0"
+    },
+    {
+      "id": "tortugaceviri",
+      "name": "Tortuga Ceviri",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://tortugaceviri.com",
+      "hosts": [
+        "tortugaceviri.com",
+        "*.tortugaceviri.com"
+      ],
+      "description": "Tortuga Ceviri read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "tr",
+      "contentRating": "safe",
+      "sha256": "6b3aa4f89f1ca0899b69a9b74fcd6c36e8966d6465b62d3684151323326aee16"
+    },
+    {
+      "id": "trkemangaoku",
+      "name": "Türkçe Manga Oku",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://trmangaoku.com",
+      "hosts": [
+        "trmangaoku.com",
+        "*.trmangaoku.com"
+      ],
+      "description": "Türkçe Manga Oku read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "tr",
+      "contentRating": "safe",
+      "sha256": "d0879722587bb29caa81903578652f7da3f3e4e398e58640101243571c5cdfbb"
+    },
+    {
+      "id": "flashmanga",
+      "name": "Flash-Manga",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://www.flash-manga.net",
+      "hosts": [
+        "flash-manga.net",
+        "*.flash-manga.net"
+      ],
+      "description": "Flash-Manga read from its own MangaThemesia pages, with no browser step and no sign-in: Latest Updates, Popular, Newly Added, A-Z feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "th",
+      "contentRating": "safe",
+      "sha256": "fce1878e217854f63c6b7a5da74cfc5dd36cf3eab2f7a2fd18223f57b756c7af"
+    },
+    {
+      "id": "inumanga",
+      "name": "Inu Manga",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://www.inu-manga.net",
+      "hosts": [
+        "inu-manga.net",
+        "*.inu-manga.net"
+      ],
+      "description": "Inu Manga read from its own MangaThemesia pages, with no browser step and no sign-in: Latest Updates, Popular, Newly Added, A-Z feeds, search, genre filtering, full details, chapter lists with dates and the reader. Titles tagged Mature or Ecchi are marked 16 and Adult or Smut 18 on their details page (the grids carry no genres).",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "th",
+      "contentRating": "mature",
+      "sha256": "cddb13dabe7f79c64069e150282e68e39e915fa81c3c6669686150e8643b0c55"
+    },
+    {
+      "id": "truyentini",
+      "name": "TruyenTini",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://truyentini.net",
+      "hosts": [
+        "truyentini.net",
+        "*.truyentini.net"
+      ],
+      "description": "TruyenTini read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "vi",
+      "contentRating": "safe",
+      "sha256": "15a32a64630534b08bca0f4ffbf40f113379b1427c3ca028852e8c943e73b539"
+    },
+    {
+      "id": "truyentuoitho",
+      "name": "TruyenTuoiTho",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://truyentuoitho.com",
+      "hosts": [
+        "truyentuoitho.com",
+        "*.truyentuoitho.com"
+      ],
+      "description": "TruyenTuoiTho read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "vi",
+      "contentRating": "safe",
+      "sha256": "c06a013707e6e7933575e3d78d51a3059015d524847dd5a0b501c5718130f8b3"
+    },
+    {
+      "id": "animeshinigami",
+      "name": "AnimeShinigami",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://www.animeshinigami.com",
+      "hosts": [
+        "animeshinigami.com",
+        "*.animeshinigami.com"
+      ],
+      "description": "AnimeShinigami read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "it",
+      "contentRating": "safe",
+      "sha256": "829c1f74d042169a84964ae175cfd5aa21da39237f3641d773925654c0f1f532"
+    },
+    {
+      "id": "klikmanga",
+      "name": "KlikManga",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://klikmanga.org",
+      "hosts": [
+        "klikmanga.org",
+        "*.klikmanga.org"
+      ],
+      "description": "KlikManga read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "id",
+      "contentRating": "safe",
+      "sha256": "3e43f56fcc4f2d0bf67585513acb086c24cc1b518ccd5e3c5d9cf08c1fa5327f"
+    },
+    {
+      "id": "mangalik",
+      "name": "مانجا ليك",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://mangalik.net",
+      "hosts": [
+        "mangalik.net",
+        "*.mangalik.net"
+      ],
+      "description": "مانجا ليك read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "ar",
+      "contentRating": "safe",
+      "sha256": "0e7f9a0ca7c1113266fb04b88f50f701e8e682be7dfdb87c0d70d4cc203a991f"
+    },
+    {
+      "id": "phoenixscans",
+      "name": "Phoenix Scans",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://www.phoenixscans.com",
+      "hosts": [
+        "phoenixscans.com",
+        "*.phoenixscans.com"
+      ],
+      "description": "Manga\n\nCatalog・60+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "it",
+      "contentRating": "mature",
+      "sha256": "c619887644af85f8f85422bff91b0cdd2749e0438faca7aa95fdfd6e7db9414a"
+    },
+    {
+      "id": "lupiteam",
+      "name": "LupiTeam",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://lupiteam.net",
+      "hosts": [
+        "lupiteam.net",
+        "*.lupiteam.net"
+      ],
+      "description": "Manga\n\nCatalog・6",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "it",
+      "contentRating": "safe",
+      "sha256": "b3ca6087ece18ab773e58e5630e426677f74063771bb84ff40e325ee69e16638"
+    },
+    {
+      "id": "bluesolo",
+      "name": "Blue Solo",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://bluesolo.org",
+      "hosts": [
+        "bluesolo.org",
+        "*.bluesolo.org"
+      ],
+      "description": "Manga\n\nCatalog・90+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "fr",
+      "contentRating": "safe",
+      "sha256": "b4564d9bdb7b9674a8ba14957bb6ba8085c36db1926cd26e27b31aba0d508e7a"
+    },
+    {
+      "id": "fmteam",
+      "name": "FMTEAM",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://fmteam.fr",
+      "hosts": [
+        "fmteam.fr",
+        "*.fmteam.fr"
+      ],
+      "description": "Manga\n\nCatalog・20+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "fr",
+      "contentRating": "safe",
+      "sha256": "cf8d2c7d2dbf3c69280b7631a6680ecf73ae5af465d6efac039b2641b1e3aa8a"
+    },
+    {
+      "id": "mangacorporation",
+      "name": "Manga-Corporation",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://manga-corporation.com",
+      "hosts": [
+        "manga-corporation.com",
+        "*.manga-corporation.com"
+      ],
+      "description": "Manga\n\nCatalog・20+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "fr",
+      "contentRating": "safe",
+      "sha256": "72bee5cf3a707c618f60de4dae2954af4e3b4a715b446114702b81b2af1698c8"
+    },
+    {
+      "id": "gtothegreatsite",
+      "name": "GTO The Great Site",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://reader.gtothegreatsite.net",
+      "hosts": [
+        "reader.gtothegreatsite.net",
+        "*.reader.gtothegreatsite.net"
+      ],
+      "description": "Manga\n\nCatalog・80+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "it",
+      "contentRating": "mature",
+      "sha256": "4083877fde37c3ce6192b0b31066dfa3f9926a1debc815f9c386e3e38379dca0"
+    },
+    {
+      "id": "tuttoanimemanga",
+      "name": "TuttoAnimeManga",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://tuttoanimemanga.net",
+      "hosts": [
+        "tuttoanimemanga.net",
+        "*.tuttoanimemanga.net"
+      ],
+      "description": "Manga\n\nCatalog・100+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "it",
+      "contentRating": "mature",
+      "sha256": "6585062867bcd8125758ef2bd4c192a0a1eb4e5972c334c226bfb6db70402f5d"
+    },
+    {
+      "id": "sleepytranslations",
+      "name": "Sleepy Translations",
+      "version": "1.0.0",
+      "medium": "novel",
+      "website": "https://sleepytranslations.com",
+      "iconUrl": "https://sleepytranslations.com/wp-content/uploads/2020/10/cropped-bestlogo-180x180.png",
+      "hosts": [
+        "sleepytranslations.com",
+        "*.sleepytranslations.com"
+      ],
+      "description": "Light Novels\n\nCatalog・100+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "en",
+      "contentRating": "safe",
+      "sha256": "587767997d363840877e5bc4e9e442453de276e82685619355656b8e2fec7845"
+    },
+    {
+      "id": "wuxiaworldsite",
+      "name": "WuxiaWorld.site",
+      "version": "1.0.0",
+      "medium": "novel",
+      "website": "https://wuxiaworld.site",
+      "iconUrl": "https://inkstone.web.app/wuxiaworldsite/icon.png",
+      "hosts": [
+        "wuxiaworld.site",
+        "*.wuxiaworld.site"
+      ],
+      "description": "Web Novels\n\nCatalog・5,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "en",
+      "contentRating": "safe",
+      "sha256": "29898ea62af1b248b2724eaa88ea8137fdaa33b50ca1460426413bd3419d09f0"
+    },
+    {
+      "id": "ngomik",
+      "name": "Ngomik",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://02.ngomik.cc",
+      "iconUrl": "https://cover.bid-cdn.cloud/2025/06/cropped-icon-180x180.png",
+      "hosts": [
+        "02.ngomik.cc",
+        "*.02.ngomik.cc"
+      ],
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・2,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "id",
+      "contentRating": "safe",
+      "sha256": "9b76ca897d4eaef0b8f78791f2b6f317803cac5cff5b96d3798ec32beddb0b6f"
     }
   ]
 }

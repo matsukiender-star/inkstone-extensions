@@ -1,3 +1,4 @@
+const BLOCKED_TAG = /^(lolicon|shotacon)$/i;
 const SITE_BASE = 'https://www.mangahere.cc';
 const IMAGE_REFERER = SITE_BASE;
 const UA =
@@ -258,7 +259,7 @@ class Source {
         const m = href.match(/^\/([^/]+)\/?$/);
         if (!m) return;
         const id = m[1];
-        if (seen.has(id)) return;
+        if (seen.has(id) || BLOCKED_TAG.test(id)) return;
         seen.add(id);
         const label = cleanText($(el).attr('title'));
         if (label) tags.push({ id, label });
@@ -283,6 +284,8 @@ class Source {
     let url;
     if (query) {
       url = searchUrl(query, page);
+    } else if (includedTags.length > 0 && includedTags[0] && BLOCKED_TAG.test(String(includedTags[0].id))) {
+      return { results: [] };
     } else if (includedTags.length > 0 && includedTags[0] && includedTags[0].id) {
       url = genreUrl(includedTags[0].id, page);
     } else {
@@ -339,19 +342,21 @@ class Source {
       desc = cleanText(contentClone.text());
     }
 
-    return {
-      mangaInfo: {
-        title,
-        image,
-        referer: IMAGE_REFERER,
-        author,
-        desc,
-        status,
-        tags,
-        webURL: url,
-        medium: 'comics',
-      },
+    if (tags.some((t) => BLOCKED_TAG.test(t))) throw new Error('MangaHere does not serve titles tagged Lolicon or Shotacon');
+    const mangaInfo = {
+      title,
+      image,
+      referer: IMAGE_REFERER,
+      author,
+      desc,
+      status,
+      tags,
+      webURL: url,
+      medium: 'comics',
     };
+    if (tags.some((t) => /^(adult|smut)$/i.test(t))) mangaInfo.ageRating = 18;
+    else if (tags.some((t) => /^(mature|ecchi)$/i.test(t))) mangaInfo.ageRating = 16;
+    return { mangaInfo };
   }
 
   async getChapters(mangaId) {

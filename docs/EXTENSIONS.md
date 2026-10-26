@@ -1,8 +1,9 @@
 # Writing an extension
 
 An extension is a single JavaScript file that exposes a `Source` class. The app
-downloads it from a repo, evaluates it in a sandboxed JavaScriptCore context,
-and calls its methods to fill the Browse, Search, Detail and Reader screens.
+downloads it from a repo, runs it in a sandboxed JavaScript engine (JavaScriptCore
+on iPhone, iPad and Mac, QuickJS on Android), and calls its methods to fill the
+Browse, Search, Detail and Reader screens.
 
 The format keeps the surface area small: implement a handful of methods on
 that class and the app can browse, search and read through your source.
@@ -13,10 +14,12 @@ To check an extension works, see [TESTING.md](TESTING.md).
 
 ---
 
-## 1. The runtime is JavaScriptCore, not a browser
+## 1. The runtime is a JavaScript engine, not a browser
 
 This is the single biggest source of "it silently returns nothing" bugs.
-JavaScriptCore gives you the ECMAScript standard library and nothing else.
+The engine gives you the ECMAScript standard library and nothing else.
+Boundless runs your file on JavaScriptCore (iPhone, iPad, Mac) and on QuickJS
+(Android), so it has to work on both.
 
 **Not available**. Using any of these throws a `ReferenceError` that surfaces
 in the app as an empty screen:
@@ -25,15 +28,29 @@ in the app as an empty screen:
 | --- | --- |
 | `fetch`, `XMLHttpRequest` | `App.createRequestManager().schedule()` |
 | `URL`, `URLSearchParams` | build strings with `encodeURIComponent` |
-| `setTimeout`, `setInterval` | (no timers; use `Promise` directly) |
-| `btoa`, `atob`, `TextDecoder` | None |
+| `setInterval` | declare a `rateLimit` for pacing; `setTimeout` exists but is not a way to wait for a site |
+| `btoa`, `TextEncoder`, `TextDecoder`, `Buffer` | `App.base64Encode(text)` and `App.base64Decode(text)` |
 | `document`, `DOM`, `DOMParser` | `cheerio.load(html)`, provided as a global |
 | `structuredClone` | `JSON.parse(JSON.stringify(x))` |
 
 **Available:** `Promise`, `async`/`await`, `JSON`, `Math`, `Date`, `RegExp`,
-`Intl`, `String.prototype.replaceAll`, `Object.fromEntries`,
+`String.prototype.replaceAll`, `Object.fromEntries`,
 `encodeURIComponent`, and the rest of modern ECMAScript. Boundless also
-provides three globals: `App` (below), `cheerio` and `CryptoJS`.
+provides these globals: `App` (below), `cheerio`, `CryptoJS`, `console`,
+`setTimeout` with `clearTimeout` (older builds have no `clearTimeout`) and
+`atob` (it drops characters outside the base64 alphabet and gives one
+character per byte, so it also decodes binary data).
+
+**The two engines differ.** `test-extension.mjs` runs your file in Node, a
+third engine, so it cannot show these. Each was checked by running the same
+code in JavaScriptCore and in QuickJS:
+
+| Difference | What to do |
+| --- | --- |
+| `Intl` exists on iPhone, iPad and Mac, not on Android | Don't use it |
+| `(1234.5).toLocaleString()` gives `1,234.5` on iPhone and `1234.5` on Android | Don't use `toLocale...String()` for anything you return |
+| `Date.parse('12-01-2024')` is `NaN` on iPhone and December 1st on Android. ISO 8601 (`2024-01-12`, `2024-01-12T10:00:00Z`) and `Jan 12, 2024` agree | Read any other date text yourself and build the time with `Date.UTC(year, month, day)` |
+| `WeakRef` exists only on iPhone and Mac; `queueMicrotask` on neither | Don't use them |
 
 `cheerio` is cheerio's slim build with its usual jQuery-style API. Parse HTML
 with it instead of regex. Because it is the slim build, `cheerio.load(fragment)`
@@ -62,8 +79,8 @@ function qs(params) {
 
 ## 2. Networking
 
-All HTTP goes through the app's native `URLSession` bridge. Extensions never
-touch the network directly.
+All HTTP goes through the app's own network layer. Extensions never touch the
+network directly.
 
 ```js
 async requestJSON(url) {
@@ -83,7 +100,15 @@ async requestJSON(url) {
 
 `response.data` is always a **string**. There is no automatic JSON parsing. A
 404 or 500 still resolves, so check `response.status`; only network failures
-reject.
+(and a host that is not in your `hosts`) reject. Things the app does for you:
+it waits out a 429, or a 503 with a `Retry-After`, and retries up to 3 times
+before you see the answer; it answers an identical GET (same address and
+headers) from a 90 second cache; it follows up to 5 redirects, but a `POST`
+answered with a 301 or 302 is handed to you as it is (only a 303 is followed,
+as a `GET`); and it reads text and JSON with no charset as UTF-8, images and
+other binary types as Latin-1 (one character per byte). Older builds read any
+answer with no charset as Latin-1, so keep a mojibake repair if the site needs
+one.
 
 `App.createRequest` takes `{ url, method, headers, body }`. `method` defaults to
 `GET`; for a `POST`, pass `body` as a string and a `Content-Type` header. To
@@ -97,7 +122,9 @@ manager: `App.createRequestManager({ rateLimit: { requestsPerSecond: 2 } })`
 | --- | --- |
 | `App.getSourceSetting(key)` | Reads a value the user set in your settings (see `settingsSchema` below). Always a string, or `undefined`. |
 | `App.createSourceStateManager()` | Returns `{ store(key, value), retrieve(key) }`, both async, for remembering things between calls. |
-| `App.base64Encode(text)`, `App.base64Decode(text)` | Base64 in and out. |
+| `App.base64Encode(text)`, `App.base64Decode(text)` | Base64 in and out, as UTF-8 text. `base64Decode` throws if the bytes are not valid UTF-8; use `atob` for binary data. |
+| `App.requestBrowserVerification({ url })` | Shows the page to the reader in the app's browser and resolves when they close it, or after 3 minutes. For a check that needs a person; the address must be on your `hosts`. Almost no extension needs it, because the app clears ordinary Cloudflare checks itself. |
+| `App.descrambleImage({ base64, headers })` | Puts back the pieces of one specific scrambled image scheme: a byte XOR and a 5 by 5 tile shuffle, switched on by `x-enc-*` and `x-scramble-*` response headers. Resolves to `{ base64 }` or `{ error }`. It is not a general descrambler. |
 | `App.executeInWebView({ url \| html + baseUrl, script, timeoutMs })` | Last resort for sites that only hand out a token through their own page scripts. Runs `script` in a real browser view and resolves to `{ value }` or `{ error }`. A few newer extensions (`mangafire`, `kagane`) use it, but treat them as examples of the call rather than models. |
 
 ## 3. The `Source` class
@@ -126,9 +153,19 @@ source id, then a global `Source`.
 | --- | --- | --- |
 | `getSourceFeeds()` | **no** (plain/synchronous) | `[{ id, name }]` (the Browse feed tabs) |
 | `getSearchTags()` | yes | `[{ id, label }]`, the site's genres |
+| `getChapterDates(mangaId)` | yes | `{ dates: { [chapterId]: epochMilliseconds }, remaining }` |
 
 `getSourceFeeds()` is called at load time on the JS queue, so it must return
-immediately: no `await`, no network. Omitting it gives you one "Popular" feed.
+immediately: no `await`, no network. Omitting it means the app browses with feed `recent`.
+
+`getChapterDates` is for a site whose chapter list has no dates but whose
+chapter pages do (`novelfire` does this). `getChapters` returns the list
+undated (or with the dates it has), and after the list shows the app calls
+`getChapterDates` again and again, up to 80 times, merging each answer into the
+list. Return the dates you found this round and the number of units of work
+still left in `remaining`; the app stops when `remaining` is 0 or when a call
+fails (silently, the list works without dates). Keep each round small, a few
+requests. A value that is not a number is left out.
 
 ### `request` and `metadata`
 
@@ -136,15 +173,22 @@ immediately: no `await`, no network. Omitting it gives you one "Popular" feed.
 
 ```js
 request = {
-  title: 'search query',        // '' when browsing
-  feed: 'popular',              // the selected getSourceFeeds() id (browse only)
-  includedTags: [{ id: 'action' }],
-  excludedTags: [],
+  title: 'search query',        // left out when browsing (it is never '')
+  feed: 'popular',              // the selected getSourceFeeds() id; 'recent' for a search, a genre filter, or a source with no feeds
+  includedTags: [{ id: 'action', label: 'action' }],   // left out when no genre is chosen; label is the id
   medium: 'comics' | 'novel',   // only when the app's medium toggle is set
 }
-metadata = null                 // first page
-metadata = { page: 2 }          // whatever you returned last call
+metadata = undefined            // first page
+metadata = { page: 2 }          // whatever you returned last call (an object, or nothing)
 ```
+
+Read every field with a guard (`request.title || ''`, `request.includedTags || []`): the
+app leaves out what is empty. It does not send `excludedTags`, because it has no way to
+exclude a genre, so an exclusion option an extension supports is not used today. When the
+reader types a search or picks a genre the app asks feed `recent` whatever feeds you
+declare, so a search and a genre filter must work with any `feed` value. The `metadata`
+you return must be an object or nothing: a number or a string makes the whole page
+unreadable.
 
 Return `metadata: { page: n + 1 }` to advertise another page, or `undefined` to
 stop infinite scroll. **Returning a truthy metadata forever makes Browse loop
@@ -159,7 +203,7 @@ just blank in the UI, which is much harder to debug than a crash.
 
 ```js
 {
-  mangaId: 'slug',      // REQUIRED (`id` also accepted)
+  mangaId: 'slug',      // REQUIRED. Not `id`: the app reads only `mangaId`
   title: 'Title',
   image: 'https://…',   // ← `image`, NOT `coverURL`. Must be absolute.
   referer: 'https://example.com/',   // only if covers 403 without it
@@ -169,6 +213,11 @@ just blank in the UI, which is much harder to debug than a crash.
   rating, views, chapters, completed, releaseDate, publisher,
 }
 ```
+
+The app reads `mangaId`, `title`, `image`, `desc` or `summary`, `tags`, `chapters`, `completed`,
+`publisher`, `status`, `ageRating`, `medium`, `author`, `rating`, `volumesId`, and `referer` or
+`headers`. `webURL`, `views` and `releaseDate` are not used by the app today (it has no open in
+browser action on a series page); sending them is harmless.
 
 `ageRating` is a number: the title's own minimum age. Set it only when the site
 rates titles one by one (MangaDex's safe, suggestive, erotica and pornographic
@@ -194,9 +243,9 @@ strings. Anything else maps to Unknown.
 
 ```js
 {
-  id: 'chapter-id',     // REQUIRED (`chapterId` also accepted)
-  name: 'Chapter 12',   // `title` also accepted
-  number: 12,           // `chapNum` also accepted; used for sorting
+  id: 'chapter-id',     // REQUIRED. Not `chapterId`: the app reads only `id`
+  name: 'Chapter 12',   // not `title`
+  number: 12,           // not `chapNum`; used for sorting
   group: 'scanlator',
   volume: '3',          // optional, a STRING, shown as "Vol. 3"
   time: 1755731400000,  // ← numeric epoch **ms**, NOT a Date object
@@ -214,8 +263,9 @@ the rules that keep an extension stable.
 **Chapter details:** `pages` must be an array of absolute image URL **strings**.
 The Reader decodes them as images via ImageIO. For a prose source (novels:
 `medium: 'novel'`, or the novel side of a `'both'` source), return `pages: []`
-and put the chapter body in `text` instead, as either one string or an array
-of paragraph strings: `{ id, mangaId, pages: [], text: 'Chapter text…' }`.
+and put the chapter body in `text` instead, as ONE string with a blank line
+between paragraphs (the app casts `text` to a string, so an array is rejected, and it
+splits paragraphs only on blank lines): `{ id, mangaId, pages: [], text: 'Chapter text…' }`.
 The app has a real prose reader for this today. `chikari` is a good example:
 one site serving both comics and novels.
 
@@ -227,8 +277,17 @@ only the actual page images fail. If chapters load but every page in the reader 
 "failed to load", check this before assuming your selectors are wrong: fetch
 one page URL with and without a `Referer` header matching your site and
 compare the status codes. If covers are blocked the same way, put `referer` on
-the title as well, on Browse results and in `mangaInfo` (a `headers` object
-works too).
+the title as well, on Browse results and in `mangaInfo` (a `headers` object of
+strings works too, on the title and on the chapter details; a `Referer` in
+`headers` wins over `referer`).
+
+**Scrambled pages (Boundless only).** Return `scrambled: true` next to `pages`
+to ask the app to put each page back in order after it downloads it. Today the
+app can undo only one scheme (the one `App.descrambleImage` describes, chosen
+by `x-enc-*` and `x-scramble-*` response headers); a page whose response has
+none of those headers is shown as it came. Anything but a JSON `true` counts as
+false. Leave it out when your script descrambles pages itself with
+`App.descrambleImage`.
 
 ### Anime sources (Sumizuri only)
 
@@ -278,8 +337,9 @@ The app resolves each bundle as `<repo>/<id>/index.js`, so the folder name must
 equal the `id`. In the Inkstone repository the folder sits inside `comics/`, `novels/`,
 `mixed/` or `anime/`, and the site serves it without that folder. `capabilities` is a
 landing-page-only label the app never reads, but `description`, `medium`, `website`,
-`iconUrl`, `language`, `contentRating`, `minApiVersion` and `settingsSchema` are all read and copied
-onto the installed record at install/update time. They drive real
+`iconUrl`, `language`, `contentRating` and `settingsSchema` are all read (with `id`, `name`, `version`,
+`sha256` and `hosts`) and copied onto the installed record at install/update time. The app ignores
+`status`, `statusNote`, `author`, `authorUrl` and `minApiVersion`: they are for registries and websites. They drive real
 in-app behavior (category filtering, the source icon, content-rating gating,
 per-source settings screens), not just this repo's own listing pages.
 
@@ -329,8 +389,8 @@ did before the setting existed.
 
 An extension that is known to be broken is marked with `"status": "broken"` and
 a short `statusNote` saying what fails, for example `"Chapters open with no
-pages."`. Websites and apps may show it. The entry stays listed until it is
-fixed or removed.
+pages."`. The Inkstone website shows it; the Boundless app does not read it. The entry stays listed
+until it is fixed or removed.
 
 ### Bundle integrity: the optional `sha256` field
 
@@ -395,25 +455,22 @@ node test-extension.mjs ./mysite/index.js "naruto"
 
 ## 7. Debugging
 
-`console.log/warn/error` inside an extension goes to the device log tagged
-`[ext:<source-id>]`. Runtime exceptions appear as `[JSRuntime:<id>] uncaught`.
+Open Settings, then Support, then Error Log in the app. A file that would not
+load, a call that threw or failed, and every `console.warn` and
+`console.error` line (prefixed with the extension's name, at most 50 lines a
+minute per extension) are recorded there, with Share and Copy for the whole
+report. `console.log`, `console.info` and `console.debug` go to the platform
+log only. Call `console.error` with the reason before you rethrow, so the
+reader's report says what failed.
 
-```bash
-xcrun simctl spawn booted log stream --level debug \
-  --predicate 'eventMessage CONTAINS "[ext:" OR eventMessage CONTAINS "JSRuntime"'
-```
-
-The app only seeds a bundled extension when its stored list is empty, so
-reinstalling the app is the reliable way to pick up local changes:
-
-```bash
-xcrun simctl uninstall booted com.ahmed.boundless
-```
+To pick up a changed extension, bump its `version` in `versioning.json`, then
+remove and re-add the repository in the app, or use Check for update on the
+extension.
 
 ## 8. Checklist before you publish
 
 - [ ] `node test-extension.mjs` reports no `FAIL` lines.
-- [ ] No `fetch` / `URL` / `URLSearchParams` / `setTimeout` anywhere in the file.
+- [ ] No `fetch` / `URL` / `URLSearchParams` / `btoa` anywhere in the file, and no `Intl`, `toLocaleString()` or date text that is not ISO 8601 handed to `Date.parse` (the two engines differ).
 - [ ] Covers use `image`, and every URL is absolute.
 - [ ] Chapter dates use numeric `time` in **milliseconds**.
 - [ ] Page 2 of Browse genuinely differs from page 1. Many APIs accept and
