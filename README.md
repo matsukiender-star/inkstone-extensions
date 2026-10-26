@@ -148,7 +148,6 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [MangaToon](comics/mangatoon/index.js) | mangatoon.mobi | English | Mature | 1.2.0 |
 | [MangaTown](comics/mangatown/index.js) | mangatown.com | English | Adult | 1.2.0 |
 | [MangaWOW](comics/mangawow/index.js) | mangawow.org | Turkish | Mature | 1.0.0 |
-| [MangaYY](comics/mangayy/index.js) | mangayy.org | English | Mature | 1.0.0 |
 | [Manhua Plus (.com)](comics/manhuapluscom/index.js) | manhuaplus.com | English | Mature | 1.0.0 |
 | [ManhuaFast](comics/manhuafast/index.js) | manhuafast.net | English | Mature | 1.0.0 |
 | [Manhuagui](comics/manhuagui/index.js) | m.manhuagui.com | Chinese | Adult | 1.0.1 |
@@ -168,6 +167,7 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [ManhwaOnline](comics/manhwaonline/index.js) | manhwaonline.org | English | Mature | 1.0.0 |
 | [ManhwaTop](comics/manhwatop/index.js) | manhwatop.com | English | Adult | 1.0.0 |
 | [MGeko](comics/mgeko/index.js) | mgeko.cc | English | Safe | 1.0.0 |
+| [Mgread.io](comics/mangayy/index.js) | mgread.io | English | Mature | 2.0.0 |
 | [MHScans](comics/mhscans/index.js) | mhscans.com | Spanish | Safe | 1.0.0 |
 | [Monopoly Scan](comics/monopolyscan/index.js) | monopolymanhua.com | Spanish | Safe | 1.0.0 |
 | [Natomanga](comics/natomanga/index.js) | natomanga.com | English | Adult | 1.2.0 |

@@ -2699,16 +2699,16 @@
     },
     {
       "id": "mangayy",
-      "name": "MangaYY",
-      "version": "1.0.0",
+      "name": "Mgread.io",
+      "version": "2.0.0",
       "medium": "comics",
-      "website": "https://mangayy.org",
+      "website": "https://mgread.io",
       "iconUrl": "https://inkstone.web.app/mangayy/icon.png",
       "hosts": [
-        "mangayy.org",
-        "*.mangayy.org"
+        "mgread.io",
+        "*.mgread.io"
       ],
-      "description": "Manga・Manhwa・Manhua",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・6,000+\n\nRestrictions:\n・Cloudflare Checks",
       "capabilities": [
         "browse",
         "search",
@@ -2719,7 +2719,7 @@
       ],
       "language": "en",
       "contentRating": "mature",
-      "sha256": "95ea49ac47f8ca5c9fb9dadaeffed1986e9d6bee6fcee0bba7e3180d20a40287"
+      "sha256": "28a6fff5562c00cd1b9944ce28f8cb6484d577e66b788534493d0045094c9654"
     },
     {
       "id": "manhuanext",
