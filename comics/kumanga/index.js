@@ -30,9 +30,14 @@ function decrypt(encoded) {
   return JSON.parse(text);
 }
 
+function coverOf(id) {
+  return `https://static.kumanga.com/manga/${Math.floor((+id + 2499) / 2500)}/${id}.jpg`;
+}
+
 function imageOf(path) {
   const hex = /[?&]src=([0-9a-f]+)/i.exec(path);
-  return hex ? hex[1].replace(/../g, (pair) => String.fromCharCode(parseInt(pair, 16))) : SITE + path;
+  if (hex) return hex[1].replace(/../g, (pair) => String.fromCharCode(parseInt(pair, 16)));
+  return /^https?:\/\//.test(path) ? path : SITE + (path.startsWith('/') ? '' : '/') + path;
 }
 
 class Source {
@@ -68,23 +73,17 @@ class Source {
         .filter(Boolean);
       return { results: Array.from(new Map(titles.map((title) => [title.mangaId, title])).values()) };
     }
-    const params = [];
-    if (query) params.push(`keywords=${encodeURIComponent(query)}`);
-    if (tags.length) params.push(`categories=${tags.map((tag) => encodeURIComponent(tag.id)).join('-')}`);
-    params.push(`page=${page}`);
-    const $ = cheerio.load(await this.get(`${SITE}/mangalist?${params.join('&')}`));
-    const results = $('li.km-li-crd')
-      .map((i, el) => {
-        const card = $(el);
-        const mangaId = mangaIdOf(card.attr('onclick'));
-        return mangaId && { mangaId, title: card.find('.km-title-p-card').first().text().trim(), image: card.find('img.km-img-crd').attr('src'), medium: 'comics' };
-      })
-      .get()
-      .filter(Boolean);
-    return {
-      results,
-      metadata: $('.section-nav-pagination a:last-child[href]').length ? { page: page + 1 } : undefined,
-    };
+    const body = [`contentType=manga`, `page=${page}`, `perPage=24`];
+    if (query) body.push(`keywords=${encodeURIComponent(query)}`);
+    for (const tag of tags) body.push(`category_filter[${encodeURIComponent(tag.id)}]=${encodeURIComponent(tag.id)}`);
+    const result = JSON.parse(await this.send({
+      url: `${SITE}/backend/ajax/searchengine2.php`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest', Accept: 'application/json' },
+      body: body.join('&'),
+    }));
+    const results = result.contents.map((manga) => ({ mangaId: String(manga.id), title: manga.name, image: coverOf(manga.id), medium: 'comics' }));
+    return { results, metadata: page * 24 < result.totalContents ? { page: page + 1 } : undefined };
   }
 
   async getMangaDetails(mangaId) {
@@ -137,9 +136,13 @@ class Source {
     return { id: chapterId, mangaId, pages: decrypt(encoded[1]).map(imageOf) };
   }
 
-  async get(url) {
-    const response = await this.requests.schedule(App.createRequest({ url, method: 'GET', headers: { Accept: 'text/html' } }));
-    if (response.status < 200 || response.status >= 300) throw new Error(`KuManga: HTTP ${response.status} from ${url}`);
+  get(url) {
+    return this.send({ url, method: 'GET', headers: { Accept: 'text/html' } });
+  }
+
+  async send(request) {
+    const response = await this.requests.schedule(App.createRequest(request));
+    if (response.status < 200 || response.status >= 300) throw new Error(`KuManga: HTTP ${response.status} from ${request.url}`);
     return String(response.data);
   }
 }
