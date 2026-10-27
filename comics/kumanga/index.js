@@ -1,0 +1,147 @@
+const SITE = 'https://www.kumanga.com';
+
+const KEY = 'Jr54VwepF4La';
+
+const GENRES = [
+  ['1', 'Acción'], ['2', 'Artes marciales'], ['3', 'Automóviles'], ['4', 'Aventura'], ['44', 'Boys Love'],
+  ['5', 'Ciencia Ficción'], ['6', 'Comedia'], ['7', 'Demonios'], ['8', 'Deportes'], ['9', 'Doujinshi'],
+  ['10', 'Drama'], ['11', 'Ecchi'], ['12', 'Espacio exterior'], ['13', 'Fantasía'], ['14', 'Gender bender'],
+  ['45', 'Girls Love'], ['46', 'Gore'], ['15', 'Harem'], ['17', 'Histórico'], ['18', 'Horror'],
+  ['51', 'Isekai'], ['19', 'Josei'], ['20', 'Juegos'], ['21', 'Locura'], ['22', 'Magia'],
+  ['23', 'Mecha'], ['24', 'Militar'], ['25', 'Misterio'], ['26', 'Música'], ['27', 'Niños'],
+  ['28', 'Parodia'], ['29', 'Policía'], ['30', 'Psicológico'], ['31', 'Recuentos de la vida'], ['49', 'Reencarnación'],
+  ['32', 'Romance'], ['33', 'Samurai'], ['34', 'Seinen'], ['35', 'Shoujo'], ['36', 'Shoujo Ai'],
+  ['37', 'Shounen'], ['38', 'Shounen Ai'], ['39', 'Sobrenatural'], ['41', 'Súperpoderes'], ['50', 'Supervivencia'],
+  ['40', 'Suspenso'], ['47', 'Terror'], ['48', 'Tragedia'], ['42', 'Vampiros'], ['43', 'Vida escolar'],
+];
+
+function mangaIdOf(href) {
+  const match = /manga\/(\d+)\//.exec(href || '');
+  return match ? match[1] : null;
+}
+
+function decrypt(encoded) {
+  const words = CryptoJS.enc.Base64.parse(encoded);
+  let text = '';
+  for (let i = 0; i < words.sigBytes; i++) {
+    const byte = (words.words[i >>> 2] >>> (24 - (i % 4) * 8)) & 255;
+    text += String.fromCharCode(byte ^ KEY.charCodeAt(i % KEY.length));
+  }
+  return JSON.parse(text);
+}
+
+function imageOf(path) {
+  const hex = /[?&]src=([0-9a-f]+)/i.exec(path);
+  return hex ? hex[1].replace(/../g, (pair) => String.fromCharCode(parseInt(pair, 16))) : SITE + path;
+}
+
+class Source {
+  constructor() {
+    this.requests = App.createRequestManager({ rateLimit: { requestsPerSecond: 0.5 } });
+  }
+
+  getSourceFeeds() {
+    return [
+      { id: 'directory', name: 'Directory' },
+      { id: 'latest', name: 'Latest Updates' },
+    ];
+  }
+
+  async getSearchTags() {
+    return GENRES.map(([id, label]) => ({ id, label }));
+  }
+
+  async getSearchResults(request, metadata) {
+    const query = ((request && request.title) || '').trim();
+    const tags = (request && request.includedTags) || [];
+    const page = (metadata && metadata.page) || 1;
+    if (!query && !tags.length && request && request.feed === 'latest') {
+      const $ = cheerio.load(await this.get(SITE));
+      const titles = $('.update_item .update_left a')
+        .map((i, el) => {
+          const link = $(el);
+          const mangaId = mangaIdOf(link.attr('href'));
+          const cover = /url\(([^)]+)\)/.exec(link.find('div[style]').attr('style') || '');
+          return mangaId && { mangaId, title: link.attr('title'), image: cover ? cover[1] : undefined, medium: 'comics' };
+        })
+        .get()
+        .filter(Boolean);
+      return { results: Array.from(new Map(titles.map((title) => [title.mangaId, title])).values()) };
+    }
+    const params = [];
+    if (query) params.push(`keywords=${encodeURIComponent(query)}`);
+    if (tags.length) params.push(`categories=${tags.map((tag) => encodeURIComponent(tag.id)).join('-')}`);
+    params.push(`page=${page}`);
+    const $ = cheerio.load(await this.get(`${SITE}/mangalist?${params.join('&')}`));
+    const results = $('li.km-li-crd')
+      .map((i, el) => {
+        const card = $(el);
+        const mangaId = mangaIdOf(card.attr('onclick'));
+        return mangaId && { mangaId, title: card.find('.km-title-p-card').first().text().trim(), image: card.find('img.km-img-crd').attr('src'), medium: 'comics' };
+      })
+      .get()
+      .filter(Boolean);
+    return {
+      results,
+      metadata: $('.section-nav-pagination a:last-child[href]').length ? { page: page + 1 } : undefined,
+    };
+  }
+
+  async getMangaDetails(mangaId) {
+    const $ = cheerio.load(await this.get(`${SITE}/manga/${encodeURIComponent(mangaId)}`));
+    const info = (label) => $('.media-info-list__item')
+      .filter((i, el) => $(el).find('.media-info-list__title').text().trim().startsWith(label))
+      .find('.media-info-list__value')
+      .text()
+      .toLowerCase();
+    const status = info('Estado');
+    return {
+      mangaInfo: {
+        title: $('h1.media-name__main').first().contents().filter((i, node) => node.type === 'text').text().trim() || mangaId,
+        image: $('.media-sidebar__cover img').attr('data-src'),
+        desc: $('p.Mdesc').text().trim(),
+        status: /emisi|activo/.test(status) ? 'ONGOING' : /finaliz/.test(status) ? 'COMPLETED' : /inconclus/.test(status) ? 'CANCELLED' : 'UNKNOWN',
+        tags: $('.media-cats a.btn-dark').map((i, el) => $(el).text().trim()).get().filter(Boolean),
+        webURL: `${SITE}/manga/${mangaId}`,
+        medium: 'comics',
+      },
+    };
+  }
+
+  async getChapters(mangaId) {
+    const html = await this.get(`${SITE}/manga/${encodeURIComponent(mangaId)}`);
+    const $ = cheerio.load(html);
+    const listed = $('.media-chapter')
+      .map((i, el) => ({ number: $(el).attr('data-sort'), name: $(el).find('.media-chapter__name').text().trim() }))
+      .get();
+    const others = /OTHER_CHAPTERS\s*=\s*(\[[\s\S]*?\])\s*;/.exec(html);
+    const rest = others
+      ? JSON.parse(others[1]).map((cap) => ({ number: String(cap.NumCap), name: `Capítulo ${cap.NumCap}${cap.title ? `: ${cap.title}` : ''}` }))
+      : [];
+    const unique = new Map(listed.concat(rest).filter((cap) => cap.number).map((cap) => [cap.number, cap]));
+    return Array.from(unique.values()).map((cap) => ({
+      id: cap.number,
+      chapterId: cap.number,
+      name: cap.name,
+      number: Number.isFinite(+cap.number) ? +cap.number : undefined,
+    }));
+  }
+
+  async getChapterDetails(mangaId, chapterId) {
+    const redirect = /leer\/(\d+)/.exec(await this.get(`${SITE}/manga/${encodeURIComponent(mangaId)}/capitulo/${encodeURIComponent(chapterId)}`));
+    if (!redirect) throw new Error('KuManga: the chapter page has no reader link');
+    const html = await this.get(`${SITE}/manga/leer/${redirect[1]}`);
+    const name = /const\s+rpics\s*=\s*(\w+)/.exec(html);
+    const encoded = name && new RegExp(`const\\s+${name[1]}\\s*=\\s*"([^"]+)"`).exec(html);
+    if (!encoded) throw new Error('KuManga: the reader has no page list');
+    return { id: chapterId, mangaId, pages: decrypt(encoded[1]).map(imageOf) };
+  }
+
+  async get(url) {
+    const response = await this.requests.schedule(App.createRequest({ url, method: 'GET', headers: { Accept: 'text/html' } }));
+    if (response.status < 200 || response.status >= 300) throw new Error(`KuManga: HTTP ${response.status} from ${url}`);
+    return String(response.data);
+  }
+}
+
+module.exports = { Source };

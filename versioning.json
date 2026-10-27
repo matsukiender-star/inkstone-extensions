@@ -600,6 +600,29 @@
       "sha256": "399394802f72826761fc4515351528e2d200fc0416bf0ea38dbe3b329db53f75"
     },
     {
+      "id": "kumanga",
+      "name": "KuManga",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://www.kumanga.com",
+      "description": "Manga・Manhwa・Manhua\n\nRestrictions:\n・Cloudflare Checks\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "iconUrl": "https://www.kumanga.com/favicon.ico",
+      "sha256": "7c52b66b67735a1e6a4e750ce45eb196298beed93b1890d680b50610bb690566",
+      "hosts": [
+        "www.kumanga.com"
+      ]
+    },
+    {
       "id": "kunmanga",
       "name": "KunManga",
       "version": "1.1.0",
