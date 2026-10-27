@@ -166,6 +166,7 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [ManhwaNex](comics/manhwanex/index.js) | manhwanex.com | English | Safe | 1.0.0 |
 | [ManhwaOnline](comics/manhwaonline/index.js) | manhwaonline.org | English | Mature | 1.0.0 |
 | [ManhwaTop](comics/manhwatop/index.js) | manhwatop.com | English | Adult | 1.0.0 |
+| [ManhwaWeb](comics/manhwaweb/index.js) | manhwaweb.com | Spanish | Adult | 1.0.0 |
 | [MGeko](comics/mgeko/index.js) | mgeko.cc | English | Safe | 1.0.0 |
 | [Mgread.io](comics/mangayy/index.js) | mgread.io | English | Mature | 2.0.0 |
 | [MHScans](comics/mhscans/index.js) | mhscans.com | Spanish | Safe | 1.0.0 |

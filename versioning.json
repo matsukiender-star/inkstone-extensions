@@ -600,6 +600,29 @@
       "sha256": "399394802f72826761fc4515351528e2d200fc0416bf0ea38dbe3b329db53f75"
     },
     {
+      "id": "manhwaweb",
+      "name": "ManhwaWeb",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://manhwaweb.com",
+      "description": "Manhwa・Manhua・Manga",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "iconUrl": "https://manhwaweb.com/favicon.ico",
+      "sha256": "214ba92b94b4887c6a86b4a925a2cfe1e17b5f26dbac8cb539f9644f1edc25c2",
+      "hosts": [
+        "api.manhwaweb.com"
+      ]
+    },
+    {
       "id": "kunmanga",
       "name": "KunManga",
       "version": "1.1.0",
