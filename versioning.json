@@ -523,7 +523,7 @@
     {
       "id": "olympusscans",
       "name": "Olympus Scanlation",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "medium": "comics",
       "website": "https://olympusbiblioteca.com",
       "description": "Manhwa・Manhua\n\nCatalog・800+",
@@ -538,7 +538,10 @@
       "language": "es",
       "contentRating": "adult",
       "iconUrl": "https://olympusbiblioteca.com/olympus-logo-180.webp",
-      "sha256": "d7fec9ff3ed8f55b96db52949f88f77b99b0b47c41f4dd67aea9b41b6a087a36"
+      "sha256": "81ca916617048bc7ae7aa2f234ada0387d4613a5d43469f42eccc4addaa12903",
+      "hosts": [
+        "olympusxyz.com"
+      ]
     },
     {
       "id": "novelbuddy",
