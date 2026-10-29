@@ -1,6 +1,6 @@
 {
   "repositoryName": "Inkstone en español (Suki)",
-  "repositoryDescription": "Solo las fuentes en español de Inkstone, con las que todavía no se fusionan.",
+  "repositoryDescription": "Solo las fuentes en español de Inkstone, con las que todavía no se fusionan, más las multi-idioma que tienen español (MangaDex, Kagane, UniqueStream y Wattpad).",
   "buildTime": "2026-09-03T16:35:04Z",
   "sources": [
     {
@@ -64,6 +64,479 @@
       "contentRating": "adult",
       "iconUrl": "https://lectormangass.net/apple-touch-icon.png?v=3",
       "sha256": "e7797f92491443db0b16b00b6e46189795dd5d17d8643636bd639a052d6f68ad"
+    },
+    {
+      "id": "wattpad",
+      "name": "Wattpad",
+      "version": "1.1.1",
+      "medium": "novel",
+      "website": "https://www.wattpad.com",
+      "description": "Web Novels\n\nCatalog・1,000+",
+      "iconUrl": "https://www.wattpad.com/favicon.ico",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "en",
+      "contentRating": "adult",
+      "sha256": "0a568666e6eaded6e128aa2ed52d89550e8f742f35823c2d570e70c162012f6d"
+    },
+    {
+      "id": "mangadex",
+      "name": "MangaDex",
+      "version": "1.2.0",
+      "medium": "comics",
+      "website": "https://mangadex.org",
+      "iconUrl": "https://mangadex.org/pwa/icons/icon-180.png",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・90,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "settingsSchema": [
+        {
+          "type": "select",
+          "key": "language",
+          "label": "Chapter language",
+          "default": "en",
+          "options": [
+            {
+              "value": "en",
+              "label": "English"
+            },
+            {
+              "value": "all",
+              "label": "All languages"
+            },
+            {
+              "value": "es",
+              "label": "Spanish"
+            },
+            {
+              "value": "es-la",
+              "label": "Spanish (Latin America)"
+            },
+            {
+              "value": "pt-br",
+              "label": "Portuguese (Brazil)"
+            },
+            {
+              "value": "pt",
+              "label": "Portuguese"
+            },
+            {
+              "value": "fr",
+              "label": "French"
+            },
+            {
+              "value": "de",
+              "label": "German"
+            },
+            {
+              "value": "it",
+              "label": "Italian"
+            },
+            {
+              "value": "ru",
+              "label": "Russian"
+            },
+            {
+              "value": "id",
+              "label": "Indonesian"
+            },
+            {
+              "value": "vi",
+              "label": "Vietnamese"
+            },
+            {
+              "value": "tr",
+              "label": "Turkish"
+            },
+            {
+              "value": "ar",
+              "label": "Arabic"
+            },
+            {
+              "value": "pl",
+              "label": "Polish"
+            },
+            {
+              "value": "th",
+              "label": "Thai"
+            },
+            {
+              "value": "ja",
+              "label": "Japanese"
+            },
+            {
+              "value": "ko",
+              "label": "Korean"
+            },
+            {
+              "value": "zh",
+              "label": "Chinese (Simplified)"
+            },
+            {
+              "value": "zh-hk",
+              "label": "Chinese (Traditional)"
+            }
+          ]
+        },
+        {
+          "type": "toggle",
+          "key": "dataSaver",
+          "label": "Data saver (smaller images)",
+          "default": false
+        }
+      ],
+      "language": "en",
+      "contentRating": "safe",
+      "sha256": "862e297aeae26cc41908e6725b1b178820df90bbb45af33a0c8fcc5438b2308d"
+    },
+    {
+      "id": "kagane",
+      "name": "Kagane",
+      "version": "1.3.2",
+      "medium": "comics",
+      "website": "https://kagane.org",
+      "iconUrl": "https://inkstone.web.app/kagane/icon.png",
+      "hosts": [
+        "kagane.org",
+        "*.kagane.org",
+        "kagane.si",
+        "*.kagane.si",
+        "kagane.cx",
+        "*.kagane.cx",
+        "kagane.moe",
+        "*.kagane.moe",
+        "kagane.net",
+        "*.kagane.net",
+        "kstatic.to"
+      ],
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・1,000+\n\nRestrictions:\n・Cloudflare Checks\n・Web View",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "settingsSchema": [
+        {
+          "type": "select",
+          "key": "contentRating",
+          "label": "Content rating",
+          "default": "18",
+          "options": [
+            {
+              "value": "safe",
+              "label": "Safe (all ages)"
+            },
+            {
+              "value": "15",
+              "label": "15+ (fan service, romance, violence, mature themes)"
+            },
+            {
+              "value": "18",
+              "label": "18+ (everything, including explicit content)"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "key": "language",
+          "label": "Preferred chapter language",
+          "default": "en",
+          "options": [
+            {
+              "value": "any",
+              "label": "Any"
+            },
+            {
+              "value": "ja",
+              "label": "Japanese"
+            },
+            {
+              "value": "ko",
+              "label": "Korean"
+            },
+            {
+              "value": "zh-Hans",
+              "label": "Chinese (Simplified)"
+            },
+            {
+              "value": "zh-Hant",
+              "label": "Chinese (Traditional)"
+            },
+            {
+              "value": "en",
+              "label": "English"
+            },
+            {
+              "value": "af",
+              "label": "Afrikaans"
+            },
+            {
+              "value": "sq",
+              "label": "Albanian"
+            },
+            {
+              "value": "ar",
+              "label": "Arabic"
+            },
+            {
+              "value": "az",
+              "label": "Azerbaijani"
+            },
+            {
+              "value": "eu",
+              "label": "Basque"
+            },
+            {
+              "value": "be",
+              "label": "Belarusian"
+            },
+            {
+              "value": "bn",
+              "label": "Bengali"
+            },
+            {
+              "value": "bg",
+              "label": "Bulgarian"
+            },
+            {
+              "value": "my",
+              "label": "Burmese"
+            },
+            {
+              "value": "ca",
+              "label": "Catalan"
+            },
+            {
+              "value": "cv",
+              "label": "Chuvash"
+            },
+            {
+              "value": "hr",
+              "label": "Croatian"
+            },
+            {
+              "value": "cs",
+              "label": "Czech"
+            },
+            {
+              "value": "da",
+              "label": "Danish"
+            },
+            {
+              "value": "nl",
+              "label": "Dutch"
+            },
+            {
+              "value": "eo",
+              "label": "Esperanto"
+            },
+            {
+              "value": "et",
+              "label": "Estonian"
+            },
+            {
+              "value": "fil",
+              "label": "Filipino"
+            },
+            {
+              "value": "fi",
+              "label": "Finnish"
+            },
+            {
+              "value": "fr",
+              "label": "French"
+            },
+            {
+              "value": "ka",
+              "label": "Georgian"
+            },
+            {
+              "value": "de",
+              "label": "German"
+            },
+            {
+              "value": "el",
+              "label": "Greek"
+            },
+            {
+              "value": "he",
+              "label": "Hebrew"
+            },
+            {
+              "value": "hi",
+              "label": "Hindi"
+            },
+            {
+              "value": "hu",
+              "label": "Hungarian"
+            },
+            {
+              "value": "id",
+              "label": "Indonesian"
+            },
+            {
+              "value": "ga",
+              "label": "Irish"
+            },
+            {
+              "value": "it",
+              "label": "Italian"
+            },
+            {
+              "value": "jv",
+              "label": "Javanese"
+            },
+            {
+              "value": "kk",
+              "label": "Kazakh"
+            },
+            {
+              "value": "la",
+              "label": "Latin"
+            },
+            {
+              "value": "lt",
+              "label": "Lithuanian"
+            },
+            {
+              "value": "ms",
+              "label": "Malay"
+            },
+            {
+              "value": "mn",
+              "label": "Mongolian"
+            },
+            {
+              "value": "ne",
+              "label": "Nepali"
+            },
+            {
+              "value": "no",
+              "label": "Norwegian"
+            },
+            {
+              "value": "fa",
+              "label": "Persian"
+            },
+            {
+              "value": "pl",
+              "label": "Polish"
+            },
+            {
+              "value": "pt",
+              "label": "Portuguese"
+            },
+            {
+              "value": "pt-BR",
+              "label": "Portuguese (Brazil)"
+            },
+            {
+              "value": "ro",
+              "label": "Romanian"
+            },
+            {
+              "value": "ru",
+              "label": "Russian"
+            },
+            {
+              "value": "sr",
+              "label": "Serbian"
+            },
+            {
+              "value": "sk",
+              "label": "Slovak"
+            },
+            {
+              "value": "sl",
+              "label": "Slovenian"
+            },
+            {
+              "value": "es",
+              "label": "Spanish"
+            },
+            {
+              "value": "es-419",
+              "label": "Spanish (LATAM)"
+            },
+            {
+              "value": "sv",
+              "label": "Swedish"
+            },
+            {
+              "value": "ta",
+              "label": "Tamil"
+            },
+            {
+              "value": "te",
+              "label": "Telugu"
+            },
+            {
+              "value": "th",
+              "label": "Thai"
+            },
+            {
+              "value": "tr",
+              "label": "Turkish"
+            },
+            {
+              "value": "uk",
+              "label": "Ukrainian"
+            },
+            {
+              "value": "ur",
+              "label": "Urdu"
+            },
+            {
+              "value": "uz",
+              "label": "Uzbek"
+            },
+            {
+              "value": "vi",
+              "label": "Vietnamese"
+            }
+          ]
+        }
+      ],
+      "language": "en",
+      "contentRating": "safe",
+      "sha256": "262b895bd8412aa8f16bd66a2d3d644f17b84a08eea3ef9a84efaa46989d3078"
+    },
+    {
+      "id": "uniquestream",
+      "name": "UniqueStream",
+      "version": "1.0.1",
+      "medium": "anime",
+      "website": "https://anime.uniquestream.net",
+      "iconUrl": "https://anime.uniquestream.net/favicon.ico",
+      "hosts": [
+        "anime.uniquestream.net"
+      ],
+      "description": "Anime\n\nCatalog・3,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "0705d46e4e7e3a02dfc02cd0212eb7989353d849bcb6fef8e4e26c43a4d13fa4"
     },
     {
       "id": "hadesnofansub",
