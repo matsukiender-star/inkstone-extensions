@@ -3442,7 +3442,7 @@
     {
       "id": "uniquestream",
       "name": "UniqueStream",
-      "version": "1.0.1",
+      "version": "1.1.0",
       "medium": "anime",
       "website": "https://anime.uniquestream.net",
       "iconUrl": "https://anime.uniquestream.net/favicon.ico",
@@ -3459,7 +3459,53 @@
       ],
       "language": "en",
       "contentRating": "mature",
-      "sha256": "0705d46e4e7e3a02dfc02cd0212eb7989353d849bcb6fef8e4e26c43a4d13fa4"
+      "sha256": "25112f3fbb744151d88175c83cf23c3022052a7e7c49536ef188b013420f9e00",
+      "settingsSchema": [
+        {
+          "type": "select",
+          "key": "audio",
+          "label": "Audio language",
+          "default": "ja-JP",
+          "options": [
+            {
+              "value": "ja-JP",
+              "label": "Japanese"
+            },
+            {
+              "value": "es-419",
+              "label": "Spanish (Latin America)"
+            },
+            {
+              "value": "es-ES",
+              "label": "Spanish (Spain)"
+            },
+            {
+              "value": "en-US",
+              "label": "English"
+            },
+            {
+              "value": "pt-BR",
+              "label": "Portuguese (Brazil)"
+            },
+            {
+              "value": "fr-FR",
+              "label": "French"
+            },
+            {
+              "value": "de-DE",
+              "label": "German"
+            },
+            {
+              "value": "it-IT",
+              "label": "Italian"
+            },
+            {
+              "value": "hi-IN",
+              "label": "Hindi"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "akazascans",
