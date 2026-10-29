@@ -1,5 +1,4 @@
 const SITE_BASE = 'https://olympusxyz.com';
-const PANEL_BASE = 'https://panel.olympusxyz.com';
 const UA =
   'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1';
 
@@ -219,7 +218,7 @@ class Source {
     const chapters = [];
     let page = 1;
     for (let i = 0; i < 200; i++) {
-      const url = `${PANEL_BASE}/api/series/${encodeURIComponent(slug)}/chapters?page=${page}&direction=asc&type=comic`;
+      const url = `${SITE_BASE}/api/series/${encodeURIComponent(slug)}/chapters?page=${page}&direction=asc&type=comic`;
       let json;
       try {
         json = await this.requestJSON(url);
@@ -229,11 +228,11 @@ class Source {
         if (resolved) slug = resolved;
         try {
           json = await this.requestJSON(
-            `${PANEL_BASE}/api/series/${encodeURIComponent(slug)}/chapters?page=${page}&direction=asc&type=comic`
+            `${SITE_BASE}/api/series/${encodeURIComponent(slug)}/chapters?page=${page}&direction=asc&type=comic`
           );
         } catch (e2) {
-          console.warn(`OlympusScans getChapters: chapters endpoint unreachable for "${mangaId}", returning []`);
-          return [];
+          console.error(`OlympusScans getChapters: chapter list unreachable for "${mangaId}": ${e2 && e2.message}`);
+          throw e2;
         }
       }
       const rows = (json && json.data) || [];
@@ -264,10 +263,15 @@ class Source {
   }
 
   async getChapterDetails(mangaId, chapterId) {
-    const url = `${SITE_BASE}/api/capitulo/${encodeURIComponent(mangaId)}/${encodeURIComponent(chapterId)}?type=comic`;
-    const json = await this.requestJSON(url);
-    const rawPages = (json && json.chapter && json.chapter.pages) || [];
-    const pages = rawPages.filter((p) => typeof p === 'string' && /^https?:\/\//.test(p));
+    const url = `${SITE_BASE}/capitulo/${encodeURIComponent(chapterId)}/comic-${encodeURIComponent(mangaId)}`;
+    const $ = cheerio.load(await this.request(url, 'text/html'));
+    const pages = $('main.strip img')
+      .map((i, el) => $(el).attr('src'))
+      .get()
+      .filter((p) => typeof p === 'string' && /^https?:\/\//.test(p));
+    if (pages.length === 0) {
+      throw new Error(`OlympusScans: chapter ${chapterId} of "${mangaId}" has no readable pages`);
+    }
     return { id: chapterId, mangaId, pages };
   }
 
@@ -305,17 +309,21 @@ class Source {
   }
 
   async requestJSON(url) {
+    return JSON.parse(await this.request(url, 'application/json'));
+  }
+
+  async request(url, accept) {
     const manager = App.createRequestManager({});
     const request = App.createRequest({
       url,
       method: 'GET',
-      headers: { 'User-Agent': UA, Accept: 'application/json' },
+      headers: { 'User-Agent': UA, Accept: accept },
     });
     const response = await manager.schedule(request);
     if (response.status < 200 || response.status >= 300) {
       throw new Error(`HTTP ${response.status}`);
     }
-    return JSON.parse(response.data);
+    return response.data;
   }
 }
 

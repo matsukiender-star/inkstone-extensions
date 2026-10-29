@@ -50,7 +50,7 @@ Prefer to review a written plan before any code is written? This repo works with
 
 ## Extensions
 
-197 extensions right now. Ratings are Safe, Mature or Adult, and some extensions also rate each title on its own.
+198 extensions right now. Ratings are Safe, Mature or Adult, and some extensions also rate each title on its own.
 
 Each extension lives in the folder for what it offers: `comics`, `novels`, `mixed` for those that do both, or `anime`. The site still serves every one at `inkstone.web.app/<id>/index.js`, so the folders change nothing in the apps.
 
@@ -113,6 +113,7 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [Komiku](comics/komiku/index.js) | komiku.org | Indonesian | Adult | 1.0.0 |
 | [Koreli Scans](comics/koreliscans/index.js) | nabicix.com | Turkish | Safe | 1.0.0 |
 | [KSGroupScans](comics/ksgroupscans/index.js) | ksgroupscans.com | English | Mature | 1.0.0 |
+| [KuManga](comics/kumanga/index.js) | kumanga.com | Spanish | Adult | 1.0.0 |
 | [KunManga](comics/kunmanga/index.js) | kunmanga.com | English | Adult | 1.1.0 |
 | [Lagoon Scans](comics/lagoonscans/index.js) | lagoonscans.com | English | Safe | 1.0.0 |
 | [Lectormanga](comics/lectormanga/index.js) | lectormangass.net | Spanish | Adult | 1.2.1 |
@@ -177,7 +178,7 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [Ngomik](comics/ngomik/index.js) | 02.ngomik.cc | Indonesian | Safe | 1.0.0 |
 | [NirvanaManga](comics/nirvanamanga/index.js) | nirvanamanga.com | Turkish | Adult | 1.0.0 |
 | [Nyx Scans](comics/nyxscans/index.js) | nyxscans.com | English | Safe | 1.0.0 |
-| [Olympus Scanlation](comics/olympusscans/index.js) | olympusbiblioteca.com | Spanish | Adult | 1.0.2 |
+| [Olympus Scanlation](comics/olympusscans/index.js) | olympusbiblioteca.com | Spanish | Adult | 1.0.3 |
 | [Orion Scans](comics/orionscans/index.js) | orion-scans.com | English | Safe | 1.0.0 |
 | [Phoenix Scans](comics/phoenixscans/index.js) | phoenixscans.com | Italian | Mature | 1.0.0 |
 | [Qi Manga](mixed/qimanga/index.js) | qimanga.com | English | Safe | 1.1.1 |
@@ -285,6 +286,7 @@ These extensions are known to be broken right now:
 Thanks to the people who built extensions for Inkstone.
 
 - [omfgitsjesus](https://discord.com/users/177424485526274048): HiperDEX
+- [matsukiender-star](https://github.com/matsukiender-star): KuManga
 
 ## Contributing
 

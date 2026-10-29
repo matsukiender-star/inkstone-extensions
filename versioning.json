@@ -523,7 +523,7 @@
     {
       "id": "olympusscans",
       "name": "Olympus Scanlation",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "medium": "comics",
       "website": "https://olympusbiblioteca.com",
       "description": "Manhwa・Manhua\n\nCatalog・800+",
@@ -538,7 +538,10 @@
       "language": "es",
       "contentRating": "adult",
       "iconUrl": "https://olympusbiblioteca.com/olympus-logo-180.webp",
-      "sha256": "d7fec9ff3ed8f55b96db52949f88f77b99b0b47c41f4dd67aea9b41b6a087a36"
+      "sha256": "519fa9afc0ff0e7e80023e43dcbd582357b16c020d3a87f45ad403c746b514b0",
+      "hosts": [
+        "olympusxyz.com"
+      ]
     },
     {
       "id": "novelbuddy",
@@ -4825,6 +4828,31 @@
       "language": "id",
       "contentRating": "safe",
       "sha256": "9b76ca897d4eaef0b8f78791f2b6f317803cac5cff5b96d3798ec32beddb0b6f"
+    },
+    {
+      "id": "kumanga",
+      "name": "KuManga",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://www.kumanga.com",
+      "iconUrl": "https://inkstone.web.app/kumanga/icon.png",
+      "hosts": [
+        "www.kumanga.com"
+      ],
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・10,000+\n\nRestrictions:\n・Cloudflare Checks\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "77594342b36c22316c9e8cc81e8d0d6f30be21f26b00aff26d1ad47392b1b067"
     }
   ]
 }
