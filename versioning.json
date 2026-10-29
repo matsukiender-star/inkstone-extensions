@@ -958,11 +958,11 @@
     {
       "id": "webnovel",
       "name": "Webnovel",
-      "version": "1.2.0",
+      "version": "1.4.4",
       "medium": "novel",
       "website": "https://www.webnovel.com",
       "iconUrl": "https://www.yueimg.com/en/favicon/favicon.d3f6a.ico",
-      "description": "Web Novels\n\nRestrictions:\n・Cloudflare Checks",
+      "description": "Web Novels\n\nRestrictions:\n・Cloudflare Checks\n・Locked Chapters",
       "capabilities": [
         "browse",
         "search",
@@ -973,7 +973,7 @@
       ],
       "language": "en",
       "contentRating": "adult",
-      "sha256": "a7f9e6e3d074ba27d487c5e4e08b67dbc4df3c4dd0b2d731d3d3ea058aab18b1"
+      "sha256": "9e8288f6ab4906b659e7abf2aa0cec0ea89968b953690b9f01c9644e6e9a03a2"
     },
     {
       "id": "manhuahot",
