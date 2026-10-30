@@ -6057,6 +6057,52 @@
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
       "sha256": "3dd35e5053444bb319340ab8a1e7525dd8096f60680499f2a1a96cd1fdf5d4e8"
+    },
+    {
+      "id": "traduccionesisekai",
+      "name": "Traducciones Isekai",
+      "version": "1.0.0",
+      "medium": "novel",
+      "website": "https://traduccionesisekai.blogspot.com",
+      "hosts": [
+        "traduccionesisekai.blogspot.com"
+      ],
+      "description": "Web Novels・Light Novels\n\nCatalog・Re:Zero, Classroom of the Elite\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "23f6c2ce4fa1dec5894f131db379f5fb291ebb43cde7267a5b82085628dbd54e"
+    },
+    {
+      "id": "novelaenespanol",
+      "name": "Novela en Español",
+      "version": "1.0.0",
+      "medium": "novel",
+      "website": "https://novelaenespanol.com",
+      "hosts": [
+        "novelaenespanol.com"
+      ],
+      "description": "Light Novels・Web Novels\n\nCatalog・390+\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "2103c3802d023bebfda0d6939955c2189b27fb363fa13e367b45c2b2062ef97b"
     }
   ]
 }
