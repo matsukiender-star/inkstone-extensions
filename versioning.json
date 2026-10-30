@@ -682,26 +682,25 @@
     {
       "id": "novelasligeras",
       "name": "NovelasLigeras",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "novel",
       "website": "https://novelasligeras.net",
       "hosts": [
         "novelasligeras.net"
       ],
-      "description": "Light Novels・Web Novels\n\nCatalog・300+\n\nRestrictions:\n・Cloudflare Checks\n・Locked Chapters",
+      "description": "Light Novels・Web Novels\n\nCatalog・300+\n\nRestrictions:\n・Cloudflare Checks\n・Only free chapters are listed",
       "capabilities": [
         "browse",
         "search",
         "details",
         "chapters",
-        "reader",
-        "locked"
+        "reader"
       ],
       "language": "es",
       "contentRating": "adult",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "cda05b6cf64ebed16f1c2347cc1951f8ea18abe2e3f2dfcb9619319815d2ae63"
+      "sha256": "8297b62269f283a93276fb871bbc700d27f4c343e76dd25a073e74691c912952"
     },
     {
       "id": "readnovelfull",
