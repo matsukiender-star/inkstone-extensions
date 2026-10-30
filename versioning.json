@@ -4853,6 +4853,28 @@
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
       "sha256": "77594342b36c22316c9e8cc81e8d0d6f30be21f26b00aff26d1ad47392b1b067"
+    },
+    {
+      "id": "asialiveaction",
+      "name": "AsiaLiveAction",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://asialiveaction.com",
+      "iconUrl": "https://asialiveaction.com/wp-content/uploads/cropped-favicon-200x200.png",
+      "description": "Asian Dramas・Movies・Live Action\n\nCatalog・1,700+\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "3dd35e5053444bb319340ab8a1e7525dd8096f60680499f2a1a96cd1fdf5d4e8"
     }
   ]
 }
