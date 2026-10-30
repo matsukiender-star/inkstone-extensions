@@ -258,6 +258,7 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [Royal Road](novels/royalroad/index.js) | royalroad.com | English | Safe | 1.0.0 |
 | [ScribbleHub](novels/scribblehub/index.js) | scribblehub.com | English | Adult | 1.0.0 |
 | [Sleepy Translations](novels/sleepytranslations/index.js) | sleepytranslations.com | English | Safe | 1.0.0 |
+| [Traducciones Isekai](novels/traduccionesisekai/index.js) | traduccionesisekai.blogspot.com | Spanish | Mature | 1.0.0 |
 | [Wattpad](novels/wattpad/index.js) | wattpad.com | English | Adult | 1.1.1 |
 | [Webfic](novels/webfic/index.js) | webfic.com | English | Adult | 1.3.0 |
 | [Webnovel](novels/webnovel/index.js) | webnovel.com | English | Adult | 1.4.4 |
