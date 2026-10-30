@@ -5374,6 +5374,30 @@
       "hosts": [
         "zonatmo.org"
       ]
+    },
+    {
+      "id": "novelasligeras",
+      "name": "NovelasLigeras",
+      "version": "1.0.0",
+      "medium": "novel",
+      "website": "https://novelasligeras.net",
+      "hosts": [
+        "novelasligeras.net"
+      ],
+      "description": "Light Novels・Web Novels\n\nCatalog・300+\n\nRestrictions:\n・Cloudflare Checks\n・Locked Chapters",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "reader",
+        "locked"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "cda05b6cf64ebed16f1c2347cc1951f8ea18abe2e3f2dfcb9619319815d2ae63"
     }
   ]
 }
