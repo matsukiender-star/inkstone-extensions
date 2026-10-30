@@ -4853,6 +4853,51 @@
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
       "sha256": "77594342b36c22316c9e8cc81e8d0d6f30be21f26b00aff26d1ad47392b1b067"
+    },
+    {
+      "id": "veranimes",
+      "name": "VerAnimes",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://wwv.veranimes.net",
+      "iconUrl": "https://wwv.veranimes.net/cdn/img/favicon.png",
+      "hosts": [
+        "wwv.veranimes.net",
+        "voe.sx",
+        "*.voe.sx",
+        "shanelocaldog.com",
+        "filelions.top",
+        "filelions.to",
+        "filelions.live",
+        "luluvdo.com",
+        "lulustream.com",
+        "lulu.st",
+        "uqload.is",
+        "uqload.vc",
+        "uqload.to",
+        "ok.ru",
+        "mixdrop.ps",
+        "mixdrop.ag",
+        "mixdrop.co",
+        "yourupload.com",
+        "www.yourupload.com",
+        "mp4upload.com",
+        "www.mp4upload.com"
+      ],
+      "description": "Anime\n\nCatalog・6,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "91a1f31c61945c135e1b4201656b854bc7a1e72605fbe82f2930f8fd519792e5"
     }
   ]
 }
