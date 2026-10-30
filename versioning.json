@@ -4853,6 +4853,28 @@
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
       "sha256": "77594342b36c22316c9e8cc81e8d0d6f30be21f26b00aff26d1ad47392b1b067"
+    },
+    {
+      "id": "doramasflix",
+      "name": "DoramasFlix",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://doramasflix.in",
+      "iconUrl": "https://doramasflix.in/favicon.ico",
+      "description": "Asian Dramas・Movies・TV Shows\n\nCatalog・3,500+\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "25fe7f26cce96ccf404e248a422bc4a97f9c047365fa9fd95c18000514464f9f"
     }
   ]
 }
