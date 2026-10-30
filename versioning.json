@@ -4853,6 +4853,28 @@
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
       "sha256": "77594342b36c22316c9e8cc81e8d0d6f30be21f26b00aff26d1ad47392b1b067"
+    },
+    {
+      "id": "animemovil",
+      "name": "AnimeMovil",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://tvanime.tv",
+      "iconUrl": "https://tvanime.tv/favicon.ico",
+      "description": "Anime\n\nCatalog・5,600+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "d55c00892e18c79547a943e1a1ad1f2eee7dbc939857a15379c66539900bf0f0"
     }
   ]
 }
