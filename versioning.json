@@ -4853,6 +4853,53 @@
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
       "sha256": "77594342b36c22316c9e8cc81e8d0d6f30be21f26b00aff26d1ad47392b1b067"
+    },
+    {
+      "id": "katanime",
+      "name": "Katanime",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://katanime.net",
+      "iconUrl": "https://katanime.net/favicon.ico",
+      "hosts": [
+        "katanime.net",
+        "voe.sx",
+        "*.voe.sx",
+        "shanelocaldog.com",
+        "luluvdo.com",
+        "lulustream.com",
+        "lulu.st",
+        "filelions.top",
+        "filelions.to",
+        "filelions.live",
+        "streamtape.com",
+        "streamtape.to",
+        "uqload.is",
+        "uqload.vc",
+        "uqload.to",
+        "ok.ru",
+        "mixdrop.ps",
+        "mixdrop.ag",
+        "mixdrop.co",
+        "yourupload.com",
+        "www.yourupload.com",
+        "mp4upload.com",
+        "www.mp4upload.com"
+      ],
+      "description": "Anime\n\nCatalog・3,600+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "16f8d60d8f9f23c23cfe1d4c77841138afaf455b03a001d209c3b970971e4064"
     }
   ]
 }
