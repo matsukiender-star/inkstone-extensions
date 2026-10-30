@@ -4853,6 +4853,28 @@
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
       "sha256": "77594342b36c22316c9e8cc81e8d0d6f30be21f26b00aff26d1ad47392b1b067"
+    },
+    {
+      "id": "mundodonghua",
+      "name": "MundoDonghua",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://www.mundodonghua.com",
+      "iconUrl": "https://www.mundodonghua.com/images/favicon.png",
+      "description": "Donghua\n\nCatalog・350+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "92bf6a92ae0fc413ecfe977d9bf7eced508a5a509ba0280afbe31c9bfb2a7313"
     }
   ]
 }
