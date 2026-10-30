@@ -4853,6 +4853,35 @@
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
       "sha256": "77594342b36c22316c9e8cc81e8d0d6f30be21f26b00aff26d1ad47392b1b067"
+    },
+    {
+      "id": "gnula",
+      "name": "Gnula",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://gnula.life",
+      "iconUrl": "https://gnula.life/favicon.ico",
+      "hosts": [
+        "gnula.life",
+        "player.gnula.life",
+        "vidhidepro.com",
+        "voe.sx",
+        "shanelocaldog.com"
+      ],
+      "description": "Movies・Series\n\nCatalog・23,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "e32bbdc6eb0a52c99904d0a94926010f8abf961ca5e834e3daf964463de67bcc"
     }
   ]
 }

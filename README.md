@@ -271,6 +271,7 @@ Anime extensions use `medium: "anime"` and a `getVideos` method. Sumizuri plays 
 | Extension | Site | Language | Rating | Version |
 | --- | --- | --- | --- | --- |
 | [AniZone](anime/anizone/index.js) | anizone.to | English | Mature | 1.0.0 |
+| [Gnula](anime/gnula/index.js) | gnula.life | Spanish | Mature | 1.0.0 |
 | [KickAssAnime](anime/kickassanime/index.js) | kaa.lt | English | Mature | 1.0.1 |
 | [UniqueStream](anime/uniquestream/index.js) | anime.uniquestream.net | English | Mature | 1.0.1 |
 
