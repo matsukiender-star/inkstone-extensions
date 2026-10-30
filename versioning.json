@@ -4853,6 +4853,46 @@
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
       "sha256": "77594342b36c22316c9e8cc81e8d0d6f30be21f26b00aff26d1ad47392b1b067"
+    },
+    {
+      "id": "doramasyt",
+      "name": "DoramasYT",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://www.doramasyt.com",
+      "iconUrl": "https://www.doramasyt.com/favicon.ico",
+      "hosts": [
+        "www.doramasyt.com",
+        "voe.sx",
+        "*.voe.sx",
+        "shanelocaldog.com",
+        "luluvdo.com",
+        "lulustream.com",
+        "lulu.st",
+        "ok.ru",
+        "mixdrop.top",
+        "mixdrop.ag",
+        "mixdrop.is",
+        "yourupload.com",
+        "www.yourupload.com",
+        "mp4upload.com",
+        "www.mp4upload.com",
+        "streamtape.com"
+      ],
+      "description": "Asian Dramas・Movies\n\nCatalog・2,100+\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "921c3b1977eaf4e2bde41f0b99a8108181536bfae401c29b953126054751a5de"
     }
   ]
 }
