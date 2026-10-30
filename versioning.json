@@ -4853,6 +4853,32 @@
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
       "sha256": "77594342b36c22316c9e8cc81e8d0d6f30be21f26b00aff26d1ad47392b1b067"
+    },
+    {
+      "id": "beatzanime",
+      "name": "Beatz Anime",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://www.beatz-anime.net",
+      "iconUrl": "https://www.beatz-anime.net/img/beatz-anime-ico.ico",
+      "hosts": [
+        "www.beatz-anime.net",
+        "bz.beatz-anime.net"
+      ],
+      "description": "Anime\n\nCatalog・200+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "fbb409f0d77573e82cb4e517a066f3e28d2ea2b5f87cd384769f5f1d904385be"
     }
   ]
 }
