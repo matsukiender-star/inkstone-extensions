@@ -247,6 +247,7 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [LibRead](novels/libread/index.js) | libread.com | English | Adult | 1.2.0 |
 | [MoboReader](novels/moboreader/index.js) | moboreader.com | English | Adult | 1.2.0 |
 | [Novel Archive](novels/novelarchive/index.js) | novelarchive.cc | English | Mature | 1.0.1 |
+| [NovelasLigeras](novels/novelasligeras/index.js) | novelasligeras.net | Spanish | Adult | 1.0.0 |
 | [NovelBuddy](novels/novelbuddy/index.js) | novelbuddy.me | English | Adult | 1.2.0 |
 | [NovelFire](novels/novelfire/index.js) | novelfire.net | English | Adult | 2.6.0 |
 | [NovelFull](novels/novelfull/index.js) | novelfull.net | English | Adult | 1.1.0 |
