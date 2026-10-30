@@ -4853,6 +4853,28 @@
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
       "sha256": "77594342b36c22316c9e8cc81e8d0d6f30be21f26b00aff26d1ad47392b1b067"
+    },
+    {
+      "id": "cineplus123",
+      "name": "CinePlus123",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://cineplus123.org",
+      "iconUrl": "https://cineplus123.org/wp-content/uploads/2026/08/cropped-favicon-512-192x192.png",
+      "description": "Movies & Series (Spanish)\n\nCatalog: 10,000+\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "409f332362f22e9099cef7e48ab50f764994734ac7fc427f3c3acd386a017e9a"
     }
   ]
 }
