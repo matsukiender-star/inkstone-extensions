@@ -4853,6 +4853,33 @@
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
       "sha256": "77594342b36c22316c9e8cc81e8d0d6f30be21f26b00aff26d1ad47392b1b067"
+    },
+    {
+      "id": "pelisforte",
+      "name": "PelisForte",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://www2.pelisforte.se",
+      "iconUrl": "https://www2.pelisforte.se/wp-content/uploads/2019/05/favicon.png",
+      "hosts": [
+        "www2.pelisforte.se",
+        "mp4.nu",
+        "okhd.nu"
+      ],
+      "description": "Movies・Series\n\nCatalog・3,000+\n\nRestrictions:\n・Older titles that only use Byse require interactive captcha verification",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "b15839b65163f5fc670bf6f15ca74db8d943e90603f97ddfbeecd2e9e895ebe1"
     }
   ]
 }
