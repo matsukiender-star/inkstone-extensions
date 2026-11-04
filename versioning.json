@@ -1,6 +1,6 @@
 {
   "repositoryName": "Inkstone en español (Suki)",
-  "repositoryDescription": "Solo las fuentes en español de Inkstone, con las que todavía no se fusionan, más las multi-idioma que tienen español (MangaDex, Kagane, UniqueStream y Wattpad).",
+  "repositoryDescription": "Test build of matsukiender-star's pending Inkstone extensions.",
   "buildTime": "2026-09-03T16:35:04Z",
   "sources": [
     {
@@ -9,6 +9,7 @@
       "version": "1.1.0",
       "medium": "comics",
       "website": "https://inmanga.com",
+      "iconUrl": "https://inkstone.web.app/inmanga/icon.png",
       "description": "Manga\n\nCatalog・5,000+",
       "capabilities": [
         "browse",
@@ -19,7 +20,6 @@
       ],
       "language": "es",
       "contentRating": "safe",
-      "iconUrl": "https://assets.intomanga.com/inmangafavicon.png",
       "sha256": "d06c10056980ec2b01fcfbaaf628f42841b73cf13446b4af2043b155b6a75879"
     },
     {
@@ -28,6 +28,7 @@
       "version": "1.0.3",
       "medium": "comics",
       "website": "https://olympusbiblioteca.com",
+      "iconUrl": "https://inkstone.web.app/olympusscans/icon.png",
       "description": "Manhwa・Manhua\n\nCatalog・800+",
       "capabilities": [
         "browse",
@@ -39,8 +40,7 @@
       ],
       "language": "es",
       "contentRating": "adult",
-      "iconUrl": "https://olympusbiblioteca.com/olympus-logo-180.webp",
-      "sha256": "81ca916617048bc7ae7aa2f234ada0387d4613a5d43469f42eccc4addaa12903",
+      "sha256": "519fa9afc0ff0e7e80023e43dcbd582357b16c020d3a87f45ad403c746b514b0",
       "hosts": [
         "olympusxyz.com"
       ]
@@ -48,9 +48,10 @@
     {
       "id": "lectormanga",
       "name": "Lectormanga",
-      "version": "1.2.1",
+      "version": "1.2.2",
       "medium": "comics",
       "website": "https://lectormangass.net",
+      "iconUrl": "https://inkstone.web.app/lectormanga/icon.png",
       "description": "Manhwa・Manhua・Comics\n\nCatalog・10,000+",
       "capabilities": [
         "browse",
@@ -62,7 +63,6 @@
       ],
       "language": "es",
       "contentRating": "adult",
-      "iconUrl": "https://lectormangass.net/apple-touch-icon.png?v=3",
       "sha256": "e7797f92491443db0b16b00b6e46189795dd5d17d8643636bd639a052d6f68ad"
     },
     {
@@ -71,8 +71,8 @@
       "version": "1.1.1",
       "medium": "novel",
       "website": "https://www.wattpad.com",
+      "iconUrl": "https://inkstone.web.app/wattpad/icon.png",
       "description": "Web Novels\n\nCatalog・1,000+",
-      "iconUrl": "https://www.wattpad.com/favicon.ico",
       "capabilities": [
         "browse",
         "search",
@@ -88,10 +88,10 @@
     {
       "id": "mangadex",
       "name": "MangaDex",
-      "version": "1.2.0",
+      "version": "1.2.2",
       "medium": "comics",
       "website": "https://mangadex.org",
-      "iconUrl": "https://mangadex.org/pwa/icons/icon-180.png",
+      "iconUrl": "https://inkstone.web.app/mangadex/icon.png",
       "description": "Manga・Manhwa・Manhua\n\nCatalog・90,000+",
       "capabilities": [
         "browse",
@@ -199,20 +199,18 @@
       ],
       "language": "en",
       "contentRating": "safe",
-      "sha256": "862e297aeae26cc41908e6725b1b178820df90bbb45af33a0c8fcc5438b2308d"
+      "sha256": "2ad3f83708b2d558521db680d5d2366feb5c071c29c25913c18ce14ad8126cdf"
     },
     {
       "id": "kagane",
       "name": "Kagane",
-      "version": "1.3.2",
+      "version": "1.3.3",
       "medium": "comics",
       "website": "https://kagane.org",
       "iconUrl": "https://inkstone.web.app/kagane/icon.png",
       "hosts": [
         "kagane.org",
         "*.kagane.org",
-        "kagane.si",
-        "*.kagane.si",
         "kagane.cx",
         "*.kagane.cx",
         "kagane.moe",
@@ -514,87 +512,56 @@
       ],
       "language": "en",
       "contentRating": "safe",
-      "sha256": "262b895bd8412aa8f16bd66a2d3d644f17b84a08eea3ef9a84efaa46989d3078"
+      "sha256": "a1125ccee0c317ff6e73f6b9e4e8de5e7886b3abefaf5a064be954d26da35dd8"
     },
     {
-      "id": "uniquestream",
-      "name": "UniqueStream",
-      "version": "1.1.0",
+      "id": "anikoto",
+      "name": "Anikoto",
+      "version": "1.0.0",
       "medium": "anime",
-      "website": "https://anime.uniquestream.net",
-      "iconUrl": "https://anime.uniquestream.net/favicon.ico",
+      "website": "https://anikototv.to",
+      "iconUrl": "https://anikototv.to/AnikotoTheme/assets/images/favicon.png",
       "hosts": [
-        "anime.uniquestream.net"
+        "anikototv.to",
+        "*.anikototv.to",
+        "megaplay.buzz",
+        "*.megaplay.buzz",
+        "*.qeltrix.top",
+        "*.nexabloom.top",
+        "*.imgnex.top",
+        "*.shiora.top",
+        "*.shiora.site",
+        "*.akirax.buzz",
+        "*.zhaevor.top",
+        "*.embermeadow.world",
+        "*.midnightvoyage.site",
+        "cdn.anipixcdn.co"
       ],
-      "description": "Anime\n\nCatalog・3,000+",
+      "description": "Anime\n\nCatalog・10,000+",
       "capabilities": [
         "browse",
         "search",
+        "genres",
         "details",
         "chapters",
         "videos"
       ],
       "language": "en",
       "contentRating": "mature",
-      "sha256": "25112f3fbb744151d88175c83cf23c3022052a7e7c49536ef188b013420f9e00",
-      "settingsSchema": [
-        {
-          "type": "select",
-          "key": "audio",
-          "label": "Audio language",
-          "default": "ja-JP",
-          "options": [
-            {
-              "value": "ja-JP",
-              "label": "Japanese"
-            },
-            {
-              "value": "es-419",
-              "label": "Spanish (Latin America)"
-            },
-            {
-              "value": "es-ES",
-              "label": "Spanish (Spain)"
-            },
-            {
-              "value": "en-US",
-              "label": "English"
-            },
-            {
-              "value": "pt-BR",
-              "label": "Portuguese (Brazil)"
-            },
-            {
-              "value": "fr-FR",
-              "label": "French"
-            },
-            {
-              "value": "de-DE",
-              "label": "German"
-            },
-            {
-              "value": "it-IT",
-              "label": "Italian"
-            },
-            {
-              "value": "hi-IN",
-              "label": "Hindi"
-            }
-          ]
-        }
-      ]
+      "sha256": "49553ae8ad4d9ca9895b652af9f77a5e55c5d5876e82e1a8d428748cefc3d0a3"
     },
     {
       "id": "hadesnofansub",
       "name": "Hades no Fansub",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://lectorhades.latamtoon.com",
+      "iconUrl": "https://inkstone.web.app/hadesnofansub/icon.png",
       "hosts": [
         "lectorhades.latamtoon.com",
         "*.lectorhades.latamtoon.com"
       ],
-      "description": "Hades no Fansub read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "description": "Manhua\n\nCatalog・100+",
       "capabilities": [
         "browse",
         "search",
@@ -604,20 +571,21 @@
         "reader"
       ],
       "language": "es",
-      "contentRating": "safe",
+      "contentRating": "adult",
       "sha256": "619e8531422d7b1ba38b4fa078c0d3ecf27bd2d0cdd0f95c1b870c3b96ab8d79"
     },
     {
       "id": "inventariooculto",
       "name": "Inventario Oculto",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://inventariooculto.com",
+      "iconUrl": "https://inkstone.web.app/inventariooculto/icon.png",
       "hosts": [
         "inventariooculto.com",
         "*.inventariooculto.com"
       ],
-      "description": "Inventario Oculto read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・30+",
       "capabilities": [
         "browse",
         "search",
@@ -627,20 +595,21 @@
         "reader"
       ],
       "language": "es",
-      "contentRating": "safe",
+      "contentRating": "adult",
       "sha256": "6393f930fc717c4445ca7fe6c5eb000163a2de9bd53cd952a6d772acb211c203"
     },
     {
       "id": "kazokuden",
       "name": "Kazoku Den",
-      "version": "1.0.0",
+      "version": "1.0.2",
       "medium": "comics",
       "website": "https://www.kazokuden.com",
+      "iconUrl": "https://inkstone.web.app/kazokuden/icon.png",
       "hosts": [
         "kazokuden.com",
         "*.kazokuden.com"
       ],
-      "description": "Kazoku Den read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. Titles tagged Mature or Ecchi are marked 16 and Adult or Smut 18 on their details page (the grids carry no genres).",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・100+",
       "capabilities": [
         "browse",
         "search",
@@ -664,7 +633,7 @@
         "mhscans.com",
         "*.mhscans.com"
       ],
-      "description": "Manhwa・Manhua・Manga\n\nCatalog・700+\n\nRestrictions:\n・Locked Chapters",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・600+\n\nRestrictions:\n・Rate Limit\n・Locked Chapters",
       "capabilities": [
         "browse",
         "search",
@@ -675,19 +644,20 @@
       ],
       "language": "es",
       "contentRating": "safe",
-      "sha256": "37eab89f1e32fe2b2afaabccb99e18634d79f0b43b0e8583517abece93f21600"
+      "sha256": "ea58cece0722ad3d132cbf87e2cb44ab097752a6c9726a76883bcfe89cbe5676"
     },
     {
       "id": "monopolyscan",
       "name": "Monopoly Scan",
-      "version": "1.0.0",
+      "version": "1.0.2",
       "medium": "comics",
       "website": "https://monopolymanhua.com",
+      "iconUrl": "https://inkstone.web.app/monopolyscan/icon.png",
       "hosts": [
         "monopolymanhua.com",
         "*.monopolymanhua.com"
       ],
-      "description": "Monopoly Scan read from its own Madara pages, with no browser step and no sign-in: Latest, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・50+",
       "capabilities": [
         "browse",
         "search",
@@ -703,14 +673,15 @@
     {
       "id": "ragnarokscanlation",
       "name": "Ragnarok Scanlation",
-      "version": "1.0.0",
+      "version": "1.0.3",
       "medium": "comics",
       "website": "https://ragnarokscanlation.org",
+      "iconUrl": "https://inkstone.web.app/ragnarokscanlation/icon.png",
       "hosts": [
         "ragnarokscanlation.org",
         "*.ragnarokscanlation.org"
       ],
-      "description": "Ragnarok Scanlation read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・40+\n\nRestrictions:\n・Locked Chapters",
       "capabilities": [
         "browse",
         "search",
@@ -721,19 +692,20 @@
       ],
       "language": "es",
       "contentRating": "safe",
-      "sha256": "ac1d1a31a14886b0d69c8f3911ed3f1fbb4a7de2adf930f279fd8622d0e69937"
+      "sha256": "d33c8b88181df39914e4c2133f2ed6218774de654c56855d19b281213df415fd"
     },
     {
       "id": "rakuentranslations",
       "name": "Rakuen Translations",
-      "version": "1.0.0",
+      "version": "1.0.2",
       "medium": "comics",
       "website": "https://rakuentranslations.com",
+      "iconUrl": "https://inkstone.web.app/rakuentranslations/icon.png",
       "hosts": [
         "rakuentranslations.com",
         "*.rakuentranslations.com"
       ],
-      "description": "Rakuen Translations read from its own MangaThemesia pages, with no browser step and no sign-in: Latest Updates, Popular, Newly Added, A-Z feeds, search, genre filtering, full details, chapter lists with dates and the reader. Titles tagged Mature or Ecchi are marked 16 and Adult or Smut 18 on their details page (the grids carry no genres).",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・30+",
       "capabilities": [
         "browse",
         "search",
@@ -747,39 +719,17 @@
       "sha256": "252a6d1dcb4adde8a76d5c56ee084f3ee073ab2056f76a6b60b5570502a23f93"
     },
     {
-      "id": "samuraiscan",
-      "name": "SamuraiScan",
-      "version": "1.0.0",
-      "medium": "comics",
-      "website": "https://samurai.j5z.xyz",
-      "hosts": [
-        "samurai.j5z.xyz",
-        "*.samurai.j5z.xyz"
-      ],
-      "description": "SamuraiScan read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
-      "capabilities": [
-        "browse",
-        "search",
-        "genres",
-        "details",
-        "chapters",
-        "reader"
-      ],
-      "language": "es",
-      "contentRating": "safe",
-      "sha256": "53e257b1b2b48943420d4d86ab57f5ee2387d26d5e59ae195662aecba28660f7"
-    },
-    {
       "id": "uchuujinprojects",
       "name": "Uchuujin Projects",
-      "version": "1.0.0",
+      "version": "1.0.2",
       "medium": "comics",
       "website": "https://uchuujinmangas.com",
+      "iconUrl": "https://inkstone.web.app/uchuujinprojects/icon.png",
       "hosts": [
         "uchuujinmangas.com",
         "*.uchuujinmangas.com"
       ],
-      "description": "Uchuujin Projects read from its own MangaThemesia pages, with no browser step and no sign-in: Latest Updates, Popular, Newly Added, A-Z feeds, search, genre filtering, full details, chapter lists with dates and the reader. Titles tagged Mature or Ecchi are marked 16 and Adult or Smut 18 on their details page (the grids carry no genres).",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・100+",
       "capabilities": [
         "browse",
         "search",
@@ -795,14 +745,15 @@
     {
       "id": "undertranslations",
       "name": "UnderTranslations",
-      "version": "1.0.0",
+      "version": "1.0.2",
       "medium": "comics",
       "website": "https://undertranslations.com",
+      "iconUrl": "https://inkstone.web.app/undertranslations/icon.png",
       "hosts": [
         "undertranslations.com",
         "*.undertranslations.com"
       ],
-      "description": "UnderTranslations read from its own MangaThemesia pages, with no browser step and no sign-in: Latest Updates, Popular, Newly Added, A-Z feeds, search, genre filtering, full details, chapter lists with dates and the reader. Titles tagged Mature or Ecchi are marked 16 and Adult or Smut 18 on their details page (the grids carry no genres).",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・40+",
       "capabilities": [
         "browse",
         "search",
@@ -818,14 +769,15 @@
     {
       "id": "yurionline",
       "name": "Yuri-Online",
-      "version": "1.0.0",
+      "version": "1.0.2",
       "medium": "comics",
       "website": "https://yuri-online.com",
+      "iconUrl": "https://inkstone.web.app/yurionline/icon.png",
       "hosts": [
         "yuri-online.com",
         "*.yuri-online.com"
       ],
-      "description": "Yuri-Online read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・400+",
       "capabilities": [
         "browse",
         "search",
@@ -837,6 +789,129 @@
       "language": "es",
       "contentRating": "safe",
       "sha256": "2fb96da77b3368ffc95f474de284c44ec0268b498b5472cf02b60069395edd0c"
+    },
+    {
+      "id": "kumanga",
+      "name": "KuManga",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://www.kumanga.com",
+      "iconUrl": "https://inkstone.web.app/kumanga/icon.png",
+      "hosts": [
+        "www.kumanga.com"
+      ],
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・10,000+\n\nRestrictions:\n・Cloudflare Checks\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "77594342b36c22316c9e8cc81e8d0d6f30be21f26b00aff26d1ad47392b1b067"
+    },
+    {
+      "id": "zonatmoorg",
+      "name": "ZonaTMO.org",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://zonatmo.org",
+      "iconUrl": "https://inkstone.web.app/zonatmoorg/icon.png",
+      "hosts": [
+        "zonatmo.org",
+        "*.zonatmo.org"
+      ],
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・30,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "03c525683b6cf8db344e12a6a1025776ad5820dba0e45c8141f2ac14e08ff999"
+    },
+    {
+      "id": "houseofotakus",
+      "name": "House Of Otakus",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://houseofotakusv2.xyz",
+      "iconUrl": "https://inkstone.web.app/houseofotakus/icon.png",
+      "hosts": [
+        "houseofotakusv2.xyz",
+        "*.houseofotakusv2.xyz"
+      ],
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・40+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "safe",
+      "sha256": "f917d2243d20b39e0ba55e760eef25388875e0005b2604ee0bd1ff63d8b6ce15"
+    },
+    {
+      "id": "nekoscans",
+      "name": "NekoScans",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://nekoproject.org",
+      "iconUrl": "https://inkstone.web.app/nekoscans/icon.png",
+      "hosts": [
+        "nekoproject.org",
+        "*.nekoproject.org"
+      ],
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・50+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "safe",
+      "sha256": "22f7fbf9fcfac6e0c091166dbcd2f23c4af2222805397b88b3ca2e0c5fbc4881"
+    },
+    {
+      "id": "richtoscan",
+      "name": "RichtoScan",
+      "version": "1.0.1",
+      "medium": "comics",
+      "website": "https://r1.richtoon.top",
+      "iconUrl": "https://inkstone.web.app/richtoscan/icon.png",
+      "hosts": [
+        "r1.richtoon.top",
+        "*.r1.richtoon.top"
+      ],
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・400+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "safe",
+      "sha256": "4e4b9c4a7330968ed7018d6583a26b36968363a0c61682d888716e919671e6e8"
     },
     {
       "id": "animeav1",
@@ -856,721 +931,6 @@
       "language": "es",
       "contentRating": "mature",
       "sha256": "3969fa6ee7fe4f84cf57cf8fe0f60a22a5f07e3b0ad4f8d4e760ef1d0251ff97"
-    },
-    {
-      "id": "cinecalidad",
-      "name": "CineCalidad",
-      "version": "1.0.0",
-      "medium": "anime",
-      "website": "https://cinecalidad.org",
-      "iconUrl": "https://cinecalidad.org/favicon.ico",
-      "hosts": [
-        "cinecalidad.org",
-        "vimeos.net",
-        "*.vimeos.net",
-        "vimeos.zip",
-        "*.vimeos.zip"
-      ],
-      "description": "Movies・Series\n\nCatalog・9,000+",
-      "capabilities": [
-        "browse",
-        "search",
-        "genres",
-        "details",
-        "chapters",
-        "videos"
-      ],
-      "language": "es",
-      "contentRating": "mature",
-      "sha256": "6cbe357082dd2aafa79a56de481e0deafa87e700ad3265f5a912501d775bd413"
-    },
-    {
-      "id": "cuevana",
-      "name": "Cuevana",
-      "version": "1.0.0",
-      "medium": "anime",
-      "website": "https://www.cuevana3.eu",
-      "iconUrl": "https://www.cuevana3.eu/favicon.ico",
-      "description": "Movies・Series",
-      "capabilities": [
-        "browse",
-        "search",
-        "genres",
-        "details",
-        "chapters",
-        "videos"
-      ],
-      "language": "es",
-      "contentRating": "mature",
-      "sha256": "bfa90c2d8b8a0d3d98916a96ea9e1aa18d2e5126794a50848a8e03846ac4f720"
-    },
-    {
-      "id": "dragontranslation",
-      "name": "Dragon Translation",
-      "version": "1.0.0",
-      "medium": "comics",
-      "website": "https://dragontranslation.org",
-      "description": "Manhwa・Manga・Manhua",
-      "capabilities": [
-        "browse",
-        "search",
-        "genres",
-        "details",
-        "chapters",
-        "reader"
-      ],
-      "language": "es",
-      "contentRating": "adult",
-      "iconUrl": "https://dragontranslation.org/favicon.ico",
-      "sha256": "d132e7a888a9af00b46deb50fff16b5dad512313d91bfeff5c821e6a973a08c3",
-      "hosts": [
-        "dragontranslation.org"
-      ]
-    },
-    {
-      "id": "eternalmangas",
-      "name": "Eternal Mangas",
-      "version": "1.0.0",
-      "medium": "comics",
-      "website": "https://eternalmangas.org",
-      "description": "Manhwa・Manhua・Manga",
-      "capabilities": [
-        "browse",
-        "search",
-        "genres",
-        "details",
-        "chapters",
-        "reader"
-      ],
-      "language": "es",
-      "contentRating": "adult",
-      "iconUrl": "https://eternalmangas.org/favicon.ico",
-      "sha256": "1a48775342eb63d17f8c63b3905dc4de2f07b74cf4f596c8ef01bc7349fd1c4a",
-      "hosts": [
-        "eternalmangas.org"
-      ]
-    },
-    {
-      "id": "hentaila",
-      "name": "HentaiLA",
-      "version": "1.0.0",
-      "medium": "anime",
-      "website": "https://hentaila.com",
-      "iconUrl": "https://hentaila.com/favicon.ico",
-      "description": "Hentai",
-      "capabilities": [
-        "browse",
-        "search",
-        "genres",
-        "details",
-        "chapters",
-        "videos"
-      ],
-      "language": "es",
-      "contentRating": "adult",
-      "sha256": "1cc3df7987101a8bcec7ecae3368e2719af8d289c6703fb309c2b5bfe99508b7"
-    },
-    {
-      "id": "ikigaimangas",
-      "name": "Ikigai Mangas",
-      "version": "1.0.0",
-      "medium": "comics",
-      "website": "https://ikigaimangas.com",
-      "description": "Manhwa・Manhua・Manga\n\nCatalog・6,000+\n\nRestrictions:\n・Rate Limit",
-      "capabilities": [
-        "browse",
-        "search",
-        "details",
-        "chapters",
-        "reader"
-      ],
-      "language": "es",
-      "contentRating": "adult",
-      "iconUrl": "https://ikigaimangas.com/favicon.ico",
-      "sha256": "b9b166536c1dfbe04a815ce73f8cd8eec9bd7213adc2ef217aecac82b8868655"
-    },
-    {
-      "id": "jkanime",
-      "name": "JKAnime",
-      "version": "1.0.0",
-      "medium": "anime",
-      "website": "https://jkanime.net",
-      "iconUrl": "https://jkanime.net/favicon.ico",
-      "description": "Anime",
-      "capabilities": [
-        "browse",
-        "search",
-        "details",
-        "chapters",
-        "videos"
-      ],
-      "language": "es",
-      "contentRating": "mature",
-      "sha256": "9744db9d6b196b825f4cb4ab306d3f8430fb8a431dc56e943fb5211f4fab5bc9"
-    },
-    {
-      "id": "kumanga",
-      "name": "KuManga",
-      "version": "1.0.0",
-      "medium": "comics",
-      "website": "https://www.kumanga.com",
-      "description": "Manga・Manhwa・Manhua\n\nCatalog・10,000+\n\nRestrictions:\n・Cloudflare Checks\n・Rate Limit",
-      "capabilities": [
-        "browse",
-        "search",
-        "genres",
-        "details",
-        "chapters",
-        "reader"
-      ],
-      "language": "es",
-      "contentRating": "adult",
-      "iconUrl": "https://www.kumanga.com/favicon.ico",
-      "sha256": "d84f88144860390f90f60463d200978df2121a540adcd6649c5b2a3a7250d1d1",
-      "hosts": [
-        "www.kumanga.com"
-      ]
-    },
-    {
-      "id": "latanime",
-      "name": "Latanime",
-      "version": "1.0.0",
-      "medium": "anime",
-      "website": "https://latanime.org",
-      "iconUrl": "https://latanime.org/favicon.ico",
-      "description": "Anime",
-      "capabilities": [
-        "browse",
-        "search",
-        "details",
-        "chapters",
-        "videos"
-      ],
-      "language": "es",
-      "contentRating": "mature",
-      "sha256": "08a66b70c4f07b0dbae2ff273b4187de618144798fedd55f3247b51b68d0437d"
-    },
-    {
-      "id": "leercapitulo",
-      "name": "LeerCapitulo",
-      "version": "1.0.0",
-      "medium": "comics",
-      "website": "https://www.leercapitulo.co",
-      "description": "Manga・Manhwa・Manhua\n\nRestrictions:\n・Rate Limit",
-      "capabilities": [
-        "browse",
-        "search",
-        "genres",
-        "details",
-        "chapters",
-        "reader"
-      ],
-      "language": "es",
-      "contentRating": "adult",
-      "iconUrl": "https://www.leercapitulo.co/favicon.ico",
-      "sha256": "811a3a1db271db24474556190661a06cdfe1dbd90b2cb2e461c70b906646af51",
-      "hosts": [
-        "www.leercapitulo.co"
-      ]
-    },
-    {
-      "id": "leermanhwas",
-      "name": "Leer Manhwas",
-      "version": "1.0.0",
-      "medium": "comics",
-      "website": "https://leermanhwas.com",
-      "description": "Manhwa",
-      "capabilities": [
-        "browse",
-        "search",
-        "genres",
-        "details",
-        "chapters",
-        "reader"
-      ],
-      "language": "es",
-      "contentRating": "adult",
-      "iconUrl": "https://leermanhwas.com/images/180x180.jpg",
-      "sha256": "8a3667e0bae14d1106077aa3f15675cb8fdfe1572c4e58f8d7019e7d5327e69e",
-      "hosts": [
-        "leermanhwas.com"
-      ]
-    },
-    {
-      "id": "mangasin",
-      "name": "Mangas.in",
-      "version": "1.0.0",
-      "medium": "comics",
-      "website": "https://m440.in",
-      "description": "Manga・Manhwa・Manhua\n\nRestrictions:\n・Web View\n・Rate Limit",
-      "capabilities": [
-        "browse",
-        "search",
-        "details",
-        "chapters",
-        "reader"
-      ],
-      "language": "es",
-      "contentRating": "adult",
-      "iconUrl": "https://m440.in/favicon.ico",
-      "sha256": "8ba5f64c73c7742b50873231551651aff08d3d0452064d9ae93623daf05bd174",
-      "hosts": [
-        "m440.in"
-      ]
-    },
-    {
-      "id": "mangatv",
-      "name": "MangaTV",
-      "version": "1.0.0",
-      "medium": "comics",
-      "website": "https://mangatv.net",
-      "description": "Manga・Manhwa・Manhua",
-      "capabilities": [
-        "browse",
-        "search",
-        "genres",
-        "details",
-        "chapters",
-        "reader"
-      ],
-      "language": "es",
-      "contentRating": "adult",
-      "iconUrl": "https://mangatv.net/favicon.ico",
-      "sha256": "050eb01e93374c18aa57a5f3a8788c58afe011f89fc46521e4cf5b752167849f",
-      "hosts": [
-        "mangatv.net"
-      ]
-    },
-    {
-      "id": "mangolibreria",
-      "name": "MangoLibreria",
-      "version": "1.0.0",
-      "medium": "comics",
-      "website": "https://lectorfenix.com",
-      "description": "Manhwa・Manhua・Manga\n\nCatalog・2,000+",
-      "capabilities": [
-        "browse",
-        "search",
-        "details",
-        "chapters",
-        "reader"
-      ],
-      "language": "es",
-      "contentRating": "adult",
-      "iconUrl": "https://lectorfenix.com/favicon.ico",
-      "sha256": "111297184c7b175c5f785750fce5607f5d825d043b41e31c433cc916b13d7f6f",
-      "hosts": [
-        "lectorfenix.com"
-      ]
-    },
-    {
-      "id": "manhwalatino",
-      "name": "Manhwa Latino",
-      "version": "1.0.0",
-      "medium": "comics",
-      "website": "https://manhwa-latino.com",
-      "description": "Manhwa・Manhua・Manga\n\nRestrictions:\n・Cloudflare Checks\n・Rate Limit",
-      "capabilities": [
-        "browse",
-        "search",
-        "details",
-        "chapters",
-        "reader"
-      ],
-      "language": "es",
-      "contentRating": "adult",
-      "iconUrl": "https://manhwa-latino.com/favicon.ico",
-      "sha256": "2b365116880c81e32c9501ca0a95e3063b2317739bb6c9a926a8618bfa6792e7",
-      "hosts": [
-        "manhwa-latino.com"
-      ]
-    },
-    {
-      "id": "manhwaweb",
-      "name": "ManhwaWeb",
-      "version": "1.0.0",
-      "medium": "comics",
-      "website": "https://manhwaweb.com",
-      "description": "Manhwa・Manhua・Manga",
-      "capabilities": [
-        "browse",
-        "search",
-        "genres",
-        "details",
-        "chapters",
-        "reader"
-      ],
-      "language": "es",
-      "contentRating": "adult",
-      "iconUrl": "https://manhwaweb.com/favicon.ico",
-      "sha256": "214ba92b94b4887c6a86b4a925a2cfe1e17b5f26dbac8cb539f9644f1edc25c2",
-      "hosts": [
-        "api.manhwaweb.com"
-      ]
-    },
-    {
-      "id": "marmota",
-      "name": "Marmota",
-      "version": "1.0.0",
-      "medium": "comics",
-      "website": "https://marmota.me",
-      "description": "Comics",
-      "capabilities": [
-        "browse",
-        "search",
-        "genres",
-        "details",
-        "chapters",
-        "reader"
-      ],
-      "language": "es",
-      "contentRating": "safe",
-      "iconUrl": "https://marmota.me/favicon.ico",
-      "sha256": "2424c0de883d68aabce26099da2e666a7ff4b9116221a3ff1c7d015fa086e654",
-      "hosts": [
-        "marmota.me",
-        "*.marmota.me"
-      ]
-    },
-    {
-      "id": "monoschinos",
-      "name": "MonosChinos",
-      "version": "1.0.0",
-      "medium": "anime",
-      "website": "https://monoschinos.st",
-      "iconUrl": "https://monoschinos.st/favicon.ico",
-      "description": "Anime\n\nCatalog・4,000+",
-      "capabilities": [
-        "browse",
-        "search",
-        "genres",
-        "details",
-        "chapters",
-        "videos"
-      ],
-      "language": "es",
-      "contentRating": "mature",
-      "sha256": "9aee178e007804e67f21b739960c78545fb00b62656d362a5c39c9e8b04b2d51"
-    },
-    {
-      "id": "poseidonhd",
-      "name": "PoseidonHD",
-      "version": "1.0.0",
-      "medium": "anime",
-      "website": "https://www.poseidonhd2.co",
-      "iconUrl": "https://www.poseidonhd2.co/favicon.ico",
-      "description": "Movies・Series",
-      "capabilities": [
-        "browse",
-        "search",
-        "genres",
-        "details",
-        "chapters",
-        "videos"
-      ],
-      "language": "es",
-      "contentRating": "mature",
-      "sha256": "4e2c34e36d360b2a7eabda470bf76dc775d439b87f2841d28d44516104140d1f"
-    },
-    {
-      "id": "shadowmanga",
-      "name": "Shadow Manga",
-      "version": "1.0.0",
-      "medium": "comics",
-      "website": "https://shademanga.com",
-      "description": "Manga・Manhwa・Manhua",
-      "capabilities": [
-        "browse",
-        "search",
-        "genres",
-        "details",
-        "chapters",
-        "reader"
-      ],
-      "language": "es",
-      "contentRating": "mature",
-      "iconUrl": "https://shademanga.com/favicon.ico",
-      "sha256": "a33610bbc0ea3495357658d2043ba5c1697618670d38c916bdef90c8cb274ff1",
-      "hosts": [
-        "shademanga.com"
-      ]
-    },
-    {
-      "id": "tioanime",
-      "name": "TioAnime",
-      "version": "1.0.0",
-      "medium": "anime",
-      "website": "https://tioanime.com",
-      "iconUrl": "https://tioanime.com/favicon.ico",
-      "description": "Anime",
-      "capabilities": [
-        "browse",
-        "search",
-        "genres",
-        "details",
-        "chapters",
-        "videos"
-      ],
-      "language": "es",
-      "contentRating": "mature",
-      "sha256": "b7fe83f8bb0ddacca2426bf2835f62d84ae46f2b9d165074dff8249c4fe0b096"
-    },
-    {
-      "id": "zonatmoorg",
-      "name": "ZonaTMO.org",
-      "version": "1.0.0",
-      "medium": "comics",
-      "website": "https://zonatmo.org",
-      "description": "Manga・Manhwa・Manhua\n\nCatalog・30,000+",
-      "capabilities": [
-        "browse",
-        "search",
-        "genres",
-        "details",
-        "chapters",
-        "reader"
-      ],
-      "language": "es",
-      "contentRating": "adult",
-      "iconUrl": "https://zonatmo.org/favicon.ico",
-      "sha256": "72ee1dca7f86bfee63d41e343840aa33bd29f787ff7e3241d3d8d61ff47c00cc",
-      "hosts": [
-        "zonatmo.org"
-      ]
-    },
-    {
-      "id": "novelasligeras",
-      "name": "NovelasLigeras",
-      "version": "1.0.0",
-      "medium": "novel",
-      "website": "https://novelasligeras.net",
-      "hosts": [
-        "novelasligeras.net"
-      ],
-      "description": "Light Novels・Web Novels\n\nCatalog・300+\n\nRestrictions:\n・Cloudflare Checks\n・Locked Chapters",
-      "capabilities": [
-        "browse",
-        "search",
-        "details",
-        "chapters",
-        "reader",
-        "locked"
-      ],
-      "language": "es",
-      "contentRating": "adult",
-      "author": "matsukiender-star",
-      "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "cda05b6cf64ebed16f1c2347cc1951f8ea18abe2e3f2dfcb9619319815d2ae63"
-    },
-    {
-      "id": "veranimes",
-      "name": "VerAnimes",
-      "version": "1.0.0",
-      "medium": "anime",
-      "website": "https://wwv.veranimes.net",
-      "iconUrl": "https://wwv.veranimes.net/cdn/img/favicon.png",
-      "hosts": [
-        "wwv.veranimes.net",
-        "voe.sx",
-        "*.voe.sx",
-        "shanelocaldog.com",
-        "filelions.top",
-        "filelions.to",
-        "filelions.live",
-        "luluvdo.com",
-        "lulustream.com",
-        "lulu.st",
-        "uqload.is",
-        "uqload.vc",
-        "uqload.to",
-        "ok.ru",
-        "mixdrop.ps",
-        "mixdrop.ag",
-        "mixdrop.co",
-        "yourupload.com",
-        "www.yourupload.com",
-        "mp4upload.com",
-        "www.mp4upload.com"
-      ],
-      "description": "Anime\n\nCatalog・6,000+",
-      "capabilities": [
-        "browse",
-        "search",
-        "genres",
-        "details",
-        "chapters",
-        "videos"
-      ],
-      "language": "es",
-      "contentRating": "mature",
-      "author": "matsukiender-star",
-      "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "91a1f31c61945c135e1b4201656b854bc7a1e72605fbe82f2930f8fd519792e5"
-    },
-    {
-      "id": "katanime",
-      "name": "Katanime",
-      "version": "1.0.0",
-      "medium": "anime",
-      "website": "https://katanime.net",
-      "iconUrl": "https://katanime.net/favicon.ico",
-      "hosts": [
-        "katanime.net",
-        "voe.sx",
-        "*.voe.sx",
-        "shanelocaldog.com",
-        "luluvdo.com",
-        "lulustream.com",
-        "lulu.st",
-        "filelions.top",
-        "filelions.to",
-        "filelions.live",
-        "streamtape.com",
-        "streamtape.to",
-        "uqload.is",
-        "uqload.vc",
-        "uqload.to",
-        "ok.ru",
-        "mixdrop.ps",
-        "mixdrop.ag",
-        "mixdrop.co",
-        "yourupload.com",
-        "www.yourupload.com",
-        "mp4upload.com",
-        "www.mp4upload.com"
-      ],
-      "description": "Anime\n\nCatalog・3,600+",
-      "capabilities": [
-        "browse",
-        "search",
-        "genres",
-        "details",
-        "chapters",
-        "videos"
-      ],
-      "language": "es",
-      "contentRating": "mature",
-      "author": "matsukiender-star",
-      "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "16f8d60d8f9f23c23cfe1d4c77841138afaf455b03a001d209c3b970971e4064"
-    },
-    {
-      "id": "veranime",
-      "name": "VerAnime",
-      "version": "1.0.0",
-      "medium": "anime",
-      "website": "https://verani.me",
-      "iconUrl": "https://verani.me/wp-content/uploads/2026/01/3cbecfeb-f59b-459d-ab8e-7dff9eecbce9_removalai_preview-150x150.png",
-      "hosts": [
-        "verani.me",
-        "player.zilla-networks.com",
-        "voe.sx",
-        "*.voe.sx",
-        "shanelocaldog.com",
-        "luluvdo.com",
-        "lulustream.com",
-        "lulu.st",
-        "filelions.top",
-        "filelions.to",
-        "filelions.live",
-        "uqload.is",
-        "uqload.vc",
-        "uqload.to",
-        "ok.ru",
-        "mixdrop.ps",
-        "mixdrop.ag",
-        "mixdrop.co",
-        "yourupload.com",
-        "www.yourupload.com",
-        "mp4upload.com",
-        "www.mp4upload.com",
-        "mxdrop.sx",
-        "mixdrop.to"
-      ],
-      "description": "Anime\n\nCatalog・1,300+",
-      "capabilities": [
-        "browse",
-        "search",
-        "genres",
-        "details",
-        "chapters",
-        "videos"
-      ],
-      "language": "es",
-      "contentRating": "mature",
-      "author": "matsukiender-star",
-      "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "88e2224a5072df054a0c31e838e6beb25b35f8005324de4b0831d8b9cd852fea"
-    },
-    {
-      "id": "animemovil",
-      "name": "AnimeMovil",
-      "version": "1.0.0",
-      "medium": "anime",
-      "website": "https://tvanime.tv",
-      "iconUrl": "https://tvanime.tv/favicon.ico",
-      "description": "Anime\n\nCatalog・5,600+",
-      "capabilities": [
-        "browse",
-        "search",
-        "genres",
-        "details",
-        "chapters",
-        "videos"
-      ],
-      "language": "es",
-      "contentRating": "adult",
-      "author": "matsukiender-star",
-      "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "d55c00892e18c79547a943e1a1ad1f2eee7dbc939857a15379c66539900bf0f0"
-    },
-    {
-      "id": "legionanime",
-      "name": "LegionAnime",
-      "version": "1.0.0",
-      "medium": "anime",
-      "website": "https://legionanime.xyz",
-      "iconUrl": "https://legionanime.xyz/assets/images/favicon.png",
-      "description": "Anime\n\nCatalog・3,000+",
-      "capabilities": [
-        "browse",
-        "search",
-        "genres",
-        "details",
-        "chapters",
-        "videos"
-      ],
-      "language": "es",
-      "contentRating": "mature",
-      "author": "matsukiender-star",
-      "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "a13b22d1c697fcb5095f22c77494adbe8924ac039e4b47c4794d6b6e066c9a8a"
-    },
-    {
-      "id": "beatzanime",
-      "name": "Beatz Anime",
-      "version": "1.0.0",
-      "medium": "anime",
-      "website": "https://www.beatz-anime.net",
-      "iconUrl": "https://www.beatz-anime.net/img/beatz-anime-ico.ico",
-      "hosts": [
-        "www.beatz-anime.net",
-        "bz.beatz-anime.net"
-      ],
-      "description": "Anime\n\nCatalog・200+",
-      "capabilities": [
-        "browse",
-        "search",
-        "genres",
-        "details",
-        "chapters",
-        "videos"
-      ],
-      "language": "es",
-      "contentRating": "mature",
-      "author": "matsukiender-star",
-      "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "fbb409f0d77573e82cb4e517a066f3e28d2ea2b5f87cd384769f5f1d904385be"
     },
     {
       "id": "animejl",
@@ -1744,6 +1104,28 @@
       "sha256": "8f1574c286ba3891498e2a7528df1e7e06e12e89c16dd0ea63b3e975a9448237"
     },
     {
+      "id": "animemovil",
+      "name": "AnimeMovil",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://tvanime.tv",
+      "iconUrl": "https://tvanime.tv/favicon.ico",
+      "description": "Anime\n\nCatalog・5,600+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "d55c00892e18c79547a943e1a1ad1f2eee7dbc939857a15379c66539900bf0f0"
+    },
+    {
       "id": "animeonlineninja",
       "name": "AnimeOnline.Ninja",
       "version": "1.0.0",
@@ -1838,6 +1220,145 @@
       "sha256": "feb1e05b71541edf33bd461d9e5d764db5c2675effd6b706b86179c46b8611fa"
     },
     {
+      "id": "asialiveaction",
+      "name": "AsiaLiveAction",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://asialiveaction.com",
+      "iconUrl": "https://asialiveaction.com/wp-content/uploads/cropped-favicon-200x200.png",
+      "description": "Asian Dramas・Movies・Live Action\n\nCatalog・1,700+\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "3dd35e5053444bb319340ab8a1e7525dd8096f60680499f2a1a96cd1fdf5d4e8"
+    },
+    {
+      "id": "beatzanime",
+      "name": "Beatz Anime",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://www.beatz-anime.net",
+      "iconUrl": "https://www.beatz-anime.net/img/beatz-anime-ico.ico",
+      "hosts": [
+        "www.beatz-anime.net",
+        "bz.beatz-anime.net"
+      ],
+      "description": "Anime\n\nCatalog・200+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "fbb409f0d77573e82cb4e517a066f3e28d2ea2b5f87cd384769f5f1d904385be"
+    },
+    {
+      "id": "cinecalidad",
+      "name": "CineCalidad",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://cinecalidad.org",
+      "iconUrl": "https://cinecalidad.org/favicon.ico",
+      "hosts": [
+        "cinecalidad.org",
+        "vimeos.net",
+        "*.vimeos.net",
+        "vimeos.zip",
+        "*.vimeos.zip"
+      ],
+      "description": "Movies・Series\n\nCatalog・9,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "sha256": "6cbe357082dd2aafa79a56de481e0deafa87e700ad3265f5a912501d775bd413"
+    },
+    {
+      "id": "cineplus123",
+      "name": "CinePlus123",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://cineplus123.org",
+      "iconUrl": "https://cineplus123.org/wp-content/uploads/2026/08/cropped-favicon-512-192x192.png",
+      "description": "Movies & Series (Spanish)\n\nCatalog: 10,000+\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "409f332362f22e9099cef7e48ab50f764994734ac7fc427f3c3acd386a017e9a"
+    },
+    {
+      "id": "cuevana",
+      "name": "Cuevana",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://www.cuevana3.eu",
+      "iconUrl": "https://www.cuevana3.eu/favicon.ico",
+      "description": "Movies・Series",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "sha256": "bfa90c2d8b8a0d3d98916a96ea9e1aa18d2e5126794a50848a8e03846ac4f720"
+    },
+    {
+      "id": "doramasflix",
+      "name": "DoramasFlix",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://doramasflix.in",
+      "iconUrl": "https://doramasflix.in/favicon.ico",
+      "description": "Asian Dramas・Movies・TV Shows\n\nCatalog・3,500+\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "25fe7f26cce96ccf404e248a422bc4a97f9c047365fa9fd95c18000514464f9f"
+    },
+    {
       "id": "doramasyt",
       "name": "DoramasYT",
       "version": "1.0.0",
@@ -1878,26 +1399,50 @@
       "sha256": "921c3b1977eaf4e2bde41f0b99a8108181536bfae401c29b953126054751a5de"
     },
     {
-      "id": "doramasflix",
-      "name": "DoramasFlix",
+      "id": "dragontranslation",
+      "name": "Dragon Translation",
       "version": "1.0.0",
-      "medium": "anime",
-      "website": "https://doramasflix.in",
-      "iconUrl": "https://doramasflix.in/favicon.ico",
-      "description": "Asian Dramas・Movies・TV Shows\n\nCatalog・3,500+\n\nRestrictions:\n・Rate Limit",
+      "medium": "comics",
+      "website": "https://dragontranslation.org",
+      "description": "Manhwa・Manga・Manhua",
       "capabilities": [
         "browse",
         "search",
         "genres",
         "details",
         "chapters",
-        "videos"
+        "reader"
       ],
       "language": "es",
-      "contentRating": "mature",
-      "author": "matsukiender-star",
-      "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "25fe7f26cce96ccf404e248a422bc4a97f9c047365fa9fd95c18000514464f9f"
+      "contentRating": "adult",
+      "iconUrl": "https://dragontranslation.org/favicon.ico",
+      "sha256": "d132e7a888a9af00b46deb50fff16b5dad512313d91bfeff5c821e6a973a08c3",
+      "hosts": [
+        "dragontranslation.org"
+      ]
+    },
+    {
+      "id": "eternalmangas",
+      "name": "Eternal Mangas",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://eternalmangas.org",
+      "description": "Manhwa・Manhua・Manga",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "iconUrl": "https://eternalmangas.org/favicon.ico",
+      "sha256": "1a48775342eb63d17f8c63b3905dc4de2f07b74cf4f596c8ef01bc7349fd1c4a",
+      "hosts": [
+        "eternalmangas.org"
+      ]
     },
     {
       "id": "gnula",
@@ -1929,6 +1474,422 @@
       "sha256": "e32bbdc6eb0a52c99904d0a94926010f8abf961ca5e834e3daf964463de67bcc"
     },
     {
+      "id": "hentaila",
+      "name": "HentaiLA",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://hentaila.com",
+      "iconUrl": "https://hentaila.com/favicon.ico",
+      "description": "Hentai",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "sha256": "1cc3df7987101a8bcec7ecae3368e2719af8d289c6703fb309c2b5bfe99508b7"
+    },
+    {
+      "id": "ikigaimangas",
+      "name": "Ikigai Mangas",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://ikigaimangas.com",
+      "description": "Manhwa・Manhua・Manga\n\nCatalog・6,000+\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "iconUrl": "https://ikigaimangas.com/favicon.ico",
+      "sha256": "b9b166536c1dfbe04a815ce73f8cd8eec9bd7213adc2ef217aecac82b8868655"
+    },
+    {
+      "id": "jkanime",
+      "name": "JKAnime",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://jkanime.net",
+      "iconUrl": "https://jkanime.net/favicon.ico",
+      "description": "Anime",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "sha256": "9744db9d6b196b825f4cb4ab306d3f8430fb8a431dc56e943fb5211f4fab5bc9"
+    },
+    {
+      "id": "katanime",
+      "name": "Katanime",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://katanime.net",
+      "iconUrl": "https://katanime.net/favicon.ico",
+      "hosts": [
+        "katanime.net",
+        "voe.sx",
+        "*.voe.sx",
+        "shanelocaldog.com",
+        "luluvdo.com",
+        "lulustream.com",
+        "lulu.st",
+        "filelions.top",
+        "filelions.to",
+        "filelions.live",
+        "streamtape.com",
+        "streamtape.to",
+        "uqload.is",
+        "uqload.vc",
+        "uqload.to",
+        "ok.ru",
+        "mixdrop.ps",
+        "mixdrop.ag",
+        "mixdrop.co",
+        "yourupload.com",
+        "www.yourupload.com",
+        "mp4upload.com",
+        "www.mp4upload.com"
+      ],
+      "description": "Anime\n\nCatalog・3,600+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "16f8d60d8f9f23c23cfe1d4c77841138afaf455b03a001d209c3b970971e4064"
+    },
+    {
+      "id": "latanime",
+      "name": "Latanime",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://latanime.org",
+      "iconUrl": "https://latanime.org/favicon.ico",
+      "description": "Anime",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "sha256": "08a66b70c4f07b0dbae2ff273b4187de618144798fedd55f3247b51b68d0437d"
+    },
+    {
+      "id": "leercapitulo",
+      "name": "LeerCapitulo",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://www.leercapitulo.co",
+      "description": "Manga・Manhwa・Manhua\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "iconUrl": "https://www.leercapitulo.co/favicon.ico",
+      "sha256": "811a3a1db271db24474556190661a06cdfe1dbd90b2cb2e461c70b906646af51",
+      "hosts": [
+        "www.leercapitulo.co"
+      ]
+    },
+    {
+      "id": "leermanhwas",
+      "name": "Leer Manhwas",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://leermanhwas.com",
+      "description": "Manhwa",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "iconUrl": "https://leermanhwas.com/images/180x180.jpg",
+      "sha256": "8a3667e0bae14d1106077aa3f15675cb8fdfe1572c4e58f8d7019e7d5327e69e",
+      "hosts": [
+        "leermanhwas.com"
+      ]
+    },
+    {
+      "id": "legionanime",
+      "name": "LegionAnime",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://legionanime.xyz",
+      "iconUrl": "https://legionanime.xyz/assets/images/favicon.png",
+      "description": "Anime\n\nCatalog・3,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "a13b22d1c697fcb5095f22c77494adbe8924ac039e4b47c4794d6b6e066c9a8a"
+    },
+    {
+      "id": "mangasin",
+      "name": "Mangas.in",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://m440.in",
+      "description": "Manga・Manhwa・Manhua\n\nRestrictions:\n・Web View\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "iconUrl": "https://m440.in/favicon.ico",
+      "sha256": "8ba5f64c73c7742b50873231551651aff08d3d0452064d9ae93623daf05bd174",
+      "hosts": [
+        "m440.in"
+      ]
+    },
+    {
+      "id": "mangatv",
+      "name": "MangaTV",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://mangatv.net",
+      "description": "Manga・Manhwa・Manhua",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "iconUrl": "https://mangatv.net/favicon.ico",
+      "sha256": "050eb01e93374c18aa57a5f3a8788c58afe011f89fc46521e4cf5b752167849f",
+      "hosts": [
+        "mangatv.net"
+      ]
+    },
+    {
+      "id": "mangolibreria",
+      "name": "MangoLibreria",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://lectorfenix.com",
+      "description": "Manhwa・Manhua・Manga\n\nCatalog・2,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "iconUrl": "https://lectorfenix.com/favicon.ico",
+      "sha256": "111297184c7b175c5f785750fce5607f5d825d043b41e31c433cc916b13d7f6f",
+      "hosts": [
+        "lectorfenix.com"
+      ]
+    },
+    {
+      "id": "manhwalatino",
+      "name": "Manhwa Latino",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://manhwa-latino.com",
+      "description": "Manhwa・Manhua・Manga\n\nRestrictions:\n・Cloudflare Checks\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "iconUrl": "https://manhwa-latino.com/favicon.ico",
+      "sha256": "2b365116880c81e32c9501ca0a95e3063b2317739bb6c9a926a8618bfa6792e7",
+      "hosts": [
+        "manhwa-latino.com"
+      ]
+    },
+    {
+      "id": "manhwaweb",
+      "name": "ManhwaWeb",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://manhwaweb.com",
+      "description": "Manhwa・Manhua・Manga",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "iconUrl": "https://manhwaweb.com/favicon.ico",
+      "sha256": "214ba92b94b4887c6a86b4a925a2cfe1e17b5f26dbac8cb539f9644f1edc25c2",
+      "hosts": [
+        "api.manhwaweb.com"
+      ]
+    },
+    {
+      "id": "marmota",
+      "name": "Marmota",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://marmota.me",
+      "description": "Comics",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "safe",
+      "iconUrl": "https://marmota.me/favicon.ico",
+      "sha256": "2424c0de883d68aabce26099da2e666a7ff4b9116221a3ff1c7d015fa086e654",
+      "hosts": [
+        "marmota.me",
+        "*.marmota.me"
+      ]
+    },
+    {
+      "id": "monoschinos",
+      "name": "MonosChinos",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://monoschinos.st",
+      "iconUrl": "https://monoschinos.st/favicon.ico",
+      "description": "Anime\n\nCatalog・4,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "sha256": "9aee178e007804e67f21b739960c78545fb00b62656d362a5c39c9e8b04b2d51"
+    },
+    {
+      "id": "mundodonghua",
+      "name": "MundoDonghua",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://www.mundodonghua.com",
+      "iconUrl": "https://www.mundodonghua.com/images/favicon.png",
+      "description": "Donghua\n\nCatalog・350+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "92bf6a92ae0fc413ecfe977d9bf7eced508a5a509ba0280afbe31c9bfb2a7313"
+    },
+    {
+      "id": "novelaenespanol",
+      "name": "Novela en Español",
+      "version": "1.0.0",
+      "medium": "novel",
+      "website": "https://novelaenespanol.com",
+      "hosts": [
+        "novelaenespanol.com"
+      ],
+      "description": "Light Novels・Web Novels\n\nCatalog・390+\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "2103c3802d023bebfda0d6939955c2189b27fb363fa13e367b45c2b2062ef97b"
+    },
+    {
+      "id": "novelasligeras",
+      "name": "NovelasLigeras",
+      "version": "1.0.1",
+      "medium": "novel",
+      "website": "https://novelasligeras.net",
+      "hosts": [
+        "novelasligeras.net"
+      ],
+      "description": "Light Novels・Web Novels\n\nCatalog・300+\n\nRestrictions:\n・Cloudflare Checks\n・Only free chapters are listed",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "8297b62269f283a93276fb871bbc700d27f4c343e76dd25a073e74691c912952"
+    },
+    {
       "id": "pelisforte",
       "name": "PelisForte",
       "version": "1.0.0",
@@ -1956,13 +1917,13 @@
       "sha256": "b15839b65163f5fc670bf6f15ca74db8d943e90603f97ddfbeecd2e9e895ebe1"
     },
     {
-      "id": "mundodonghua",
-      "name": "MundoDonghua",
+      "id": "poseidonhd",
+      "name": "PoseidonHD",
       "version": "1.0.0",
       "medium": "anime",
-      "website": "https://www.mundodonghua.com",
-      "iconUrl": "https://www.mundodonghua.com/images/favicon.png",
-      "description": "Donghua\n\nCatalog・350+",
+      "website": "https://www.poseidonhd2.co",
+      "iconUrl": "https://www.poseidonhd2.co/favicon.ico",
+      "description": "Movies・Series",
       "capabilities": [
         "browse",
         "search",
@@ -1973,40 +1934,39 @@
       ],
       "language": "es",
       "contentRating": "mature",
-      "author": "matsukiender-star",
-      "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "92bf6a92ae0fc413ecfe977d9bf7eced508a5a509ba0280afbe31c9bfb2a7313"
+      "sha256": "4e2c34e36d360b2a7eabda470bf76dc775d439b87f2841d28d44516104140d1f"
     },
     {
-      "id": "cineplus123",
-      "name": "CinePlus123",
+      "id": "shadowmanga",
+      "name": "Shadow Manga",
       "version": "1.0.0",
-      "medium": "anime",
-      "website": "https://cineplus123.org",
-      "iconUrl": "https://cineplus123.org/wp-content/uploads/2026/08/cropped-favicon-512-192x192.png",
-      "description": "Movies & Series (Spanish)\n\nCatalog: 10,000+\n\nRestrictions:\n・Rate Limit",
+      "medium": "comics",
+      "website": "https://shademanga.com",
+      "description": "Manga・Manhwa・Manhua",
       "capabilities": [
         "browse",
         "search",
         "genres",
         "details",
         "chapters",
-        "videos"
+        "reader"
       ],
       "language": "es",
       "contentRating": "mature",
-      "author": "matsukiender-star",
-      "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "409f332362f22e9099cef7e48ab50f764994734ac7fc427f3c3acd386a017e9a"
+      "iconUrl": "https://shademanga.com/favicon.ico",
+      "sha256": "a33610bbc0ea3495357658d2043ba5c1697618670d38c916bdef90c8cb274ff1",
+      "hosts": [
+        "shademanga.com"
+      ]
     },
     {
-      "id": "asialiveaction",
-      "name": "AsiaLiveAction",
+      "id": "tioanime",
+      "name": "TioAnime",
       "version": "1.0.0",
       "medium": "anime",
-      "website": "https://asialiveaction.com",
-      "iconUrl": "https://asialiveaction.com/wp-content/uploads/cropped-favicon-200x200.png",
-      "description": "Asian Dramas・Movies・Live Action\n\nCatalog・1,700+\n\nRestrictions:\n・Rate Limit",
+      "website": "https://tioanime.com",
+      "iconUrl": "https://tioanime.com/favicon.ico",
+      "description": "Anime",
       "capabilities": [
         "browse",
         "search",
@@ -2017,9 +1977,7 @@
       ],
       "language": "es",
       "contentRating": "mature",
-      "author": "matsukiender-star",
-      "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "3dd35e5053444bb319340ab8a1e7525dd8096f60680499f2a1a96cd1fdf5d4e8"
+      "sha256": "b7fe83f8bb0ddacca2426bf2835f62d84ae46f2b9d165074dff8249c4fe0b096"
     },
     {
       "id": "traduccionesisekai",
@@ -2045,27 +2003,165 @@
       "sha256": "23f6c2ce4fa1dec5894f131db379f5fb291ebb43cde7267a5b82085628dbd54e"
     },
     {
-      "id": "novelaenespanol",
-      "name": "Novela en Español",
+      "id": "veranime",
+      "name": "VerAnime",
       "version": "1.0.0",
-      "medium": "novel",
-      "website": "https://novelaenespanol.com",
+      "medium": "anime",
+      "website": "https://verani.me",
+      "iconUrl": "https://verani.me/wp-content/uploads/2026/01/3cbecfeb-f59b-459d-ab8e-7dff9eecbce9_removalai_preview-150x150.png",
       "hosts": [
-        "novelaenespanol.com"
+        "verani.me",
+        "player.zilla-networks.com",
+        "voe.sx",
+        "*.voe.sx",
+        "shanelocaldog.com",
+        "luluvdo.com",
+        "lulustream.com",
+        "lulu.st",
+        "filelions.top",
+        "filelions.to",
+        "filelions.live",
+        "uqload.is",
+        "uqload.vc",
+        "uqload.to",
+        "ok.ru",
+        "mixdrop.ps",
+        "mixdrop.ag",
+        "mixdrop.co",
+        "yourupload.com",
+        "www.yourupload.com",
+        "mp4upload.com",
+        "www.mp4upload.com",
+        "mxdrop.sx",
+        "mixdrop.to"
       ],
-      "description": "Light Novels・Web Novels\n\nCatalog・390+\n\nRestrictions:\n・Rate Limit",
+      "description": "Anime\n\nCatalog・1,300+",
       "capabilities": [
         "browse",
         "search",
+        "genres",
         "details",
         "chapters",
-        "reader"
+        "videos"
       ],
       "language": "es",
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "2103c3802d023bebfda0d6939955c2189b27fb363fa13e367b45c2b2062ef97b"
+      "sha256": "88e2224a5072df054a0c31e838e6beb25b35f8005324de4b0831d8b9cd852fea"
+    },
+    {
+      "id": "veranimes",
+      "name": "VerAnimes",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://wwv.veranimes.net",
+      "iconUrl": "https://wwv.veranimes.net/cdn/img/favicon.png",
+      "hosts": [
+        "wwv.veranimes.net",
+        "voe.sx",
+        "*.voe.sx",
+        "shanelocaldog.com",
+        "filelions.top",
+        "filelions.to",
+        "filelions.live",
+        "luluvdo.com",
+        "lulustream.com",
+        "lulu.st",
+        "uqload.is",
+        "uqload.vc",
+        "uqload.to",
+        "ok.ru",
+        "mixdrop.ps",
+        "mixdrop.ag",
+        "mixdrop.co",
+        "yourupload.com",
+        "www.yourupload.com",
+        "mp4upload.com",
+        "www.mp4upload.com"
+      ],
+      "description": "Anime\n\nCatalog・6,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "91a1f31c61945c135e1b4201656b854bc7a1e72605fbe82f2930f8fd519792e5"
+    },
+    {
+      "id": "uniquestream",
+      "name": "UniqueStream",
+      "version": "1.1.0",
+      "medium": "anime",
+      "website": "https://anime.uniquestream.net",
+      "iconUrl": "https://anime.uniquestream.net/favicon.ico",
+      "hosts": [
+        "anime.uniquestream.net"
+      ],
+      "description": "Anime\n\nCatalog・3,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "25112f3fbb744151d88175c83cf23c3022052a7e7c49536ef188b013420f9e00",
+      "settingsSchema": [
+        {
+          "type": "select",
+          "key": "audio",
+          "label": "Audio language",
+          "default": "ja-JP",
+          "options": [
+            {
+              "value": "ja-JP",
+              "label": "Japanese"
+            },
+            {
+              "value": "es-419",
+              "label": "Spanish (Latin America)"
+            },
+            {
+              "value": "es-ES",
+              "label": "Spanish (Spain)"
+            },
+            {
+              "value": "en-US",
+              "label": "English"
+            },
+            {
+              "value": "pt-BR",
+              "label": "Portuguese (Brazil)"
+            },
+            {
+              "value": "fr-FR",
+              "label": "French"
+            },
+            {
+              "value": "de-DE",
+              "label": "German"
+            },
+            {
+              "value": "it-IT",
+              "label": "Italian"
+            },
+            {
+              "value": "hi-IN",
+              "label": "Hindi"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
