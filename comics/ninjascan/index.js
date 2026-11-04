@@ -1,9 +1,9 @@
 const CONFIG = {
-  "name": "Anisa Scans",
-  "origin": "https://anisascans.in",
+  "name": "Ninja Scan",
+  "origin": "https://ninjacomics.xyz",
   "archivePath": "/manga/",
   "detailPrefix": "manga",
-  "pageSize": 36,
+  "pageSize": 12,
   "referer": true,
   "imageHeaders": false,
   "genres": "checkbox",
@@ -27,30 +27,107 @@ const CONFIG = {
     {
       "id": "views",
       "name": "Most Views"
+    },
+    {
+      "id": "trending",
+      "name": "Trending"
     }
   ]
 };
 const SITE_BASE = CONFIG.origin;
+const MEDIUM = CONFIG.medium || 'comics';
 const UA =
   'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1';
 
-const RELATIVE_UNIT_MS = {
-  sec: 1000, secs: 1000, second: 1000, seconds: 1000,
-  min: 60000, mins: 60000, minute: 60000, minutes: 60000,
-  hour: 3600000, hours: 3600000,
-  day: 86400000, days: 86400000,
-  week: 604800000, weeks: 604800000,
-  month: 2592000000, months: 2592000000,
-  year: 31536000000, years: 31536000000,
-};
-const MONTHS = {
-  jan: 0, january: 0, feb: 1, february: 1, mar: 2, march: 2, apr: 3, april: 3, may: 4, jun: 5, june: 5,
-  jul: 6, july: 6, aug: 7, august: 7, sep: 8, sept: 8, september: 8, oct: 9, october: 9, nov: 10, november: 10,
-  dec: 11, december: 11,
+function plain(text) {
+  let t = String(text == null ? '' : text).toLowerCase();
+  try {
+    t = t.normalize('NFD').replace(/[̀-ͯ]/g, '');
+  } catch (e) {
+  }
+  return t.replace(/\u0131/g, 'i').replace(/\s+/g, ' ').trim();
+}
+
+const UNIT_WORDS = [
+  [1000, ['sec', 'seg', 'saniye', 'detik', 'giay', 'sekunde', 'ثانية', 'ثواني', 'ثوان', 'วินาที']],
+  [60000, ['min', 'dakika', 'menit', 'phut', 'دقيقة', 'دقائق', 'دقايق', 'นาที']],
+  [3600000, ['hour', 'hr', 'hora', 'heure', 'saat', 'jam', 'gio', 'stunde', 'ora', 'ore', 'ساعة', 'ساعات', 'ชั่วโมง']],
+  [86400000, ['day', 'dia', 'jour', 'gun', 'hari', 'ngay', 'tag', 'giorn', 'يوم', 'أيام', 'ايام', 'วัน']],
+  [604800000, ['week', 'sem', 'hafta', 'minggu', 'tuan', 'woche', 'settiman', 'أسبوع', 'اسبوع', 'أسابيع', 'اسابيع', 'สัปดาห์']],
+  [2592000000, ['month', 'mes', 'mois', 'ay', 'bulan', 'thang', 'monat', 'mese', 'شهر', 'أشهر', 'اشهر', 'شهور', 'เดือน']],
+  [31536000000, ['year', 'ano', 'an', 'yil', 'tahun', 'nam', 'jahr', 'anno', 'سنة', 'سنوات', 'عام', 'ปี']],
+];
+
+function unitMs(word) {
+  const w = plain(word);
+  if (!w) return undefined;
+  let best = null;
+  UNIT_WORDS.forEach(([ms, stems]) => {
+    stems.forEach((stem) => {
+      const ok = /^[a-z]+$/.test(stem) ? (stem.length <= 2 ? w === stem || w === stem + 's' : w.indexOf(stem) === 0) : w === stem || w.indexOf(stem) === 0;
+      if (ok && (!best || stem.length > best.len)) best = { ms, len: stem.length };
+    });
+  });
+  return best ? best.ms : undefined;
+}
+
+const MONTH_NAMES = {
+  jan: 0, january: 0, ene: 0, enero: 0, janeiro: 0, janvier: 0, ocak: 0, januari: 0, januar: 0, gennaio: 0,
+  feb: 1, february: 1, febrero: 1, fev: 1, fevereiro: 1, fevrier: 1, subat: 1, februari: 1, februar: 1, febbraio: 1,
+  mar: 2, march: 2, marzo: 2, marco: 2, mars: 2, mart: 2, maret: 2, marz: 2,
+  apr: 3, april: 3, abr: 3, abril: 3, avril: 3, nisan: 3, aprile: 3,
+  may: 4, mayo: 4, maio: 4, mai: 4, mayis: 4, mei: 4, maggio: 4,
+  jun: 5, june: 5, junio: 5, junho: 5, juin: 5, haziran: 5, juni: 5, giugno: 5,
+  jul: 6, july: 6, julio: 6, julho: 6, juillet: 6, temmuz: 6, juli: 6, luglio: 6,
+  aug: 7, august: 7, ago: 7, set: 8, agosto: 7, aout: 7, agustos: 7, agustus: 7, augustus: 7,
+  sep: 8, sept: 8, september: 8, septiembre: 8, setembro: 8, septembre: 8, eylul: 8, settembre: 8,
+  oct: 9, october: 9, out: 9, octubre: 9, outubro: 9, octobre: 9, ekim: 9, oktober: 9, ottobre: 9, okt: 9,
+  nov: 10, november: 10, noviembre: 10, novembro: 10, novembre: 10, kasim: 10,
+  มกราคม: 0, กุมภาพันธ์: 1, มีนาคม: 2, เมษายน: 3, พฤษภาคม: 4, มิถุนายน: 5,
+  กรกฎาคม: 6, สิงหาคม: 7, กันยายน: 8, ตุลาคม: 9, พฤศจิกายน: 10, ธันวาคม: 11,
+  يناير: 0, فبراير: 1, مارس: 2, أبريل: 3, ابريل: 3, مايو: 4, يونيو: 5, يوليو: 6, أغسطس: 7, اغسطس: 7, سبتمبر: 8, أكتوبر: 9, اكتوبر: 9, نوفمبر: 10, ديسمبر: 11,
+  января: 0, февраля: 1, марта: 2, апреля: 3, мая: 4, июня: 5, июля: 6, августа: 7, сентября: 8, октября: 9, ноября: 10, декабря: 11,
+  dec: 11, december: 11, dic: 11, diciembre: 11, dez: 11, dezembro: 11, decembre: 11, aralik: 11, desember: 11, des: 11, dezember: 11, dicembre: 11,
 };
 
-const ADULT_GENRE = /^(adult|hentai|smut|erotica|nsfw|18\+|mature romance|sexual content)$/i;
-const SUGGESTIVE_GENRE = /^(mature|ecchi|borderline h)$/i;
+const YESTERDAY = /^(yesterday|ayer|ontem|hier|dun|kemarin|ieri|gestern|أمس|امس|hom qua|เมื่อวาน)$/;
+const TODAY = /^(just now|today|now|hoy|hoje|aujourd'hui|bugun|hari ini|oggi|heute|اليوم|ahora|agora|maintenant|simdi|baru saja|vua xong|hom nay)$/;
+
+function parseReleaseDate(text) {
+  const raw = String(text == null ? '' : text).replace(/\s+/g, ' ').trim();
+  if (!raw) return undefined;
+  const t = plain(raw).replace(/\s*,\s*/g, ' ').replace(/\bde\b|\bdel\b|\bdo\b|\bda\b|\bdi\b/g, ' ').replace(/\s+/g, ' ').trim();
+  if (TODAY.test(t)) return Date.now();
+  if (YESTERDAY.test(t)) return Date.now() - 86400000;
+  let m = /(\d+)\s*([^\d\s.,]+)/.exec(t);
+  if (m && /\b(ago|atras|hace|ha|il y a|once|lalu|truoc|vor|fa)\b|منذ|ที่แล้ว|ที่ผ่านมา/.test(t)) {
+    const ms = unitMs(m[2]);
+    if (ms !== undefined) return Date.now() - parseInt(m[1], 10) * ms;
+  }
+  m = /^(\d{1,2})[./-](\d{1,2})[./-](\d{2,4})$/.exec(t);
+  if (m) {
+    const year = m[3].length === 2 ? 2000 + Number(m[3]) : Number(m[3]);
+    return Number(m[2]) > 12 ? Date.UTC(year, Number(m[1]) - 1, Number(m[2])) : Date.UTC(year, Number(m[2]) - 1, Number(m[1]));
+  }
+  m = /^(\d{4})[./-](\d{1,2})[./-](\d{1,2})/.exec(t);
+  if (m) return Date.UTC(+m[1], +m[2] - 1, +m[3]);
+  m = /^([^\d\s.]+)\.? (\d{1,2})(?:st|nd|rd|th)? (\d{4})$/.exec(t);
+  if (m && MONTH_NAMES[m[1]] !== undefined) return Date.UTC(+m[3], MONTH_NAMES[m[1]], +m[2]);
+  m = /^(\d{1,2})(?:st|nd|rd|th|\.)? ([^\d\s.]+)\.? (\d{4})$/.exec(t);
+  if (m && MONTH_NAMES[m[2]] !== undefined) return Date.UTC(+m[3], MONTH_NAMES[m[2]], +m[1]);
+  return undefined;
+}
+
+const ADULT_GENRE_WORDS = /^(adult|adults|adulto|adulte|adultos|adultes|hentai|smut|erotica|erotico|erotique|erotik|erotic|nsfw|\+?18\+?|18\+|mature romance|sexual content|sin censura|uncensored|dewasa|yetiskin|nguoi lon|ผู้ใหญ่|بالغين|للبالغين|r-?18|ecchi 18)$/;
+const SUGGESTIVE_GENRE_WORDS = /^(mature|maduro|madura|maduros|ecchi|borderline h|olgun|dewasa muda|truong thanh|ناضج|ايتشي|أيتشي|إيتشي|اتشي)$/;
+
+function genreAge(names) {
+  const set = (names || []).map((n) => plain(n));
+  if (set.some((n) => ADULT_GENRE_WORDS.test(n))) return 18;
+  if (set.some((n) => SUGGESTIVE_GENRE_WORDS.test(n))) return 16;
+  return 0;
+}
+
 
 function fixMojibake(text) {
   if (!/[\u00c2-\u00f4][\u0080-\u00bf]/.test(text)) return text;
@@ -68,7 +145,7 @@ function withImageAuth(target) {
 }
 
 function cleanText(text) {
-  return (text || '').replace(/\s+/g, ' ').trim();
+  return (text || '').replace(/\u00ad/g, '').replace(/\s+/g, ' ').trim();
 }
 
 function mapStatus(text) {
@@ -78,24 +155,6 @@ function mapStatus(text) {
   if (s.includes('hiatus') || s.includes('on hold') || s.includes('paused')) return 'HIATUS';
   if (s.includes('cancel') || s.includes('dropped') || s.includes('discontinued')) return 'CANCELLED';
   return 'UNKNOWN';
-}
-
-function parseReleaseDate(text) {
-  const t = cleanText(text).toLowerCase();
-  if (!t) return undefined;
-  let m = /^(\d+)\s*([a-z]+)\s+ago$/.exec(t);
-  if (m && RELATIVE_UNIT_MS[m[2]] !== undefined) return Date.now() - parseInt(m[1], 10) * RELATIVE_UNIT_MS[m[2]];
-  if (/^(just now|today)$/.test(t)) return Date.now();
-  if (t === 'yesterday') return Date.now() - 86400000;
-  m = /^(\d{1,2})[./-](\d{1,2})[./-](\d{4})$/.exec(t);
-  if (m) return Date.UTC(+m[3], +m[2] - 1, +m[1]);
-  m = /^(\d{4})-(\d{1,2})-(\d{1,2})/.exec(t);
-  if (m) return Date.UTC(+m[1], +m[2] - 1, +m[3]);
-  m = /^([a-z]+)\.?\s+(\d{1,2})(?:st|nd|rd|th)?,?\s+(\d{4})$/.exec(t);
-  if (m && MONTHS[m[1]] !== undefined) return Date.UTC(+m[3], MONTHS[m[1]], +m[2]);
-  m = /^(\d{1,2})(?:st|nd|rd|th)?\s+([a-z]+)\.?,?\s+(\d{4})$/.exec(t);
-  if (m && MONTHS[m[2]] !== undefined) return Date.UTC(+m[3], MONTHS[m[2]], +m[1]);
-  return undefined;
 }
 
 function chapterNumberOf(slug, name) {
@@ -117,11 +176,20 @@ function idFromHref(href) {
   return prefix === CONFIG.detailPrefix ? slug : `${prefix}~${slug}`;
 }
 
+function seg(piece) {
+  let text = String(piece);
+  try {
+    text = decodeURIComponent(text);
+  } catch (e) {
+  }
+  return encodeURIComponent(text);
+}
+
 function detailUrlOf(mangaId) {
   const at = String(mangaId).indexOf('~');
   const prefix = at < 0 ? CONFIG.detailPrefix : mangaId.slice(0, at);
   const slug = at < 0 ? mangaId : mangaId.slice(at + 1);
-  return `${SITE_BASE}/${encodeURIComponent(prefix)}/${encodeURIComponent(slug)}/`;
+  return `${SITE_BASE}/${seg(prefix)}/${seg(slug)}/`;
 }
 
 function absolute(url) {
@@ -144,6 +212,7 @@ function coverFrom($img) {
   let pick = (best ? best.url : direct).trim();
   if (/^data:/.test(pick) || /\/(dflazy|lazy|placeholder)[^/]*\.(gif|png|jpe?g|svg)$/i.test(pick)) pick = direct.trim();
   if (CONFIG.coverUpgrade) pick = pick.replace('-' + CONFIG.coverUpgrade[0] + '.', CONFIG.coverUpgrade[1] ? '-' + CONFIG.coverUpgrade[1] + '.' : '.');
+  if (/^https?:\/\/i\d\.wp\.com\//i.test(pick) && pick.indexOf('?') < 0) pick += '?w=300';
   return absolute(pick);
 }
 
@@ -185,7 +254,7 @@ function parseGrid($) {
     const title = cleanText(card.find('.post-title a').first().text()) || cleanText(link.attr('title'));
     if (!title) return;
     seen.add(mangaId);
-    const manga = { mangaId, title, image: coverFrom(link.find('img').first()), medium: 'comics' };
+    const manga = { mangaId, title, image: coverFrom(link.find('img').first()), medium: MEDIUM === 'both' ? 'comics' : MEDIUM };
     withImageAuth(manga);
     manga.webURL = detailUrlOf(mangaId);
     if (cleanText(card.find('.manga-title-badges').first().text()).toLowerCase() === 'completed') manga.completed = true;
@@ -205,7 +274,7 @@ function parseSearch($) {
     const title = cleanText(card.find('.post-title a').first().text()) || cleanText(link.attr('title'));
     if (!title) return;
     seen.add(mangaId);
-    const manga = { mangaId, title, image: coverFrom(link.find('img').first()), medium: 'comics' };
+    const manga = { mangaId, title, image: coverFrom(link.find('img').first()), medium: MEDIUM === 'both' ? 'comics' : MEDIUM };
     withImageAuth(manga);
     manga.webURL = detailUrlOf(mangaId);
     const author = cleanText(card.find('.mg_author .summary-content').first().text());
@@ -262,7 +331,7 @@ class Source {
   }
 
   async getSearchResults(request, metadata) {
-    if (request && request.medium && request.medium !== 'comics') return { results: [] };
+    if (request && request.medium && MEDIUM !== 'both' && request.medium !== MEDIUM) return { results: [] };
     const query = ((request && request.title) || '').trim();
     const tags = ((request && request.includedTags) || []).filter((t) => t && t.id);
     const feed = (request && request.feed) || CONFIG.feeds[0].id;
@@ -291,8 +360,10 @@ class Source {
       throw e;
     }
     const $ = cheerio.load(html);
-    const results = parse($);
-    const more = results.length > 0 && (hasNextLink($) || results.length >= CONFIG.pageSize);
+    const all = parse($);
+    const skip = CONFIG.skipTitle ? new RegExp(CONFIG.skipTitle, 'i') : null;
+    const results = skip ? all.filter((r) => !skip.test(r.title || '')) : all;
+    const more = all.length > 0 && (hasNextLink($) || all.length >= CONFIG.pageSize);
     return { results, metadata: more ? { page: page + 1 } : undefined };
   }
 
@@ -343,11 +414,11 @@ class Source {
       completed: status === 'COMPLETED',
       tags,
       webURL: url,
-      medium: 'comics',
+      medium: MEDIUM === 'both' ? 'comics' : MEDIUM,
     };
     withImageAuth(info);
-    if (tags.some((t) => ADULT_GENRE.test(t))) info.ageRating = 18;
-    else if (tags.some((t) => SUGGESTIVE_GENRE.test(t))) info.ageRating = 16;
+    const age = genreAge(tags);
+    if (age) info.ageRating = age;
     return { mangaInfo: info };
   }
 
@@ -445,7 +516,7 @@ class Source {
   }
 
   async getChapterDetails(mangaId, chapterId) {
-    const url = `${detailUrlOf(mangaId)}${String(chapterId).split('~').map(encodeURIComponent).join('/')}/`;
+    const url = `${detailUrlOf(mangaId)}${String(chapterId).split('~').map(seg).join('/')}/`;
     const html = await this.requestHTML(url);
     const $ = cheerio.load(html);
     const pages = [];
@@ -457,6 +528,16 @@ class Source {
       seen.add(src);
       pages.push(absolute(src));
     });
+    if (pages.length === 0 || (MEDIUM === 'novel' && $('.chapter-type-text').length > 0)) {
+      const body = $('.reading-content .text-left').first().length ? $('.reading-content .text-left').first() : $('.reading-content').first();
+      body.find('script, style, .code-block, .adsbygoogle, ins, noscript').remove();
+      const paragraphs = [];
+      body.find('p').each((_, el) => {
+        const text = cleanText($(el).text());
+        if (text) paragraphs.push(text);
+      });
+      if (paragraphs.join('').length >= 200) return { id: chapterId, mangaId, pages: [], text: paragraphs.join('\n\n') };
+    }
     if (pages.length === 0) throw new Error(CONFIG.name + ' returned no pages for this chapter');
     const details = { id: chapterId, mangaId, pages };
     withImageAuth(details);

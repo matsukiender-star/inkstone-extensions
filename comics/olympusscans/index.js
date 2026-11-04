@@ -231,8 +231,8 @@ class Source {
             `${SITE_BASE}/api/series/${encodeURIComponent(slug)}/chapters?page=${page}&direction=asc&type=comic`
           );
         } catch (e2) {
-          console.warn(`OlympusScans getChapters: chapters endpoint unreachable for "${mangaId}", returning []`);
-          return [];
+          console.error(`OlympusScans getChapters: chapter list unreachable for "${mangaId}": ${e2 && e2.message}`);
+          throw e2;
         }
       }
       const rows = (json && json.data) || [];
@@ -269,6 +269,9 @@ class Source {
       .map((i, el) => $(el).attr('src'))
       .get()
       .filter((p) => typeof p === 'string' && /^https?:\/\//.test(p));
+    if (pages.length === 0) {
+      throw new Error(`OlympusScans: chapter ${chapterId} of "${mangaId}" has no readable pages`);
+    }
     return { id: chapterId, mangaId, pages };
   }
 

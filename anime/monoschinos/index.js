@@ -1,8 +1,10 @@
 const SITE = 'https://monoschinos.st';
 
+const PAGE_CACHE_MS = 5 * 60 * 1000;
+
 const BROWSER = { 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:140.0) Gecko/20100101 Firefox/140.0', 'Accept-Language': 'es' };
 
-const SERVERS = ['VOE', 'Lulu', 'OK.ru', 'MixDrop', 'YourUpload', 'Mp4Upload'];
+const SERVERS = ['Lulu', 'MixDrop', 'VOE', 'OK.ru', 'YourUpload'];
 
 const VOE_MARKERS = ['@$', '^^', '~@', '%?', '*~', '!!', '#&'];
 
@@ -49,7 +51,9 @@ function cardsOf($, kind) {
 
 class Source {
   constructor() {
-    this.requests = App.createRequestManager({ rateLimit: { requestsPerSecond: 8 } });
+    this.requests = App.createRequestManager({});
+    this.pages = new Map();
+    this.genres = null;
   }
 
   getSourceFeeds() {
@@ -60,11 +64,19 @@ class Source {
   }
 
   async getSearchTags() {
-    const $ = cheerio.load(await this.get(`${SITE}/animes`));
-    return $('input[name="genero[]"]')
-      .map((i, el) => ({ id: $(el).attr('value'), label: $(el).parent().find('span').last().text().trim() }))
-      .get()
-      .filter((tag) => tag.id && tag.label);
+    if (!this.genres) {
+      this.genres = (async () => {
+        const $ = cheerio.load(await this.get(`${SITE}/animes`));
+        return $('input[name="genero[]"]')
+          .map((i, el) => ({ id: $(el).attr('value'), label: $(el).parent().find('span').last().text().trim() }))
+          .get()
+          .filter((tag) => tag.id && tag.label);
+      })();
+      this.genres.catch(() => {
+        this.genres = null;
+      });
+    }
+    return this.genres;
   }
 
   async getSearchResults(request, metadata) {
@@ -90,8 +102,17 @@ class Source {
     };
   }
 
+  titlePage(mangaId) {
+    const cached = this.pages.get(mangaId);
+    if (cached && Date.now() - cached.at < PAGE_CACHE_MS) return cached.promise;
+    const promise = this.get(`${SITE}/anime/${encodeURIComponent(mangaId)}`);
+    this.pages.set(mangaId, { at: Date.now(), promise });
+    promise.catch(() => this.pages.delete(mangaId));
+    return promise;
+  }
+
   async getMangaDetails(mangaId) {
-    const $ = cheerio.load(await this.get(`${SITE}/anime/${encodeURIComponent(mangaId)}`));
+    const $ = cheerio.load(await this.titlePage(mangaId));
     const heading = $('h1').first();
     const text = $('body').text();
     const tags = $('a[href*="/genero/"]').map((i, el) => $(el).text().trim()).get().filter(Boolean);
@@ -109,7 +130,7 @@ class Source {
   }
 
   async getChapters(mangaId) {
-    const $ = cheerio.load(await this.get(`${SITE}/anime/${encodeURIComponent(mangaId)}`));
+    const $ = cheerio.load(await this.titlePage(mangaId));
     const ajax = $('section.caplist').attr('data-ajax');
     if (!ajax) throw new Error('MonosChinos: the anime page has no episode list');
     const list = JSON.parse(await this.post(ajax, ''));
@@ -142,7 +163,7 @@ class Source {
   async extract(url) {
     const host = (/^https?:\/\/([^/]+)/.exec(url) || [])[1] || '';
     const origin = `https://${host}/`;
-    if (!/(^|\.)(voe\.sx|lulu|mi?xdrop\.|ok\.ru|yourupload\.com|mp4upload\.com)/.test(host)) return null;
+    if (!/(^|\.)(voe\.sx|lulu|mi?xdrop\.|ok\.ru|yourupload\.com)/.test(host)) return null;
     let html = await this.get(url.replace(/^http:/, 'https:'));
     if (/(^|\.)voe\.sx$/.test(host)) {
       const redirect = /window\.location\.href\s*=\s*'([^']+)'/.exec(html);
@@ -168,10 +189,6 @@ class Source {
     if (/(^|\.)yourupload\.com$/.test(host)) {
       const file = /file:\s*'([^']+\.mp4)'/.exec(html);
       return { url: file[1], quality: 'YourUpload', headers: { Referer: origin } };
-    }
-    if (/(^|\.)mp4upload\.com$/.test(host)) {
-      const src = /src:\s*"([^"]+\.mp4)"/.exec(html);
-      return { url: src[1], quality: 'Mp4Upload', headers: { Referer: origin } };
     }
   }
 
