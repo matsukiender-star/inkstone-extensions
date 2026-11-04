@@ -4004,14 +4004,15 @@
     {
       "id": "mhscans",
       "name": "MHScans",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "medium": "comics",
       "website": "https://mhscans.com",
+      "iconUrl": "https://inkstone.web.app/mhscans/icon.png",
       "hosts": [
         "mhscans.com",
         "*.mhscans.com"
       ],
-      "description": "MHScans read from its own Madara pages, with no browser step and no sign-in: Latest, New, A-Z, Rating, Most Views, Trending feeds, search, genre filtering, full details, chapter lists with dates and the reader. No adult genres turned up on the titles sampled.",
+      "description": "Manhwa・Manhua・Manga\n\nCatalog・700+\n\nRestrictions:\n・Locked Chapters",
       "capabilities": [
         "browse",
         "search",
@@ -4022,7 +4023,7 @@
       ],
       "language": "es",
       "contentRating": "safe",
-      "sha256": "ae3d1c893da157712d4fe82bf05099e1e364aeb28964d4f872e009ca395001f3"
+      "sha256": "37eab89f1e32fe2b2afaabccb99e18634d79f0b43b0e8583517abece93f21600"
     },
     {
       "id": "monopolyscan",
