@@ -4,6 +4,7 @@ const NOVELS = [
   { mangaId: 'rezero-kara-hajimeru-isekai-seikatsu', title: 'Re:Zero Kara Hajimeru Isekai Seikatsu (Web Novel)', image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhKCuxVJ_Iu5ZgmJdo44W072YnaD9bdO1yU3tF2GvBBYMELOP21HScK4-J5N_ws_9BHLNONgg1mGvwBKwG8Nlf3KWh6n_rwM1wM4msGgSf8i6oC33blEr1Dx8kvkuCI_dnVqwuxJebjqu98sLvVzrXV-iPVqddQOECLk8JU22CBuyYSsVYS29d9wFn24Aw/s16000/rezero.png', medium: 'novel' },
   { mangaId: 'extras-y-e', title: 'Extras y especiales de Re:Zero', image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi8SDj-QPWM1pQ9eFO76XhLSWOxyeqyzF1W9XYlIZtuKdpjYKc7EFf5Qt6ppwpIaSIqGTBVfF1rQDuge99-I2o3EdW5xB8bYTLmkuTJ7b5GVbt2d-Bdc9irG37vgvLEzZUcuFQuYao91Ng/s1600/Cool.jpg', medium: 'novel' },
   { mangaId: 'classroom-of-elite', title: 'Classroom of the Elite', image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjsWBI-kx4s89ePG9tY3eiFLXMxjfnepG4qkDweNCKmSftVAuouibLCr3p9Cx8DDXNZzVoCEL9PWFZFfgVbECiQtf4XQJ05soyOIvN8a0hYUVNZhe6yoj7TAyqWyd3VyS8Fx0dhqJHO9gk/s1600/1217321-0-q80.jpg', medium: 'novel' },
+  { mangaId: 'la-diosa-del-bano', title: 'La Diosa del Baño', image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjSkkYTGBT88Qp1Y8ux2wQvWOiKvROd-EawuvqP-RFrmmM4ChCN5UBz96lboXFvsJlQbSotOGAoyly1uHvt_kGKDmbNG_KT9wlQLKbIFcP8TCvsMU7E0AhY55Jg8CQN7IQvR0Y1oVFAPZo/s1600/Portada2.jpg' },
 ];
 
 function chapterPath(href) {
