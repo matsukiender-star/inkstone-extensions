@@ -60,11 +60,12 @@ Do these checks in one batch (one script, or a few curl calls sent together), th
 1. **Find the real domain.** `curl -sIL https://site` and follow every redirect. Build against the domain that actually serves the content, so the extension doesn't pay for a redirect on every request. If the name no longer resolves at all (`curl: Could not resolve host`), the site has probably moved: find its new address and confirm it is the same site before you build, because the API usually changes with the move (Kagane left `kagane.to` for `kagane.org` and renamed fields at the same time).
 2. **Check for bot protection.** With a normal browser User-Agent, request the homepage, a search page, a title page and a chapter page.
    - A Cloudflare "Just a moment..." page or a `cf-mitigated: challenge` header is fine. Boundless tries to clear the check in a hidden browser view and, when it cannot, lists the site under Security checks (Settings, then Network) so the reader can finish it in the browser, so the extension doesn't have to. Plain curl and Node get a 403 from such a site, so you can't calibrate against it from the command line: build from what a real browser shows, put `Cloudflare Checks` in the description's restrictions, and say in your report that it was not tested in the app. A site can also start challenging halfway through your work (one answered its first 150 requests and then challenged everything), so keep the request count low.
+   - Repeat the same requests with a plain User-Agent (curl's own, or `Boundless/1.0 (+https://boundless.moe)`) and with none. A few APIs treat the two differently: MangaDex sends any browser looking User-Agent to its own proof of work page (a 302 to `/edge/challenge`, or a 403 `Bot challenge not passed`) and answers a plain one with the data. If the plain agent is the one that works, ask as the app does first (send no `User-Agent`, so the app's browser one goes out), and when the answer is the check page fall back to the plain agent for the rest of the session, which keeps the source working on app builds that cannot clear that check. Covers and pages on a host that checks the same way must declare the plain agent in `headers`, because a solved check is kept per host.
    - If curl fails before any HTTP response arrives (a TLS error like `alert access denied`), the site is rejecting non-browser clients outright. Treat that as a no-go and say so.
    - Fire five requests at once at one endpoint. If you see 429s, add a `rateLimit` (see Step 2).
    - A limit can also hide behind a 503 or a page that says "Connection limit reached". Dynasty Scans let 16 requests through, then refused the next, then let about 1.3 a second pass; it only showed up when 40 requests ran one after another, and a retry inside the extension made the deep-check tool miss it. Measure with a longer run (40 requests, at two or three different paces) and say which pace passed.
    - A page that asks the reader to solve something (a sum, a password box, "verify you are human") is a gate, not a bug. Do not script around it: report the chapter as locked (a 403 with a short message in the error) and say so in the description. Bun Manga locks its newest four chapters of every title this way.
-3. **Look for a JSON API.** Many sites fetch their data from an API. Check the page source for `__NEXT_DATA__`, `__NUXT__` or hydration props (`astro-island` tags), search the site's JavaScript files for `/api/`, or watch the network calls in a real browser. Note whether the page uses `fetch` or `XMLHttpRequest`. A JSON API is far more stable than scraping markup. Check that a field you will read is a real name: a site can scramble the field names of the data it fetches in the browser (`dg`, `Cu`, `vl` for `items`, `id`, `name`) while its server-rendered pages keep the plain ones, and the scrambled names can change on any deploy. If you see that, read values by what they are instead (a chapter's own link carries its id and number, a list is the property holding an array of objects, a rating is one of a few known words) and check the result against the plain data on a few hundred items. A page's data can also hide in a script whose address is `data:text/javascript;base64,...` (a speed plugin does that to the page's own scripts): decode it with `atob` and search the result.
+3. **Look for a JSON API.** Many sites fetch their data from an API. Check the page source for `__NEXT_DATA__`, `__NUXT__` or hydration props (`astro-island` tags), search the site's JavaScript files for `/api/`, or watch the network calls in a real browser. Note whether the page uses `fetch` or `XMLHttpRequest`. A JSON API is far more stable than scraping markup. Check that a field you will read is a real name: a site can scramble the field names of the data it fetches in the browser (`dg`, `Cu`, `vl` for `items`, `id`, `name`) while its server-rendered pages keep the plain ones, and the scrambled names can change on any deploy. If you see that, read values by what they are instead (a chapter's own link carries its id and number, a list is the property holding an array of objects, a rating is one of a few known words) and check the result against the plain data on a few hundred items. A page's data can also hide in a script whose address is `data:text/javascript;base64,...` (a speed plugin does that to the page's own scripts): decode it with `atob` and search the result. A Next.js site on the App Router has no `__NEXT_DATA__`: its data is in the strings of `self.__next_f.push([1,"..."])` calls in the page, which joined hold the objects as JSON (`"novels":[{"id":...`). It is often the whole data set even where the page shows only a first page (a chapter list of 15 rows can carry all 1,589 chapters), and a long text field is not inline but `"$20"`, a pointer to a row `20:T<hex length>,<text>` whose length counts UTF-8 bytes, not characters. Walk the strings by hand instead of with one big regular expression, and make a changed format throw instead of returning a short list. Also note what a missing page answers: such a site may send status 200 with a "Not Found" heading.
 4. **Sample widely.** Walk details, then the chapter list, then at least two chapters, for 3 to 5 different titles: a brand new one, an old one, different genres. This is the most valuable check there is. It catches sites that run two different reader layouts, and titles that are listed and searchable but have no chapters at all. Include a title that shows no chapters in your language: ask the API what that title does have (other languages, other sections) before you decide the request is wrong. Also find a fractional chapter (12.5, 219.5; scan the whole catalog for non-integers, a few titles have them) and open it: a site that addresses a chapter by its number can answer "219-5" or "219_5" with chapter 219 and no error, so compare the chapter you got with the one you asked for.
 5. **Check ids are stable.** Note the id or slug of a few titles. If they carry a date or a long random suffix, fetch the listing again a few minutes later and compare. If the ids change, the extension has to cope with that.
 6. **Read the raw HTML for each field.** Is the author plain text, or wrapped in a link or a span? A real HTML parser handles nesting, a regex quietly returns nothing.
@@ -84,11 +85,13 @@ Do these checks in one batch (one script, or a few curl calls sent together), th
 | `chikari` | One site serving both comics and novels from a JSON API: it honors the `medium` toggle and returns text chapters for novels |
 | `mangadex` | A public JSON API with settings (chapter language, data saver) and a fallback when a title has nothing in your language |
 | `mangatoon` | HTML and embedded JSON, paid episodes marked locked, an optional email sign-in |
+| `abertoverse` | Novels from a Next.js site with no API: the data is read from the strings the page streams to its own scripts (`self.__next_f.push`), and the images go through the site's own image optimizer |
 | `navercomic` | Server-rendered pages, an age wall, and an optional login with session cookies |
 | `mangafire` | A site that needs the web view: one page visit per title, shared by details and chapters (not yet timed inside the app) |
-| `anizone` | Anime, for Sumizuri only: HTML pages with the player's data embedded, an HLS master playlist, ASS subtitles, and intro and outro times read from a chapters track |
-| `uniquestream` | Anime, for Sumizuri only: a JSON API, titles with several seasons (the season fields), the audio language in the quality label |
-| `kickassanime` | Anime, for Sumizuri only: a JSON API with several servers per episode, each behind a player page that needs a Referer |
+| `anikoto` | Anime, for Sumizuri only: HTML pages, an embed player page whose source data is AES encrypted (read with the bundled CryptoJS), and subtitle tracks |
+| `aniworld` | Anime in German, for Sumizuri only: HTML pages and an embedded payload that is reversed base64 JSON (`App.base64Decode`) |
+| `serienstream` | Series in German, for Sumizuri only: HTML pages and the same kind of reversed base64 JSON payload |
+| `miruro` | Anime, for Sumizuri only: HLS playlists behind the site's own obfuscated proxy addresses, subtitles, and intro and outro skip ranges |
 
 `asurascans`, `chikari` and `mangadex` read from a JSON API. For a site that only serves HTML, follow the `cheerio` guidance in Step 2 and look at `mangatoon`. Other extensions in the repo are fine for ideas, but some have rough edges, so don't copy them blindly.
 
@@ -282,7 +285,7 @@ These are the mistakes that broke real extensions. Check your code against each 
 - Build every field the way the app casts it: strings for `name`, `author`, `group`, `volume` and `text`, numbers for `number`, `time` and `ageRating`. Real data is messy. One site had hundreds of chapters with `title: null`, so build the name as `title ? 'Chapter ' + n + ' - ' + title : 'Chapter ' + n`.
 - Only set `volume` when the site says which volume a chapter belongs to. Don't work it out from the order.
 - Cover and page image URLs must be absolute. Resolve relative ones against the site.
-- Ids must survive a round trip through your own code, so don't rely on state from an earlier call. **Don't change how ids are built in an update**: saved library entries and reading history are keyed by them. If a second catalog on the same site collides with the first (novels and comics shared 21 slugs), prefix the new ids only (`novel:the-slug`) and leave the old ones alone.
+- Ids must survive a round trip through your own code, so don't rely on state from an earlier call. **Encode a path piece only once.** Some sites write their links already percent-encoded (Thai, Arabic and Vietnamese slugs look like `%e0%b8%95...`). If the id keeps that text and you call `encodeURIComponent` on it again, `%e0` becomes `%25e0` and the site answers a 404 (or a 200 page with no images). Decode first, then encode: `encodeURIComponent(decodeURIComponent(piece))`, with the decode inside a try for text that was never encoded. The title page and the chapter list can work fine while only the reader fails, so open a chapter of a title whose slug is not plain ASCII before calling a source done. **Don't change how ids are built in an update**: saved library entries and reading history are keyed by them. If a second catalog on the same site collides with the first (novels and comics shared 21 slugs), prefix the new ids only (`novel:the-slug`) and leave the old ones alone.
 - `ageRating` is a number, and `undefined` when the site doesn't say. Don't guess "safe". A rating word you don't recognise should count as 16.
 
 **Speed**
@@ -359,7 +362,7 @@ Some sites open more chapters to a signed-in or paying reader. An extension can 
 
 ### Anime (video) extensions (Sumizuri only)
 
-**These extensions are for Sumizuri compatibility.** Boundless Reader is not compatible with anime extensions: it has no video player and does not call `getVideos`. Use [Sumizuri](https://sumizuri.notakari.com/) to install, play and test them. The rules below are from Sumizuri's own extension documentation and engine source (version 0.2.0), checked against the three anime extensions in this catalog (`anizone`, `uniquestream`, `kickassanime`). Everything else in this guide (feeds, search, details, episode lists, rate limits, the `App` object, the test script) applies to them unchanged. This section is only what is different.
+**These extensions are for Sumizuri compatibility.** Boundless Reader is not compatible with anime extensions: it has no video player and does not call `getVideos`. Use [Sumizuri](https://sumizuri.notakari.com/) to install, play and test them. The rules below are from Sumizuri's own extension documentation and engine source (version 0.2.0), first checked against three anime extensions that the catalog has since replaced with `anikoto`, `aniworld`, `serienstream` and `miruro` (not rechecked against those four). Everything else in this guide (feeds, search, details, episode lists, rate limits, the `App` object, the test script) applies to them unchanged. This section is only what is different.
 
 - **Manifest.** `medium` is `anime` and `capabilities` is `["browse", "search", "details", "chapters", "videos"]` (there is no `reader`). In the public repository the file lives in `anime/<id>/index.js`.
 - **Episodes are chapters.** `getChapters(mangaId)` returns the usual shape, newest first: `id` (or `chapterId`), `name` such as `Episode 12: Title`, `number`, `time` in milliseconds. `language`, `group`, `isLocked` and `unlockAt` work as for chapters. Nothing is read from `getChapterDetails` to play an episode; the catalog extensions return `{ id, mangaId, pages: [] }` from it. Titles may carry `medium: 'anime'`.
@@ -397,7 +400,7 @@ async getVideos(mangaId, chapterId) {
 - **Several servers.** Return one entry per working server, each labeled (KickAssAnime returns `VidStreaming` and `BirdStream`). Skip a server that fails and keep the others.
 - **An episode with no stream yet** is an `Error` with a message that says so, not an empty list (which shows "no videos" with no reason). Check the newest episodes of a new show and a few old ones: KickAssAnime lists some episodes with an empty server list (19 of 76 episodes sampled on 2026-10-23, new shows and old ones alike), and there the site has no stream to read. Say which case it is in the message (no server listed, or servers that gave no video).
 - **Skip times.** Use the site's own intro and outro times when it has them. AniZone reads them from a WebVTT chapters track whose cues are named Intro or Opening, and Credits, Outro or Ending.
-- **Seasons.** When a title has more than one season, give each episode `season` (an id as text), `seasonName` and optionally `seasonCover`; the title page groups by season (`uniquestream` does this). Leave them out for a single season.
+- **Seasons.** When a title has more than one season, give each episode `season` (an id as text), `seasonName` and optionally `seasonCover`; the title page groups by season. Leave them out for a single season.
 - **Banner.** `mangaInfo` can carry a `banner`, a wide picture shown behind the title page.
 - **Content rating.** Sumizuri treats only `contentRating: "adult"` as adult; `safe` and `mature` show without the gate. The Inkstone website hides `adult` sources.
 - **How Sumizuri differs as a runtime.** It runs sources in QuickJS (Boundless uses JavaScriptCore on iPhone, iPad and Mac and QuickJS on Android), can reach only public `http` and `https` addresses and never the local network, keeps cookies between a source's requests, and accepts a number written as text where Boundless would throw. Keep real numbers anyway. If the site needs a `Cookie`, send it yourself as AniZone does, so it works everywhere. `hosts` limits what your extension requests; keep listing the site, its API and the stream hosts.
@@ -406,7 +409,7 @@ async getVideos(mangaId, chapterId) {
 
 ## Step 3: Test it on the real site
 
-Run the test script. It does two jobs: it checks the extension is **compatible** with Boundless (loads in a bare sandbox, exports the right methods, has a valid `versioning.json` entry, matching `sha256`), and it checks the extension can **fetch real results** (browse, search, details, chapters and actually opening chapters, for two titles). The full guide is in [TESTING.md](https://inkstone.web.app/docs/TESTING.md).
+Run the test script. It does two jobs: it checks the extension is **compatible** with Boundless (loads in a bare sandbox, exports the right methods, has a valid `versioning.json` entry, matching `sha256`), and it checks the extension can **fetch real results** (browse, search, every feed, details, chapters and actually opening chapters, for two titles, plus loading the first cover and page image with the headers you return and the browser agent the app sends when you set none, and naming a bot check page as one). The full guide is in [TESTING.md](https://inkstone.web.app/docs/TESTING.md).
 
 For an anime extension the script plays an episode instead of opening a chapter, and passing it means the stream answered, not that Sumizuri played it: say so in your report.
 
@@ -457,10 +460,33 @@ const pickQuery = (title) => {
 };
 const gated = (chapter) => /\b(locked|paid|premium|join to read|early access|coins?)\b/i.test(chapter.name ?? '');
 
+const APP_UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148';
+const withAppAgent = (headers) => {
+  const given = headers && typeof headers === 'object' ? headers : {};
+  return Object.keys(given).some((k) => k.toLowerCase() === 'user-agent') ? given : { 'User-Agent': APP_UA, ...given };
+};
+const botCheckKind = (status, headers, text) => {
+  const head = String(text).slice(0, 4096).toLowerCase();
+  if (headers.get('cf-mitigated') === 'challenge' || ((status === 403 || status === 503) && /just a moment|cf-turnstile|challenges\.cloudflare\.com/.test(head))) return 'Cloudflare';
+  if (/browser verification/.test(head) && /challenge-assets|powblock/.test(head)) return 'browser verification page';
+  if (status === 403 && /bot challenge not passed/.test(head)) return 'bot check refusal';
+  return null;
+};
+const botCheckHint = (c) =>
+  c.kind === 'Cloudflare'
+    ? `${c.host} answered a Cloudflare check (HTTP ${c.status}). Boundless clears those in its web view, so try this part in the app`
+    : `${c.host} answered a bot check (${c.kind}, HTTP ${c.status}). With no User-Agent set Boundless sends its web view's browser agent, and this site sends that to its check. Try a plain User-Agent such as "Boundless/1.0 (+https://boundless.moe)", or fall back to one when this page comes back`;
+const statuses = {};
+const botChecks = [];
+const reportedChecks = new Set();
+let lastCheck = null;
+let declaredLimit = false;
+
 const requests = [];
 const App = {
   createRequestManager: (options = {}) => {
     const limit = options.rateLimit ?? {};
+    if (limit.requestsPerSecond > 0 || limit.requestsPerMinute > 0) declaredLimit = true;
     const gaps = [limit.requestsPerSecond > 0 ? 1000 / limit.requestsPerSecond : 0, limit.requestsPerMinute > 0 ? 60000 / limit.requestsPerMinute : 0];
     const gap = Math.max(...gaps);
     let nextSlot = 0;
@@ -471,18 +497,26 @@ const App = {
         nextSlot = Math.max(nextSlot, Date.now()) + gap;
         if (wait > 0) await new Promise((resolve) => setTimeout(resolve, wait));
       }
-      requests.push(new URL(request.url).hostname);
+      const host = new URL(request.url).hostname;
+      requests.push(host);
       let res;
       try {
         res = await fetch(request.url, {
           method: request.method || 'GET',
-          headers: request.headers,
+          headers: withAppAgent(request.headers),
           body: request.body,
         });
       } catch (error) {
         throw new Error(`network error: ${error.cause?.code ?? error.cause?.message ?? error.message}`);
       }
-      return { status: res.status, headers: Object.fromEntries(res.headers), data: await res.text() };
+      const data = await res.text();
+      statuses[res.status] = (statuses[res.status] ?? 0) + 1;
+      const kind = botCheckKind(res.status, res.headers, data);
+      if (kind) {
+        lastCheck = { host, kind, status: res.status };
+        if (!botChecks.some((c) => c.host === host && c.kind === kind)) botChecks.push(lastCheck);
+      }
+      return { status: res.status, headers: Object.fromEntries(res.headers), data };
     },
     };
   },
@@ -584,7 +618,11 @@ if (existsSync(listPath)) {
     check((entry.medium === 'anime') === anime, 'an anime source has getVideos, and only an anime source', entry.medium);
     const typeFolder = path.basename(path.dirname(folder));
     const wantedFolder = { comics: 'comics', novel: 'novels', both: 'mixed', anime: 'anime' }[entry.medium];
-    if (['comics', 'novels', 'mixed', 'anime'].includes(typeFolder)) check(typeFolder === wantedFolder, 'sits in the folder for its medium', `${typeFolder}/ holds it, ${wantedFolder}/ fits "${entry.medium}"`);
+    if (['comics', 'novels', 'mixed', 'anime'].includes(typeFolder)) {
+      check(typeFolder === wantedFolder, 'sits in the folder for its medium', `${typeFolder}/ holds it, ${wantedFolder}/ fits "${entry.medium}"`);
+      const commentLines = code.split('\n').filter((line) => /^\s*(\/\/|\/\*|\*\/|\*\s)/.test(line)).length;
+      if (commentLines) say('warn', `${commentLines} comment lines in a file that sits in the repository layout`, 'the repository holds extensions without comments (keep your commented copy elsewhere)');
+    }
     check(['safe', 'mature', 'adult'].includes(entry.contentRating), 'contentRating is safe, mature or adult', entry.contentRating);
     check(isUrl(entry.website), 'website is a full URL');
     check(/^[a-z]{2,3}$/.test(entry.language ?? ''), 'language is a short code like en', entry.language);
@@ -598,12 +636,14 @@ if (existsSync(listPath)) {
   say('warn', 'no versioning.json one or two folders up, so the listing checks were skipped');
 }
 
-console.log('\nLive results (real requests to the site)\n');
+console.log('\nLive results (real requests to the site)');
+console.log('Requests that set no User-Agent are sent with an iPhone web view agent, as Boundless sends them.\n');
 
 const withTimeout = (promise, ms = 60000) =>
   Promise.race([promise, new Promise((_, reject) => setTimeout(() => reject(new Error(`timed out after ${ms / 1000}s`)), ms))]);
 async function step(label, run) {
   const started = Date.now();
+  lastCheck = null;
   try {
     const value = await withTimeout(run());
     return { value, took: `${((Date.now() - started) / 1000).toFixed(1)}s` };
@@ -612,6 +652,13 @@ async function step(label, run) {
     if (message.includes('only works inside Boundless')) {
       skippedInApp = true;
       say('warn', `${label} needs Boundless, so it was skipped`);
+    } else if (lastCheck?.kind === 'Cloudflare') {
+      skippedInApp = true;
+      reportedChecks.add(`${lastCheck.host}|${lastCheck.kind}`);
+      say('warn', `${label} hit a Cloudflare check, so it was skipped`, botCheckHint(lastCheck));
+    } else if (lastCheck) {
+      reportedChecks.add(`${lastCheck.host}|${lastCheck.kind}`);
+      say('fail', label, `${message.slice(0, 120)} | ${botCheckHint(lastCheck)}`);
     } else {
       say('fail', label, message.slice(0, 200));
     }
@@ -631,6 +678,61 @@ const typeProblem = (m) => {
   if (m.tags !== undefined && m.tags !== null && !Array.isArray(m.tags)) return 'tags is not a list';
   return null;
 };
+const imageHeaders = (item) => {
+  const given = { ...(item && item.headers && typeof item.headers === 'object' ? item.headers : {}) };
+  if (item && typeof item.referer === 'string' && item.referer && !Object.keys(given).some((k) => k.toLowerCase() === 'referer')) given.Referer = item.referer;
+  return withAppAgent(given);
+};
+async function loadImage(url, headers) {
+  const control = new AbortController();
+  const timer = setTimeout(() => control.abort(), 30000);
+  try {
+    const res = await fetch(url, { headers, signal: control.signal });
+    const type = res.headers.get('content-type') ?? '';
+    let bytes = Number(res.headers.get('content-length')) || 0;
+    let text = '';
+    if (!res.ok) {
+      text = (await res.text()).slice(0, 4096);
+    } else if (!bytes) {
+      const reader = res.body.getReader();
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        bytes += value.length;
+        if (bytes > 2e6) {
+          await reader.cancel();
+          break;
+        }
+      }
+    } else {
+      await res.body?.cancel();
+    }
+    return { status: res.status, type, bytes, text, kind: botCheckKind(res.status, res.headers, text) };
+  } catch (error) {
+    return { error: error.name === 'AbortError' ? 'timed out after 30s' : (error.cause?.code ?? error.message) };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+async function checkImage(what, url, headers, { cover = false } = {}) {
+  const shot = await loadImage(url, headers);
+  const host = new URL(url).hostname;
+  if (shot.error) return check(false, `${what} loads`, `${host}: ${shot.error}`);
+  if (shot.kind === 'Cloudflare') {
+    skippedInApp = true;
+    return say('warn', `${what} hit a Cloudflare check, so it was skipped`, botCheckHint({ host, kind: shot.kind, status: shot.status }));
+  }
+  const isImage = /^image\//i.test(shot.type) || /^application\/octet-stream/i.test(shot.type);
+  if (shot.status < 200 || shot.status >= 300 || !isImage) {
+    const said = shot.text ? ` "${shot.text.replace(/\s+/g, ' ').slice(0, 60)}"` : '';
+    return check(false, `${what} loads`, `${host} answered HTTP ${shot.status} ${shot.type || 'with no type'}${said}. Boundless sends only the headers you return, plus a browser User-Agent when you set none, so return a referer or headers that work, or a plain User-Agent`);
+  }
+  const kb = Math.round(shot.bytes / 1024);
+  check(true, `${what} loads`, `${kb}${shot.bytes > 2e6 ? '+' : ''} KB ${shot.type.split(';')[0] || 'image'}`);
+  if (cover && shot.bytes > 300000) say('warn', `${what} is ${kb} KB`, 'a browse grid shows dozens of covers at once, so use a thumbnail size if the site has one');
+  return true;
+}
+
 const browse = await step('browse', () => source.getSearchResults(browseRequest, undefined));
 if (browse) {
   const list = browse.value.results ?? [];
@@ -642,6 +744,8 @@ if (browse) {
   const metadata = browse.value.metadata;
   check(metadata === undefined || metadata === null || (typeof metadata === 'object' && !Array.isArray(metadata)), 'metadata is an object, or nothing', 'the app rejects the whole page for any other value');
   check(list.every((r) => isUrl(r.image)), 'every cover is an absolute URL in "image"');
+  const withCover = list.find((r) => isUrl(r.image));
+  if (withCover) await checkImage('first cover', withCover.image, imageHeaders(withCover), { cover: true });
   if (list.some((r) => r.contentRating !== undefined && r.ageRating === undefined)) warnIgnoredRating('titles');
   if (list.some((r) => r.ageRating !== undefined)) {
     check(list.every((r) => r.ageRating === undefined || typeof r.ageRating === 'number'), 'ageRating is a number, a minimum age such as 0, 16 or 18');
@@ -649,6 +753,24 @@ if (browse) {
   if (browse.value.metadata) {
     const next = await step('browse page 2', () => source.getSearchResults(browseRequest, browse.value.metadata));
     if (next) check(next.value.results?.[0]?.mangaId !== list[0]?.mangaId, 'page 2 differs from page 1');
+    if (next?.value.metadata && next.value.results?.length) {
+      const third = await step('browse page 3', () => source.getSearchResults(browseRequest, next.value.metadata));
+      if (third && third.value.results?.length) check(third.value.results[0].mangaId !== next.value.results[0].mangaId, 'page 3 differs from page 2', 'a pager that sends the same page again never ends');
+    }
+  }
+  if (!declaredLimit && !usesWebView) {
+    const before = statuses[429] ?? 0;
+    await Promise.allSettled(Array.from({ length: 5 }, () => withTimeout(source.getSearchResults(browseRequest, undefined))));
+    const throttled = (statuses[429] ?? 0) - before;
+    if (throttled) say('warn', `the site answered 429 to ${throttled} of 5 requests sent at once`, 'declare a rateLimit in App.createRequestManager (see the guide)');
+    else say('pass', 'five requests at once were not throttled', 'so no rateLimit is needed');
+  }
+  for (const feed of feeds.slice(1, 6)) {
+    const other = await step(`feed "${feed.name}"`, () => source.getSearchResults({ feed: feed.id }, undefined));
+    if (!other) continue;
+    const count = other.value.results?.length ?? 0;
+    if (usesWebView && count === 0) say('warn', `feed "${feed.name}" returned nothing, expected if it needs Boundless (WebView)`);
+    else check(count > 0, `feed "${feed.name}" returns titles`, `${count} results in ${other.took}`);
   }
 }
 
@@ -683,6 +805,8 @@ if (nothing) {
   if (Array.isArray(empty) && empty.length > 0) say('warn', `a nonsense search still returned ${empty.length} titles`, 'fine if the site does fuzzy matching, a bug if the query is being ignored (check the parameter name)');
 }
 
+const seenStatuses = [];
+let pageChecked = false;
 for (const item of (found?.value.results ?? []).slice(0, 2)) {
   console.log(`\n${item.title}`);
   const details = await step('details', () => source.getMangaDetails(item.mangaId));
@@ -690,6 +814,8 @@ for (const item of (found?.value.results ?? []).slice(0, 2)) {
     const info = details.value.mangaInfo;
     check(info && (info.desc !== undefined || info.summary !== undefined), 'details have a description (desc or summary)', details.took);
     check(['ONGOING', 'COMPLETED', 'HIATUS', 'CANCELLED', 'UNKNOWN'].includes(info?.status), 'status is an allowed value', info?.status);
+    seenStatuses.push(info?.status);
+    if (info && info.image !== undefined && info.image !== null) check(isUrl(info.image), 'the cover in details is an absolute URL');
     check([info?.title, info?.author, info?.desc, info?.summary].every((v) => v === undefined || v === null || typeof v === 'string'), 'title, author and description are plain strings', 'join several author names into one string, the app throws on a list');
     if (info && info.contentRating !== undefined && info.ageRating === undefined) warnIgnoredRating('details');
   }
@@ -745,7 +871,7 @@ for (const item of (found?.value.results ?? []).slice(0, 2)) {
       }
       const isImages = read.pages?.length > 0 && read.pages.every(isUrl);
       const took = `${((Date.now() - started) / 1000).toFixed(1)}s`;
-      return { ok: Boolean(isText || isImages), label, detail: isText ? 'text' : `${read.pages?.length ?? 0} pages in ${took}` };
+      return { ok: Boolean(isText || isImages), label, detail: isText ? 'text' : `${read.pages?.length ?? 0} pages in ${took}`, images: isImages ? read.pages : undefined, headers: read.headers, referer: read.referer };
     } catch (error) {
       const message = String(error.message ?? error);
       if (message.includes('only works inside Boundless')) return { skipped: true, label, detail: message };
@@ -781,10 +907,19 @@ for (const item of (found?.value.results ?? []).slice(0, 2)) {
   } else {
     say('fail', `none of the ${attempts.length} newest chapters opened`, `${first.label}: ${first.detail}`);
   }
+  const readable1 = first.ok ? first : opened.ok ? opened : null;
+  if (readable1?.images && !pageChecked) {
+    pageChecked = true;
+    await checkImage('first page image', readable1.images[0], imageHeaders({ headers: readable1.headers, referer: readable1.referer }));
+  }
   if (pool.length > 1) {
     const oldest = await tryOpen(pool.at(-1));
     check(oldest.ok, `${oldest.label} opens`, oldest.detail);
   }
+}
+
+if (seenStatuses.length >= 2 && seenStatuses.every((v) => v === 'UNKNOWN')) {
+  say('warn', `status is UNKNOWN on all ${seenStatuses.length} titles checked`, 'fine if the site shows no status, otherwise check the wording and accents the mapping matches (a site can say "Publicándose", "En cours" or "連載中")');
 }
 
 if (entry && genreCount !== null && browse && !usesWebView) {
@@ -801,6 +936,10 @@ if (entry?.hosts?.length) {
   check(blocked.length === 0, 'every host it called is in "hosts"', blocked.join(', '));
 } else if (entry) {
   say('warn', 'no "hosts" list declared, so nothing limits where it can connect (recommended)');
+}
+
+for (const c of botChecks) {
+  if (!reportedChecks.has(`${c.host}|${c.kind}`)) say('warn', `${c.host} answered a bot check during the run`, botCheckHint(c));
 }
 
 finish();
@@ -927,6 +1066,7 @@ End with something the user can read in thirty seconds:
 | Waiting with `setTimeout` instead of declaring a `rateLimit` | A slow source that the app's own 429 retries hide |
 | Chapter list capped at 100 | Missing chapters |
 | Forgetting `referer` on hotlink-protected images | Chapters open but every page fails |
+| An API that sends browser looking user agents to a bot check and lets a plain one through (MangaDex) | Every answer is an HTML page, `JSON.parse` fails on `<`; detect the check page (or its 403 text) and retry with a plain `User-Agent`, remembering it for the session |
 | A CDN that refuses the app's own user agent, with only `referer` returned | Chapters open but every page fails, though the same URL works in curl; return `headers` with a browser `User-Agent` on pages and covers |
 | Using the 110 by 150 thumbnail a WordPress grid names | Blurry covers; check whether the 175 by 238 or 350 by 476 size of the same file exists and use it |
 | Rating a site safe because it prints no genres | Explicit titles in a source the reader trusts; look at the titles and blurbs of the first listing page too |
@@ -954,3 +1094,4 @@ End with something the user can read in thirty seconds:
 | Keeping the old domain after the site moved | Every request fails at once (the name does not resolve) |
 | Treating a site's old address as dead when it still resolves but answers a challenge | It may now be only a directory of mirror addresses (a real browser shows a "Mirrors" page, curl gets a 403 challenge): open it in a browser, test each listed address with curl, and have the source try them in order and stay on the one that answers |
 | Changing how ids are built in an update | Saved library and history entries stop matching |
+| Encoding a slug that the site already percent-encoded | Titles open but every chapter is a 404 (the id reads `%25e0%25b8...`); only slugs that are not plain ASCII show it |
