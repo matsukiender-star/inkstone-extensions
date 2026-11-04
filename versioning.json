@@ -682,7 +682,7 @@
     {
       "id": "traduccionesisekai",
       "name": "Traducciones Isekai",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "medium": "novel",
       "website": "https://traduccionesisekai.blogspot.com",
       "hosts": [
@@ -700,7 +700,7 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "23f6c2ce4fa1dec5894f131db379f5fb291ebb43cde7267a5b82085628dbd54e"
+      "sha256": "ba82c6fd54c82535ecbaf0b8f8d93c4e548d9613bfc671684288bcf7be646f35"
     },
     {
       "id": "readnovelfull",
