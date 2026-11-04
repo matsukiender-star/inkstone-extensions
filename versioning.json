@@ -1546,7 +1546,7 @@
     {
       "id": "wattpad",
       "name": "Wattpad",
-      "version": "1.1.1",
+      "version": "1.2.0",
       "medium": "novel",
       "website": "https://www.wattpad.com",
       "iconUrl": "https://inkstone.web.app/wattpad/icon.png",
@@ -1561,7 +1561,7 @@
       ],
       "language": "en",
       "contentRating": "adult",
-      "sha256": "0a568666e6eaded6e128aa2ed52d89550e8f742f35823c2d570e70c162012f6d"
+      "sha256": "dd273420932d7865c56a6e34ea0527df04a560e73c8d917ae3d511ee257dd50d"
     },
     {
       "id": "webfic",
