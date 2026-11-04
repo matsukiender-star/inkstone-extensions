@@ -11,6 +11,8 @@ function dateOf(href) {
   return match ? Date.UTC(+match[1], +match[2] - 1, +match[3]) : undefined;
 }
 
+const PAID = /(^|\/)novela-protegida-/;
+
 function cards($) {
   return $('div#content div.products article')
     .map((i, el) => {
@@ -84,6 +86,7 @@ class Source {
     const chapters = [];
     const seen = new Set();
     let volume;
+    let paid = 0;
     $('.wpb_wrapper a[href]').each((i, el) => {
       const href = $(el).attr('href');
       const chapterId = pathOf(href);
@@ -91,6 +94,10 @@ class Source {
       seen.add(chapterId);
       const found = /-volumen-(\d+)-/.exec(href);
       if (found) volume = +found[1];
+      if (PAID.test(chapterId)) {
+        paid += 1;
+        return;
+      }
       const title = $(el).text().trim().replace(/\bCapitulo\b/g, 'Capítulo');
       chapters.push({
         id: chapterId,
@@ -98,9 +105,9 @@ class Source {
         name: volume ? `Vol. ${volume} – ${title}` : title,
         volume,
         time: dateOf(href),
-        isLocked: /novela-protegida/.test(href) || undefined,
       });
     });
+    if (!chapters.length && paid) throw new Error('NovelasLigeras: every chapter of this novel is for subscribers of the site');
     return chapters.map((chapter, i) => ({ ...chapter, number: i + 1 })).reverse();
   }
 
@@ -113,7 +120,7 @@ class Source {
       .map((i, el) => $(el).text().replace(/\s+/g, ' ').trim())
       .get()
       .filter((text) => text && text !== 'Publicidad');
-    if (/novela-protegida/.test(chapterId) && paragraphs.join('').length < 200) throw new Error('NovelasLigeras: this chapter is only for subscribers of the site');
+    if (PAID.test(chapterId) && paragraphs.join('').length < 200) throw new Error('NovelasLigeras: this chapter is for subscribers of the site only');
     if (!paragraphs.length) throw new Error('NovelasLigeras: the chapter has no text');
     return { id: chapterId, mangaId, pages: [], text: paragraphs.join('\n\n') };
   }

@@ -1,16 +1,42 @@
-const NAME = 'MHScans';
-const SITE_BASE = 'https://mhscans.com';
+const CONFIG = {
+  "name": "MHScans",
+  "origin": "https://mhscans.com",
+  "archivePath": "/manga/",
+  "detailPrefix": "series",
+  "pageSize": 12,
+  "referer": true,
+  "imageHeaders": false,
+  "genres": "checkbox",
+  "feeds": [
+    {
+      "id": "latest",
+      "name": "Latest"
+    },
+    {
+      "id": "new-manga",
+      "name": "New"
+    },
+    {
+      "id": "alphabet",
+      "name": "A-Z"
+    },
+    {
+      "id": "rating",
+      "name": "Rating"
+    },
+    {
+      "id": "views",
+      "name": "Most Views"
+    },
+    {
+      "id": "trending",
+      "name": "Trending"
+    }
+  ]
+};
+const SITE_BASE = CONFIG.origin;
 const UA =
   'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1';
-const CHAPTERS_PER_PAGE = 30;
-const CARDS_PER_PAGE = 24;
-const FEEDS = [
-  { id: 'latest', name: 'Latest' },
-  { id: 'updated', name: 'Updated' },
-  { id: 'views', name: 'Most Views' },
-  { id: 'rating', name: 'Rating' },
-  { id: 'title', name: 'A-Z' },
-];
 
 function plain(text) {
   let t = String(text == null ? '' : text).toLowerCase();
@@ -18,7 +44,7 @@ function plain(text) {
     t = t.normalize('NFD').replace(/[̀-ͯ]/g, '');
   } catch (e) {
   }
-  return t.replace(/ı/g, 'i').replace(/\s+/g, ' ').trim();
+  return t.replace(/\u0131/g, 'i').replace(/\s+/g, ' ').trim();
 }
 
 const UNIT_WORDS = [
@@ -102,8 +128,58 @@ function genreAge(names) {
 }
 
 
+function fixMojibake(text) {
+  if (!/[\u00c2-\u00f4][\u0080-\u00bf]/.test(text)) return text;
+  try {
+    return decodeURIComponent(escape(text));
+  } catch (e) {
+    return text;
+  }
+}
+
+function withImageAuth(target) {
+  if (CONFIG.imageHeaders) target.headers = { 'User-Agent': UA, Referer: SITE_BASE + '/' };
+  else if (CONFIG.referer) target.referer = SITE_BASE + '/';
+  return target;
+}
+
 function cleanText(text) {
-  return (text || '').replace(/­/g, '').replace(/\s+/g, ' ').trim();
+  return (text || '').replace(/\u00ad/g, '').replace(/\s+/g, ' ').trim();
+}
+
+function mapStatus(text) {
+  const s = (text || '').toLowerCase();
+  if (s.includes('ongoing') || s.includes('releasing') || s.includes('updating')) return 'ONGOING';
+  if (s.includes('complet') || s.includes('finished') || s.includes('ended')) return 'COMPLETED';
+  if (s.includes('hiatus') || s.includes('on hold') || s.includes('paused')) return 'HIATUS';
+  if (s.includes('cancel') || s.includes('dropped') || s.includes('discontinued')) return 'CANCELLED';
+  return 'UNKNOWN';
+}
+
+function chapterNumberOf(slug, name) {
+  const fromSlug = /(?:^|[-_/])(?:chapter|ch|episode|ep|capitulo|cap)[-_ ]?(\d+)(?:[-_.](\d+))?(?:$|[-_/])/i.exec(slug);
+  if (fromSlug) return parseFloat(fromSlug[1] + (fromSlug[2] ? '.' + fromSlug[2] : ''));
+  const fromName = /(\d+(?:\.\d+)?)/.exec(name || '');
+  if (fromName) return parseFloat(fromName[1]);
+  const anyNum = /(\d+)(?:[-_.](\d+))?/.exec(slug);
+  if (anyNum) return parseFloat(anyNum[1] + (anyNum[2] ? '.' + anyNum[2] : ''));
+  return 0;
+}
+
+function idFromHref(href) {
+  const path = (href || '').replace(/^https?:\/\/[^/]+/i, '').split(/[?#]/)[0];
+  const parts = path.split('/').filter(Boolean);
+  if (parts.length < 2) return '';
+  const prefix = parts[0];
+  const slug = parts[1];
+  return prefix === CONFIG.detailPrefix ? slug : `${prefix}~${slug}`;
+}
+
+function detailUrlOf(mangaId) {
+  const at = String(mangaId).indexOf('~');
+  const prefix = at < 0 ? CONFIG.detailPrefix : mangaId.slice(0, at);
+  const slug = at < 0 ? mangaId : mangaId.slice(at + 1);
+  return `${SITE_BASE}/${encodeURIComponent(prefix)}/${encodeURIComponent(slug)}/`;
 }
 
 function absolute(url) {
@@ -114,140 +190,290 @@ function absolute(url) {
   return SITE_BASE + (u.charAt(0) === '/' ? '' : '/') + u;
 }
 
-function comicUrl(mangaId) {
-  return `${SITE_BASE}/comics/${encodeURIComponent(mangaId)}`;
+function coverFrom($img) {
+  if (!$img || $img.length === 0) return '';
+  const srcset = $img.attr('data-srcset') || $img.attr('srcset') || '';
+  let best = null;
+  srcset.split(',').forEach((part) => {
+    const m = /^\s*(\S+)\s+(\d+)w\s*$/.exec(part);
+    if (m && Number(m[2]) <= 400 && (!best || Number(m[2]) > best.width)) best = { url: m[1], width: Number(m[2]) };
+  });
+  const direct = $img.attr('data-src') || $img.attr('data-lazy-src') || $img.attr('src') || '';
+  let pick = (best ? best.url : direct).trim();
+  if (/^data:/.test(pick) || /\/(dflazy|lazy|placeholder)[^/]*\.(gif|png|jpe?g|svg)$/i.test(pick)) pick = direct.trim();
+  if (CONFIG.coverUpgrade) pick = pick.replace('-' + CONFIG.coverUpgrade[0] + '.', CONFIG.coverUpgrade[1] ? '-' + CONFIG.coverUpgrade[1] + '.' : '.');
+  if (/^https?:\/\/i\d\.wp\.com\//i.test(pick) && pick.indexOf('?') < 0) pick += '?w=300';
+  return absolute(pick);
 }
 
-function mapStatus(className, text) {
-  const s = plain(className + ' ' + text);
-  if (/ongoing|emision|en curso|publicandose/.test(s)) return 'ONGOING';
-  if (/completed|finalizad|completad|terminad/.test(s)) return 'COMPLETED';
-  if (/hiatus|pausa/.test(s)) return 'HIATUS';
-  if (/cancel/.test(s)) return 'CANCELLED';
-  return 'UNKNOWN';
+function findFieldContent($, label) {
+  let found = null;
+  $('.post-content_item').each((_, el) => {
+    const heading = cleanText($(el).find('.summary-heading h5, .summary-heading').first().text()).replace(/[:：]$/, '');
+    if (heading.toLowerCase() === label.toLowerCase()) {
+      found = $(el).find('.summary-content').first();
+      return false;
+    }
+  });
+  return found;
 }
 
-function parseCards($) {
+function fieldText($, label) {
+  const el = findFieldContent($, label);
+  if (!el) return '';
+  const anchors = el.find('a');
+  if (anchors.length > 0) {
+    const parts = [];
+    anchors.each((_, a) => {
+      const t = cleanText($(a).text());
+      if (t) parts.push(t);
+    });
+    if (parts.length > 0) return parts.join(', ');
+  }
+  return cleanText(el.text());
+}
+
+function parseGrid($) {
   const results = [];
   const seen = new Set();
-  $('a.comic-card[href^="/comics/"]').each((_, el) => {
+  $('.page-item-detail').each((_, el) => {
     const card = $(el);
-    const mangaId = (card.attr('href') || '').split(/[?#]/)[0].replace(/^\/comics\//, '').replace(/\/+$/, '');
+    const link = card.find('.item-thumb a, a').first();
+    const mangaId = idFromHref(link.attr('href'));
     if (!mangaId || seen.has(mangaId)) return;
-    const img = card.find('img').first();
-    const title = cleanText(card.find('p').first().text()) || cleanText(img.attr('alt'));
+    const title = cleanText(card.find('.post-title a').first().text()) || cleanText(link.attr('title'));
     if (!title) return;
     seen.add(mangaId);
-    const manga = { mangaId, title, image: absolute(img.attr('src') || img.attr('data-src')), medium: 'comics', webURL: comicUrl(mangaId) };
-    if (/completed/i.test(cleanText(card.find('p').eq(1).text()))) manga.completed = true;
+    const manga = { mangaId, title, image: coverFrom(link.find('img').first()), medium: 'comics' };
+    withImageAuth(manga);
+    manga.webURL = detailUrlOf(mangaId);
+    if (cleanText(card.find('.manga-title-badges').first().text()).toLowerCase() === 'completed') manga.completed = true;
     results.push(manga);
   });
   return results;
 }
 
+function parseSearch($) {
+  const results = [];
+  const seen = new Set();
+  $('.c-tabs-item__content').each((_, el) => {
+    const card = $(el);
+    const link = card.find('.tab-thumb a, a').first();
+    const mangaId = idFromHref(link.attr('href'));
+    if (!mangaId || seen.has(mangaId)) return;
+    const title = cleanText(card.find('.post-title a').first().text()) || cleanText(link.attr('title'));
+    if (!title) return;
+    seen.add(mangaId);
+    const manga = { mangaId, title, image: coverFrom(link.find('img').first()), medium: 'comics' };
+    withImageAuth(manga);
+    manga.webURL = detailUrlOf(mangaId);
+    const author = cleanText(card.find('.mg_author .summary-content').first().text());
+    if (author) manga.author = author;
+    results.push(manga);
+  });
+  return results.length > 0 ? results : parseGrid($);
+}
+
+function hasNextLink($) {
+  return $('a.nextpostslink, a.next.page-numbers, .pagination a[rel="next"], link[rel="next"], .nav-previous a').length > 0;
+}
+
 class Source {
   getSourceFeeds() {
-    return FEEDS.map((f) => ({ id: f.id, name: f.name }));
+    return CONFIG.feeds.map((f) => ({ id: f.id, name: f.name }));
   }
 
   async getSearchTags() {
-    const $ = cheerio.load(await this.requestHTML(`${SITE_BASE}/library`));
-    const tags = [];
-    const seen = new Set();
-    $('a[href^="/library?genre="]').each((_, el) => {
-      const href = $(el).attr('href') || '';
-      let id = href.slice(href.indexOf('=') + 1).split('&')[0];
-      try {
-        id = decodeURIComponent(id.replace(/\+/g, ' '));
-      } catch (e) {
+    if (CONFIG.genres === 'none') return [];
+    try {
+      const tags = [];
+      const seen = new Set();
+      if (CONFIG.genres === 'links') {
+        const $ = cheerio.load(await this.requestHTML(`${SITE_BASE}${CONFIG.archivePath}`));
+        $('a[href*="-genre/"]').each((_, el) => {
+          const slug = ((($(el).attr('href') || '').split(/[?#]/)[0]).split('/').filter(Boolean).pop() || '').trim();
+          const label = cleanText($(el).clone().children().remove().end().text()) || cleanText($(el).text());
+          if (!slug || !label || seen.has(slug)) return;
+          seen.add(slug);
+          tags.push({ id: slug, label: label.replace(/\s*\(\d+\)\s*$/, '') });
+        });
+        return tags;
       }
-      if (!id || seen.has(id)) return;
-      seen.add(id);
-      tags.push({ id, label: cleanText($(el).text()).replace(/\s*\(\d+\)\s*$/, '') || id });
-    });
-    return tags;
+      const $ = cheerio.load(await this.requestHTML(`${SITE_BASE}/?s=&post_type=wp-manga`));
+      const labels = {};
+      $('label[for]').each((_, el) => {
+        labels[$(el).attr('for')] = cleanText($(el).text());
+      });
+      $('input[name="genre[]"]').each((_, el) => {
+        const id = ($(el).attr('value') || '').trim();
+        if (!id || seen.has(id)) return;
+        const label = labels[$(el).attr('id')] || cleanText($(el).parent().text());
+        if (label) {
+          seen.add(id);
+          tags.push({ id, label });
+        }
+      });
+      return tags;
+    } catch (e) {
+      console.error(CONFIG.name + ' getSearchTags failed: ' + (e && e.message));
+      return [];
+    }
   }
 
   async getSearchResults(request, metadata) {
     if (request && request.medium && request.medium !== 'comics') return { results: [] };
     const query = ((request && request.title) || '').trim();
     const tags = ((request && request.includedTags) || []).filter((t) => t && t.id);
-    const feed = (request && request.feed) || FEEDS[0].id;
+    const feed = (request && request.feed) || CONFIG.feeds[0].id;
     const page = (metadata && metadata.page) || 1;
 
-    const params = [];
-    let path = '/library';
+    let url;
+    let parse;
     if (query || tags.length > 0) {
-      path = '/search';
-      if (query) params.push(`q=${encodeURIComponent(query)}`);
-      if (tags.length > 0) params.push(`genre=${encodeURIComponent(tags[0].id)}`);
-    } else if (feed !== 'latest') {
-      params.push(`sort=${encodeURIComponent(feed)}`);
+      const path = page > 1 ? `/page/${page}/` : '/';
+      let qs = `s=${encodeURIComponent(query)}&post_type=wp-manga`;
+      tags.forEach((t) => (qs += `&genre[]=${encodeURIComponent(t.id)}`));
+      url = `${SITE_BASE}${path}?${qs}`;
+      parse = parseSearch;
+    } else {
+      const base = CONFIG.archivePath;
+      const path = page > 1 ? `${base}page/${page}/` : base;
+      url = `${SITE_BASE}${path}?m_orderby=${encodeURIComponent(feed)}`;
+      parse = parseGrid;
     }
-    if (page > 1) params.push(`page=${page}`);
-    const url = SITE_BASE + path + (params.length ? '?' + params.join('&') : '');
 
-    const results = parseCards(cheerio.load(await this.requestHTML(url)));
-    return { results, metadata: results.length >= CARDS_PER_PAGE ? { page: page + 1 } : undefined };
+    let html;
+    try {
+      html = await this.requestHTML(url);
+    } catch (e) {
+      if (page > 1) return { results: [], metadata: undefined };
+      throw e;
+    }
+    const $ = cheerio.load(html);
+    const results = parse($);
+    const more = results.length > 0 && (hasNextLink($) || results.length >= CONFIG.pageSize);
+    return { results, metadata: more ? { page: page + 1 } : undefined };
   }
 
   async getMangaDetails(mangaId) {
-    const url = comicUrl(mangaId);
-    const $ = cheerio.load(await this.requestHTML(url));
-    const title = cleanText($('h1').first().text()) || cleanText($('meta[property="og:title"]').attr('content')) || mangaId;
-    const statusEl = $('.comic-meta__status').first();
-    const status = mapStatus(statusEl.attr('class') || '', statusEl.text());
-    const tags = [];
-    $('.comic-chips .comic-chip').each((_, el) => {
+    const url = detailUrlOf(mangaId);
+    const html = await this.requestHTML(url);
+    const $ = cheerio.load(html);
+
+    const titleBlock = $('.post-title').first().clone();
+    titleBlock.find('.manga-title-badges, span').remove();
+    const title = cleanText(titleBlock.find('h1').first().text()) || cleanText($('h1').first().text()) || mangaId;
+
+    const image = absolute(
+      $('meta[property="og:image"]').attr('content') || coverFrom($('.summary_image img').first()),
+    );
+
+    const author = fieldText($, 'Author(s)') || fieldText($, 'Author');
+    const artist = fieldText($, 'Artist(s)') || fieldText($, 'Artist');
+    const people = [];
+    [author, artist].forEach((s) => s.split(',').forEach((n) => {
+      const t = cleanText(n);
+      if (t && !/^(updating|n\/a|unknown|none|-|\?)$/i.test(t) && people.indexOf(t) < 0) people.push(t);
+    }));
+
+    const descParts = [];
+    $('.summary__content p, .description-summary .summary__content p').each((_, el) => {
       const t = cleanText($(el).text());
-      if (t && tags.indexOf(t) < 0) tags.push(t);
+      if (t) descParts.push(t);
     });
+    const desc = descParts.length > 0 ? descParts.join('\n\n') : cleanText($('.summary__content').first().text());
+
+    const tags = [];
+    const genreContent = findFieldContent($, 'Genre(s)') || findFieldContent($, 'Genres');
+    if (genreContent) {
+      genreContent.find('a').each((_, el) => {
+        const t = cleanText($(el).text());
+        if (t) tags.push(t);
+      });
+    }
+
+    const status = mapStatus(fieldText($, 'Status'));
     const info = {
       title,
-      image: absolute($('meta[property="og:image"]').attr('content')),
-      author: cleanText($('a[href^="/groups/"]').filter((_, el) => cleanText($(el).text())).first().text()),
-      desc: cleanText($('#comic-description').text()) || cleanText($('meta[property="og:description"]').attr('content')),
+      image,
+      author: people.join(', '),
+      desc,
       status,
       completed: status === 'COMPLETED',
       tags,
       webURL: url,
       medium: 'comics',
     };
+    withImageAuth(info);
     const age = genreAge(tags);
     if (age) info.ageRating = age;
     return { mangaInfo: info };
   }
 
-  async getChapters(mangaId) {
+  async chapterApiRows(mangaId) {
+    const slug = mangaId.slice(mangaId.indexOf('~') + 1);
     const rows = [];
-    const seen = new Set();
-    for (let page = 1; page <= 200; page++) {
-      const $ = cheerio.load(await this.requestHTML(`${comicUrl(mangaId)}/chapters?page=${page}`));
-      const found = $('a[data-chapter-num]').length;
-      let fresh = 0;
-      $('a[href^="/leer/"][data-chapter-num]').each((_, el) => {
-        const a = $(el);
-        const id = (a.attr('href') || '').slice('/leer/'.length).split(/[?#]/)[0];
-        if (!id || seen.has(id)) return;
-        seen.add(id);
-        fresh++;
-        const num = parseFloat(a.attr('data-chapter-num'));
-        const dateText = cleanText(a.find('span.tracking-wide').first().text());
+    let last = 1;
+    for (let page = 1; page <= last; page++) {
+      const json = JSON.parse(await this.requestHTML(`${SITE_BASE}/api/comics/${encodeURIComponent(slug)}/chapters?per_page=100&page=${page}`, 'GET', undefined, true));
+      const data = (json && json.data) || {};
+      last = typeof data.last_page === 'number' ? data.last_page : 1;
+      (data.chapters || []).forEach((c) => {
+        if (!c || !c.chapter_slug) return;
         rows.push({
-          id,
-          name: cleanText(a.attr('data-chapter-label')) || cleanText(a.find('[data-cl-title]').text()) || id,
-          number: isNaN(num) ? 0 : num,
-          time: dateText ? parseReleaseDate(dateText) : undefined,
+          id: c.chapter_slug,
+          slug: c.chapter_slug,
+          name: cleanText(c.chapter_name) || c.chapter_slug,
+          number: typeof c.chapter_num === 'number' ? c.chapter_num : undefined,
+          time: c.updated_at ? Date.parse(c.updated_at) || undefined : undefined,
         });
       });
-      if (found < CHAPTERS_PER_PAGE || fresh === 0) break;
+      if (!data.chapters || data.chapters.length === 0) break;
     }
-    if (rows.length === 0) throw new Error(NAME + ' returned no chapters for this title');
+    return rows;
+  }
 
-    rows.sort((a, b) => a.number - b.number);
+  async getChapters(mangaId) {
+    if (CONFIG.chapterApi) {
+      const apiRows = await this.chapterApiRows(mangaId);
+      apiRows.reverse();
+      let lastNumber = -Infinity;
+      return apiRows.map((r) => {
+        let number = r.number !== undefined ? r.number : chapterNumberOf(r.slug, r.name);
+        if (number <= lastNumber) number = Math.round((lastNumber + 0.0001) * 10000) / 10000;
+        lastNumber = number;
+        const chapter = { id: r.id, chapterId: r.id, name: r.name, number };
+        if (r.time !== undefined) chapter.time = r.time;
+        return chapter;
+      });
+    }
+    const url = detailUrlOf(mangaId);
+    const html = await this.requestHTML(url);
+    let $ = cheerio.load(html);
+    let rows = this.chapterRows($, url);
+
+    if (rows.length === 0) {
+      const holder = $('#manga-chapters-holder').attr('data-id') || $('[data-id]').first().attr('data-id') || '';
+      try {
+        const fragment = await this.requestHTML(`${url}ajax/chapters/`, 'POST');
+        rows = this.chapterRows(cheerio.load(fragment), url);
+      } catch (e) {
+        rows = [];
+      }
+      if (rows.length === 0 && holder) {
+        try {
+          const fragment = await this.requestHTML(`${SITE_BASE}/wp-admin/admin-ajax.php`, 'POST', `action=manga_get_chapters&manga=${encodeURIComponent(holder)}`);
+          rows = this.chapterRows(cheerio.load(fragment), url);
+        } catch (e) {
+          rows = [];
+        }
+      }
+    }
+
+    rows.reverse();
     let last = -Infinity;
     return rows.map((r) => {
-      let number = r.number;
+      let number = chapterNumberOf(r.slug, r.name);
       if (number <= last) number = Math.round((last + 0.0001) * 10000) / 10000;
       last = number;
       const chapter = { id: r.id, chapterId: r.id, name: r.name, number };
@@ -256,29 +482,65 @@ class Source {
     });
   }
 
+  chapterRows($, detailUrl) {
+    const prefix = detailUrl.replace(/^https?:\/\/[^/]+/i, '');
+    const rows = [];
+    const seen = new Set();
+    $('li.wp-manga-chapter').each((_, el) => {
+      const $el = $(el);
+      const link = $el.find('a').first();
+      const href = (link.attr('href') || '').trim();
+      if (!href || href === '#') return;
+      const path = href.replace(/^https?:\/\/[^/]+/i, '').split(/[?#]/)[0];
+      if (path.indexOf(prefix) !== 0) return;
+      const rest = path.slice(prefix.length).replace(/\/+$/, '');
+      if (!rest || seen.has(rest)) return;
+      seen.add(rest);
+      const name = cleanText(link.text()) || rest;
+      const dateText = cleanText($el.find('.chapter-release-date').first().text());
+      rows.push({ id: rest.replace(/\//g, '~'), slug: rest, name, time: dateText ? parseReleaseDate(dateText) : undefined });
+    });
+    return rows;
+  }
+
   async getChapterDetails(mangaId, chapterId) {
-    const $ = cheerio.load(await this.requestHTML(`${SITE_BASE}/leer/${encodeURIComponent(chapterId)}`));
+    const url = `${detailUrlOf(mangaId)}${String(chapterId).split('~').map(encodeURIComponent).join('/')}/`;
+    const html = await this.requestHTML(url);
+    const $ = cheerio.load(html);
     const pages = [];
     const seen = new Set();
-    $('img.page-img').each((_, el) => {
-      const src = ($(el).attr('data-src') || $(el).attr('src') || '').trim();
+    $('img.wp-manga-chapter-img, .reading-content img, .page-break img').each((_, el) => {
+      const e = $(el);
+      const src = (e.attr('data-src') || e.attr('data-lazy-src') || e.attr('data-cfsrc') || e.attr('src') || '').trim();
       if (!src || /^data:/.test(src) || seen.has(src)) return;
       seen.add(src);
       pages.push(absolute(src));
     });
-    if (pages.length === 0) throw new Error(NAME + ' returned no pages for this chapter (it may need a signed-in account)');
-    return { id: chapterId, mangaId, pages };
+    if (pages.length === 0) throw new Error(CONFIG.name + ' returned no pages for this chapter');
+    const details = { id: chapterId, mangaId, pages };
+    withImageAuth(details);
+    return details;
   }
 
-  async requestHTML(url) {
-    const manager = App.createRequestManager({});
-    const request = App.createRequest({ url, method: 'GET', headers: { 'User-Agent': UA } });
+  async requestHTML(url, method, body, json) {
+    const manager = App.createRequestManager(CONFIG.rateLimit ? { rateLimit: CONFIG.rateLimit } : {});
+    const headers = { 'User-Agent': UA };
+    if (json) {
+      headers.Accept = 'application/json';
+      headers.Referer = SITE_BASE + '/';
+    }
+    if (method === 'POST') {
+      headers['X-Requested-With'] = 'XMLHttpRequest';
+      headers.Referer = SITE_BASE + '/';
+      if (body !== undefined) headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+    }
+    const request = App.createRequest({ url, method: method || 'GET', headers, body });
     const response = await manager.schedule(request);
     if (response.status === 401 || response.status === 403) {
-      throw new Error(`${NAME} HTTP ${response.status}: the site refused the request (a locked chapter, or a block on plain requests)`);
+      throw new Error(`${CONFIG.name} HTTP ${response.status}: the site refused the request (a locked chapter, or a block on plain requests)`);
     }
-    if (response.status < 200 || response.status >= 300) throw new Error(`${NAME} HTTP ${response.status}`);
-    return response.data;
+    if (response.status < 200 || response.status >= 300) throw new Error(`${CONFIG.name} HTTP ${response.status}`);
+    return fixMojibake(response.data);
   }
 }
 
