@@ -1,6 +1,6 @@
 {
   "repositoryName": "Inkstone en español (Suki)",
-  "repositoryDescription": "Solo las fuentes en español de Inkstone, con las que todavía no se fusionan, más las multi-idioma que tienen español (MangaDex, Kagane, Wattpad, UniqueStream y Anikoto).",
+  "repositoryDescription": "Solo las fuentes en español de Inkstone, con las que todavía no se fusionan, más las de varios idiomas que tienen español (MangaDex, Kagane, Wattpad, UniqueStream y Anikoto).",
   "buildTime": "2026-09-03T16:35:04Z",
   "sources": [
     {
@@ -68,7 +68,7 @@
     {
       "id": "wattpad",
       "name": "Wattpad",
-      "version": "1.1.1",
+      "version": "1.2.0",
       "medium": "novel",
       "website": "https://www.wattpad.com",
       "iconUrl": "https://inkstone.web.app/wattpad/icon.png",
@@ -81,9 +81,9 @@
         "chapters",
         "reader"
       ],
-      "language": "en",
+      "language": "multi",
       "contentRating": "adult",
-      "sha256": "0a568666e6eaded6e128aa2ed52d89550e8f742f35823c2d570e70c162012f6d"
+      "sha256": "dd273420932d7865c56a6e34ea0527df04a560e73c8d917ae3d511ee257dd50d"
     },
     {
       "id": "mangadex",
@@ -197,7 +197,7 @@
           "default": false
         }
       ],
-      "language": "en",
+      "language": "multi",
       "contentRating": "safe",
       "sha256": "2ad3f83708b2d558521db680d5d2366feb5c071c29c25913c18ce14ad8126cdf"
     },
@@ -510,7 +510,7 @@
           ]
         }
       ],
-      "language": "en",
+      "language": "multi",
       "contentRating": "safe",
       "sha256": "a1125ccee0c317ff6e73f6b9e4e8de5e7886b3abefaf5a064be954d26da35dd8"
     },
@@ -546,7 +546,7 @@
         "chapters",
         "videos"
       ],
-      "language": "en",
+      "language": "multi",
       "contentRating": "mature",
       "sha256": "49553ae8ad4d9ca9895b652af9f77a5e55c5d5876e82e1a8d428748cefc3d0a3"
     },
@@ -2002,7 +2002,7 @@
     {
       "id": "traduccionesisekai",
       "name": "Traducciones Isekai",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "medium": "novel",
       "website": "https://traduccionesisekai.blogspot.com",
       "hosts": [
@@ -2020,7 +2020,7 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "23f6c2ce4fa1dec5894f131db379f5fb291ebb43cde7267a5b82085628dbd54e"
+      "sha256": "ba82c6fd54c82535ecbaf0b8f8d93c4e548d9613bfc671684288bcf7be646f35"
     },
     {
       "id": "veranime",
@@ -2133,7 +2133,7 @@
         "chapters",
         "videos"
       ],
-      "language": "en",
+      "language": "multi",
       "contentRating": "mature",
       "sha256": "25112f3fbb744151d88175c83cf23c3022052a7e7c49536ef188b013420f9e00",
       "settingsSchema": [

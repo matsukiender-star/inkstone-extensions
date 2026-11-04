@@ -68,7 +68,17 @@ class Source {
   async getChapterDetails(mangaId, chapterId) {
     const $ = cheerio.load(await this.get(`${SITE}/${chapterId}`));
     const body = $('.post-body').first();
-    body.find('script, style, noscript, img, table.tr-caption-container, ins').remove();
+    const picture = (img) => {
+      const src = ($(img).attr('src') || '').trim();
+      return /^https:\/\/blogger\.googleusercontent\.com\/img\//.test(src) ? `\n![](${src})\n` : '';
+    };
+    body.find('table.tr-caption-container').each((i, el) => {
+      $(el).replaceWith($(el).find('img').map((j, img) => picture(img)).get().join(''));
+    });
+    body.find('img').each((i, el) => {
+      $(el).replaceWith(picture(el));
+    });
+    body.find('script, style, noscript, ins').remove();
     body.find('br').replaceWith('\n');
     body.find('p, div, h1, h2, h3, h4, li, blockquote').append('\n');
     const paragraphs = body
