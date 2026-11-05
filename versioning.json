@@ -671,7 +671,7 @@
         {
           "type": "select",
           "key": "language",
-          "label": "Language",
+          "label": "Idioma (Language)",
           "default": "en",
           "options": [
             {
