@@ -259,6 +259,7 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [Atsumaru](mixed/atsu/index.js) | atsu.moe | English | Mature | 1.0.1 |
 | [Chikari](mixed/chikari/index.js) | chikari.moe | English | Adult | 4.4.0 |
 | [Dreame](novels/dreame/index.js) | dreame.com | English | Adult | 1.2.0 |
+| [El Coleccionista](novels/elcoleccionista/index.js) | elcoleccionistadenovelas.wordpress.com | Spanish | Adult | 1.0.0 |
 | [Exnovels](novels/exnovels/index.js) | exnovels.com | English | Safe | 1.0.1 |
 | [EzManga](mixed/ezmanga/index.js) | ezmanga.org | English | Safe | 1.0.1 |
 | [FreeWebNovel](novels/freewebnovel/index.js) | freewebnovel.com | English | Adult | 1.2.2 |
