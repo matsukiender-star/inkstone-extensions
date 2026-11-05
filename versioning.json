@@ -5441,7 +5441,7 @@
     {
       "id": "wikisourcees",
       "name": "Wikisource (Español)",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "novel",
       "website": "https://es.wikisource.org",
       "hosts": [
@@ -5461,7 +5461,7 @@
       "contentRating": "safe",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "9d13e624d5dc26cfb2b622052131c2cd8bb44c7b49b7cbd9600549e4d9c2dc44"
+      "sha256": "e837f65f6fe42b548a5a2b22efa895f25c9c65412aaa75722020c4fc720942fa"
     }
   ]
 }

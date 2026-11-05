@@ -281,7 +281,7 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [Wattpad](novels/wattpad/index.js) | wattpad.com | English | Adult | 1.1.1 |
 | [Webfic](novels/webfic/index.js) | webfic.com | English | Adult | 1.3.0 |
 | [Webnovel](novels/webnovel/index.js) | webnovel.com | English | Adult | 1.4.4 |
-| [Wikisource (Español)](novels/wikisourcees/index.js) | es.wikisource.org | Spanish | Safe | 1.0.0 |
+| [Wikisource (Español)](novels/wikisourcees/index.js) | es.wikisource.org | Spanish | Safe | 1.0.1 |
 | [Wuxiaworld](novels/wuxiaworld/index.js) | wuxiaworld.com | English | Mature | 1.1.0 |
 | [WuxiaWorld.site](novels/wuxiaworldsite/index.js) | wuxiaworld.site | English | Adult | 1.0.1 |
 
