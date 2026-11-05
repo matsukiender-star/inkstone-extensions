@@ -1812,7 +1812,7 @@
     {
       "id": "mangatoon",
       "name": "MangaToon",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "medium": "comics",
       "website": "https://mangatoon.mobi",
       "iconUrl": "https://inkstone.web.app/mangatoon/icon.png",
@@ -1828,6 +1828,22 @@
         "login"
       ],
       "settingsSchema": [
+        {
+          "type": "select",
+          "key": "language",
+          "label": "Idioma (Language)",
+          "default": "en",
+          "options": [
+            {
+              "value": "en",
+              "label": "English"
+            },
+            {
+              "value": "es",
+              "label": "Español"
+            }
+          ]
+        },
         {
           "type": "section",
           "label": "Account (optional)"
@@ -1846,9 +1862,9 @@
           "placeholder": "Not for Google or Facebook sign-in"
         }
       ],
-      "language": "en",
+      "language": "multi",
       "contentRating": "mature",
-      "sha256": "78501a002cf876558b3d26df25765483785cb0ffccf7e70c3fc36f3134a165ce"
+      "sha256": "be9386f57b279d517b85d1ee50952f74c92ee7c3e3f0fc37c7c9c40a262c5355"
     },
     {
       "id": "mangadex",
@@ -5995,6 +6011,31 @@
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
       "sha256": "192a4df8503e41358396c176694622953b2b8c7910a08b0895cdb787384841a9"
+    },
+    {
+      "id": "elejandria",
+      "name": "Elejandría",
+      "version": "1.0.0",
+      "medium": "novel",
+      "website": "https://www.elejandria.com",
+      "hosts": [
+        "www.elejandria.com",
+        "elejandria.com"
+      ],
+      "description": "Free and legal books in Spanish (public domain and author-released)\n\nCatalog・2,300+ books, ePub and PDF\n\nRestrictions:\n・Books open only in Sumizuri Suki",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "1f4965b2783628af32b50963ca4672bff4a8a17ebd67f1e5acbed24bf0d074d1"
     },
     {
       "id": "eternalmangas",
