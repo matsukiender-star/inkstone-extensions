@@ -23,6 +23,13 @@ function cardsOf($, card, name) {
   return Array.from(new Map(titles.map((title) => [title.mangaId, title])).values());
 }
 
+function ageFromTags(tags) {
+  const list = (Array.isArray(tags) ? tags : []).map((t) => String(t || '')).filter((t) => !/adult cast|elenco adulto/i.test(t));
+  if (list.some((t) => /hentai|er[o\u00f3]tic|smut|porn|\+\s?18|18\s?\+|xxx/i.test(t))) return 18;
+  if (list.some((t) => /ecchi|adulto|adult|mature|maduro/i.test(t))) return 16;
+  return 0;
+}
+
 class Source {
   constructor() {
     this.requests = App.createRequestManager({ rateLimit: { requestsPerSecond: 0.5 } });
@@ -44,6 +51,31 @@ class Source {
   }
 
   async getSearchResults(request, metadata) {
+    const page = await this.getSearchResultsUnrated(request, metadata);
+    const asked = (request && request.includedTags) || [];
+    if (asked.length && page && Array.isArray(page.results)) {
+      const names = await this.tagNames();
+      const age = ageFromTags(asked.map((t) => names[String(t && t.id)] || (t && (t.label || t.id)) || ''));
+      if (age) page.results.forEach((r) => (r.ageRating = Math.max(r.ageRating || 0, age)));
+    }
+    return page;
+  }
+
+  async tagNames() {
+    if (this.tagNameMap) return this.tagNameMap;
+    const map = {};
+    try {
+      ((await this.getSearchTags()) || []).forEach((t) => {
+        if (t && t.id !== undefined) map[String(t.id)] = String(t.label || t.name || t.id);
+      });
+      this.tagNameMap = map;
+    } catch (e) {
+      if (e && e.kind === 'challenge') throw e;
+    }
+    return map;
+  }
+
+  async getSearchResultsUnrated(request, metadata) {
     const query = ((request && request.title) || '').trim();
     const tags = (request && request.includedTags) || [];
     const page = (metadata && metadata.page) || 1;
@@ -65,6 +97,16 @@ class Source {
   }
 
   async getMangaDetails(mangaId) {
+    const result = await this.getMangaDetailsUnrated(mangaId);
+    const info = result && result.mangaInfo;
+    if (info && info.ageRating === undefined) {
+      const age = ageFromTags(info.tags);
+      if (age) info.ageRating = age;
+    }
+    return result;
+  }
+
+  async getMangaDetailsUnrated(mangaId) {
     const $ = cheerio.load(await this.get(`${SITE}/manga/${mangaId}/`));
     const fact = (label) => $('.lc-facts li').filter((i, el) => $(el).find('.k').text().trim() === label).children().last().text().trim();
     return {

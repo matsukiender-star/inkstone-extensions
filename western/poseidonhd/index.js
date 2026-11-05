@@ -1,8 +1,7 @@
-const SITE = 'https://www.cuevana3.eu';
+const SITE = 'https://www.poseidonhd2.co';
 
 const BROWSER = { 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:140.0) Gecko/20100101 Firefox/140.0', 'Accept-Language': 'es' };
 
-// Each language of a title, in the order they are offered, with the word the player reads for the sub and dub switch.
 const LANGUAGES = [['latino', 'Latino', 'Dub'], ['spanish', 'Castellano', 'Dub'], ['english', 'Inglés', 'Sub'], ['japanese', 'Japonés', 'Sub']];
 
 const GENRES = [
@@ -11,7 +10,6 @@ const GENRES = [
   ['fantasia', 'Fantasía'], ['misterio', 'Misterio'], ['romance', 'Romance'], ['suspense', 'Suspenso'], ['terror', 'Terror'],
 ];
 
-// The hosts that play, best first. ponytail: StreamWish hides behind a script page, Doodstream needs the domain it redirects to, VOE asks some of this site's videos to confirm a human.
 const SERVERS = [['vidhide', 'VidHide'], ['voe', 'VOE']];
 
 const VOE_MARKERS = ['@$', '^^', '~@', '%?', '*~', '!!', '#&'];
@@ -39,10 +37,9 @@ function voeSource(payload) {
   return JSON.parse(App.base64Decode(shifted.split('').reverse().join(''))).source;
 }
 
-// The site is Next.js: every page carries its data as JSON in the __NEXT_DATA__ script.
 function pageProps(html) {
   const data = /<script id="__NEXT_DATA__" type="application\/json">([\s\S]*?)<\/script>/.exec(html);
-  if (!data) throw new Error('Cuevana: the page has no __NEXT_DATA__');
+  if (!data) throw new Error('PoseidonHD: the page has no __NEXT_DATA__');
   return JSON.parse(data[1]).props.pageProps;
 }
 
@@ -51,11 +48,15 @@ function poster(images, size) {
   return src ? src.replace('/original/', `/${size}/`) : undefined;
 }
 
-// A title id is serie-<slug> or pelicula-<slug>, since the two live under different pages.
 function pageOf(mangaId) {
-  const [, kind, slug] = /^(serie|pelicula)-(.+)$/.exec(mangaId) || [];
-  if (!kind) throw new Error(`Cuevana: unknown title id ${mangaId}`);
-  return { kind, url: `${SITE}/${kind === 'serie' ? 'ver-serie' : 'ver-pelicula'}/${encodeURIComponent(slug)}` };
+  const [, kind, tmdb, slug] = /^(serie|pelicula)-(\d+)\/(.+)$/.exec(mangaId) || [];
+  if (!kind) throw new Error(`PoseidonHD: unknown title id ${mangaId}`);
+  return { kind, url: `${SITE}/${kind}/${tmdb}/${encodeURIComponent(slug)}` };
+}
+
+function idOf(item) {
+  const [, kind, path] = /^(movies|series)\/(\d+\/[^/]+)/.exec((item && item.url && item.url.slug) || '') || [];
+  return kind ? `${kind === 'series' ? 'serie' : 'pelicula'}-${path}` : null;
 }
 
 class Source {
@@ -83,11 +84,8 @@ class Source {
     if (query) url = `${SITE}/search?q=${encodeURIComponent(query)}`;
     const props = pageProps(await this.get(url));
     const results = (props.movies || [])
-      .filter((item) => item && item.slug && item.slug.name && item.titles)
-      .map((item) => {
-        const kind = /^series\//.test((item.url && item.url.slug) || '') ? 'serie' : 'pelicula';
-        return { mangaId: `${kind}-${item.slug.name}`, title: item.titles.name, image: poster(item.images, 'w342'), medium: 'anime' };
-      });
+      .filter((item) => item && item.titles && idOf(item))
+      .map((item) => ({ mangaId: idOf(item), title: item.titles.name, image: poster(item.images, 'w342'), medium: 'anime' }));
     return { results, metadata: !query && results.length && page < (props.pages || 0) ? { page: page + 1 } : undefined };
   }
 
@@ -116,16 +114,15 @@ class Source {
     const serie = pageProps(await this.get(url)).thisSerie || {};
     return (serie.seasons || [])
       .flatMap((season) => (season.episodes || []).map((episode) => {
-        const slug = episode.slug || {};
-        const id = `${slug.name}-temporada-${slug.season}-episodio-${slug.episode}`;
+        const id = `${season.number}-${episode.number}`;
         const time = Date.parse(episode.releaseDate);
         return {
           id,
           chapterId: id,
-          name: `Episodio ${slug.episode}`,
-          number: Number(slug.episode),
-          season: Number(slug.season),
-          seasonName: `Temporada ${slug.season}`,
+          name: `Episodio ${episode.number}`,
+          number: Number(episode.number),
+          season: Number(season.number),
+          seasonName: `Temporada ${season.number}`,
           time: Number.isNaN(time) ? undefined : time,
         };
       }))
@@ -135,19 +132,22 @@ class Source {
 
   async getVideos(mangaId, chapterId) {
     const { kind, url } = pageOf(mangaId);
-    const props = pageProps(await this.get(kind === 'pelicula' ? url : `${SITE}/episodio/${encodeURIComponent(chapterId)}`));
+    const [season, episode] = chapterId.split('-');
+    const props = pageProps(await this.get(kind === 'pelicula' ? url : `${url}/temporada/${season}/episodio/${episode}`));
     const sources = ((kind === 'pelicula' ? props.thisMovie : props.episode) || {}).videos || {};
     const players = SERVERS.flatMap(([server, name]) => LANGUAGES.flatMap(([key, label, audio]) => (sources[key] || [])
       .filter((player) => (player.cyberlocker || '').toLowerCase().startsWith(server) && player.result)
       .map((player) => ({ server, url: player.result, quality: `${name} ${label} (${audio})` }))));
     const found = await Promise.all(players.map((player) => this.extract(player).catch(() => null)));
     const videos = found.filter((video) => video && /^https?:\/\//.test(video.url)).map((video) => ({ ...video, headers: BROWSER }));
-    if (!videos.length) throw new Error(`Cuevana: none of the ${players.length} servers gave a playable video`);
-    return videos;
+    const embeds = players
+      .filter((player, i) => !(found[i] && /^https?:\/\//.test(found[i].url)))
+      .map((player) => ({ url: player.url, type: 'embed', quality: player.quality, server: String(player.quality).split(' ')[0] }));
+    if (!videos.length && !embeds.length) throw new Error(`PoseidonHD: none of the ${players.length} servers gave a playable video`);
+    return videos.concat(embeds);
   }
 
   async extract(player) {
-    // The site's own player page only redirects: var url = 'https://<host>/e/...'.
     const embed = /var url = '([^']+)'/.exec(await this.get(player.url));
     let html = await this.get(embed[1]);
     if (player.server === 'vidhide') {
@@ -167,7 +167,7 @@ class Source {
 
   async get(url) {
     const response = await this.requests.schedule(App.createRequest({ url, method: 'GET', headers: { Accept: 'text/html', Referer: `${SITE}/`, ...BROWSER } }));
-    if (response.status < 200 || response.status >= 300) throw new Error(`Cuevana: HTTP ${response.status} from ${url}`);
+    if (response.status < 200 || response.status >= 300) throw new Error(`PoseidonHD: HTTP ${response.status} from ${url}`);
     return String(response.data);
   }
 }

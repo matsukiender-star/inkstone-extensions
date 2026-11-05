@@ -68,7 +68,6 @@ class Source {
     const feed = request && request.feed;
     const page = (metadata && metadata.page) || 1;
     if (!query && !tags.length && feed === 'latest') {
-      // The home page has the latest episodes only, with no more pages; each links to /ver/<anime>-<episode>.
       const $ = cheerio.load(await this.get(SITE));
       const results = $('article.episode a[href^="/ver/"]')
         .map((i, el) => {
@@ -114,11 +113,9 @@ class Source {
 
   async getChapters(mangaId) {
     const html = await this.get(`${SITE}/anime/${encodeURIComponent(mangaId)}`);
-    // The episode numbers come in a script, newest first: var episodes = [12,11,...];
     const list = /var episodes = \[([^\]]*)\]/.exec(html);
     const info = /var anime_info = (\[[^\]]*\])/.exec(html);
     const slug = (info && JSON.parse(info[1])[1]) || mangaId;
-    // The site repeats some numbers (Naruto lists 108 twice), so each is kept once.
     return Array.from(new Set((list ? list[1].split(',') : []).map((value) => value.trim()).filter(Boolean)))
       .map((value) => {
         const id = `${slug}-${value}`;

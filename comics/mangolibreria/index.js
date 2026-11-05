@@ -1,5 +1,4 @@
 const SITE = 'https://lectorfenix.com';
-// The picture CDN answers 403 (or a fake picture) unless the request says it loads an image.
 const IMAGE_HEADERS = { 'Sec-Fetch-Dest': 'image' };
 
 const STATUS = { ongoing: 'ONGOING', completed: 'COMPLETED', finalizado: 'COMPLETED', hiatus: 'HIATUS', pausa: 'HIATUS' };
@@ -23,13 +22,17 @@ function payload(json, ...keys) {
   throw new Error(`MangoLibreria: the page data has no ${keys.join(' or ')}`);
 }
 
+function nsfw(comic) {
+  return comic.isNsfw || comic.is_content_nsfw ? 18 : undefined;
+}
+
 function slugOf(path) {
   return (/\/comics\/([^/?#]+)/.exec(path || '') || [])[1];
 }
 
 class Source {
   constructor() {
-    this.requests = App.createRequestManager({ rateLimit: { requestsPerSecond: 2 } });
+    this.requests = App.createRequestManager({});
   }
 
   getSourceFeeds() {
@@ -46,7 +49,7 @@ class Source {
     const search = query ? `&q=${encodeURIComponent(query)}` : '';
     const list = payload(await this.get(`${SITE}/comics/__data.json?x-sveltekit-invalidated=01&page=${page}${sort}${search}`), 'comics');
     const results = list.comics
-      .map((comic) => ({ mangaId: slugOf(comic.urlPath), title: comic.name, image: comic.urlCover || comic.coverImage, headers: IMAGE_HEADERS, medium: 'comics' }))
+      .map((comic) => ({ mangaId: slugOf(comic.urlPath), title: comic.name, image: comic.urlCover || comic.coverImage, headers: IMAGE_HEADERS, ageRating: nsfw(comic), medium: 'comics' }))
       .filter((title) => title.mangaId && title.title);
     return { results, metadata: results.length && list.page < list.totalPages ? { page: page + 1 } : undefined };
   }
@@ -58,6 +61,7 @@ class Source {
         title: comic.title || mangaId,
         image: comic.coverImage,
         headers: IMAGE_HEADERS,
+        ageRating: nsfw(comic),
         desc: comic.description || '',
         author: comic.author || undefined,
         artist: comic.artist || undefined,

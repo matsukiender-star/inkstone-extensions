@@ -170,8 +170,21 @@ try {
 }
 const Source = sandbox.module.exports.Source;
 if (!check(typeof Source === 'function', 'exports a Source class', 'module.exports = { Source }')) finish();
+// Sumizuri's engine has no atob (its 0.2.0 source defines one only while cheerio loads, then deletes it); Boundless has one. A bare atob call throws in Sumizuri,
+// and a source that catches that returns nothing, so the failure looks like an empty site.
+if (!/typeof\s+atob/.test(code) && /(^|[^.\w$])atob\s*\(/.test(code.split('\n').filter((line) => !/^\s*(\/\/|\/\*|\*)/.test(line)).join('\n'))) {
+  say('warn', 'calls atob, which Sumizuri does not have', 'use App.base64Decode(text), which both apps have (it reads UTF-8 text and throws on other bytes; guard a bare atob with typeof atob === "function")');
+}
 const source = new Source();
 
+// The player pages the Boundless Player opens itself (docs/design/video-embeds.md in its repo, 2026-11-05).
+const EMBED_HOSTS = ['dailymotion.com', 'dai.ly', 'rumble.com', 'ok.ru', 'mp4upload.com', 'morencius.com', 'vidhide.com', 'earnvids.com', 'vidmoly.org', 'vidmoly.biz', 'vidmoly.net', 'streamtape.com', 'streamtape.to', 'streamtape.net', 'streamtape.xyz', 'streamta.pe', 'mixdrop.top', 'mixdrop.ag', 'mixdrop.to', 'mixdrop.co', 'mixdrop.ps', 'mixdrop.si', 'mixdrop.bz', 'mixdrop.ch', 'mixdrop.cv', 'mxdrop.click'];
+const sniffed = new Set();
+const warnSniffer = (host) => {
+  if (sniffed.has(host)) return;
+  sniffed.add(host);
+  say('warn', `${host} has no resolver in the app, so its embed entry goes through the page sniffer`, 'fine for a player the site owns: the page host must be in hosts, and a player that needs a click, DRM, a captcha or a login will not open');
+};
 const anime = typeof source.getVideos === 'function';
 for (const method of ['getSearchResults', 'getMangaDetails', 'getChapters', anime ? 'getVideos' : 'getChapterDetails']) {
   check(typeof source[method] === 'function', `has ${method}()`);
@@ -197,8 +210,10 @@ if (existsSync(listPath)) {
     check(['comics', 'novel', 'both', 'anime'].includes(entry.medium), 'medium is comics, novel, both or anime', entry.medium);
     check((entry.medium === 'anime') === anime, 'an anime source has getVideos, and only an anime source', entry.medium);
     const typeFolder = path.basename(path.dirname(folder));
-    const wantedFolder = { comics: 'comics', novel: 'novels', both: 'mixed', anime: 'anime' }[entry.medium];
-    if (['comics', 'novels', 'mixed', 'anime'].includes(typeFolder)) {
+    // A video source has the medium "anime" whatever it shows; the first word of its description (Anime, Donghua, Drama, Western) picks the folder.
+    const videoFolder = String(entry.description ?? '').split('\n')[0].split('・')[0].trim().toLowerCase();
+    const wantedFolder = entry.medium === 'anime' ? (['anime', 'donghua', 'drama', 'western'].includes(videoFolder) ? videoFolder : 'anime') : { comics: 'comics', novel: 'novels', both: 'mixed' }[entry.medium];
+    if (['comics', 'novels', 'mixed', 'anime', 'donghua', 'drama', 'western'].includes(typeFolder)) {
       check(typeFolder === wantedFolder, 'sits in the folder for its medium', `${typeFolder}/ holds it, ${wantedFolder}/ fits "${entry.medium}"`);
       const commentLines = code.split('\n').filter((line) => /^\s*(\/\/|\/\*|\*\/|\*\s)/.test(line)).length;
       if (commentLines) say('warn', `${commentLines} comment lines in a file that sits in the repository layout`, 'the repository holds extensions without comments (keep your commented copy elsewhere)');
@@ -208,6 +223,12 @@ if (existsSync(listPath)) {
     check(/^[a-z]{2,3}$/.test(entry.language ?? ''), 'language is a short code like en', entry.language);
     check(entry.description && entry.capabilities?.length, 'has a description and capabilities');
     if ((entry.description ?? '').length > 300) say('warn', 'description is long', `${entry.description.length} characters: keep the short shape (a line of types, a Catalog line, a Restrictions list) and put the rest in the file header and your report`);
+    // The Catalog line is rounded down to one significant digit with a plus (300+, 1,000+, 20,000+), never a measured count.
+    const catalog = /Catalog・([\d,]+)\+/.exec(entry.description ?? '');
+    if (catalog) {
+      const digits = catalog[1].replace(/,/g, '');
+      if (digits.replace(/0+$/, '').length > 1) say('warn', 'Catalog is not rounded down to one significant digit', `${catalog[1]}+ should read ${(Number(digits[0]) * 10 ** (digits.length - 1)).toLocaleString('en-US')}+`);
+    }
     const digest = createHash('sha256').update(readFileSync(file)).digest('hex');
     if (entry.sha256) check(entry.sha256 === digest, 'sha256 matches the file', entry.sha256 === digest ? '' : 'run shasum -a 256 and update it');
     else say('warn', 'no sha256 yet', `shasum -a 256 gives ${digest.slice(0, 12)}...`);
@@ -299,6 +320,21 @@ async function checkImage(what, url, headers, { cover = false } = {}) {
   const host = new URL(url).hostname;
   if (shot.error) return check(false, `${what} loads`, `${host}: ${shot.error}`);
   if (shot.kind === 'Cloudflare') {
+    // An image host can answer the check only to requests with no Referer (AnimeXin: 403 without the site's address, 200 with it).
+    // That is a bug in the extension, not a check for the app to clear: the app sends only the headers the result carries.
+    const sentReferer = Object.keys(headers ?? {}).some((k) => k.toLowerCase() === 'referer');
+    let site = '';
+    try {
+      site = new URL(entry?.website ?? '').origin;
+    } catch {
+      site = '';
+    }
+    if (!sentReferer && site) {
+      const again = await loadImage(url, { ...headers, Referer: `${site}/` });
+      if (!again.error && again.status >= 200 && again.status < 300 && /^image\//i.test(again.type)) {
+        return check(false, `${what} needs the site's Referer`, `${host} answers a Cloudflare check without one and the image with Referer ${site}/. Set referer: '${site}/' on every result and on the details that carry this image (the app sends only the headers you return)`);
+      }
+    }
     skippedInApp = true;
     return say('warn', `${what} hit a Cloudflare check, so it was skipped`, botCheckHint({ host, kind: shot.kind, status: shot.status }));
   }
@@ -415,10 +451,17 @@ for (const item of (found?.value.results ?? []).slice(0, 2)) {
   const tryPlay = async (chapter, label, started) => {
     const videos = await withTimeout(source.getVideos(item.mangaId, chapter.id));
     if (!Array.isArray(videos) || videos.length === 0 || !videos.every((v) => isUrl(v.url))) return { ok: false, label, detail: 'getVideos gave no video with a full URL' };
-    const first = videos[0];
-    const answer = await withTimeout(fetch(first.url, { headers: first.headers ?? {} }), 30000);
-    const body = answer.ok ? await answer.text() : '';
-    const plays = answer.ok && (body.startsWith('#EXTM3U') || (answer.headers.get('content-type') ?? '').startsWith('video/'));
+    // An entry of type 'embed' is a player page the Boundless Player opens itself: it is checked on its shape, never fetched as a stream.
+    const embeds = videos.filter((v) => v.type === 'embed');
+    const streams = videos.filter((v) => v.type !== 'embed');
+    const first = streams[0] ?? embeds[0];
+    let answer = { ok: true, status: 'embed' };
+    let plays = true;
+    if (streams.length) {
+      answer = await withTimeout(fetch(first.url, { headers: first.headers ?? {} }), 30000);
+      const body = answer.ok ? await answer.text() : '';
+      plays = answer.ok && (body.startsWith('#EXTM3U') || (answer.headers.get('content-type') ?? '').startsWith('video/'));
+    }
     const subtitles = (first.subtitles ?? []).length;
     const took = `${((Date.now() - started) / 1000).toFixed(1)}s`;
     const skip = first.intro ? `, intro ${Math.round(first.intro.start / 1000)}s to ${Math.round(first.intro.end / 1000)}s` : '';
@@ -426,6 +469,12 @@ for (const item of (found?.value.results ?? []).slice(0, 2)) {
     for (const video of videos) {
       const quality = video.quality === undefined ? 'a video' : `"${video.quality}"`;
       if (video.quality !== undefined && typeof video.quality !== 'string') problems.push(`${quality}: quality is not a string`);
+      if (video.server !== undefined && (typeof video.server !== 'string' || !video.server.trim())) problems.push(`${quality}: server must be a short non empty string`);
+      if (video.type === 'embed') {
+        const host = (() => { try { return new URL(video.url).hostname; } catch { return ''; } })();
+        if (!/^https?:\/\//i.test(video.url)) problems.push(`${quality}: an embed entry needs a full http or https page address`);
+        else if (!EMBED_HOSTS.some((h) => host === h || host.endsWith('.' + h))) warnSniffer(host);
+      }
       if (video.headers !== undefined && (typeof video.headers !== 'object' || video.headers === null || Object.values(video.headers).some((v) => typeof v !== 'string'))) problems.push(`${quality}: headers must be an object of strings`);
       for (const kind of ['subtitles', 'audio']) {
         if (video[kind] === undefined) continue;
@@ -437,7 +486,8 @@ for (const item of (found?.value.results ?? []).slice(0, 2)) {
         if (range !== undefined && !(range && Number.isFinite(range.start) && Number.isFinite(range.end) && range.end > range.start)) problems.push(`${quality}: ${kind} needs numbers start and end in milliseconds, with end after start`);
       }
     }
-    return { ok: plays, label, problems, detail: plays ? `${videos.length} video, ${subtitles} subtitle tracks${skip}, in ${took}` : `the stream answered ${answer.status}` };
+    const embedNote = embeds.length ? `, ${embeds.length} embed ${embeds.length === 1 ? 'entry' : 'entries'} the app opens (not run here)` : '';
+    return { ok: plays, label, problems, detail: plays ? `${videos.length} video${embedNote}, ${subtitles} subtitle tracks${skip}, in ${took}` : `the stream answered ${answer.status}` };
   };
   const tryOpen = async (chapter) => {
     const label = `chapter "${chapter.name ?? chapter.id}"`;
@@ -448,6 +498,13 @@ for (const item of (found?.value.results ?? []).slice(0, 2)) {
       const isText = Array.isArray(read.pages) && read.pages.length === 0 && typeof read.text === 'string' && read.text.trim().length > 0;
       if (Array.isArray(read.pages) && read.pages.length === 0 && Array.isArray(read.text)) {
         return { ok: false, label, detail: 'text is an array; the app casts text to a string and throws, so join the paragraphs with a blank line' };
+      }
+      if (read.book !== undefined && read.book !== null) {
+        const book = read.book;
+        const headersOk = book.headers === undefined || book.headers === null || (typeof book.headers === 'object' && !Array.isArray(book.headers) && Object.values(book.headers).every((v) => typeof v === 'string'));
+        const shapeOk = typeof book === 'object' && !Array.isArray(book) && /^https?:\/\//i.test(String(book.url ?? '')) && headersOk;
+        if (!shapeOk) return { ok: false, label, detail: 'book must be { url: "https://...", headers?: { name: "text" } }; the app ignores a book that has no http or https url' };
+        return { ok: true, label, detail: `a book file on ${new URL(book.url).host}, which this script does not download (the app reads an EPUB or MOBI as text and draws a PDF)` };
       }
       const isImages = read.pages?.length > 0 && read.pages.every(isUrl);
       const took = `${((Date.now() - started) / 1000).toFixed(1)}s`;

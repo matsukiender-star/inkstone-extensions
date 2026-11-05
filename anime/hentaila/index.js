@@ -3,7 +3,6 @@ const CDN = 'https://cdn.hentaila.com';
 
 const BROWSER = { 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:140.0) Gecko/20100101 Firefox/140.0', 'Accept-Language': 'es' };
 
-// VOE first: the VIP address (/m3u8/<id>) has no .m3u8 ending, so Sumizuri on Android cannot tell it is HLS.
 const SERVERS = ['VOE', 'YourUpload', 'Mp4Upload', 'VIP'];
 
 const STATUS = { 0: 'COMPLETED', 2: 'ONGOING' };
@@ -23,7 +22,6 @@ function voeSource(payload) {
   return JSON.parse(App.base64Decode(shifted.split('').reverse().join(''))).source;
 }
 
-// The site is SvelteKit: __data.json flattens each object into one array where numbers point at other entries.
 function resolve(data, index, seen) {
   if (seen.has(index)) return seen.get(index);
   const value = data[index];
@@ -73,7 +71,7 @@ class Source {
     const list = payload(await this.json(`${SITE}/catalogo/__data.json?${params.join('&')}`), 'results');
     const results = list.results
       .filter((item) => item && item.slug && item.title)
-      .map((item) => ({ mangaId: item.slug, title: item.title.trim(), image: `${CDN}/covers/${item.id}.jpg`, medium: 'anime' }));
+      .map((item) => ({ mangaId: item.slug, title: item.title.trim(), image: `${CDN}/covers/${item.id}.jpg`, medium: 'anime', ageRating: 18 }));
     const pages = list.pagination || {};
     return { results, metadata: results.length && pages.currentPage < pages.totalPages ? { page: page + 1 } : undefined };
   }
@@ -89,6 +87,7 @@ class Source {
         tags: (media.genres || []).map((genre) => genre && genre.name).filter(Boolean),
         webURL: `${SITE}/media/${mangaId}`,
         medium: 'anime',
+        ageRating: 18,
       },
     };
   }

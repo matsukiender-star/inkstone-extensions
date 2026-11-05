@@ -1,4 +1,4 @@
-const SITE = 'https://gnula.life';
+const SITE = 'https://www.cuevana3.eu';
 
 const BROWSER = { 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:140.0) Gecko/20100101 Firefox/140.0', 'Accept-Language': 'es' };
 
@@ -7,7 +7,7 @@ const LANGUAGES = [['latino', 'Latino', 'Dub'], ['spanish', 'Castellano', 'Dub']
 const GENRES = [
   ['accion', 'Acción'], ['aventura', 'Aventura'], ['animacion', 'Animación'], ['ciencia-ficcion', 'Ciencia Ficción'],
   ['comedia', 'Comedia'], ['crimen', 'Crimen'], ['documental', 'Documentales'], ['drama', 'Drama'], ['familia', 'Familia'],
-  ['fantasia', 'Fantasía'], ['misterio', 'Misterio'], ['romance', 'Romance'], ['suspenso', 'Suspenso'], ['terror', 'Terror'],
+  ['fantasia', 'Fantasía'], ['misterio', 'Misterio'], ['romance', 'Romance'], ['suspense', 'Suspenso'], ['terror', 'Terror'],
 ];
 
 const SERVERS = [['vidhide', 'VidHide'], ['voe', 'VOE']];
@@ -39,7 +39,7 @@ function voeSource(payload) {
 
 function pageProps(html) {
   const data = /<script id="__NEXT_DATA__" type="application\/json">([\s\S]*?)<\/script>/.exec(html);
-  if (!data) throw new Error('Gnula: the page has no __NEXT_DATA__');
+  if (!data) throw new Error('Cuevana: the page has no __NEXT_DATA__');
   return JSON.parse(data[1]).props.pageProps;
 }
 
@@ -50,8 +50,8 @@ function poster(images, size) {
 
 function pageOf(mangaId) {
   const [, kind, slug] = /^(serie|pelicula)-(.+)$/.exec(mangaId) || [];
-  if (!kind) throw new Error(`Gnula: unknown title id ${mangaId}`);
-  return { kind, url: `${SITE}/${kind === 'serie' ? 'series' : 'movies'}/${encodeURIComponent(slug)}` };
+  if (!kind) throw new Error(`Cuevana: unknown title id ${mangaId}`);
+  return { kind, url: `${SITE}/${kind === 'serie' ? 'ver-serie' : 'ver-pelicula'}/${encodeURIComponent(slug)}` };
 }
 
 class Source {
@@ -63,7 +63,6 @@ class Source {
     return [
       { id: 'peliculas', name: 'Movies' },
       { id: 'series', name: 'Series' },
-      { id: 'estrenos', name: 'Latest' },
     ];
   }
 
@@ -75,26 +74,23 @@ class Source {
     const query = ((request && request.title) || '').trim();
     const tags = (request && request.includedTags) || [];
     const page = (metadata && metadata.page) || 1;
-    const feed = request && request.feed;
-    let url = `${SITE}/archives/movies/page/${page}`;
-    if (feed === 'series') url = `${SITE}/archives/series/page/${page}`;
-    else if (feed === 'estrenos') url = `${SITE}/archives/movies/releases/page/${page}`;
-    if (tags.length) url = `${SITE}/genres/${encodeURIComponent(tags[0].id)}/page/${page}`;
-    if (query) url = `${SITE}/search?q=${encodeURIComponent(query)}&p=${page}`;
-    const box = pageProps(await this.get(url)).results || {};
-    const results = (box.data || [])
-      .filter((item) => item && item.slug && item.slug.name && item.titles && item.titles.name)
+    let url = `${SITE}/${request && request.feed === 'series' ? 'series' : 'peliculas'}/estrenos/page/${page}`;
+    if (tags.length) url = `${SITE}/genero/${encodeURIComponent(tags[0].id)}/page/${page}`;
+    if (query) url = `${SITE}/search?q=${encodeURIComponent(query)}`;
+    const props = pageProps(await this.get(url));
+    const results = (props.movies || [])
+      .filter((item) => item && item.slug && item.slug.name && item.titles)
       .map((item) => {
-        const isSerie = box.__typename === 'PaginatedSerie' || /^series\//.test((item.url && item.url.slug) || '');
-        const kind = isSerie ? 'serie' : 'pelicula';
+        const kind = /^series\//.test((item.url && item.url.slug) || '') ? 'serie' : 'pelicula';
         return { mangaId: `${kind}-${item.slug.name}`, title: item.titles.name, image: poster(item.images, 'w342'), medium: 'anime' };
       });
-    return { results, metadata: results.length && page < (box.pages || 0) ? { page: page + 1 } : undefined };
+    return { results, metadata: !query && results.length && page < (props.pages || 0) ? { page: page + 1 } : undefined };
   }
 
   async getMangaDetails(mangaId) {
-    const { url } = pageOf(mangaId);
-    const item = pageProps(await this.get(url)).post || {};
+    const { kind, url } = pageOf(mangaId);
+    const props = pageProps(await this.get(url));
+    const item = (kind === 'serie' ? props.thisSerie : props.thisMovie) || {};
     return {
       mangaInfo: {
         title: (item.titles && item.titles.name) || mangaId,
@@ -113,11 +109,11 @@ class Source {
   async getChapters(mangaId) {
     const { kind, url } = pageOf(mangaId);
     if (kind === 'pelicula') return [{ id: 'pelicula', chapterId: 'pelicula', name: 'Película', number: 1 }];
-    const post = pageProps(await this.get(url)).post || {};
-    return (post.seasons || [])
+    const serie = pageProps(await this.get(url)).thisSerie || {};
+    return (serie.seasons || [])
       .flatMap((season) => (season.episodes || []).map((episode) => {
         const slug = episode.slug || {};
-        const id = `${slug.name}/seasons/${slug.season}/episodes/${slug.episode}`;
+        const id = `${slug.name}-temporada-${slug.season}-episodio-${slug.episode}`;
         const time = Date.parse(episode.releaseDate);
         return {
           id,
@@ -135,15 +131,18 @@ class Source {
 
   async getVideos(mangaId, chapterId) {
     const { kind, url } = pageOf(mangaId);
-    const props = pageProps(await this.get(kind === 'pelicula' ? url : `${SITE}/series/${chapterId}`));
-    const sources = ((kind === 'pelicula' ? props.post : props.episode) || {}).players || {};
+    const props = pageProps(await this.get(kind === 'pelicula' ? url : `${SITE}/episodio/${encodeURIComponent(chapterId)}`));
+    const sources = ((kind === 'pelicula' ? props.thisMovie : props.episode) || {}).videos || {};
     const players = SERVERS.flatMap(([server, name]) => LANGUAGES.flatMap(([key, label, audio]) => (sources[key] || [])
       .filter((player) => (player.cyberlocker || '').toLowerCase().startsWith(server) && player.result)
       .map((player) => ({ server, url: player.result, quality: `${name} ${label} (${audio})` }))));
     const found = await Promise.all(players.map((player) => this.extract(player).catch(() => null)));
     const videos = found.filter((video) => video && /^https?:\/\//.test(video.url)).map((video) => ({ ...video, headers: BROWSER }));
-    if (!videos.length) throw new Error(`Gnula: none of the ${players.length} servers gave a playable video`);
-    return videos;
+    const embeds = players
+      .filter((player, i) => !(found[i] && /^https?:\/\//.test(found[i].url)))
+      .map((player) => ({ url: player.url, type: 'embed', quality: player.quality, server: String(player.quality).split(' ')[0] }));
+    if (!videos.length && !embeds.length) throw new Error(`Cuevana: none of the ${players.length} servers gave a playable video`);
+    return videos.concat(embeds);
   }
 
   async extract(player) {
@@ -166,7 +165,7 @@ class Source {
 
   async get(url) {
     const response = await this.requests.schedule(App.createRequest({ url, method: 'GET', headers: { Accept: 'text/html', Referer: `${SITE}/`, ...BROWSER } }));
-    if (response.status < 200 || response.status >= 300) throw new Error(`Gnula: HTTP ${response.status} from ${url}`);
+    if (response.status < 200 || response.status >= 300) throw new Error(`Cuevana: HTTP ${response.status} from ${url}`);
     return String(response.data);
   }
 }
