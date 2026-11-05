@@ -237,7 +237,7 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [VIZ Manga](comics/viz/index.js) | viz.com | English | Mature | 1.0.0 |
 | [Vortex Scans](comics/vortexscans/index.js) | vortexscans.org | English | Safe | 1.0.0 |
 | [WaManga](comics/wamanga/index.js) | wamanga.ru | Russian | Adult | 1.2.0 |
-| [WEBTOON](comics/webtoons/index.js) | webtoons.com | English | Safe | 1.0.0 |
+| [WEBTOON](comics/webtoons/index.js) | webtoons.com | English | Safe | 1.1.0 |
 | [Weeb Central](comics/weebcentral/index.js) | weebcentral.com | English | Adult | 1.0.0 |
 | [YakshaComics](comics/yakshacomics/index.js) | yakshacomics.com | English | Safe | 1.0.0 |
 | [Yuri on Air](comics/yurionair/index.js) | yurionair.top | Brazilian Portuguese | Safe | 1.0.0 |
