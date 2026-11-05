@@ -6214,6 +6214,29 @@
       "sha256": "08a66b70c4f07b0dbae2ff273b4187de618144798fedd55f3247b51b68d0437d"
     },
     {
+      "id": "lectulandia",
+      "name": "Lectulandia",
+      "version": "1.0.0",
+      "medium": "novel",
+      "website": "https://ww3.lectulandia.co",
+      "hosts": [
+        "ww3.lectulandia.co",
+        "lectulandia.co",
+        "www.antupload.com",
+        "antupload.com",
+        "assets.lectulandia.co"
+      ],
+      "description": "Books・Novels in EPUB and PDF\n\nCatalog・50,000+ books\n\nRestrictions:\n・Volumes open in Sumizuri Suki",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres"
+      ],
+      "language": "es",
+      "contentRating": "safe",
+      "sha256": "ea61593cc934af21c590daf7c48372627f9ce5e9998d897f37497a5e4c5a3c96"
+    },
+    {
       "id": "leercapitulo",
       "name": "LeerCapitulo",
       "version": "1.0.0",
