@@ -1752,7 +1752,7 @@
     {
       "id": "lectulandia",
       "name": "Lectulandia",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "novel",
       "website": "https://ww3.lectulandia.co",
       "hosts": [
@@ -1770,7 +1770,7 @@
       ],
       "language": "es",
       "contentRating": "safe",
-      "sha256": "ea61593cc934af21c590daf7c48372627f9ce5e9998d897f37497a5e4c5a3c96"
+      "sha256": "4759da801a197b9d24f62083711e75ce4ace73a1c19b5de1f6d896c979e146a4"
     },
     {
       "id": "leercapitulo",
