@@ -5437,6 +5437,31 @@
       "language": "tr",
       "contentRating": "safe",
       "sha256": "f0fd7c1e644677fb601e5e4275028c0c7d02692572efb2e43233f2f15e6cff2d"
+    },
+    {
+      "id": "elejandria",
+      "name": "Elejandría",
+      "version": "1.0.0",
+      "medium": "novel",
+      "website": "https://www.elejandria.com",
+      "hosts": [
+        "www.elejandria.com",
+        "elejandria.com"
+      ],
+      "description": "Free and legal books in Spanish (public domain and author-released)\n\nCatalog・2,300+ books, ePub and PDF\n\nRestrictions:\n・Books open only in Sumizuri Suki",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "1f4965b2783628af32b50963ca4672bff4a8a17ebd67f1e5acbed24bf0d074d1"
     }
   ]
 }
