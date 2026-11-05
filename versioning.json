@@ -7690,6 +7690,47 @@
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
       "sha256": "1f4965b2783628af32b50963ca4672bff4a8a17ebd67f1e5acbed24bf0d074d1"
+    },
+    {
+      "id": "ikigaimangas",
+      "name": "Ikigai Mangas",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://ikigaimangas.com",
+      "description": "Manhwa・Manhua・Manga\n\nCatalog・6,000+\n\nRestrictions:\n・Rate Limit\n・Page images need the reader to send the source's headers",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "iconUrl": "https://ikigaimangas.com/favicon.ico",
+      "sha256": "b9b166536c1dfbe04a815ce73f8cd8eec9bd7213adc2ef217aecac82b8868655"
+    },
+    {
+      "id": "mangolibreria",
+      "name": "MangoLibreria",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://lectorfenix.com",
+      "description": "Manhwa・Manhua・Manga\n\nCatalog・2,000+\n\nRestrictions:\n・Page images need the reader to send the source's headers",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "iconUrl": "https://lectorfenix.com/favicon.ico",
+      "sha256": "2511901298a26aca721de541e731662e2343701586d8b614d597b7e2cdec3058",
+      "hosts": [
+        "lectorfenix.com"
+      ]
     }
   ]
 }
