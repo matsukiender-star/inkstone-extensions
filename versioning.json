@@ -5437,6 +5437,31 @@
       "language": "tr",
       "contentRating": "safe",
       "sha256": "f0fd7c1e644677fb601e5e4275028c0c7d02692572efb2e43233f2f15e6cff2d"
+    },
+    {
+      "id": "wikisourcees",
+      "name": "Wikisource (Español)",
+      "version": "1.0.0",
+      "medium": "novel",
+      "website": "https://es.wikisource.org",
+      "hosts": [
+        "es.wikisource.org",
+        "upload.wikimedia.org"
+      ],
+      "description": "Public domain books\n\nCatalog・Novels, short stories, legends, fables, essays, plays and poetry",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "safe",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "9d13e624d5dc26cfb2b622052131c2cd8bb44c7b49b7cbd9600549e4d9c2dc44"
     }
   ]
 }
