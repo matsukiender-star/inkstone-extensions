@@ -2,7 +2,8 @@ const SITE = 'https://es.wikisource.org';
 const API = `${SITE}/w/api.php`;
 // Wikimedia asks every client to name itself with a way to reach its author, and answers 429 to anonymous ones.
 const USER_AGENT = 'InkstoneWikisource/1.0 (https://github.com/realinkstone/inkstone-extensions)';
-const LOGO = 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Wikisource-logo.svg/400px-Wikisource-logo.svg.png';
+// Almost no work has a picture of its own (the few are publishers' logos), so every one shows the Wikisource logo. Wikimedia only makes thumbnails in set widths such as 330.
+const LOGO = 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Wikisource-logo.svg/330px-Wikisource-logo.svg.png';
 
 const PAGE_SIZE = 30;
 const PAGE_CACHE_MS = 5 * 60 * 1000;
@@ -31,7 +32,7 @@ function partialOf(page) {
   return {
     mangaId: page.title,
     title: page.title,
-    image: (page.thumbnail && page.thumbnail.source) || LOGO,
+    image: LOGO,
     webURL: wikiUrl(page.title),
     medium: 'novel',
   };
@@ -82,7 +83,7 @@ class Source {
     if (request && request.medium && request.medium !== 'novel') return { results: [] };
     const query = ((request && request.title) || '').trim();
     const tag = ((request && request.includedTags) || [])[0];
-    const params = { action: 'query', prop: 'pageimages', piprop: 'thumbnail', pithumbsize: '400' };
+    const params = { action: 'query' };
     if (query) {
       const offset = (metadata && metadata.offset) || 0;
       Object.assign(params, { generator: 'search', gsrsearch: query, gsrnamespace: '0', gsrlimit: String(PAGE_SIZE), gsroffset: String(offset) });
