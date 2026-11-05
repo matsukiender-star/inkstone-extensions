@@ -648,10 +648,16 @@
     {
       "id": "webtoons",
       "name": "WEBTOON",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "medium": "comics",
       "website": "https://www.webtoons.com",
       "iconUrl": "https://inkstone.web.app/webtoons/icon.png",
+      "hosts": [
+        "webtoons.com",
+        "*.webtoons.com",
+        "webtoon-phinf.pstatic.net",
+        "*.pstatic.net"
+      ],
       "description": "Webtoons",
       "capabilities": [
         "browse",
@@ -661,9 +667,27 @@
         "chapters",
         "reader"
       ],
-      "language": "en",
+      "settingsSchema": [
+        {
+          "type": "select",
+          "key": "language",
+          "label": "Language",
+          "default": "en",
+          "options": [
+            {
+              "value": "en",
+              "label": "English"
+            },
+            {
+              "value": "es",
+              "label": "Español"
+            }
+          ]
+        }
+      ],
+      "language": "multi",
       "contentRating": "safe",
-      "sha256": "7cb34b3904b24538eb84c70219710fc905ac9984894afb3ac275d34c622e6222"
+      "sha256": "e385f87751f6d77e8b3fe06a341fd306c41703c295ca55aa46bdbfc4409ae42a"
     },
     {
       "id": "novelfull",
