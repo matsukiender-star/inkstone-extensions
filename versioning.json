@@ -1788,7 +1788,7 @@
     {
       "id": "mangatoon",
       "name": "MangaToon",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "medium": "comics",
       "website": "https://mangatoon.mobi",
       "iconUrl": "https://inkstone.web.app/mangatoon/icon.png",
@@ -1804,6 +1804,22 @@
         "login"
       ],
       "settingsSchema": [
+        {
+          "type": "select",
+          "key": "language",
+          "label": "Idioma (Language)",
+          "default": "en",
+          "options": [
+            {
+              "value": "en",
+              "label": "English"
+            },
+            {
+              "value": "es",
+              "label": "Español"
+            }
+          ]
+        },
         {
           "type": "section",
           "label": "Account (optional)"
@@ -1824,7 +1840,7 @@
       ],
       "language": "en",
       "contentRating": "mature",
-      "sha256": "78501a002cf876558b3d26df25765483785cb0ffccf7e70c3fc36f3134a165ce"
+      "sha256": "be9386f57b279d517b85d1ee50952f74c92ee7c3e3f0fc37c7c9c40a262c5355"
     },
     {
       "id": "mangadex",
