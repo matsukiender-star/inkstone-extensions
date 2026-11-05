@@ -1422,6 +1422,32 @@
       ]
     },
     {
+      "id": "elcoleccionista",
+      "name": "El Coleccionista",
+      "version": "1.0.0",
+      "medium": "novel",
+      "website": "https://elcoleccionistadenovelas.wordpress.com",
+      "hosts": [
+        "elcoleccionistadenovelas.wordpress.com",
+        "public-api.wordpress.com",
+        "drive.usercontent.google.com"
+      ],
+      "description": "Light Novels・Web Novels in PDF\n\nCatalog・99 novels, one PDF volume per chapter\n\nRestrictions:\n・Volumes open only in Sumizuri Suki",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "192a4df8503e41358396c176694622953b2b8c7910a08b0895cdb787384841a9"
+    },
+    {
       "id": "eternalmangas",
       "name": "Eternal Mangas",
       "version": "1.0.0",
