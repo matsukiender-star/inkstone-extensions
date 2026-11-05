@@ -87,7 +87,8 @@ class Source {
   async getChapterDetails(mangaId, chapterId) {
     if (chapterId.startsWith('drive~')) {
       const file = chapterId.slice('drive~'.length);
-      return { id: chapterId, mangaId, pages: [], book: { url: `https://drive.usercontent.google.com/download?id=${file}&export=download&confirm=t` } };
+      const url = `https://drive.usercontent.google.com/download?id=${file}&export=download&confirm=t`;
+      return { id: chapterId, mangaId, pages: [], text: `Este capítulo es un libro en PDF, que este lector todavía no abre. Puedes descargarlo aquí: ${url}`, book: { url } };
     }
     const $ = cheerio.load(await this.get(`${SITE}/${chapterId}`));
     const body = $('.post-body').first();

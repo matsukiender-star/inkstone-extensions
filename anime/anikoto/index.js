@@ -367,6 +367,7 @@ class Source {
 
     const fallbackHost = await this.getFallbackHost();
     const videos = [];
+    let challenge = null;
 
     for (const group of groups) {
       try {
@@ -413,6 +414,7 @@ class Source {
         videos.push({
           url: streamUrl,
           quality: qualityLabelOf(group.type),
+          server: 'Anikoto',
           headers: {
             Referer: `${PLAYER_ORIGIN}/`,
             Origin: PLAYER_ORIGIN,
@@ -422,10 +424,12 @@ class Source {
           outro,
         });
       } catch (e) {
+        if (e && e.kind === 'challenge') challenge = e;
       }
     }
 
     if (!videos.length) {
+      if (challenge) throw challenge;
       throw new Error(`Anikoto: none of this episode's ${groups.length} server groups returned a playable stream`);
     }
     return videos;

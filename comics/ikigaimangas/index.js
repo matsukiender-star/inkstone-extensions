@@ -9,6 +9,13 @@ const IMAGE_HEADERS = { 'Sec-Fetch-Dest': 'image', 'Sec-Fetch-Mode': 'no-cors', 
 const STATUS = { 'en curso': 'ONGOING', completa: 'COMPLETED', hiatus: 'HIATUS', cancelada: 'CANCELLED' };
 const PAGE_SIZE = 20;
 
+function ageOfTags(tags) {
+  const names = tags.map(plain);
+  if (names.some((name) => /^(\+18|adulto|erotico|hentai|smut)/.test(name))) return 18;
+  if (names.some((name) => /ecchi|maduro|mature/.test(name))) return 16;
+  return undefined;
+}
+
 function plain(text) {
   return String(text || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 }
@@ -31,7 +38,7 @@ function qwikObjects(json) {
 
 class Source {
   constructor() {
-    this.requests = App.createRequestManager({ rateLimit: { requestsPerSecond: 1 } });
+    this.requests = App.createRequestManager({ rateLimit: { requestsPerSecond: 4 } });
   }
 
   getSourceFeeds() {
@@ -98,6 +105,8 @@ class Source {
         mangaId: series.slug,
         title: series.name,
         image: series.cover ? IMAGE_CDN + series.cover : undefined,
+        headers: IMAGE_HEADERS,
+        ageRating: series.is_mature ? 18 : undefined,
         medium: 'comics',
       }));
       return { results, metadata: matches.length > page * PAGE_SIZE ? { page: page + 1 } : undefined };
@@ -108,7 +117,7 @@ class Source {
       const results = $('div.grid > div.card')
         .map((i, el) => {
           const mangaId = slugOf($(el).find('.card-actions > a.btn[href]').attr('href'));
-          return mangaId && { mangaId, title: $(el).find('.card-body .card-title').first().text().trim(), image: $(el).find('img').attr('src'), medium: 'comics' };
+          return mangaId && { mangaId, title: $(el).find('.card-body .card-title').first().text().trim(), image: $(el).find('img').attr('src'), headers: IMAGE_HEADERS, medium: 'comics' };
         })
         .get()
         .filter(Boolean);
@@ -121,7 +130,7 @@ class Source {
       .map((i, el) => {
         const mangaId = slugOf($(el).attr('href'));
         const title = ($(el).find('.card-body .card-title').first().text() || $(el).find('h3').first().text()).trim();
-        return mangaId && { mangaId, title, image: $(el).find('img').attr('src'), medium: 'comics' };
+        return mangaId && { mangaId, title, image: $(el).find('img').attr('src'), headers: IMAGE_HEADERS, medium: 'comics' };
       })
       .get()
       .filter(Boolean);
@@ -134,13 +143,16 @@ class Source {
     const site = await this.origin();
     const $ = cheerio.load(await this.get(`${site}/series/${encodeURIComponent(mangaId)}/`));
     const main = $('main').first();
+    const tags = main.find('.card-body > ul > li > a[href*="?generos"]').map((i, el) => $(el).text().trim()).get();
     return {
       mangaInfo: {
         title: main.find('.card-body .card-title').first().text().trim() || mangaId,
         image: main.find('article.card figure > img').attr('src'),
+        headers: IMAGE_HEADERS,
+        ageRating: ageOfTags(tags),
         desc: main.find('.card-body > p').first().text().trim(),
         status: STATUS[main.find('figure > ul a[href*="?estados"]').first().text().trim().toLowerCase()] || 'UNKNOWN',
-        tags: main.find('.card-body > ul > li > a[href*="?generos"]').map((i, el) => $(el).text().trim()).get(),
+        tags,
         webURL: `${site}/series/${mangaId}/`,
         medium: 'comics',
       },
@@ -168,7 +180,7 @@ class Source {
   async getChapterDetails(mangaId, chapterId) {
     const site = await this.origin();
     const $ = cheerio.load(await this.get(`${site}/${chapterId.split('~').map(encodeURIComponent).join('/')}/`));
-    const pages = $('img[alt^="Página"]').map((i, el) => encodeURI($(el).attr('src') || '')).get().filter((src) => /^https?:\/\//.test(src));
+    const pages = $('img[alt^="Página"]').map((i, el) => encodeURI($(el).attr('src') || '')).get().filter((src) => /^https?:\/\//.test(src) && !/banner/i.test(src));
     return { id: chapterId, mangaId, pages, headers: IMAGE_HEADERS };
   }
 

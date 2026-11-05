@@ -51,7 +51,7 @@ function cardsOf(html) {
 
 class Source {
   constructor() {
-    this.requests = App.createRequestManager({ rateLimit: { requestsPerSecond: 1 } });
+    this.requests = App.createRequestManager({});
     this.sitemap = null;
   }
 
@@ -141,7 +141,8 @@ class Source {
   }
 
   async getChapterDetails(mangaId, chapterId) {
-    return { id: chapterId, mangaId, pages: [], book: { url: `${SITE}/libro/link_descarga_libro/${chapterId}` } };
+    const url = `${SITE}/libro/link_descarga_libro/${chapterId}`;
+    return { id: chapterId, mangaId, pages: [], text: `Este capítulo es un libro (EPUB o PDF), que este lector todavía no abre. Puedes descargarlo aquí: ${url}`, book: { url } };
   }
 
   index() {

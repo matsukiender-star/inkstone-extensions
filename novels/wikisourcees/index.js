@@ -1,8 +1,6 @@
 const SITE = 'https://es.wikisource.org';
 const API = `${SITE}/w/api.php`;
-// Wikimedia asks every client to name itself with a way to reach its author, and answers 429 to anonymous ones.
 const USER_AGENT = 'InkstoneWikisource/1.0 (https://github.com/realinkstone/inkstone-extensions)';
-// Almost no work has a picture of its own (the few are publishers' logos), so every one shows the Wikisource logo. Wikimedia only makes thumbnails in set widths such as 330.
 const LOGO = 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Wikisource-logo.svg/330px-Wikisource-logo.svg.png';
 
 const PAGE_SIZE = 30;
@@ -38,7 +36,6 @@ function partialOf(page) {
   };
 }
 
-// The subpages a page links to, in the order it lists them, once each.
 function subpagesOf(html, title) {
   const $ = cheerio.load(html);
   const found = [];
@@ -104,7 +101,6 @@ class Source {
     return { results: pages.filter((page) => !page.title.includes('/')).map(partialOf), metadata: next ? { cursor: next } : undefined };
   }
 
-  // A parsed page, kept for a few minutes so the details and the chapter list share one request.
   page(title) {
     const cached = this.pages.get(title);
     if (cached && Date.now() - cached.at < PAGE_CACHE_MS) return cached.promise;
@@ -148,7 +144,6 @@ class Source {
     if (!parts.length) return [{ id: page.title, chapterId: page.title, name: page.title, number: 1 }];
     const chapters = [];
     for (const part of parts) {
-      // A part that is only a list of its own chapters, as in a novel split in books, gives those chapters instead.
       const inner = /\b(parte|libro|tomo|volumen)\b/i.test(part.name) ? subpagesOf((await this.page(part.title)).text, part.title) : [];
       if (inner.length) inner.forEach((chapter) => chapters.push({ ...chapter, name: `${part.name}: ${chapter.name}` }));
       else chapters.push(part);

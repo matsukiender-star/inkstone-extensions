@@ -528,16 +528,19 @@ class Source {
     }
 
     const videos = [];
+    let challenge = null;
     for (const btn of voeButtons) {
       try {
         const video = await this.resolveGateVoe(epUrl, csrf, btn, jar);
         if (video) videos.push(video);
       } catch (e) {
+        if (e && e.kind === 'challenge') challenge = e;
         console.error('SerienStream VOE resolution error:', e);
       }
     }
 
     if (!videos.length) {
+      if (challenge) throw challenge;
       throw new Error('SerienStream: keiner der Stream-Server lieferte ein abspielbares Video');
     }
 
@@ -654,6 +657,7 @@ class Source {
     return {
       url: streamUrl,
       quality: qualityLabelOf(btn.langId, btn.langLabel),
+      server: 'VOE',
       headers: {
         Referer: `${playerOrigin}/`,
         'User-Agent': UA,

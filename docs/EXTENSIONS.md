@@ -8,7 +8,7 @@ Browse, Search, Detail and Reader screens.
 The format keeps the surface area small: implement a handful of methods on
 that class and the app can browse, search and read through your source.
 
-Boundless Reader and Sumizuri both load Inkstone extensions. This page describes Boundless's runtime. Anime extensions are for Sumizuri only: Boundless is not compatible with them (see [Anime sources](#anime-sources-sumizuri-only)).
+Boundless Reader and Sumizuri both load Inkstone extensions. This page describes Boundless's runtime. Anime extensions are for the video apps, Sumizuri and Boundless Player: Boundless Reader is not compatible with them (see [Anime sources](#anime-sources-sumizuri-and-boundless-player)).
 Building with an AI assistant? Give it [BUILD_WITH_AI.md](BUILD_WITH_AI.md).
 To check an extension works, see [TESTING.md](TESTING.md).
 
@@ -122,7 +122,7 @@ manager: `App.createRequestManager({ rateLimit: { requestsPerSecond: 2 } })`
 | --- | --- |
 | `App.getSourceSetting(key)` | Reads a value the user set in your settings (see `settingsSchema` below). Always a string, or `undefined`. |
 | `App.createSourceStateManager()` | Returns `{ store(key, value), retrieve(key) }`, both async, for remembering things between calls. |
-| `App.base64Encode(text)`, `App.base64Decode(text)` | Base64 in and out, as UTF-8 text. `base64Decode` throws if the bytes are not valid UTF-8; use `atob` for binary data. |
+| `App.base64Encode(text)`, `App.base64Decode(text)` | Base64 in and out, as UTF-8 text. `base64Decode` throws if the bytes are not valid UTF-8. Boundless has `atob` for binary data, but Sumizuri's engine has none (a bare `atob` call throws there), so use `App.base64Decode` for text and guard any `atob` with `typeof atob === 'function'`. |
 | `App.requestBrowserVerification({ url })` | Shows the page to the reader in the app's browser and resolves when they close it, or after 3 minutes. For a check that needs a person; the address must be on your `hosts`. Almost no extension needs it, because the app clears ordinary Cloudflare checks itself. |
 | `App.descrambleImage({ base64, headers })` | Puts back the pieces of one specific scrambled image scheme: a byte XOR and a 5 by 5 tile shuffle, switched on by `x-enc-*` and `x-scramble-*` response headers. Resolves to `{ base64 }` or `{ error }`. It is not a general descrambler. |
 | `App.executeInWebView({ url \| html + baseUrl, script, timeoutMs })` | Last resort for sites that only hand out a token through their own page scripts. Runs `script` in a real browser view and resolves to `{ value }` or `{ error }`. A few newer extensions (`mangafire`, `kagane`) use it, but treat them as examples of the call rather than models. |
@@ -279,7 +279,10 @@ one page URL with and without a `Referer` header matching your site and
 compare the status codes. If covers are blocked the same way, put `referer` on
 the title as well, on Browse results and in `mangaInfo` (a `headers` object of
 strings works too, on the title and on the chapter details; a `Referer` in
-`headers` wins over `referer`).
+`headers` wins over `referer`). The refusal can also be a Cloudflare check page
+(HTTP 403, `cf-mitigated: challenge`) that an image host shows only to requests
+with no `Referer`: the test script retries such an image once with the site's
+`Referer` and fails, naming the `referer` to return, when that loads.
 
 **Scrambled pages (Boundless only).** Return `scrambled: true` next to `pages`
 to ask the app to put each page back in order after it downloads it. Today the
@@ -289,9 +292,17 @@ none of those headers is shown as it came. Anything but a JSON `true` counts as
 false. Leave it out when your script descrambles pages itself with
 `App.descrambleImage`.
 
-### Anime sources (Sumizuri only)
+**Book files (Boundless Reader).** A chapter can be a whole book: return `book: { url, headers }` next to an empty
+`pages`. `url` is an EPUB, MOBI or PDF that the app downloads itself, and `headers` is optional (a `Cookie`, a
+`Referer`, a `User-Agent`), so the file has to answer a plain download. An EPUB or a MOBI becomes the text of the chapter,
+and a PDF becomes its pages drawn as pictures on the device (the first open draws them and keeps them). Files over 150 MB and
+PDFs over 1,500 pages are refused, and nothing is added to the Local Files library. Also return a short `text` notice
+(the book's name and a link to the file works well): an app version that does not know `book`, and a file that cannot be
+opened, show that text instead of an empty chapter. A `book` that is not an object with an http or https `url` is ignored.
 
-**Anime extensions are for Sumizuri compatibility.** Boundless is not compatible with them: it has no video player and does not call `getVideos`. Use [Sumizuri](https://sumizuri.notakari.com/) to install and test them. The details here follow Sumizuri's own documentation and engine (version 0.2.0); the full walk-through is in [BUILD_WITH_AI.md](BUILD_WITH_AI.md).
+### Anime sources (Sumizuri and Boundless Player)
+
+**Anime extensions are for the video apps.** Boundless Reader is not compatible with them: it has no video player and does not call `getVideos`. [Sumizuri](https://sumizuri.notakari.com/) and Boundless Player play them. The details here follow Sumizuri's own documentation and engine (version 0.2.0); Boundless Player calls `getVideos` the same way, but test in Sumizuri first; the full walk-through is in [BUILD_WITH_AI.md](BUILD_WITH_AI.md).
 
 Set `medium` to `anime` and list `videos` in `capabilities`. Episodes are chapters (`getChapters` as usual, newest first), and one extra method plays an episode. It returns a **list**, not an object:
 
@@ -301,6 +312,7 @@ async getVideos(mangaId, chapterId) {
     {
       url: 'https://.../master.m3u8',     // required, a full address
       quality: 'Auto',                     // a label the player reads
+      server: 'VixSrc',                    // optional, a stable name for the server or host
       headers: { Referer: 'https://example.com/' },
       subtitles: [{ url: 'https://.../en.vtt', label: 'English', language: 'en' }],
       audio: [{ url: 'https://.../ja.m3u8', label: 'Japanese', language: 'ja' }],
@@ -313,7 +325,10 @@ async getVideos(mangaId, chapterId) {
 
 - An entry, subtitle track or audio track without a full `url` is dropped silently. `headers` is an object of strings.
 - `quality` is read by the player: a height (`1080p`, `720p`, `4k`) ranks videos, and the words `Sub`, `Dub`, `Softsub` and `Hardsub` drive the audio preference and the sub and dub switch. Return an HLS master playlist once, as `Auto`; Sumizuri lists its qualities itself (only for an address whose path ends in `.m3u8`).
+- `server` is an optional short name for the server or host (`VixSrc`, `Dailymotion`), the same on every episode of a source. The Boundless Player is being changed to group its Servers panel by it and to start the next episode on the server the viewer last used; builds that do not read it ignore it.
+- An entry `{ type: 'embed', url: '<player page>', quality, server }` hands a player page to the Boundless Player, which resolves it to a stream. It opens `dailymotion.com`, `rumble.com`, `ok.ru`, `mp4upload.com`, Vidmoly, Streamtape, MixDrop and the VidHide pages `morencius.com`, `vidhide.com` and `earnvids.com`; any other host goes through the app's page sniffer, which opens the page in a hidden web view and takes the first media request (iPhone build of 2026-11-05, not yet run on a real page; Android not yet). List streams you resolved yourself first and embed entries after, and add the page host, the resolver's hosts and the stream hosts to the manifest `hosts`, or the stream is dropped.
 - An episode with no stream yet should throw an `Error` with a clear message, not return an empty list.
+- Do not send `group` on video episodes: it means a release group, and the Boundless Player shows none for video. It reads `title`, `thumbnail` (a full http or https address), `duration` in seconds (over 100000 counts as milliseconds) and `summary` instead.
 - Episodes of a title with several seasons can carry `season`, `seasonName` and `seasonCover`. `mangaInfo` can carry a `banner`.
 - Sumizuri treats only `contentRating: "adult"` as adult.
 
@@ -335,7 +350,7 @@ your-repo/
 
 The app resolves each bundle as `<repo>/<id>/index.js`, so the folder name must
 equal the `id`. In the Inkstone repository the folder sits inside `comics/`, `novels/`,
-`mixed/` or `anime/`, and the site serves it without that folder. `capabilities` is a
+`mixed/`, `anime/`, `donghua/`, `drama/` or `western/` (a video source has `medium: "anime"` whatever it shows, and the first word of its description decides the folder), and the site serves it without that folder. `capabilities` is a
 landing-page-only label the app never reads, but `description`, `medium`, `website`,
 `iconUrl`, `language`, `contentRating` and `settingsSchema` are all read (with `id`, `name`, `version`,
 `sha256` and `hosts`) and copied onto the installed record at install/update time. The app ignores

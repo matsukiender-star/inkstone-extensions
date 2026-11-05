@@ -123,6 +123,7 @@ class Source {
         desc: heading.nextAll('p').first().text().trim(),
         status: /Finalizado/.test(text) ? 'COMPLETED' : /En emisi[oó]n/.test(text) ? 'ONGOING' : 'UNKNOWN',
         tags: Array.from(new Set(tags)),
+        ageRating: tags.some((tag) => /^ecchi$/i.test(tag)) ? 16 : 0,
         webURL: `${SITE}/anime/${mangaId}`,
         medium: 'anime',
       },
@@ -151,12 +152,23 @@ class Source {
     const players = $('button.play-video[data-player]')
       .map((i, el) => App.base64Decode($(el).attr('data-player')))
       .get();
-    const found = await Promise.all(players.map((url) => this.extract(url).catch(() => null)));
+    let challenge = null;
+    const found = await Promise.all(
+      players.map((url) =>
+        this.extract(url).catch((e) => {
+          if (e && e.kind === 'challenge') challenge = e;
+          return null;
+        })
+      )
+    );
     const videos = found
       .filter((video) => video && /^https?:\/\//.test(video.url))
       .sort((a, b) => SERVERS.indexOf(a.quality) - SERVERS.indexOf(b.quality))
       .map((video) => ({ ...video, headers: { ...video.headers, ...BROWSER } }));
-    if (!videos.length) throw new Error(`MonosChinos: none of the ${players.length} servers gave a playable video`);
+    if (!videos.length) {
+      if (challenge) throw challenge;
+      throw new Error(`MonosChinos: none of the ${players.length} servers gave a playable video`);
+    }
     return videos;
   }
 
@@ -169,26 +181,26 @@ class Source {
       const redirect = /window\.location\.href\s*=\s*'([^']+)'/.exec(html);
       if (redirect) html = await this.get(redirect[1]);
       const json = /<script type="application\/json">([\s\S]*?)<\/script>/.exec(html);
-      return { url: voeSource(JSON.parse(json[1])[0]), quality: 'VOE' };
+      return { url: voeSource(JSON.parse(json[1])[0]), quality: 'VOE', server: 'VOE' };
     }
     if (/(^|\.)lulu/.test(host)) {
       const file = /file:\s*"([^"]+)"/.exec(html) || /file:\s*"([^"]+)"/.exec(unpack(html));
-      return { url: file[1], quality: 'Lulu', headers: { Referer: origin } };
+      return { url: file[1], quality: 'Lulu', server: 'Lulu', headers: { Referer: origin } };
     }
     if (/(^|\.)mi?xdrop\./.test(host)) {
       const wurl = /MDCore\.wurl\s*=\s*"([^"]+)"/.exec(unpack(html));
-      return { url: wurl[1].replace(/^\/\//, 'https://'), quality: 'MixDrop', headers: { Referer: origin } };
+      return { url: wurl[1].replace(/^\/\//, 'https://'), quality: 'MixDrop', server: 'MixDrop', headers: { Referer: origin } };
     }
     if (/(^|\.)ok\.ru$/.test(host)) {
       const $ = cheerio.load(html);
       const options = JSON.parse($('[data-options]').first().attr('data-options'));
       const raw = options.flashvars.metadata;
       const metadata = typeof raw === 'string' ? JSON.parse(raw) : raw;
-      return { url: metadata.hlsManifestUrl, quality: 'OK.ru' };
+      return { url: metadata.hlsManifestUrl, quality: 'OK.ru', server: 'OK.ru' };
     }
     if (/(^|\.)yourupload\.com$/.test(host)) {
       const file = /file:\s*'([^']+\.mp4)'/.exec(html);
-      return { url: file[1], quality: 'YourUpload', headers: { Referer: origin } };
+      return { url: file[1], quality: 'YourUpload', server: 'YourUpload', headers: { Referer: origin } };
     }
   }
 

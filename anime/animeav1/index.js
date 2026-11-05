@@ -2,7 +2,6 @@ const SITE = 'https://animeav1.com';
 
 const BROWSER = { 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:140.0) Gecko/20100101 Firefox/140.0', 'Accept-Language': 'es' };
 
-// VOE first: the HLS address (/m3u8/<id>) has no .m3u8 ending, so Sumizuri on Android cannot tell it is HLS and fails with ERROR_CODE_PARSING_CONTAINER_UNSUPPORTED.
 const SERVERS = ['VOE', 'HLS', 'MP4Upload'];
 
 const VOE_MARKERS = ['@$', '^^', '~@', '%?', '*~', '!!', '#&'];
