@@ -1,6 +1,6 @@
 {
   "repositoryName": "Inkstone en español (Suki)",
-  "repositoryDescription": "Solo las fuentes en español de Inkstone, con las que todavía no se fusionan, más las de varios idiomas que tienen español (MangaDex, Kagane, Wattpad, UniqueStream y Anikoto).",
+  "repositoryDescription": "Solo las fuentes en español de Inkstone, con las que todavía no se fusionan, más las de varios idiomas que tienen español (MangaDex, Kagane, Wattpad, UniqueStream, Anikoto y WEBTOON).",
   "buildTime": "2026-09-03T16:35:04Z",
   "sources": [
     {
@@ -44,6 +44,50 @@
       "hosts": [
         "olympusxyz.com"
       ]
+    },
+    {
+      "id": "webtoons",
+      "name": "WEBTOON",
+      "version": "1.1.0",
+      "medium": "comics",
+      "website": "https://www.webtoons.com",
+      "iconUrl": "https://inkstone.web.app/webtoons/icon.png",
+      "hosts": [
+        "webtoons.com",
+        "*.webtoons.com",
+        "webtoon-phinf.pstatic.net",
+        "*.pstatic.net"
+      ],
+      "description": "Webtoons",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "settingsSchema": [
+        {
+          "type": "select",
+          "key": "language",
+          "label": "Language",
+          "default": "en",
+          "options": [
+            {
+              "value": "en",
+              "label": "English"
+            },
+            {
+              "value": "es",
+              "label": "Español"
+            }
+          ]
+        }
+      ],
+      "language": "multi",
+      "contentRating": "safe",
+      "sha256": "e385f87751f6d77e8b3fe06a341fd306c41703c295ca55aa46bdbfc4409ae42a"
     },
     {
       "id": "lectormanga",
