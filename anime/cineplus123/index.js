@@ -38,6 +38,15 @@ function voeSource(payload) {
   return JSON.parse(App.base64Decode(shifted.split('').reverse().join(''))).source;
 }
 
+function hostLabel(url) {
+  const host = ((/^https?:\/\/([^/]+)/.exec(String(url)) || [])[1] || '').replace(/^www\./, '');
+  const parts = host.split('.');
+  const name = parts.length > 1 ? parts[parts.length - 2] : parts[0];
+  const known = { ok: 'OK.ru', yourupload: 'YourUpload', mixdroop: 'MixDrop', mixdrop: 'MixDrop', voe: 'VOE', vgfplay: 'VGFPlay', mp4upload: 'Mp4Upload', streamtape: 'Streamtape', mail: 'Mail.ru' };
+  if (known[name]) return known[name];
+  return name ? name.charAt(0).toUpperCase() + name.slice(1) : 'Server';
+}
+
 class Source {
   constructor() {
     this.requests = App.createRequestManager({ rateLimit: { requestsPerSecond: 4 } });
@@ -136,10 +145,21 @@ class Source {
       const match = /\/capitulo\/([^/?#]+)/.exec(href);
       if (!match) return;
       const chapterId = `capitulo/${match[1]}`;
-      const name = $(el).find('.episodiotitle a').text().trim() || `Episodio ${i + 1}`;
+      const title = $(el).find('.episodiotitle a').text().trim();
       const numMatch = /(\d+)\s*-\s*(\d+)/.exec($(el).find('.numerando').text().trim());
-      const number = numMatch ? (+numMatch[1] * 1000 + +numMatch[2]) : (i + 1);
-      chapters.push({ id: chapterId, name, number });
+      if (!numMatch) {
+        chapters.push({ id: chapterId, name: title || `Episodio ${i + 1}`, number: i + 1 });
+        return;
+      }
+      const season = +numMatch[1];
+      const number = +numMatch[2];
+      chapters.push({
+        id: chapterId,
+        name: title ? `Episodio ${number}: ${title}` : `Episodio ${number}`,
+        number,
+        season: String(season),
+        seasonName: season === 0 ? 'Especiales' : `Temporada ${season}`,
+      });
     });
     return chapters;
   }
@@ -183,10 +203,16 @@ class Source {
     const videos = found
       .filter((v) => v && /^https?:\/\//.test(v.url))
       .sort((a, b) => SERVERS.indexOf(a.server) - SERVERS.indexOf(b.server))
-      .map(({ server, ...v }) => ({ ...v, headers: { ...v.headers, ...BROWSER } }));
+      .map((v) => ({ ...v, headers: { ...v.headers, ...BROWSER } }));
 
-    if (!videos.length) throw new Error(`CinePlus123: none of the ${validEmbeds.length} servers gave a playable video`);
-    return videos;
+    const seen = new Set();
+    const pageOf = (url) => String(url).replace(/^\/\//, 'https://').replace(/^http:/, 'https:');
+    const NEVER_PLAYS = /(^|\.)(netu\.ac|netu\.tv|hqq\.to|hqq\.tv|waaw\.tv|sbface\.com)$/i;
+    const embedEntries = validEmbeds
+      .filter((e, i) => !(found[i] && /^https?:\/\//.test(found[i].url)) && /^https?:\/\//.test(pageOf(e.url)) && !NEVER_PLAYS.test((/^https?:\/\/([^/]+)/.exec(pageOf(e.url)) || [])[1] || '') && !seen.has(pageOf(e.url)) && seen.add(pageOf(e.url)))
+      .map((e) => ({ url: pageOf(e.url), type: 'embed', quality: e.title || hostLabel(e.url), server: hostLabel(pageOf(e.url)) }));
+    if (!videos.length && !embedEntries.length) throw new Error(`CinePlus123: none of the ${validEmbeds.length} servers gave a playable video`);
+    return videos.concat(embedEntries);
   }
 
   async extract(rawUrl, title) {

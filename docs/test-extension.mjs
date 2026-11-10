@@ -79,6 +79,11 @@ const App = {
       }
       const host = new URL(request.url).hostname;
       requests.push(host);
+      // The app refuses a request to a host outside the manifest's `hosts` (the call comes back Blocked), so do the same here: a source that
+      // swallows that error (UniqueStream did, and lost its stream keys on every device while this test passed) now fails where it can be seen.
+      if (entry?.hosts?.length && !entry.hosts.some((p) => (p.startsWith('*.') ? host.endsWith(p.slice(1)) : host === p))) {
+        throw Object.assign(new Error(`${host} is not on this extension's allowed hosts list (add it to "hosts" in versioning.json)`), { kind: 'blocked' });
+      }
       let res;
       try {
         res = await fetch(request.url, {
@@ -219,6 +224,18 @@ if (existsSync(listPath)) {
       if (commentLines) say('warn', `${commentLines} comment lines in a file that sits in the repository layout`, 'the repository holds extensions without comments (keep your commented copy elsewhere)');
     }
     check(['safe', 'mature', 'adult'].includes(entry.contentRating), 'contentRating is safe, mature or adult', entry.contentRating);
+    if (entry.tags !== undefined) {
+      const tags = entry.tags;
+      const wellFormed = Array.isArray(tags) && tags.length > 0 && tags.every((t) => typeof t === 'string' && /^[a-z0-9]+(-[a-z0-9]+)*$/.test(t)) && new Set(tags).size === tags.length;
+      check(wellFormed, 'tags is a list of unique lowercase slugs', JSON.stringify(tags));
+      if (wellFormed) {
+        const known = ['hentai', 'explicit', 'boundless-exclusive', 'sumizuri-exclusive'];
+        const unknown = tags.filter((t) => !known.includes(t));
+        if (unknown.length) say('warn', `tags the docs do not define: ${unknown.join(', ')}`, `the defined tags are ${known.join(', ')}`);
+        check(!(tags.includes('boundless-exclusive') && tags.includes('sumizuri-exclusive')), 'does not carry both exclusive tags');
+        check(!tags.some((t) => t === 'hentai' || t === 'explicit') || entry.contentRating === 'adult', 'a hentai or explicit source is rated adult', entry.contentRating);
+      }
+    }
     check(isUrl(entry.website), 'website is a full URL');
     check(/^[a-z]{2,3}$/.test(entry.language ?? ''), 'language is a short code like en', entry.language);
     check(entry.description && entry.capabilities?.length, 'has a description and capabilities');
@@ -434,6 +451,21 @@ for (const item of (found?.value.results ?? []).slice(0, 2)) {
     if (info && info.image !== undefined && info.image !== null) check(isUrl(info.image), 'the cover in details is an absolute URL');
     check([info?.title, info?.author, info?.desc, info?.summary].every((v) => v === undefined || v === null || typeof v === 'string'), 'title, author and description are plain strings', 'join several author names into one string, the app throws on a list');
     if (info && info.contentRating !== undefined && info.ageRating === undefined) warnIgnoredRating('details');
+    if (info && info.cast !== undefined) {
+      const cast = info.cast;
+      const shaped = Array.isArray(cast) && cast.length > 0 && cast.every((c) => c && typeof c.name === 'string' && c.name.trim() && (c.image === undefined || isUrl(c.image)) && (c.role === undefined || typeof c.role === 'string') && (c.feed === undefined || (typeof c.feed === 'string' && c.feed)));
+      check(shaped, 'cast is a list of { name, image?, role?, feed? } with full image addresses', 'name, role and feed are strings and image is a full URL; leave the field out when there is no cast');
+      // A tapped person opens getSearchResults({ title: '', feed }), so that call has to answer a list of titles.
+      const tappable = shaped ? cast.find((c) => c.feed) : null;
+      if (tappable) {
+        const shown = await step(`cast feed of ${tappable.name}`, () => source.getSearchResults({ title: '', feed: tappable.feed }, undefined));
+        if (shown) {
+          const titles = shown.value?.results ?? shown.value;
+          check(Array.isArray(titles) && titles.every((r) => r.mangaId && typeof r.title === 'string'), 'a cast feed answers a list of titles (results with mangaId and title)', 'a person who is tapped gets this list');
+          if (Array.isArray(titles) && !titles.length) say('warn', `the cast feed of ${tappable.name} has no titles`, 'a tapped person with nothing to show reads as a broken screen');
+        }
+      }
+    }
   }
   const chapters = await step('chapters', () => source.getChapters(item.mangaId));
   if (!chapters) continue;
@@ -470,6 +502,7 @@ for (const item of (found?.value.results ?? []).slice(0, 2)) {
       const quality = video.quality === undefined ? 'a video' : `"${video.quality}"`;
       if (video.quality !== undefined && typeof video.quality !== 'string') problems.push(`${quality}: quality is not a string`);
       if (video.server !== undefined && (typeof video.server !== 'string' || !video.server.trim())) problems.push(`${quality}: server must be a short non empty string`);
+      if (video.hlsKey !== undefined && !/^[0-9a-f]{32}$/i.test(String(video.hlsKey))) problems.push(`${quality}: hlsKey must be 32 hex characters (the 16 byte AES key), not the key address`);
       if (video.type === 'embed') {
         const host = (() => { try { return new URL(video.url).hostname; } catch { return ''; } })();
         if (!/^https?:\/\//i.test(video.url)) problems.push(`${quality}: an embed entry needs a full http or https page address`);
