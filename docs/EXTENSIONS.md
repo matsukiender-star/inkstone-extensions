@@ -326,10 +326,14 @@ async getVideos(mangaId, chapterId) {
 - An entry, subtitle track or audio track without a full `url` is dropped silently. `headers` is an object of strings.
 - `quality` is read by the player: a height (`1080p`, `720p`, `4k`) ranks videos, and the words `Sub`, `Dub`, `Softsub` and `Hardsub` drive the audio preference and the sub and dub switch. Return an HLS master playlist once, as `Auto`; Sumizuri lists its qualities itself (only for an address whose path ends in `.m3u8`).
 - `server` is an optional short name for the server or host (`VixSrc`, `Dailymotion`), the same on every episode of a source. The Boundless Player is being changed to group its Servers panel by it and to start the next episode on the server the viewer last used; builds that do not read it ignore it.
+- `hlsKey` is an optional AES-128 key for an HLS stream, 32 hex characters (16 bytes). Use it when a site encrypts its segments and serves the key address wrapped (45 characters of base64 text where a player needs 16 raw bytes) and unwraps it in its own script, as UniqueStream does: the extension unwraps the key itself (the extensions get `CryptoJS`) and the app answers every `#EXT-X-KEY` request of the stream with these bytes instead of fetching the key address. An app that does not know the field ignores it and the stream fails as it did before. The Boundless Player is being changed to read it.
+- A direct video file that is not HLS, DASH or MP4 (a Matroska `.mkv` on a file server, as BeatZ Anime lists) is an entry with `type: 'mkv'`, or no `type` and an address ending `.mkv`, plus the same `headers` as any entry. The Boundless Player does not stream such a file (the demuxer has to visit every cluster of a file that can be 1 GB, and a slow host makes that take minutes); it shows a "Save it to watch" card, saves the whole file to the device, then plays it from there (HEVC 10-bit, FLAC and ASS subtitles work). Android plays MKV directly through Media3. List only playable files: a `.rar` cannot play, so leave it out. The Boundless Player is being changed to do this.
 - An entry `{ type: 'embed', url: '<player page>', quality, server }` hands a player page to the Boundless Player, which resolves it to a stream. It opens `dailymotion.com`, `rumble.com`, `ok.ru`, `mp4upload.com`, Vidmoly, Streamtape, MixDrop and the VidHide pages `morencius.com`, `vidhide.com` and `earnvids.com`; any other host goes through the app's page sniffer, which opens the page in a hidden web view and takes the first media request (iPhone build of 2026-11-05, not yet run on a real page; Android not yet). List streams you resolved yourself first and embed entries after, and add the page host, the resolver's hosts and the stream hosts to the manifest `hosts`, or the stream is dropped.
 - An episode with no stream yet should throw an `Error` with a clear message, not return an empty list.
 - Do not send `group` on video episodes: it means a release group, and the Boundless Player shows none for video. It reads `title`, `thumbnail` (a full http or https address), `duration` in seconds (over 100000 counts as milliseconds) and `summary` instead.
 - Episodes of a title with several seasons can carry `season`, `seasonName` and `seasonCover`. `mangaInfo` can carry a `banner`.
+- `mangaInfo` can carry a `cast` list for the title page: `[{ name, image?, role?, feed? }]`, up to about 30 people in billing order. `name` is a string, `image` a full https address of a photo (keep it small: a 256 pixel wide JPEG or WebP, and say in the file header whether it needs a `Referer`), `role` a short string (the character or the job). `feed` makes a person tappable: it is an id of the source's own choosing that the app hands back to `getSearchResults({ title: '', feed }, metadata)`, the same call a Browse feed uses, and the answer (`{ results, metadata }`, paged the same way) is that person's titles on this source. The feed need not be listed in `getSourceFeeds()`. Check the id yourself, because the app returns it unchanged (ARY Plus accepts `cast:/pakistani-actors/<slug>/` and refuses any other path). A person with no `feed` is shown but not tappable. Keep `author` as a plain list of names: an app that does not know `cast` ignores the field.
+- A franchise that the site lists as one title per season (`X`, `X 2nd Season`, `X Final Season`, plus its movies, OVAs and specials) can open as ONE series, so nobody searches a new title each season: when a title is opened, find its sibling titles through the site's own search (same name once "2nd Season", "Season 2", "S2", a trailing 2 to 9, a roman numeral II to IV, "Part 2" and a release year are removed), read their episodes, and tag each episode with a numeric `season` (the title with no marker is 1, "Final Season" comes after the highest number) and `seasonName` (`Season 2`, `Final Season`). Movies, OVAs and specials get `seasonName` `Movies`, `OVAs` or `Specials` and no `season`. The apps draw the season chips from these fields (the Boundless Player does today). Return one search result per franchise by dropping a result whose first season is on the same page. Never do this for a site of movies, where "Fast & Furious 5" is not season 5.
 - Sumizuri treats only `contentRating: "adult"` as adult.
 
 ## 5. Publishing to a repo
@@ -354,7 +358,7 @@ equal the `id`. In the Inkstone repository the folder sits inside `comics/`, `no
 landing-page-only label the app never reads, but `description`, `medium`, `website`,
 `iconUrl`, `language`, `contentRating` and `settingsSchema` are all read (with `id`, `name`, `version`,
 `sha256` and `hosts`) and copied onto the installed record at install/update time. The app ignores
-`status`, `statusNote`, `author`, `authorUrl` and `minApiVersion`: they are for registries and websites. They drive real
+`status`, `statusNote`, `author`, `authorUrl` and `minApiVersion`: they are for registries and websites. `tags` (see below) is for apps that sort or hide whole sources. They drive real
 in-app behavior (category filtering, the source icon, content-rating gating,
 per-source settings screens), not just this repo's own listing pages.
 
@@ -383,6 +387,31 @@ Restrictions:
 
 Anything longer, such as what you could not test, belongs in the comment at the top of
 `index.js` and in your pull request report, not in the description.
+
+### Tags: the optional `tags` field
+
+`tags` is an array of lowercase slugs on the `versioning.json` entry. It labels what a source carries
+or which app it is for, so an app can sort, filter or hide a whole source without opening it. An app
+that does not know a tag, or the field, ignores it, and a source without `tags` is for everyone.
+
+```json
+"contentRating": "adult",
+"tags": ["hentai", "sumizuri-exclusive"]
+```
+
+| Tag | Meaning | What an app does |
+| --- | --- | --- |
+| `hentai` | The source lists hentai titles, alone or next to regular ones | Apps may filter, group or hide it |
+| `explicit` | The source lists other sexually explicit content (pornographic live action, erotica) | Same |
+| `sumizuri-exclusive` | The source is only for Sumizuri | The Boundless apps (Reader and Player) do not list it |
+| `boundless-exclusive` | The source is only for the Boundless apps | Sumizuri does not list it |
+
+- Set `hentai` or `explicit` only for what you saw on the site, and give the source `contentRating: "adult"`
+  (`npm run hash` refuses `hentai` or `explicit` on any other rating). They label the source; a source
+  that mixes regular and explicit titles still rates the explicit ones one by one with `ageRating`.
+- The two exclusive tags are the maintainers' call, because they decide which app lists a source. Leave
+  them off in a pull request. A source never carries both.
+- `tags` is read from the manifest, so changing it needs a version bump like any other manifest change.
 
 ### Settings: the optional `settingsSchema` field
 
