@@ -8,7 +8,7 @@ Browse, Search, Detail and Reader screens.
 The format keeps the surface area small: implement a handful of methods on
 that class and the app can browse, search and read through your source.
 
-Boundless Reader and Sumizuri both load Inkstone extensions. This page describes Boundless's runtime. Anime extensions are for the video apps, Sumizuri and Boundless Player: Boundless Reader is not compatible with them (see [Anime sources](#anime-sources-sumizuri-and-boundless-player)).
+Boundless Reader, Boundless Player and Sumizuri all load Inkstone extensions. This page describes Boundless's runtime. Anime extensions are for the video apps, Sumizuri and Boundless Player: Boundless Reader is not compatible with them (see [Anime sources](#anime-sources-sumizuri-and-boundless-player)).
 Building with an AI assistant? Give it [BUILD_WITH_AI.md](BUILD_WITH_AI.md).
 To check an extension works, see [TESTING.md](TESTING.md).
 
@@ -211,8 +211,16 @@ just blank in the UI, which is much harder to debug than a crash.
   medium: 'comics' | 'novel',
   ageRating: 0 | 16 | 18,   // minimum age, only if the site rates titles one by one
   rating, views, chapters, completed, releaseDate, publisher,
+  logo: 'https://…',      // optional: the title's own logo, a transparent PNG
+  backdrop: 'https://…',  // optional: a landscape picture; with `logo` the Boundless Player draws a landscape card
+  year: '2026',           // optional: shown with the first tag when the pointer is on a landscape card
+  photos: [{ url: 'https://…', kind: 'still' | 'poster' }],   // optional, on mangaInfo: a Photos rail on the title's page
+  related: [{ mangaId, title, image, year }],                  // optional, on mangaInfo: More Like This, titles of the same source
 }
 ```
+
+`logo` and `backdrop` are https addresses that load with no header. Send both or neither: a card with
+only one stays a poster. (Boundless Player, 2026-11-12; other readers ignore them.)
 
 The app reads `mangaId`, `title`, `image`, `desc` or `summary`, `tags`, `chapters`, `completed`,
 `publisher`, `status`, `ageRating`, `medium`, `author`, `rating`, `volumesId`, and `referer` or
@@ -324,6 +332,7 @@ async getVideos(mangaId, chapterId) {
 ```
 
 - An entry, subtitle track or audio track without a full `url` is dropped silently. `headers` is an object of strings.
+- A subtitle track can carry `offset`: whole milliseconds that move its cues later (positive) or earlier (negative), for a file known to be out of step with the stream. Send it only when the site's own player applies the same shift (Cno.to measures it from the audio: `offset: 3330` for a file that runs 3.3 seconds early); leave it out for a file that is in step. The Boundless Player is being changed to read it; builds that do not read it show the file as it is.
 - `quality` is read by the player: a height (`1080p`, `720p`, `4k`) ranks videos, and the words `Sub`, `Dub`, `Softsub` and `Hardsub` drive the audio preference and the sub and dub switch. Return an HLS master playlist once, as `Auto`; Sumizuri lists its qualities itself (only for an address whose path ends in `.m3u8`).
 - `server` is an optional short name for the server or host (`VixSrc`, `Dailymotion`), the same on every episode of a source. The Boundless Player is being changed to group its Servers panel by it and to start the next episode on the server the viewer last used; builds that do not read it ignore it.
 - `hlsKey` is an optional AES-128 key for an HLS stream, 32 hex characters (16 bytes). Use it when a site encrypts its segments and serves the key address wrapped (45 characters of base64 text where a player needs 16 raw bytes) and unwraps it in its own script, as UniqueStream does: the extension unwraps the key itself (the extensions get `CryptoJS`) and the app answers every `#EXT-X-KEY` request of the stream with these bytes instead of fetching the key address. An app that does not know the field ignores it and the stream fails as it did before. The Boundless Player is being changed to read it.

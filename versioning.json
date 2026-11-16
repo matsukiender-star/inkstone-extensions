@@ -6393,7 +6393,7 @@
     {
       "id": "bingr",
       "name": "Bingr",
-      "version": "1.0.4",
+      "version": "1.0.6",
       "medium": "anime",
       "website": "https://bingr.one",
       "iconUrl": "https://inkstone.web.app/bingr/icon.png",
@@ -6419,7 +6419,7 @@
       ],
       "language": "en",
       "contentRating": "mature",
-      "sha256": "7a99388ab70cf5c71006c9416629853ed47520a6ec56103949464f7f96657f74"
+      "sha256": "fd7bd1e490686e7e6c53f2a3b786e293ce6fc16861cf4529671669b8da53037f"
     },
     {
       "id": "kissasian",
@@ -7770,6 +7770,257 @@
       "language": "en",
       "contentRating": "mature",
       "sha256": "7997ad72b4c7c55ee625f3d5b17c22a914e9c902c1254711f5a8a88ed2b93cef"
+    },
+    {
+      "id": "donghuaworld",
+      "name": "DonghuaWorld",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://donghuaworld.com",
+      "iconUrl": "https://inkstone.web.app/donghuaworld/icon.png",
+      "hosts": [
+        "donghuaworld.com",
+        "*.donghuaworld.com",
+        "dailymotion.com",
+        "*.dailymotion.com"
+      ],
+      "description": "Donghua\n\nCatalog・900+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "safe",
+      "sha256": "01dca78a95c4c507f270daf610aabb6d1416140c25a9eb13ed27881dc6bb8dee"
+    },
+    {
+      "id": "animeparadise",
+      "name": "AnimeParadise",
+      "version": "1.0.1",
+      "medium": "anime",
+      "website": "https://www.animeparadise.moe",
+      "iconUrl": "https://inkstone.web.app/animeparadise/icon.png",
+      "hosts": [
+        "animeparadise.moe",
+        "*.animeparadise.moe",
+        "anilist.co",
+        "*.anilist.co",
+        "tmdb.org",
+        "*.tmdb.org",
+        "kitsu.app",
+        "*.kitsu.app",
+        "backblazeb2.com",
+        "*.backblazeb2.com"
+      ],
+      "description": "Anime\n\nCatalog・1,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "4ed137530b51c5c74d3f1cc81d4e7b9d7bb7c514fe97f6a07138b4dee344a998"
+    },
+    {
+      "id": "nekomiru",
+      "name": "Nekomiru",
+      "version": "1.0.1",
+      "medium": "anime",
+      "website": "https://nekomiru.com",
+      "iconUrl": "https://inkstone.web.app/nekomiru/icon.png",
+      "hosts": [
+        "nekomiru.com",
+        "*.nekomiru.com",
+        "nexabloom.top",
+        "*.nexabloom.top",
+        "crystaldrift.world",
+        "*.crystaldrift.world",
+        "*.workers.dev",
+        "anilist.co",
+        "*.anilist.co",
+        "myanimelist.net",
+        "*.myanimelist.net",
+        "thetvdb.com",
+        "*.thetvdb.com"
+      ],
+      "description": "Anime\n\nCatalog・3,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "860ffcf5bdc1205f9970a4c9facd282e7d83385193e8093582a59cfb608977b6"
+    },
+    {
+      "id": "just4anime",
+      "name": "Just4Anime",
+      "version": "1.0.1",
+      "medium": "anime",
+      "website": "https://just4anime.online",
+      "iconUrl": "https://inkstone.web.app/just4anime/icon.png",
+      "hosts": [
+        "just4anime.online",
+        "*.just4anime.online",
+        "anilist.co",
+        "*.anilist.co",
+        "tmdb.org",
+        "*.tmdb.org",
+        "thetvdb.com",
+        "*.thetvdb.com"
+      ],
+      "description": "Anime\n\nCatalog・20,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "add1dd7a7ee0820a01788ad31612b40521ebe82f8728a75d017572cd91ce1bd4"
+    },
+    {
+      "id": "xanime",
+      "name": "Xanime",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://xanime.me",
+      "iconUrl": "https://inkstone.web.app/xanime/icon.png",
+      "hosts": [
+        "xanime.me",
+        "*.xanime.me",
+        "anilist.co",
+        "*.anilist.co",
+        "xanivsrc1.org",
+        "xanivsrc2.org",
+        "xanivsrc3.org",
+        "xanivsrc4.org",
+        "xanivsrc5.org",
+        "xanivsrc6.org",
+        "xanivsrc7.org",
+        "xanivsrc8.org",
+        "xanivsrc9.org",
+        "xanivsrc10.org",
+        "xanivsrc11.org",
+        "xanivsrc12.org",
+        "xanivsrc13.org",
+        "xanivsrc14.org"
+      ],
+      "description": "Anime\n\nCatalog・10,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "8d591d1622c4168fc59f87215349cad98c36d6200bed185d4744c0cfc000f06d"
+    },
+    {
+      "id": "katdrama",
+      "name": "Kat Drama",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://k-drama.in",
+      "iconUrl": "https://inkstone.web.app/katdrama/icon.png",
+      "hosts": [],
+      "description": "Drama\n\nCatalog・5,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "3e3304c64fcbd83c95f0227d888fa1fd802e4445e034a5b24f875c72acfb4d1e"
+    },
+    {
+      "id": "cno",
+      "name": "Cno.to",
+      "version": "1.0.5",
+      "medium": "anime",
+      "website": "https://cno.to",
+      "iconUrl": "https://inkstone.web.app/cno/icon.png",
+      "hosts": [],
+      "description": "Western・Anime\n\nCatalog・10,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "988790395b3426ef105d3a91f596b42f0a6b2ab79d5337b2b07cc4ffa91fec83"
+    },
+    {
+      "id": "watchanimeworld",
+      "name": "Watch Anime World",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://watchanimeworld.one",
+      "iconUrl": "https://inkstone.web.app/watchanimeworld/icon.png",
+      "hosts": [],
+      "description": "Anime・Cartoons・Movies\n\nCatalog・400+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "hi",
+      "contentRating": "mature",
+      "sha256": "cfa09ac7439d7cc53f908d53620ba1405efb493e3d7e3a4e97a83756c78cce48"
+    },
+    {
+      "id": "mangade",
+      "name": "MangaDE",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://mangade.io",
+      "iconUrl": "https://inkstone.web.app/mangade/icon.png",
+      "hosts": [
+        "mangade.io",
+        "api.mangade.io",
+        "s3-load.ttr.group"
+      ],
+      "description": "Manhwa・Manga・Manhua\n\nCatalog・10,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "a116aa159ead5a8399d2b6af0bd504cda5bf31953e6bc9deb576d6e37d195c5f"
     },
     {
       "id": "elcoleccionista",

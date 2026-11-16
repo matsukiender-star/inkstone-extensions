@@ -23,7 +23,7 @@ Works with Claude, ChatGPT, Cursor, Codex, Gemini and anything else that can wri
 
 **Prefer to approve a plan before any code is written?** Use OpenSpec instead: [OPENSPEC.md](https://inkstone.web.app/docs/OPENSPEC.md).
 
-Inkstone is an independent project. It isn't part of Boundless Reader or Sumizuri and isn't endorsed by either.
+Inkstone is an independent project. It isn't part of Boundless Reader, Boundless Player or Sumizuri and isn't endorsed by any of them.
 
 ---
 
@@ -401,7 +401,7 @@ async getVideos(mangaId, chapterId) {
 | `quality` | no | A text label. Sumizuri reads it (see below). |
 | `server` | no | A short name for the server or host that serves this stream (`VixSrc`, `VidSpark`, `Dailymotion`, `Citadel`), the same string on every episode of the source. Send it when your source offers more than one server or can have another later. The Boundless Player is being changed to group its Servers panel by it, to remember the last one that played for each source and to start the next episode on it; builds that do not read it ignore it, so it is safe to send now. Keep `quality` for the resolution and the language, and keep the server name in `quality` as well until the grouping is released. |
 | `headers` | no | An object of strings sent with the stream requests, such as `Referer` and `Origin`. |
-| `subtitles` | no | `[{ url, label, language }]`. A track without a full `url` is dropped. `language` is a code such as `en`; the player picks the person's language by code or label. |
+| `subtitles` | no | `[{ url, label, language, offset? }]`. A track without a full `url` is dropped. `language` is a code such as `en`; the player picks the person's language by code or label. `offset` is optional whole **milliseconds** that move the track's cues later (positive) or earlier (negative), for a file you know is out of step with the stream and only when the site's own player applies the same shift; the Boundless Player is being changed to read it, Sumizuri ignores it. |
 | `audio` | no | Separate audio tracks, the same shape as `subtitles`. |
 | `intro`, `outro` | no | `{ start, end }` in **milliseconds**, with `end` after `start` or the range is ignored. The player offers to skip them. |
 
@@ -944,7 +944,8 @@ for (const item of (found?.value.results ?? []).slice(0, 2)) {
     if (streams.length) {
       answer = await withTimeout(fetch(first.url, { headers: first.headers ?? {} }), 30000);
       const body = answer.ok ? await answer.text() : '';
-      plays = answer.ok && (body.startsWith('#EXTM3U') || (answer.headers.get('content-type') ?? '').startsWith('video/'));
+      // A DASH manifest (type 'dash', an .mpd) is XML that opens with an MPD element; HLS opens with #EXTM3U; a plain file answers a video content type.
+      plays = answer.ok && (body.startsWith('#EXTM3U') || (answer.headers.get('content-type') ?? '').startsWith('video/') || /<MPD[\s>]/.test(body.slice(0, 4000)));
     }
     const subtitles = (first.subtitles ?? []).length;
     const took = `${((Date.now() - started) / 1000).toFixed(1)}s`;
@@ -965,6 +966,7 @@ for (const item of (found?.value.results ?? []).slice(0, 2)) {
         if (video[kind] === undefined) continue;
         if (!Array.isArray(video[kind])) problems.push(`${quality}: ${kind} must be a list`);
         else if (video[kind].some((track) => !track || !isUrl(track.url))) problems.push(`${quality}: a ${kind} track has no full URL`);
+        else if (kind === 'subtitles' && video[kind].some((track) => track.offset !== undefined && !(Number.isInteger(track.offset) && Math.abs(track.offset) <= 600000))) problems.push(`${quality}: a subtitles track offset must be whole milliseconds between -600000 and 600000 (positive moves the cues later)`);
       }
       for (const kind of ['intro', 'outro']) {
         const range = video[kind];
@@ -1242,3 +1244,13 @@ End with something the user can read in thirty seconds:
 | Waiting for every extra server of a video site with `Promise.all` and no time limit | One server that never answers holds up the whole list of streams; race each with a timer (`setTimeout` and a flag that says it already settled, because `clearTimeout` is missing in older builds) and carry on with what answered |
 | Retrying a 429 or 502 at once with the same address | The app serves a repeated GET from a cache and the failure comes back; wait a little longer each time and change the query of each retry (`r=1`, `r=2`), and stop after three |
 | Calling a site's stream list "broken" from one title or one episode | Streams and dubs differ per episode (The Remarried Empress has a Hindi dub on episode 1 only, and a check that picked season 6 of Phineas and Ferb found nothing); sample many titles, the first episode and the latest, and test every stream's master, playlist and first segment |
+| Writing the Catalog line from the number of titles a site lists | A list can be mostly empty: OneTouch TV lists about 29,000 titles, but the details of 90 titles spread over the whole list showed that about half had an episode that plays, a movie with an empty episode list never had a stream (16 of 16), and upcoming titles (981 of 5,932 movies) never do; read the details of a few dozen titles spread over the list before writing the number, and keep upcoming titles out of browse lists |
+| Believing a stream answer without asking its segment | A playlist can load while its segment host has no DNS record (check three public resolvers), so the player starts and stalls; ask the first segment for a kilobyte (through a master's first variant, or a DASH manifest's initialization segment) and drop the streams that fail, and say so when none is left |
+| Testing a rate limit with a repeated sweep | An edge cache answers repeats without counting them: 120 requests looked free, then 21 uncached ones in 7 seconds drew a 429 with Retry-After 10. Use different addresses, then pace under the limit. A cached answer can also be stale (a dead segment host in one answer, a live one in the same call with another query), so when an answer is a 404 or its streams are dead, ask once more with a fresh query |
+| Judging a stream host by a Node or curl request | A Cloudflare rule can block by client fingerprint: segments on one host answered 403 to Node and curl over HTTP/2 whatever the headers, and 206 with real MPEG-TS to Apple's `URLSession` (the stack under AVPlayer). Try the platform's own stack (a small `swiftc` script with `URLSession` takes minutes) before calling a stream dead, and name a browser `User-Agent` in the entry's `headers` when the host rejects empty or tool agents |
+| Returning only the first stream a site lists | An anime on Cno.to had a sub server, an English dub server and a burned-in subtitles server; one entry per server, with `quality` saying Softsub, Dub or Hardsub, is what the apps' switch reads, and subtitle files meant for the sub must not be attached to the dub or the hardsub |
+| Taking a certificate as the whole rating | A title can be certified R and still be tagged blowjob and gangbang, or have no certificate and be tagged erotic; read the site's keywords too, rate the unambiguous explicit terms 18 and the erotic and nudity terms 16, take the higher of the two, and check on a few hundred ordinary titles that the rule rates none of them 18 |
+| Calling a player's own JSON endpoint without the header its page script sends | A FirePlayer page posts to `/player/index.php?data=<hash>&do=getVideo` and answered the player's HTML page, not JSON, until the request also carried `X-Requested-With: XMLHttpRequest` (Origin and Referer alone did nothing); read the player script for the exact call, then change one header at a time to find which one it needs
+| Writing off a title the extension cannot list episodes for | Check it on the site itself first: on Watch Anime World two ongoing series had an empty episode list, and in Chrome their page had no episode section, a Play button with an empty `href`, a season call that answered 0 bytes and a 404 for the guessed episode address, so nothing was broken and nothing could be fixed; the extension reads the live site and starts working when episodes are uploaded |
+| Sending several genres to an api and expecting an AND | MangaDE's list call answers an OR for repeated `genres[]` (romance 6,391 and adult 156 together gave 6,400): test the combination against the single counts before offering multi tag search, and send only the first tag when it is an OR; the same OR is how a union of rating genres comes back in one call instead of one overlapping list per genre
+| Waiting for a whole rating index before the first list | Rating cards from genres cost 2.7 MB over 9 calls on one api (11 s), so the part that must not be missed (the 18 rated genres, 450 KB) is waited for and the 16 rated part (1.8 MB) loads in the background and rates cards from the next list on; measure the index, and never trust a `status` field that says the same thing on every title (this one said Completed on 72 of 72)
