@@ -397,8 +397,9 @@ class Source {
     }
     let payload = null;
     let token = '';
+    const fresh = Date.now().toString(36);
     for (let attempt = 0; attempt < 3; attempt++) {
-      const page = await this.text(`${SITE}${path}${attempt ? `?r=${attempt}` : ''}`);
+      const page = await this.text(`${SITE}${path}${attempt ? `?r=${fresh}${attempt}` : ''}`);
       const flight = flightOf(page);
       const sealed = sealedOf(flight);
       let found = null;
@@ -441,6 +442,7 @@ class Source {
     if (!videos.length) {
       const challenged = answers.find((a) => a.error && a.error.kind === 'challenge');
       if (challenged) throw challenged.error;
+      if (kind === 'tv') throw new Error('Bingr has no stream for this episode yet. A new episode usually appears a few hours after it airs, so try again later.');
       throw new Error(`Bingr: ${cleanText(payload.error) || 'no stream for this title yet'}`);
     }
     return videos;

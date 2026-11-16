@@ -1,6 +1,6 @@
 # Inkstone
 
-**Extension Registry.** Community-made extensions that add content to Boundless Reader and Sumizuri. Free and open source under the MIT license.
+**Extension Registry.** Community-made extensions that add content to Boundless Reader, Boundless Player and Sumizuri. Free and open source under the MIT license.
 
 Each extension is one small JavaScript file that your app downloads and runs on your device (in a sandbox, in Boundless Reader).
 
@@ -9,12 +9,14 @@ The full catalog and docs live at [inkstone.web.app](https://inkstone.web.app). 
 ## Add it to your app
 
 <p align="center">
-  <a href="https://inkstone.web.app/boundless"><img src="docs/assets/add-to-boundless.svg" alt="Add to Boundless" height="56"></a>
+  <a href="https://inkstone.web.app/boundless"><img src="docs/assets/add-to-boundless.svg" alt="Add to Boundless Reader" height="52"></a>
   &nbsp;
-  <a href="https://inkstone.web.app/sumizuri"><img src="docs/assets/add-to-sumizuri.svg" alt="Add to Sumizuri" height="56"></a>
+  <a href="https://inkstone.web.app/boundless-player"><img src="docs/assets/add-to-boundless-player.svg" alt="Add to Boundless Player" height="52"></a>
+  &nbsp;
+  <a href="https://inkstone.web.app/sumizuri"><img src="docs/assets/add-to-sumizuri.svg" alt="Add to Sumizuri" height="52"></a>
 </p>
 
-Tap a button on the device that has the app. It opens the app and asks you to confirm. Or paste this into Boundless Reader's extension settings, or into Sumizuri (Browse, then Repos, then Add a repo):
+Tap a button on the device that has the app. It opens the app and asks you to confirm. Or paste this into Boundless Reader's or Boundless Player's extension settings (Add a Repository), or into Sumizuri (Browse, then Repos, then Add a repo):
 
 ```
 https://inkstone.web.app
@@ -35,7 +37,7 @@ donghua/<id>/index.js      donghua (Chinese animation) extensions, the same vide
 drama/<id>/index.js        drama extensions (live action series and telefilms), the same video format
 western/<id>/index.js      western series, films and cartoons, the same video format
 versioning.json            the list your app reads
-docs/assets/               the Add to Boundless and Add to Sumizuri buttons
+docs/assets/               the Add to Boundless Reader, Boundless Player and Sumizuri buttons
 docs/BUILD_WITH_AI.md      have an AI assistant build one for you
 docs/EXTENSIONS.md         how an extension works
 docs/TESTING.md            check an extension works
@@ -53,7 +55,7 @@ Prefer to review a written plan before any code is written? This repo works with
 
 ## Extensions
 
-296 extensions right now. Ratings are Safe, Mature or Adult, and some extensions also rate each title on its own.
+305 extensions right now. Ratings are Safe, Mature or Adult, and some extensions also rate each title on its own.
 
 Each extension lives in the folder for what it offers: `comics`, `novels`, `mixed` for those that do both, or `anime`. The site still serves every one at `inkstone.web.app/<id>/index.js`, so the folders change nothing in the apps.
 
@@ -154,6 +156,7 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [Manga-Scantrad](comics/mangascantrad/index.js) | manga-scantrad.io | French | Adult | 1.0.1 |
 | [Mangabat](comics/mangabats/index.js) | mangabats.com | English | Adult | 1.0.0 |
 | [MangaBuddy](comics/mangabuddy/index.js) | mangabuddy1.co.uk | English | Adult | 1.3.0 |
+| [MangaDE](comics/mangade/index.js) | mangade.io | English | Mature | 1.0.0 |
 | [MangaDex](comics/mangadex/index.js) | mangadex.org | English | Safe | 1.2.2 |
 | [MangaFire](comics/mangafire/index.js) | mangafire.to | English | Safe | 1.4.1 |
 | [MangaFox](comics/mangafox/index.js) | fanfox.net | English | Adult | 1.0.0 |
@@ -334,22 +337,27 @@ Video extensions use `medium: "anime"` and a `getVideos` method. Sumizuri plays 
 | [AnimeLatinoHD](anime/animelatinohd/index.js) | animelatinohd.com | Spanish | Mature | 1.0.6 |
 | [AnimeMovil](anime/animemovil/index.js) | tvanime.tv | Spanish | Adult | 1.0.4 |
 | [AnimeOnline.Ninja](anime/animeonlineninja/index.js) | ver2.animeonline.ninja | Spanish | Mature | 1.0.6 |
+| [AnimeParadise](anime/animeparadise/index.js) | animeparadise.moe | English | Mature | 1.0.1 |
 | [AniWorld](anime/aniworld/index.js) | aniworld.to | German | Mature | 1.0.3 |
 | [AniZone](anime/anizone/index.js) | anizone.to | English | Mature | 1.0.8 |
 | [Beatz Anime](anime/beatzanime/index.js) | beatz-anime.net | Spanish | Mature | 1.0.2 |
 | [HentaiLA](anime/hentaila/index.js) | hentaila.com | Spanish | Adult | 1.0.8 |
 | [JKAnime](anime/jkanime/index.js) | jkanime.net | Spanish | Mature | 1.0.6 |
+| [Just4Anime](anime/just4anime/index.js) | just4anime.online | English | Mature | 1.0.1 |
 | [Katanime](anime/katanime/index.js) | katanime.net | Spanish | Mature | 1.0.8 |
 | [KickAssAnime](anime/kickassanime/index.js) | kaa.lt | English | Mature | 1.0.8 |
 | [Latanime](anime/latanime/index.js) | latanime.org | Spanish | Mature | 1.0.9 |
 | [LegionAnime](anime/legionanime/index.js) | legionanime.xyz | Spanish | Mature | 1.0.2 |
 | [Miruro](anime/miruro/index.js) | miruro.cx | English | Mature | 1.0.8 |
 | [MonosChinos](anime/monoschinos/index.js) | monoschinos.st | Spanish | Mature | 1.0.8 |
+| [Nekomiru](anime/nekomiru/index.js) | nekomiru.com | English | Mature | 1.0.1 |
 | [SerienStream](anime/serienstream/index.js) | serienstream.to | German | Mature | 1.0.3 |
 | [TioAnime](anime/tioanime/index.js) | tioanime.com | Spanish | Mature | 1.0.9 |
 | [UniqueStream](anime/uniquestream/index.js) | anime.uniquestream.net | English | Mature | 1.1.4 |
 | [VerAnime](anime/veranime/index.js) | verani.me | Spanish | Mature | 1.0.9 |
 | [VerAnimes](anime/veranimes/index.js) | wwv.veranimes.net | Spanish | Mature | 1.0.10 |
+| [Watch Anime World](anime/watchanimeworld/index.js) | watchanimeworld.one | Hindi | Mature | 1.0.0 |
+| [Xanime](anime/xanime/index.js) | xanime.me | English | Mature | 1.0.0 |
 
 ### Donghua
 
@@ -361,6 +369,7 @@ Video extensions use `medium: "anime"` and a `getVideos` method. Sumizuri plays 
 | [AnimeKhor](donghua/animekhor/index.js) | animekhor.org | English | Safe | 1.0.10 |
 | [AnimeXin](donghua/animexin/index.js) | animexin.dev | English | Safe | 1.0.10 |
 | [Donghua4K](donghua/donghua4k/index.js) | donghua4k.net | English | Safe | 1.0.10 |
+| [DonghuaWorld](donghua/donghuaworld/index.js) | donghuaworld.com | English | Safe | 1.0.0 |
 | [LMAnime](donghua/lmanime/index.js) | lmanime.com | English | Safe | 1.0.11 |
 | [LuciferDonghua](donghua/luciferdonghua/index.js) | luciferdonghua.org | English | Safe | 1.0.10 |
 | [MundoDonghua](donghua/mundodonghua/index.js) | mundodonghua.com | Spanish | Mature | 1.0.8 |
@@ -376,6 +385,7 @@ Video extensions use `medium: "anime"` and a `getVideos` method. Sumizuri plays 
 | [AsiaLiveAction](drama/asialiveaction/index.js) | asialiveaction.com | Spanish | Mature | 1.0.8 |
 | [DoramasFlix](drama/doramasflix/index.js) | doramasflix.in | Spanish | Mature | 1.0.1 |
 | [DoramasYT](drama/doramasyt/index.js) | doramasyt.com | Spanish | Mature | 1.0.8 |
+| [Kat Drama](drama/katdrama/index.js) | k-drama.in | English | Mature | 1.0.0 |
 | [KissAsian](drama/kissasian/index.js) | kissasian.com.gr | English | Mature | 1.0.6 |
 | [MyAsianTV](drama/myasiantv/index.js) | ww7.myasiantv.rest | English | Mature | 1.0.7 |
 
@@ -385,9 +395,10 @@ Video extensions use `medium: "anime"` and a `getVideos` method. Sumizuri plays 
 
 | Extension | Site | Language | Rating | Version |
 | --- | --- | --- | --- | --- |
-| [Bingr](western/bingr/index.js) | bingr.one | English | Mature | 1.0.4 |
+| [Bingr](western/bingr/index.js) | bingr.one | English | Mature | 1.0.6 |
 | [CineCalidad](western/cinecalidad/index.js) | cinecalidad.org | Spanish | Mature | 1.0.1 |
 | [CinePlus123](western/cineplus123/index.js) | cineplus123.org | Spanish | Mature | 1.0.6 |
+| [Cno.to](western/cno/index.js) | cno.to | English | Mature | 1.0.5 |
 | [Cuevana](western/cuevana/index.js) | cuevana3.eu | Spanish | Mature | 1.0.1 |
 | [Gnula](western/gnula/index.js) | gnula.life | Spanish | Mature | 1.0.2 |
 | [HydraHD](western/hydrahd/index.js) | hydrahd.gd | English | Mature | 1.0.4 |
