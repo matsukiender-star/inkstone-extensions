@@ -7511,7 +7511,7 @@
     {
       "id": "veranimes",
       "name": "VerAnimes",
-      "version": "1.0.10",
+      "version": "1.0.11",
       "medium": "anime",
       "website": "https://wwv.veranimes.net",
       "iconUrl": "https://inkstone.web.app/veranimes/icon.png",
@@ -7538,7 +7538,8 @@
         "mp4upload.com",
         "www.mp4upload.com",
         "shannoncoldalready.com",
-        "ashleyhardat.com"
+        "ashleyhardat.com",
+        "arianathankspecial.com"
       ],
       "description": "Anime\n\nCatalog・6,000+",
       "capabilities": [
