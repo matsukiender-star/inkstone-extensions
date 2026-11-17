@@ -6939,7 +6939,7 @@
     {
       "id": "dragontranslation",
       "name": "Dragon Translation",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://dragontranslation.org",
       "iconUrl": "https://inkstone.web.app/dragontranslation/icon.png",
@@ -6959,7 +6959,7 @@
       "contentRating": "adult",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "d132e7a888a9af00b46deb50fff16b5dad512313d91bfeff5c821e6a973a08c3"
+      "sha256": "a098db9ba2a1bd2432bd1cd916aa255523e0d747eef80fa27966575d42e4477e"
     },
     {
       "id": "eternalmangas",
