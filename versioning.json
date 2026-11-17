@@ -7174,7 +7174,7 @@
     {
       "id": "mangasin",
       "name": "Mangas.in",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://m440.in",
       "iconUrl": "https://inkstone.web.app/mangasin/icon.png",
@@ -7193,7 +7193,7 @@
       "contentRating": "adult",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "8ba5f64c73c7742b50873231551651aff08d3d0452064d9ae93623daf05bd174"
+      "sha256": "540bc472d1c184cad4ddf75a5af3032ce49a35877499764e215bd50eff6314f2"
     },
     {
       "id": "mangatv",
