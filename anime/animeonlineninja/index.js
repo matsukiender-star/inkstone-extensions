@@ -130,7 +130,9 @@ async function findFranchise(source, mangaId, ownTitle) {
   const spelled = String(ownTitle || '').replace(/\([^)]*\)/g, ' ').replace(/\s+/g, ' ').trim().split(' ').slice(0, 3).join(' ');
   if (spelled && queries.indexOf(spelled) < 0) queries.push(spelled);
   const found = new Map();
-  for (const query of queries) {
+  const readQuery = async (query) => {
+    const hits = [];
+    const local = new Set();
     let metadata;
     for (let pageNumber = 0; pageNumber < 2; pageNumber++) {
       let page;
@@ -140,15 +142,25 @@ async function findFranchise(source, mangaId, ownTitle) {
         break;
       }
       for (const r of (page && page.results) || []) {
-        if (!r || !r.mangaId || found.has(r.mangaId)) continue;
+        if (!r || !r.mangaId || local.has(r.mangaId)) continue;
+        local.add(r.mangaId);
         const p = parseFranchise(r.title);
         const same = p.base === own.base || (p.kind !== 'main' && p.base.indexOf(own.base + ' ') === 0);
-        if (same) found.set(r.mangaId, { mangaId: r.mangaId, title: r.title, image: r.image, kind: p.kind, season: p.season, final: p.final, base: p.base, lang: p.lang });
+        if (same) hits.push({ mangaId: r.mangaId, title: r.title, image: r.image, kind: p.kind, season: p.season, final: p.final, base: p.base, lang: p.lang });
       }
       metadata = page && page.metadata;
       if (!metadata) break;
     }
-    if (found.size > 1) break;
+    return hits;
+  };
+  const firstHits = await readQuery(queries[0]);
+  for (const h of firstHits) if (!found.has(h.mangaId)) found.set(h.mangaId, h);
+  if (found.size <= 1 && queries.length > 1) {
+    const others = await Promise.all(queries.slice(1).map((q) => readQuery(q)));
+    for (const hits of others) {
+      for (const h of hits) if (!found.has(h.mangaId)) found.set(h.mangaId, h);
+      if (found.size > 1) break;
+    }
   }
   if (!found.has(mangaId)) found.set(mangaId, { mangaId, title: ownTitle, image: undefined, kind: own.kind, season: own.season, final: own.final, base: own.base, lang: own.lang });
   return found.size > 1 ? pickVariants(Array.from(found.values()), mangaId, own.lang) : [];
@@ -186,6 +198,8 @@ function numberSeasons(members) {
 const SEASON_GROUP_NAMES = { ova: 'OVAs', movie: 'Movies', special: 'Specials' };
 
 async function connectSeasons(source, mangaId, ownTitle, composite) {
+  const ownRead = source.getChaptersOfTitle(mangaId);
+  ownRead.catch(() => {});
   let members = [];
   try {
     members = await findFranchise(source, mangaId, ownTitle);
@@ -193,12 +207,12 @@ async function connectSeasons(source, mangaId, ownTitle, composite) {
     members = [];
   }
   const own = parseFranchise(ownTitle);
-  if (members.length < 2 || (own.kind !== 'main')) return source.getChaptersOfTitle(mangaId);
+  if (members.length < 2 || (own.kind !== 'main')) return ownRead;
   const seasons = numberSeasons(members);
-  if (seasons.length < 2 && members.filter((m) => m.kind !== 'main').length === 0) return source.getChaptersOfTitle(mangaId);
+  if (seasons.length < 2 && members.filter((m) => m.kind !== 'main').length === 0) return ownRead;
   const lists = new Array(members.length);
   const ownAt = members.findIndex((m) => m.mangaId === mangaId);
-  if (ownAt >= 0) lists[ownAt] = await source.getChaptersOfTitle(members[ownAt].mangaId);
+  if (ownAt >= 0) lists[ownAt] = await ownRead;
   const todo = members.map((m, i) => i).filter((i) => i !== ownAt);
   const readSibling = async (i) => {
     for (let attempt = 0; attempt < 2; attempt++) {
@@ -575,11 +589,21 @@ class Source {
       const part = /document\.getElementById\('(?:norobot|robot)link'\)\.innerHTML\s*=\s*'([^']+)'\s*\+\s*\('([^']+)'\)\.substring\((\d+)\)/.exec(html);
       return { url: `https:${part[1]}${part[2].substring(+part[3])}`, server: 'StreamTape', lang, headers: { Referer: origin } };
     }
-    if (/dood|ds2play|ds2video|d000/.test(lower)) {
+    if (/dood|ds2play|ds2video|d000|playmogo/.test(lower)) {
       const pass = /\/pass_md5\/([^']+)'/.exec(html);
       const token = pass[1].split('/').pop();
-      const base = await this.get(`${origin}pass_md5/${pass[1]}`, { Referer: origin });
-      return { url: `${base}1234567890?token=${token}&expiry=${Date.now()}`, server: 'DoodStream', lang, headers: { Referer: origin } };
+      const ask = async (o) => {
+        try {
+          const answer = String(await this.get(`${o}pass_md5/${pass[1]}`, { Referer: o })).trim();
+          return /^https?:\/\//.test(answer) ? { base: answer, origin: o } : null;
+        } catch (e) {
+          if (e && (e.kind === 'challenge' || e.kind === 'blocked')) throw e;
+          return null;
+        }
+      };
+      const got = (await ask(origin)) || (origin !== 'https://playmogo.com/' ? await ask('https://playmogo.com/') : null);
+      if (!got) return null;
+      return { url: `${got.base}1234567890?token=${token}&expiry=${Date.now()}`, server: 'DoodStream', lang, headers: { Referer: got.origin } };
     }
     return null;
   }

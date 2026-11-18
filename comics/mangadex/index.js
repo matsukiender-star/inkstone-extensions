@@ -5,6 +5,10 @@ const MAX_OFFSET_PLUS_LIMIT = 10000;
 
 const PLAIN_UA = 'Boundless/1.0 (+https://boundless.moe)';
 
+const VOLUMES_SUFFIX = '~volumes';
+const VOLUME_PREFIX = 'vol-';
+const VOLUME_WORKERS = 3;
+
 const PROBE_WORKERS = 6;
 const SETTLE_ROUNDS = 3;
 const SETTLE_BUDGET_MS = 15000;
@@ -39,10 +43,60 @@ const LANGUAGE_NAMES = {
   pt: 'Portuguese', fr: 'French', de: 'German', it: 'Italian', ru: 'Russian', id: 'Indonesian',
   vi: 'Vietnamese', tr: 'Turkish', ar: 'Arabic', pl: 'Polish', th: 'Thai', ja: 'Japanese',
   ko: 'Korean', zh: 'Chinese (Simplified)', 'zh-hk': 'Chinese (Traditional)', hi: 'Hindi',
-  uk: 'Ukrainian', nl: 'Dutch', ro: 'Romanian', hu: 'Hungarian', cs: 'Czech', fil: 'Filipino',
+  uk: 'Ukrainian', nl: 'Dutch', ro: 'Romanian', hu: 'Hungarian', cs: 'Czech', tl: 'Filipino',
   ms: 'Malay', bn: 'Bengali', my: 'Burmese', he: 'Hebrew', fa: 'Persian', el: 'Greek',
   bg: 'Bulgarian', ca: 'Catalan', sv: 'Swedish', fi: 'Finnish', da: 'Danish', no: 'Norwegian',
 };
+
+function splitId(id) {
+  const text = String(id);
+  return text.endsWith(VOLUMES_SUFFIX) ? { base: text.slice(0, -VOLUMES_SUFFIX.length), volumes: true } : { base: text, volumes: false };
+}
+
+function wantedLanguages() {
+  const raw = App.getSourceSetting('language');
+  const text = raw === undefined || raw === null ? '' : String(raw).trim();
+  let list = [];
+  if (text.charAt(0) === '[') {
+    try {
+      const parsed = JSON.parse(text);
+      if (Array.isArray(parsed)) list = parsed;
+    } catch (e) {
+      list = [];
+    }
+  } else {
+    list = text.split(',');
+  }
+  const codes = [];
+  list.forEach((value) => {
+    if (typeof value !== 'string') return;
+    const code = value.trim().toLowerCase();
+    if (code && codes.indexOf(code) === -1) codes.push(code);
+  });
+  if (codes.indexOf('all') !== -1) return ['all'];
+  return codes.length ? codes : ['en'];
+}
+
+function orderTies(items, languages) {
+  const rank = (c) => {
+    const i = languages.indexOf(c.attributes && c.attributes.translatedLanguage);
+    return i < 0 ? languages.length : i;
+  };
+  const numberOf = (c) => (c.attributes ? c.attributes.chapter : undefined);
+  const ordered = [];
+  let start = 0;
+  while (start < items.length) {
+    let end = start + 1;
+    while (end < items.length && numberOf(items[end]) === numberOf(items[start])) end++;
+    items
+      .slice(start, end)
+      .map((c, k) => ({ c, k }))
+      .sort((a, b) => rank(a.c) - rank(b.c) || a.k - b.k)
+      .forEach((x) => ordered.push(x.c));
+    start = end;
+  }
+  return ordered;
+}
 
 function qs(params) {
   return Object.keys(params)
@@ -190,24 +244,41 @@ class Source {
   }
 
   async getMangaDetails(mangaId) {
+    const id = splitId(mangaId);
     const query = qsRepeat('includes[]', ['author', 'artist', 'cover_art']);
-    const json = await this.requestJSON(`${API_BASE}/manga/${encodeURIComponent(mangaId)}?${query}`);
+    const json = await this.requestJSON(`${API_BASE}/manga/${encodeURIComponent(id.base)}?${query}`);
     if (!json.data) throw new Error('manga not found');
-    return this.toMangaInfo(json.data);
+    const info = this.toMangaInfo(json.data);
+    if (id.volumes) {
+      info.mangaInfo.mangaId = mangaId;
+      info.mangaInfo.title = `${info.mangaInfo.title || ''} (Volumes)`.trim();
+      return info;
+    }
+    try {
+      const edition = await this.volumeEdition(id.base, json.data.attributes && json.data.attributes.availableTranslatedLanguages);
+      if (edition) info.mangaInfo.volumesId = id.base + VOLUMES_SUFFIX;
+    } catch (e) {
+      console.error('MangaDex volumes lookup failed: ' + (e && e.message));
+    }
+    return info;
   }
 
   async getChapters(mangaId, sinceDate) {
+    const id = splitId(mangaId);
+    if (id.volumes) return this.volumeEntries(id.base);
     try {
-      const wanted = App.getSourceSetting('language') || 'en';
+      const wanted = wantedLanguages();
       this._languages = this._languages || new Map();
-      const key = `${wanted}|${mangaId}`;
+      const key = `${wanted.join(',')}|${mangaId}`;
       const known = this._languages.has(key);
-      const language = known ? this._languages.get(key) : wanted;
-      let chapters = await this._chapterFeed(mangaId, sinceDate, language, language !== wanted || wanted === 'all');
-      if (!chapters.length && !known && wanted !== 'all') {
+      const languages = known ? this._languages.get(key) : wanted;
+      const everything = languages[0] === 'all';
+      const showLanguage = everything || languages.length > 1 || languages.join(',') !== wanted.join(',');
+      let chapters = await this._chapterFeed(mangaId, sinceDate, languages, showLanguage);
+      if (!chapters.length && !known && !everything) {
         const other = await this._otherLanguage(mangaId, wanted);
-        this._languages.set(key, other || wanted);
-        if (other) chapters = await this._chapterFeed(mangaId, sinceDate, other, true);
+        this._languages.set(key, other ? [other] : wanted);
+        if (other) chapters = await this._chapterFeed(mangaId, sinceDate, [other], true);
       }
       return chapters;
     } catch (e) {
@@ -216,8 +287,8 @@ class Source {
     }
   }
 
-  async _chapterFeed(mangaId, sinceDate, language, showLanguage) {
-    const chapters = [];
+  async _chapterFeed(mangaId, sinceDate, languages, showLanguage) {
+    const items = [];
     let offset = 0;
     const limit = 500;
     for (let i = 0; i < 20; i++) {
@@ -228,7 +299,7 @@ class Source {
           'order[chapter]': 'asc',
           createdAtSince: sinceDate ? sinceDate.slice(0, 19) : undefined,
         }),
-        language === 'all' ? '' : qsRepeat('translatedLanguage[]', [language]),
+        languages[0] === 'all' ? '' : qsRepeat('translatedLanguage[]', languages),
         qsRepeat('contentRating[]', CONTENT_RATINGS),
         qsRepeat('includes[]', ['scanlation_group']),
       ];
@@ -236,21 +307,20 @@ class Source {
         `${API_BASE}/manga/${encodeURIComponent(mangaId)}/feed?${joinQuery(queryParts)}`
       );
       const data = json.data || [];
-      data
-        .filter((c) => !c.attributes || !c.attributes.externalUrl)
-        .forEach((c) => chapters.push(this.toChapter(c, showLanguage)));
+      data.filter((c) => !c.attributes || !c.attributes.externalUrl).forEach((c) => items.push(c));
       const total = typeof json.total === 'number' ? json.total : data.length;
       offset += limit;
       if (data.length === 0 || offset >= total || offset + limit > MAX_OFFSET_PLUS_LIMIT) break;
     }
-    return chapters;
+    const several = languages.length > 1 && languages[0] !== 'all';
+    return (several ? orderTies(items, languages) : items).map((c) => this.toChapter(c, showLanguage));
   }
 
   async _otherLanguage(mangaId, wanted) {
     const json = await this.requestJSON(`${API_BASE}/manga/${encodeURIComponent(mangaId)}`);
     const attrs = (json.data && json.data.attributes) || {};
     const available = Array.isArray(attrs.availableTranslatedLanguages) ? attrs.availableTranslatedLanguages : [];
-    if (!available.length || available.indexOf(wanted) !== -1) return null;
+    if (!available.length || available.some((lang) => wanted.indexOf(lang) !== -1)) return null;
     const counts = await Promise.all(
       available.slice(0, 12).map(async (lang) => {
         try {
@@ -271,7 +341,120 @@ class Source {
     return counts[0] && counts[0].total > 0 ? counts[0].lang : null;
   }
 
+  async volumeEdition(mangaId, available) {
+    const wanted = wantedLanguages();
+    const key = `${wanted.join(',')}|${mangaId}`;
+    this._editions = this._editions || new Map();
+    if (this._editions.has(key)) return this._editions.get(key);
+    let candidates = wanted;
+    if (wanted[0] === 'all') {
+      let listed = available;
+      if (!Array.isArray(listed)) {
+        const json = await this.requestJSON(`${API_BASE}/manga/${encodeURIComponent(mangaId)}`);
+        listed = (json.data && json.data.attributes && json.data.attributes.availableTranslatedLanguages) || [];
+      }
+      candidates = ['en'].concat(listed);
+    }
+    const tried = [];
+    candidates.forEach((lang) => {
+      if (tried.indexOf(lang) === -1) tried.push(lang);
+    });
+    const found = await Promise.all(
+      tried.slice(0, 8).map(async (lang) => {
+        let json;
+        try {
+          json = await this.requestJSON(`${API_BASE}/manga/${encodeURIComponent(mangaId)}/aggregate?${qsRepeat('translatedLanguage[]', [lang])}`);
+        } catch (e) {
+          return null;
+        }
+        const volumes = [];
+        Object.keys((json && json.volumes) || {}).forEach((k) => {
+          if (k === 'none' || k === '') return;
+          const entry = json.volumes[k];
+          const chapters = Object.keys((entry && entry.chapters) || {})
+            .map((n) => entry.chapters[n])
+            .filter((c) => c && c.id && !c.isUnavailable);
+          if (!chapters.length) return;
+          const rank = (c) => (Number.isFinite(Number(c.chapter)) ? Number(c.chapter) : Infinity);
+          chapters.sort((a, b) => rank(a) - rank(b));
+          volumes.push({ key: k, chapters });
+        });
+        const rankVolume = (v) => (Number.isFinite(Number(v.key)) ? Number(v.key) : Infinity);
+        volumes.sort((a, b) => rankVolume(a) - rankVolume(b));
+        return volumes.length ? { language: lang, volumes, size: volumes.reduce((n, v) => n + v.chapters.length, 0) } : null;
+      })
+    );
+    let edition = null;
+    found.forEach((candidate) => {
+      if (candidate && (!edition || candidate.size > edition.size)) edition = candidate;
+    });
+    this._editions.set(key, edition);
+    return edition;
+  }
+
+  async volumeEntries(mangaId) {
+    const edition = await this.volumeEdition(mangaId);
+    if (!edition) return [];
+    const wanted = wantedLanguages();
+    const label =
+      wanted.length > 1 || wanted[0] === 'all' || edition.language !== wanted[0]
+        ? LANGUAGE_NAMES[edition.language] || String(edition.language).toUpperCase()
+        : null;
+    return edition.volumes.map((v, i) => ({
+      id: VOLUME_PREFIX + v.key,
+      chapterId: VOLUME_PREFIX + v.key,
+      name: `Volume ${v.key}`,
+      number: Number.isFinite(Number(v.key)) ? Number(v.key) : i + 1,
+      group: [`${v.chapters.length} ${v.chapters.length === 1 ? 'chapter' : 'chapters'}`, label].filter(Boolean).join(' \u00b7 '),
+    }));
+  }
+
+  async volumeDetails(mangaId, volumeId) {
+    const id = splitId(mangaId);
+    const edition = await this.volumeEdition(id.base);
+    const key = String(volumeId).slice(VOLUME_PREFIX.length);
+    const volume = edition && edition.volumes.find((v) => v.key === key);
+    if (!volume) throw new Error(`MangaDex: volume ${key} is not listed for this title in your chapter languages`);
+    const saver = App.getSourceSetting('dataSaver') === 'true';
+    const parts = new Array(volume.chapters.length).fill(null);
+    const load = async (i) => {
+      const chapterId = volume.chapters[i].id;
+      const home = await this.atHome(chapterId);
+      parts[i] = await this.settlePages(chapterId, home, saver);
+    };
+    let next = 0;
+    const worker = async () => {
+      while (next < volume.chapters.length) {
+        const i = next++;
+        try {
+          await load(i);
+        } catch (e) {
+          parts[i] = null;
+        }
+      }
+    };
+    await Promise.all(Array.from({ length: Math.min(VOLUME_WORKERS, volume.chapters.length) }, worker));
+    for (let i = 0; i < parts.length; i++) {
+      if (parts[i] && parts[i].length) continue;
+      try {
+        await load(i);
+      } catch (e) {
+        parts[i] = null;
+      }
+    }
+    const pages = [];
+    let left = 0;
+    parts.forEach((list) => {
+      if (list && list.length) list.forEach((url) => pages.push(url));
+      else left++;
+    });
+    if (!pages.length) throw new Error(`MangaDex: volume ${key} has no readable pages (its chapters are external or missing)`);
+    if (left) console.error(`MangaDex: volume ${key} is missing ${left} of ${parts.length} chapters (no pages)`);
+    return { id: volumeId, mangaId, pages };
+  }
+
   async getChapterDetails(mangaId, chapterId) {
+    if (splitId(mangaId).volumes) return this.volumeDetails(mangaId, chapterId);
     const home = await this.atHome(chapterId);
     const useDataSaver = App.getSourceSetting('dataSaver') === 'true';
     const pages = await this.settlePages(chapterId, home, useDataSaver);
@@ -445,6 +628,7 @@ class Source {
       name: a.title || `Chapter ${num}`,
       number: Number(num) || 0,
       group,
+      volume: a.volume !== null && a.volume !== undefined && String(a.volume) !== '' ? String(a.volume) : undefined,
       time: a.publishAt ? Date.parse(a.publishAt) : undefined,
     };
   }
