@@ -159,7 +159,9 @@ async function findFranchise(source, mangaId, ownTitle) {
   const spelled = String(ownTitle || '').replace(/\([^)]*\)/g, ' ').replace(/\s+/g, ' ').trim().split(' ').slice(0, 3).join(' ');
   if (spelled && queries.indexOf(spelled) < 0) queries.push(spelled);
   const found = new Map();
-  for (const query of queries) {
+  const readQuery = async (query) => {
+    const hits = [];
+    const local = new Set();
     let metadata;
     for (let pageNumber = 0; pageNumber < 2; pageNumber++) {
       let page;
@@ -169,15 +171,25 @@ async function findFranchise(source, mangaId, ownTitle) {
         break;
       }
       for (const r of (page && page.results) || []) {
-        if (!r || !r.mangaId || found.has(r.mangaId)) continue;
+        if (!r || !r.mangaId || local.has(r.mangaId)) continue;
+        local.add(r.mangaId);
         const p = parseFranchise(r.title);
         const same = p.base === own.base || (p.kind !== 'main' && p.base.indexOf(own.base + ' ') === 0);
-        if (same) found.set(r.mangaId, { mangaId: r.mangaId, title: r.title, image: r.image, kind: p.kind, season: p.season, final: p.final, base: p.base, lang: p.lang });
+        if (same) hits.push({ mangaId: r.mangaId, title: r.title, image: r.image, kind: p.kind, season: p.season, final: p.final, base: p.base, lang: p.lang });
       }
       metadata = page && page.metadata;
       if (!metadata) break;
     }
-    if (found.size > 1) break;
+    return hits;
+  };
+  const firstHits = await readQuery(queries[0]);
+  for (const h of firstHits) if (!found.has(h.mangaId)) found.set(h.mangaId, h);
+  if (found.size <= 1 && queries.length > 1) {
+    const others = await Promise.all(queries.slice(1).map((q) => readQuery(q)));
+    for (const hits of others) {
+      for (const h of hits) if (!found.has(h.mangaId)) found.set(h.mangaId, h);
+      if (found.size > 1) break;
+    }
   }
   if (!found.has(mangaId)) found.set(mangaId, { mangaId, title: ownTitle, image: undefined, kind: own.kind, season: own.season, final: own.final, base: own.base, lang: own.lang });
   return found.size > 1 ? pickVariants(Array.from(found.values()), mangaId, own.lang) : [];
@@ -215,6 +227,8 @@ function numberSeasons(members) {
 const SEASON_GROUP_NAMES = { ova: 'OVAs', movie: 'Movies', special: 'Specials' };
 
 async function connectSeasons(source, mangaId, ownTitle, composite) {
+  const ownRead = source.getChaptersOfTitle(mangaId);
+  ownRead.catch(() => {});
   let members = [];
   try {
     members = await findFranchise(source, mangaId, ownTitle);
@@ -222,12 +236,12 @@ async function connectSeasons(source, mangaId, ownTitle, composite) {
     members = [];
   }
   const own = parseFranchise(ownTitle);
-  if (members.length < 2 || (own.kind !== 'main')) return source.getChaptersOfTitle(mangaId);
+  if (members.length < 2 || (own.kind !== 'main')) return ownRead;
   const seasons = numberSeasons(members);
-  if (seasons.length < 2 && members.filter((m) => m.kind !== 'main').length === 0) return source.getChaptersOfTitle(mangaId);
+  if (seasons.length < 2 && members.filter((m) => m.kind !== 'main').length === 0) return ownRead;
   const lists = new Array(members.length);
   const ownAt = members.findIndex((m) => m.mangaId === mangaId);
-  if (ownAt >= 0) lists[ownAt] = await source.getChaptersOfTitle(members[ownAt].mangaId);
+  if (ownAt >= 0) lists[ownAt] = await ownRead;
   const todo = members.map((m, i) => i).filter((i) => i !== ownAt);
   const readSibling = async (i) => {
     for (let attempt = 0; attempt < 2; attempt++) {
@@ -342,6 +356,10 @@ function collapseSeasons(page, request) {
   }
   return results === page.results ? page : Object.assign({}, page, { results });
 }
+
+const DEAD_HOSTS = /(^|\.)(mdnemonicplayer\.xyz|vgembed\.com)$|(^|\.)byse\w*\./i;
+const hostOf = (u) => (/^https?:\/\/([^/]+)/.exec(u) || [])[1] || '';
+const pageKey = (u) => String(u || '').replace(/[?#].*$/, '');
 
 class Source {
   constructor() {
@@ -469,7 +487,15 @@ class Source {
       const candidate = match[0].replace(/\\+$/, '');
       if (/(voe\.sx|vidhide|embedwish|streamwish)/.test(candidate)) urls.push(candidate);
     }
-    const found = await Promise.all(Array.from(new Set(urls)).map((url) => this.extract(url).catch(() => null)));
+    const deadPages = new Set();
+    const found = await Promise.all(
+      Array.from(new Set(urls)).map((url) =>
+        this.extract(url).catch((e) => {
+          if (/HTTP (404|410)\b/.test(String((e && e.message) || ''))) deadPages.add(pageKey(url));
+          return null;
+        })
+      )
+    );
     const videos = found
       .filter((video) => video && /^https?:\/\//.test(video.url))
       .sort((a, b) => SERVERS.indexOf(a.quality) - SERVERS.indexOf(b.quality))
@@ -477,6 +503,7 @@ class Source {
 
     const extras = [];
     for (const block of code.matchAll(/\$\("#(\w+)"\)\.click\(function\(e\)\{[\s\S]*?url:"([^"]+)",data:\{"slug":"([^"]+)"\}[\s\S]*?\.attr\("src","([^"]+)"\+json\[id\]\["url"\]\)/g)) {
+      if (DEAD_HOSTS.test(hostOf(block[4]))) continue;
       try {
         const answer = await this.get(`${SITE}${block[2]}?slug=${encodeURIComponent(block[3])}`, { Referer: pageUrl, 'X-Requested-With': 'XMLHttpRequest' });
         const list = JSON.parse(answer);
@@ -490,17 +517,32 @@ class Source {
       }
     }
     const asura = /asura_player"\)[\s\S]{0,300}?file:"(https?:[^"]+)"/.exec(code);
-    if (asura) extras.push({ url: asura[1], quality: 'Asura', server: 'Asura', headers: { ...BROWSER, Referer: `${SITE}/` } });
+    if (asura && !DEAD_HOSTS.test(hostOf(asura[1]))) {
+      const entry = { url: asura[1], quality: 'Asura', server: 'Asura', headers: { ...BROWSER, Referer: `${SITE}/` } };
+      if (await this.reachable(entry)) extras.push(entry);
+    }
     const taken = new Set(found.filter(Boolean).map((v) => v.quality));
     for (const match of code.matchAll(/<iframe src=\\?'(https?:\/\/[^'\\]+)/g)) {
       const host = (/^https?:\/\/([^/]+)/.exec(match[1]) || [])[1] || '';
       const name = host.replace(/^www\./, '');
+      if (DEAD_HOSTS.test(host) || deadPages.has(pageKey(match[1]))) continue;
       if (extras.some((e) => e.url === match[1]) || videos.length && /(voe\.sx|vidhide|embedwish|streamwish)/.test(host) && taken.size) continue;
       extras.push({ url: match[1], type: 'embed', quality: name, server: name });
     }
     const all = videos.concat(extras);
     if (!all.length) throw new Error(`MundoDonghua: none of the ${urls.length} servers gave a playable video`);
     return all;
+  }
+
+  async reachable(entry) {
+    try {
+      const response = await this.requests.schedule(App.createRequest({ url: entry.url, method: 'GET', headers: { ...entry.headers, Range: 'bytes=0-255' } }));
+      const type = String((response.headers && (response.headers['content-type'] || response.headers['Content-Type'])) || '');
+      return response.status >= 200 && response.status < 400 && !/text\/html/i.test(type);
+    } catch (e) {
+      if (e && e.kind === 'challenge') throw e;
+      return false;
+    }
   }
 
   async extract(url) {

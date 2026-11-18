@@ -245,7 +245,7 @@ whole extension.
 `desc` (not `description`) and `status` must be one of those exact uppercase
 strings. Anything else maps to Unknown.
 
-**Volumes (optional).** A source that can list a title's volumes returns `volumesId` in the details: any id of its own choosing for the title's volumes edition (MangaFire uses the title's id plus `~volumes`, a suffix that is safe in URLs and never part of a real id). The app then shows a Chapters / Volumes switch. Volumes lists `getChapters(volumesId)` and reads a volume with `getChapterDetails(volumesId, volumeId)`, so the volumes are a second series as far as the extension is concerned, and their progress, history, downloads and read marks are kept apart from the chapters' (they would otherwise be mixed: Continue picks the furthest chapter number). Each volume is a chapter-shaped entry (`id`, `name` such as `Volume 3`, `number`, and a `group` line such as `9 chapters`). It must be a string id. Leave it out when the title has no volumes. Apps without the switch ignore it.
+**Volumes (optional).** A source that can list a title's volumes returns `volumesId` in the details: any id of its own choosing for the title's volumes edition (MangaFire and MangaDex use the title's id plus `~volumes`, a suffix that is safe in URLs and never part of a real id; MangaDex builds it from its `aggregate` endpoint, and a volume's pages are the pages of each of its chapters joined in order). The app then shows a Chapters / Volumes switch. Volumes lists `getChapters(volumesId)` and reads a volume with `getChapterDetails(volumesId, volumeId)`, so the volumes are a second series as far as the extension is concerned, and their progress, history, downloads and read marks are kept apart from the chapters' (they would otherwise be mixed: Continue picks the furthest chapter number). Each volume is a chapter-shaped entry (`id`, `name` such as `Volume 3`, `number`, and a `group` line such as `9 chapters`). It must be a string id. Leave it out when the title has no volumes. Apps without the switch ignore it.
 
 **Chapter:**
 
@@ -430,7 +430,16 @@ field has a `type` (`text`, `toggle`, `select`, `multiSelect` or `section`), a
 `key`, a `label`, and optionally `default`, `placeholder`, `secure` (hides
 passwords) and `options: [{ value, label }]`. Read the value back with
 `App.getSourceSetting('key')`, which returns a string, so a toggle is `'true'`
-or `'false'`.
+or `'false'`, or `undefined` when the reader never set it.
+
+A `multiSelect` lets the reader pick several `options` (chapter languages, for
+example) and its `default` is a list: `"default": ["en"]`. Its value reaches
+your code as text, and the shape depends on the app: Boundless Reader gives a
+JSON array (`["en","pl"]`), Sumizuri a comma separated list (`en,pl`), and a
+setting that used to be a `select` still holds the one plain code it had
+(`pt-br`). Parse all of them, trim and lower case the codes, and apply your own
+default for `undefined` or an empty list. `mangadex` does this in
+`wantedLanguages` and sends every chosen language to the site in one request.
 
 When the site has its own preferences (a content rating, a language), offer them
 as settings and send what the site sends. `kagane` does: its content rating
