@@ -138,7 +138,7 @@ function qs(params) {
 
 | Call | What it does |
 | --- | --- |
-| `App.createRequestManager({ rateLimit })` | Returns a manager with `schedule(request)`. All network access goes through it. `rateLimit` is optional: `{ requestsPerSecond, requestsPerMinute }`, and the stricter one wins. |
+| `App.createRequestManager({ rateLimit })` | Returns a manager with `schedule(request)`. All network access goes through it. `rateLimit` is optional: `{ requestsPerSecond, requestsPerMinute }`, and the stricter one wins. In Boundless Reader the limit belongs to the whole source, not to that one manager (checked 2026-11-18 in the app's RateLimitHandler): the stricter limit of every manager you create paces every request of the source, lists, details and images too. To protect only one route (a chapter text route with a low limit, say), keep your own small wait in code for that route and do not declare a limit on a second manager. |
 | `App.createRequest({ url, method, headers, body })` | Describes a request. `method` defaults to `GET`. For a JSON `POST`, set `body` to a string and add a `Content-Type` header. |
 | `manager.schedule(request)` | Resolves to `{ status, headers, data }`. `data` is always a **string**, so `JSON.parse` it yourself. A 404 or 500 still resolves, so check `status`. Only network failures reject, and so does a host that is not in your `hosts`. The app waits out a 429 (or a 503 with a `Retry-After`) and retries it up to 3 times before you see the answer, and answers an identical GET (same address and headers) from a 90 second cache. |
 | `App.getSourceSetting(key)` | Reads a value the user set in your extension's settings. Always a string, or `undefined`. |
@@ -254,7 +254,7 @@ It's `desc` (or `summary`), not `description`, and `status` must be one of those
 
 **Book files (optional).** Some sites hand over a whole book instead of pages or text. Return `book: { url, headers }` next to an empty `pages`: Boundless Reader downloads the file itself (`headers` is optional, a `Cookie`, `Referer` or `User-Agent`, so it has to answer a plain download), turns an EPUB or MOBI into the text of the chapter and draws a PDF as pictures, once, and keeps the result. Files over 150 MB and PDFs over 1,500 pages are refused. Always add a short `text` notice as well, ideally with the file's link: an app version that does not know `book`, and a file that cannot be opened, show it instead of an empty chapter. The test script checks the shape of `book` but does not download it.
 
-**Volumes (optional).** A source that can list a title's volumes returns `volumesId` in the details: any id of its own choosing for the title's volumes edition (MangaFire uses the title's id plus `~volumes`, a suffix that is safe in URLs and never part of a real id). The app then shows a Chapters / Volumes switch. Volumes lists `getChapters(volumesId)` and reads a volume with `getChapterDetails(volumesId, volumeId)`, so the volumes are a second series as far as the extension is concerned, and their progress, history, downloads and read marks are kept apart from the chapters' (they would otherwise be mixed: Continue picks the furthest chapter number). Each volume is a chapter-shaped entry (`id`, `name` such as `Volume 3`, `number`, and a `group` line such as `9 chapters`). It must be a string id. Leave it out when the title has no volumes. Apps without the switch ignore it.
+**Volumes (optional).** A source that can list a title's volumes returns `volumesId` in the details: any id of its own choosing for the title's volumes edition (MangaFire and MangaDex use the title's id plus `~volumes`, a suffix that is safe in URLs and never part of a real id; MangaDex builds it from its `aggregate` endpoint, and a volume's pages are the pages of each of its chapters joined in order). The app then shows a Chapters / Volumes switch. Volumes lists `getChapters(volumesId)` and reads a volume with `getChapterDetails(volumesId, volumeId)`, so the volumes are a second series as far as the extension is concerned, and their progress, history, downloads and read marks are kept apart from the chapters' (they would otherwise be mixed: Continue picks the furthest chapter number). Each volume is a chapter-shaped entry (`id`, `name` such as `Volume 3`, `number`, and a `group` line such as `9 chapters`). It must be a string id. Leave it out when the title has no volumes. Apps without the switch ignore it.
 
 `ageRating` is a number, the title's own minimum age, and only for sites that rate titles one by one (safe is 0, suggestive 16, erotica and pornographic 18). By default Boundless blurs 16 and up and hides 18 and up, and the reader can change that. A word like `contentRating: 'adult'` on a title is ignored. The `contentRating` in `versioning.json` is a separate thing that rates the whole extension.
 
@@ -266,9 +266,29 @@ If your extension has options (a language, a quality setting, a server URL), dec
 "settingsSchema": [
   { "type": "select", "key": "language", "label": "Chapter language", "default": "en",
     "options": [{ "value": "en", "label": "English" }, { "value": "all", "label": "All languages" }] },
+  { "type": "multiSelect", "key": "languages", "label": "Chapter languages", "default": ["en"],
+    "options": [{ "value": "en", "label": "English" }, { "value": "pl", "label": "Polish" }] },
   { "type": "toggle", "key": "dataSaver", "label": "Data saver", "default": false }
 ]
 ```
+
+A `multiSelect` lets the reader tick several options, and its `default` is a list. Its value reaches your code as text, and the shape depends on the app: Boundless Reader gives a JSON array (`["en","pl"]`), Sumizuri gives a comma separated list (`en,pl`), and a setting that used to be a `select` still holds its one plain code (`pt-br`). Read all three the same way, and apply your own default when the answer is `undefined` or empty, because the app says `undefined` until the reader first touches the setting:
+
+```js
+function chosen(key, fallback) {
+  const raw = String(App.getSourceSetting(key) || '').trim();
+  let list = [];
+  if (raw.charAt(0) === '[') {
+    try { list = JSON.parse(raw); } catch (e) { list = []; }
+  } else {
+    list = raw.split(',');
+  }
+  list = list.filter((v) => typeof v === 'string').map((v) => v.trim().toLowerCase()).filter(Boolean);
+  return list.length ? list : fallback;
+}
+```
+
+If the site takes several values in one request (MangaDex repeats `translatedLanguage[]` per language), send them together. If it takes one, make one request per value and merge the lists. Label each chapter with its language when more than one is chosen, so the reader can tell them apart.
 
 If the site has its own content or language preferences, offer them as settings and send them the way the site does (read the site's own request to see the names and values): `kagane` has a content rating of Safe, 15+ or 18+ and a preferred chapter language, which become `age_rating` and `content_lang` in its search, and a default that keeps what the extension did before. A setting your code reads but the schema doesn't declare can never be changed: one extension read a language setting for months, and nobody could set it. A few published extensions do declare one (`mangadex`, `kagane`, `asurascans`, `mangatoon`, `navercomic`), so copy their shape. The fields only appear inside the app, so look at the settings screen there.
 
@@ -367,7 +387,7 @@ Some sites open more chapters to a signed-in or paying reader. An extension can 
 - Test the exact script in a real browser tab first: open the page, wait about 2.5 seconds, define stand-ins for the three helpers, evaluate the script text, and check the result against the site's own totals. The test script can't run web view code, so say in your report which engine you tested it in and that it was not tested inside the app.
 - A site behind a Cloudflare check can be served **entirely** by the web view. When the app's own HTTP client cannot reuse the site's clearance, Boundless answers every plain request for that site by loading the URL in its hidden web view and returning the page's HTML with status 200. A page of HTML reads the same either way, but a JSON endpoint comes back as `<html><head>...</head><body><pre>{...}</pre></body></html>`, so a bare `JSON.parse` fails with "unexpected token '<'" (seen on a phone: the chapter list of a novel site failed after three attempts and 70 seconds, because each attempt was a whole web view load, one at a time for the app). If the body starts with `<`, read the JSON out of the `<pre>` and remember that this site is in this mode. A plain curl or Node request to such a site gets a 403, so the test script cannot reach it: say so in your report. For a list that needs many requests, run ONE `executeInWebView` visit whose script fetches every page from inside the site's own page (same origin, so no clearance problem, and real timers for pacing and retrying a 429), and send the rows back in one result. Keep the plain one-request-per-page path as a fallback if the visit fails.
 - A web view script is usually built inside a JavaScript template literal, and a template literal swallows backslash escapes: a `\s` or `\d` in your script reaches the page as `s` or `d`, so a regex silently matches the wrong thing (here it would have rewritten every `s` in the chapter names). Print the generated script and read it, or avoid escapes in the page code and tidy the data on the extension side.
-- A site where every page image needs its own request can return the text `boundless-lazy-page` for each page, and answer `getPageData(mangaId, chapterId, pageIndex)` with `{ uri, referer, headers }` for a URL, `{ base64, mimeType }` for the image itself, or `{ error }`. No published extension uses it right now (one did until its page images turned out to be plain URLs again, with no Referer).
+- A site where every page image needs its own request can return the text `boundless-lazy-page` for each page, and answer `getPageData(mangaId, chapterId, pageIndex)` with `{ uri, referer, headers }` for a URL, `{ base64, mimeType }` for the image itself, or `{ error }`. No published extension uses it right now (one did until its page images turned out to be plain URLs again, with no Referer). Checked 2026-11-18 in the Kotlin app source (BoundlessKMP): Boundless Reader does not resolve lazy pages yet, and its image pipeline draws a placeholder for any address that is not http or https, so a source that depends on it shows no page images. Do not build on it until the app supports it; a source whose pages need decrypting on the device (an AES key from the site's own api answer, for example) has to wait for that too.
 
 ### Anime (video) extensions (Sumizuri and Boundless Player)
 
@@ -932,6 +952,24 @@ for (const item of (found?.value.results ?? []).slice(0, 2)) {
     'chapter fields have the types Boundless casts to',
     'name, group and volume are strings; number and time are numbers, not "12"',
   );
+  // A stream can be a whole movie file (a direct mp4 is hundreds of megabytes): read only its start, then let go of the rest.
+  const readStart = async (res, limit) => {
+    const reader = res.body?.getReader();
+    if (!reader) return '';
+    const chunks = [];
+    let size = 0;
+    try {
+      while (size < limit) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        chunks.push(Buffer.from(value));
+        size += value.length;
+      }
+    } finally {
+      try { await reader.cancel(); } catch { /* the stream may already be closed */ }
+    }
+    return Buffer.concat(chunks).toString('utf8', 0, limit);
+  };
   const tryPlay = async (chapter, label, started) => {
     const videos = await withTimeout(source.getVideos(item.mangaId, chapter.id));
     if (!Array.isArray(videos) || videos.length === 0 || !videos.every((v) => isUrl(v.url))) return { ok: false, label, detail: 'getVideos gave no video with a full URL' };
@@ -943,7 +981,7 @@ for (const item of (found?.value.results ?? []).slice(0, 2)) {
     let plays = true;
     if (streams.length) {
       answer = await withTimeout(fetch(first.url, { headers: first.headers ?? {} }), 30000);
-      const body = answer.ok ? await answer.text() : '';
+      const body = answer.ok ? await readStart(answer, 65536) : '';
       // A DASH manifest (type 'dash', an .mpd) is XML that opens with an MPD element; HLS opens with #EXTM3U; a plain file answers a video content type.
       plays = answer.ok && (body.startsWith('#EXTM3U') || (answer.headers.get('content-type') ?? '').startsWith('video/') || /<MPD[\s>]/.test(body.slice(0, 4000)));
     }
