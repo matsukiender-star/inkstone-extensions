@@ -55,7 +55,7 @@ Prefer to review a written plan before any code is written? This repo works with
 
 ## Extensions
 
-351 extensions right now. Ratings are Safe, Mature or Adult, and some extensions also rate each title on its own.
+368 extensions right now. Ratings are Safe, Mature or Adult, and some extensions also rate each title on its own.
 
 Each extension lives in the folder for what it offers: `comics`, `novels`, `mixed` for those that do both, or `anime`. The site still serves every one at `inkstone.web.app/<id>/index.js`, so the folders change nothing in the apps.
 
@@ -83,7 +83,7 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [Boruto Explorer](comics/borutoexplorer/index.js) | leitor.borutoexplorer.com.br | Brazilian Portuguese | Safe | 1.0.0 |
 | [Bun Manga](comics/bunmanga/index.js) | bunmanga.com | English | Safe | 1.0.0 |
 | [Café com Yaoi](comics/cafcomyaoi/index.js) | cafecomyaoi.com.br | Brazilian Portuguese | Mature | 1.0.2 |
-| [Chikari](mixed/chikari/index.js) | chikari.moe | English | Adult | 4.4.1 |
+| [Chikari](mixed/chikari/index.js) | chikari.moe | English | Adult | 4.4.2 |
 | [CManga](comics/cmanga/index.js) | cmangavn.com | Vietnamese | Adult | 1.0.0 |
 | [Cocomic](comics/cocomic/index.js) | cocomic.co | English | Adult | 1.0.2 |
 | [ComicFury](comics/comicfury/index.js) | comicfury.com | English | Adult | 1.0.0 |
@@ -91,9 +91,9 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [Danke fürs Lesen](comics/danke/index.js) | danke.moe | English | Mature | 1.0.0 |
 | [Decadence Scans](comics/decadencescans/index.js) | reader.decadencescans.com | English | Adult | 1.0.1 |
 | [Doodmanga](comics/doodmanga/index.js) | doodmanga.com | Thai | Safe | 1.0.0 |
-| [Dragon Translation](comics/dragontranslation/index.js) | dragontranslation.org | Spanish | Adult | 1.0.0 |
+| [Dragon Translation](comics/dragontranslation/index.js) | dragontranslation.org | Spanish | Adult | 1.0.1 |
 | [Dynasty Scans](comics/dynastyscans/index.js) | dynasty-scans.com | English | Mature | 1.0.0 |
-| [Eternal Mangas](comics/eternalmangas/index.js) | eternalmangas.org | Spanish | Adult | 1.0.2 |
+| [Eternal Mangas](comics/eternalmangas/index.js) | eternalmangas.org | Spanish | Adult | 1.0.3 |
 | [Eva Scans](comics/evascans/index.js) | evascans.net | English | Adult | 1.0.1 |
 | [EzManga](mixed/ezmanga/index.js) | ezmanga.org | English | Safe | 1.0.1 |
 | [Flame Scans](comics/flamescans/index.js) | flamecomics.xyz | English | Safe | 1.0.0 |
@@ -116,9 +116,9 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [Hot Cabaret Scan](comics/hotcabaretscan/index.js) | hotcabaretscan.com | Brazilian Portuguese | Mature | 1.0.2 |
 | [House Of Otakus](comics/houseofotakus/index.js) | houseofotakusv2.xyz | Spanish | Safe | 1.0.0 |
 | [Hunlight Comics](comics/hunlightcomics/index.js) | hunlightcomics.com | English | Safe | 1.0.0 |
-| [Ikigai Mangas](comics/ikigaimangas/index.js) | ikigaimangas.com | Spanish | Adult | 1.0.0 |
+| [Ikigai Mangas](comics/ikigaimangas/index.js) | ikigaimangas.com | Spanish | Adult | 1.1.0 |
 | [InkStory](comics/inkstory/index.js) | inkstory.net | Russian | Mature | 1.1.1 |
-| [InManga](comics/inmanga/index.js) | inmanga.com | Spanish | Safe | 1.1.0 |
+| [InManga](comics/inmanga/index.js) | inmanga.com | Spanish | Safe | 1.1.1 |
 | [Inu Manga](comics/inumanga/index.js) | inu-manga.net | Thai | Mature | 1.0.2 |
 | [Inventario Oculto](comics/inventariooculto/index.js) | inventariooculto.com | Spanish | Adult | 1.0.1 |
 | [Jinmangas](comics/jinmangas/index.js) | mangafree.info | English | Adult | 1.0.0 |
@@ -162,7 +162,7 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [MangaBuddy](comics/mangabuddy/index.js) | mangabuddy1.co.uk | English | Adult | 1.3.0 |
 | [MangaCK](comics/mangack/index.js) | mangack.com | English | Mature | 1.0.0 |
 | [MangaDE](comics/mangade/index.js) | mangade.io | English | Mature | 1.0.0 |
-| [MangaDex](comics/mangadex/index.js) | mangadex.org | English | Safe | 1.4.0 |
+| [MangaDex](comics/mangadex/index.js) | mangadex.org | English | Safe | 1.4.1 |
 | [MangaDot](comics/mangadot/index.js) | mangadot.net | English | Mature | 1.0.0 |
 | [MangaFire](comics/mangafire/index.js) | mangafire.to | English | Safe | 1.4.1 |
 | [MangaFox](comics/mangafox/index.js) | fanfox.net | English | Adult | 1.0.0 |
@@ -181,7 +181,7 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [Mangapill](comics/mangapill/index.js) | mangapill.com | English | Adult | 1.0.0 |
 | [MangaPlaza](comics/mangaplaza/index.js) | mangaplaza.com | English | Adult | 1.1.1 |
 | [MangaRead](comics/mangaread/index.js) | mangaread.org | English | Adult | 1.0.1 |
-| [Mangas.in](comics/mangasin/index.js) | m440.in | Spanish | Adult | 1.0.0 |
+| [Mangas.in](comics/mangasin/index.js) | m440.in | Spanish | Adult | 1.0.1 |
 | [Mangasushi](comics/mangasushi/index.js) | mangasushi.org | English | Adult | 1.0.1 |
 | [MangaToon](comics/mangatoon/index.js) | mangatoon.mobi | English | Mature | 1.3.0 |
 | [MangaTown](comics/mangatown/index.js) | mangatown.com | English | Adult | 1.2.0 |
@@ -217,7 +217,7 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [Mgread.io](comics/mangayy/index.js) | mgread.io | English | Mature | 2.0.0 |
 | [MHScans](comics/mhscans/index.js) | mhscans.com | Spanish | Safe | 1.1.0 |
 | [Monopoly Scan](comics/monopolyscan/index.js) | monopolymanhua.com | Spanish | Safe | 1.0.2 |
-| [Natomanga](comics/natomanga/index.js) | natomanga.com | English | Adult | 1.2.0 |
+| [Natomanga](comics/natomanga/index.js) | natumanga.com | English | Adult | 1.3.0 |
 | [Naver Webtoon](comics/navercomic/index.js) | comic.naver.com | Korean | Mature | 1.2.0 |
 | [Nebulosa Scan](comics/nebulosascan/index.js) | nebulosascan.com | Brazilian Portuguese | Mature | 1.0.2 |
 | [NekoScans](comics/nekoscans/index.js) | nekoproject.org | Spanish | Safe | 1.0.0 |
@@ -240,7 +240,7 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [Rawkuma](comics/rawkuma/index.js) | rawkuma.net | Japanese | Adult | 1.0.2 |
 | [ReadManga.cc](comics/readmangacc/index.js) | readmanga.cc | English | Mature | 1.0.0 |
 | [ReManga](comics/remanga/index.js) | remanga.org | Russian | Adult | 1.2.2 |
-| [Renascans](comics/renascans/index.js) | renascans.net | English | Safe | 1.1.0 |
+| [Renascans](comics/renascans/index.js) | renascans.net | English | Safe | 1.1.1 |
 | [RichtoScan](comics/richtoscan/index.js) | r1.richtoon.top | Spanish | Safe | 1.0.1 |
 | [RokariComics](comics/rokaricomics/index.js) | rokaricomics.com | English | Adult | 1.0.1 |
 | [Rolia Scan](comics/roliascan/index.js) | roliascan.com | English | Mature | 1.0.0 |
@@ -304,7 +304,7 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [AsuraScans](mixed/asurascans/index.js) | asurascans.com | English | Safe | 2.4.0 |
 | [Atsumaru](mixed/atsu/index.js) | atsu.moe | English | Mature | 1.0.1 |
 | [Baka-Tsuki](novels/bakatsuki/index.js) | baka-tsuki.org | English | Mature | 1.0.0 |
-| [Chikari](mixed/chikari/index.js) | chikari.moe | English | Adult | 4.4.1 |
+| [Chikari](mixed/chikari/index.js) | chikari.moe | English | Adult | 4.4.2 |
 | [Dreame](novels/dreame/index.js) | dreame.com | English | Adult | 1.2.0 |
 | [Elejandría](novels/elejandria/index.js) | elejandria.com | Spanish | Mature | 1.0.0 |
 | [Exnovels](novels/exnovels/index.js) | exnovels.com | English | Safe | 1.0.1 |
@@ -318,7 +318,7 @@ Each extension lives in the folder for what it offers: `comics`, `novels`, `mixe
 | [LightNovel.to](novels/lightnovelto/index.js) | lightnovel.to | English | Mature | 1.0.0 |
 | [LNMTL](novels/lnmtl/index.js) | lnmtl.com | English | Mature | 1.0.0 |
 | [MoboReader](novels/moboreader/index.js) | moboreader.com | English | Adult | 1.2.0 |
-| [Novel Archive](novels/novelarchive/index.js) | novelarchive.cc | English | Mature | 1.0.1 |
+| [Novel Archive](novels/novelarchive/index.js) | novelarchive.st | English | Mature | 1.0.2 |
 | [Novela en Español](novels/novelaenespanol/index.js) | novelaenespanol.com | Spanish | Mature | 1.0.1 |
 | [NovelasLigeras](novels/novelasligeras/index.js) | novelasligeras.net | Spanish | Adult | 1.0.1 |
 | [NovelBuddy](novels/novelbuddy/index.js) | novelbuddy.me | English | Adult | 1.2.0 |
@@ -358,21 +358,24 @@ Video extensions use `medium: "anime"` and a `getVideos` method. Sumizuri plays 
 | Extension | Site | Language | Rating | Version |
 | --- | --- | --- | --- | --- |
 | [9ime](anime/nineime/index.js) | 9ime.live | English | Mature | 1.0.0 |
-| [Anidap](anime/anidap/index.js) | anidap.lol | English | Mature | 1.0.1 |
-| [Anikoto](anime/anikoto/index.js) | anikototv.bz | English | Mature | 1.0.10 |
+| [Anidap](anime/anidap/index.js) | anidap.lol | English | Mature | 1.0.2 |
+| [AniHQ](anime/anihq/index.js) | anihq.cc | English | Mature | 1.0.0 |
+| [Anikoto](anime/anikoto/index.js) | anikototv.bz | English | Mature | 1.0.11 |
 | [AniLight](anime/anilight/index.js) | anilight.live | English | Mature | 1.0.1 |
 | [AnimeAV1](anime/animeav1/index.js) | animeav1.com | Spanish | Mature | 1.0.10 |
 | [AnimeDUB](anime/animedub/index.js) | animedub.app | English | Mature | 1.0.0 |
 | [AnimeGG](anime/animegg/index.js) | animegg.org | English | Mature | 1.0.8 |
 | [AnimeHeaven](anime/animeheaven/index.js) | animeheaven.me | English | Mature | 1.0.8 |
-| [AnimeJL](anime/animejl/index.js) | anime-jl.net | Spanish | Adult | 1.0.14 |
+| [AnimeJL](anime/animejl/index.js) | anime-jl.net | Spanish | Adult | 1.0.16 |
 | [AnimeLatinoHD](anime/animelatinohd/index.js) | animelatinohd.com | Spanish | Mature | 1.0.8 |
 | [AnimeMovil](anime/animemovil/index.js) | tvanime.tv | Spanish | Adult | 1.0.5 |
 | [AnimeOnline.Ninja](anime/animeonlineninja/index.js) | ver2.animeonline.ninja | Spanish | Mature | 1.0.8 |
 | [AnimeParadise](anime/animeparadise/index.js) | animeparadise.moe | English | Mature | 1.0.2 |
+| [AnimeSuge](anime/animesuge/index.js) | animesuge.cz | English | Mature | 1.0.0 |
 | [animeTVplus](anime/animetvplus/index.js) | animetvplus.xyz | English | Mature | 1.0.0 |
-| [Anistream](anime/anistream/index.js) | anistream.one | English | Mature | 1.0.0 |
+| [Anistream](anime/anistream/index.js) | anistream.one | English | Mature | 1.0.1 |
 | [AniWorld](anime/aniworld/index.js) | aniworld.to | German | Mature | 1.0.3 |
+| [AniXo](anime/anixo/index.js) | anixo.live | English | Mature | 1.0.0 |
 | [AniZone](anime/anizone/index.js) | anizone.to | English | Mature | 1.0.9 |
 | [Beatz Anime](anime/beatzanime/index.js) | beatz-anime.net | Spanish | Mature | 1.0.3 |
 | [HentaiLA](anime/hentaila/index.js) | hentaila.com | Spanish | Adult | 1.0.9 |
@@ -381,21 +384,20 @@ Video extensions use `medium: "anime"` and a `getVideos` method. Sumizuri plays 
 | [JKAnime](anime/jkanime/index.js) | jkanime.net | Spanish | Mature | 1.0.7 |
 | [Just4Anime](anime/just4anime/index.js) | just4anime.online | English | Mature | 1.0.2 |
 | [JustAnime](anime/justanime/index.js) | justanime.to | English | Mature | 1.0.0 |
-| [Katanime](anime/katanime/index.js) | katanime.net | Spanish | Mature | 1.0.9 |
+| [Katanime](anime/katanime/index.js) | katanime.net | Spanish | Mature | 1.0.10 |
 | [Kawaii Anime](anime/kawaiianime/index.js) | kawaiianime.cc | English | Mature | 1.0.1 |
 | [KickAssAnime](anime/kickassanime/index.js) | kaa.lt | English | Mature | 1.0.9 |
 | [Kuroko](anime/kuroko/index.js) | kuroko.cc | English | Mature | 1.0.0 |
 | [Latanime](anime/latanime/index.js) | latanime.org | Spanish | Mature | 1.0.10 |
-| [LegionAnime](anime/legionanime/index.js) | legionanime.xyz | Spanish | Mature | 1.0.2 |
-| [Miruro](anime/miruro/index.js) | miruro.cx | English | Mature | 1.0.9 |
+| [Miruro](anime/miruro/index.js) | miruro.cx | English | Mature | 1.0.10 |
 | [MMani](anime/mmani/index.js) | mmani.com | English | Mature | 1.0.1 |
 | [MonosChinos](anime/monoschinos/index.js) | monoschinos.st | Spanish | Mature | 1.0.9 |
 | [Nekomiru](anime/nekomiru/index.js) | nekomiru.com | English | Mature | 1.0.2 |
 | [SerienStream](anime/serienstream/index.js) | serienstream.to | German | Mature | 1.0.3 |
 | [TioAnime](anime/tioanime/index.js) | tioanime.com | Spanish | Mature | 1.0.10 |
 | [UniqueStream](anime/uniquestream/index.js) | anime.uniquestream.net | English | Mature | 1.1.5 |
-| [VerAnime](anime/veranime/index.js) | verani.me | Spanish | Mature | 1.0.12 |
-| [VerAnimes](anime/veranimes/index.js) | wwv.veranimes.net | Spanish | Mature | 1.0.11 |
+| [VerAnime](anime/veranime/index.js) | verani.me | Spanish | Mature | 1.0.13 |
+| [VerAnimes](anime/veranimes/index.js) | wwv.veranimes.net | Spanish | Mature | 1.0.12 |
 | [Watch Anime World](anime/watchanimeworld/index.js) | watchanimeworld.one | Hindi | Mature | 1.0.1 |
 | [Xanime](anime/xanime/index.js) | xanime.me | English | Mature | 1.0.1 |
 | [Zenkai](anime/zenkai/index.js) | zenkai.to | English | Mature | 1.0.1 |
@@ -414,7 +416,7 @@ Video extensions use `medium: "anime"` and a `getVideos` method. Sumizuri plays 
 | [DonghuaWorld](donghua/donghuaworld/index.js) | donghuaworld.com | English | Safe | 1.0.1 |
 | [LMAnime](donghua/lmanime/index.js) | lmanime.com | English | Safe | 1.0.12 |
 | [LuciferDonghua](donghua/luciferdonghua/index.js) | luciferdonghua.org | English | Safe | 1.0.11 |
-| [MundoDonghua](donghua/mundodonghua/index.js) | mundodonghua.com | Spanish | Mature | 1.0.10 |
+| [MundoDonghua](donghua/mundodonghua/index.js) | mundodonghua.com | Spanish | Mature | 1.0.11 |
 | [MyDonghua](donghua/mydonghua/index.js) | mydonghua.com | English | Safe | 1.0.1 |
 | [NarulDonghua](donghua/naruldonghua/index.js) | naruldonghua.com | English | Safe | 1.0.11 |
 | [WowTopix](donghua/wowtopix/index.js) | wowtopix.com | English | Safe | 1.0.1 |
@@ -426,11 +428,11 @@ Video extensions use `medium: "anime"` and a `getVideos` method. Sumizuri plays 
 | Extension | Site | Language | Rating | Version |
 | --- | --- | --- | --- | --- |
 | [ARY Plus](drama/aryplus/index.js) | aryplus.tv | Urdu | Safe | 1.1.0 |
-| [AsiaLiveAction](drama/asialiveaction/index.js) | asialiveaction.com | Spanish | Mature | 1.0.9 |
-| [DoramasFlix](drama/doramasflix/index.js) | doramasflix.in | Spanish | Mature | 1.0.1 |
-| [DoramasYT](drama/doramasyt/index.js) | doramasyt.com | Spanish | Mature | 1.0.9 |
+| [AsiaLiveAction](drama/asialiveaction/index.js) | asialiveaction.com | Spanish | Mature | 1.0.11 |
+| [DoramasFlix](drama/doramasflix/index.js) | doramasflix.in | Spanish | Mature | 1.1.0 |
+| [DoramasYT](drama/doramasyt/index.js) | doramasyt.com | Spanish | Mature | 1.0.10 |
 | [Dramahood](drama/dramahood/index.js) | dramahood.mom | English | Mature | 1.0.0 |
-| [Kat Drama](drama/katdrama/index.js) | k-drama.in | English | Mature | 1.0.1 |
+| [Kat Drama](drama/katdrama/index.js) | k-drama.in | English | Mature | 1.1.0 |
 | [KissAsian](drama/kissasian/index.js) | kissasian.com.gr | English | Mature | 1.0.7 |
 | [KissAsian (kissasia.cam)](drama/kissasiacam/index.js) | kissasia.cam | English | Mature | 1.0.0 |
 | [KissBae](drama/kissbae/index.js) | kissbae.com | English | Mature | 1.0.0 |
@@ -442,17 +444,32 @@ Video extensions use `medium: "anime"` and a `getVideos` method. Sumizuri plays 
 
 | Extension | Site | Language | Rating | Version |
 | --- | --- | --- | --- | --- |
+| [AniCine](western/anicine/index.js) | anicine.sbs | English | Mature | 1.0.0 |
+| [arc018](western/arc018/index.js) | arc018.stream | English | Mature | 1.0.0 |
+| [ArrowTV](western/arrowtv/index.js) | arrowtv.net | English | Mature | 1.0.0 |
 | [Bingr](western/bingr/index.js) | bingr.one | English | Mature | 1.0.6 |
+| [Chillflix](western/chillflix/index.js) | chillflix.lol | English | Mature | 1.0.0 |
 | [CineCalidad](western/cinecalidad/index.js) | cinecalidad.org | Spanish | Mature | 1.0.2 |
-| [CinePlus123](western/cineplus123/index.js) | cineplus123.org | Spanish | Mature | 1.0.7 |
-| [Cno.to](western/cno/index.js) | cno.to | English | Mature | 1.0.6 |
+| [CinePlus123](western/cineplus123/index.js) | cineplus123.org | Spanish | Mature | 1.0.8 |
+| [Cno.to](western/cno/index.js) | cno.to | English | Mature | 1.0.7 |
+| [CorsFlix](western/corsflix/index.js) | watch.corsflix.net | English | Mature | 1.0.0 |
 | [Cuevana](western/cuevana/index.js) | cuevana3.eu | Spanish | Mature | 1.0.1 |
+| [Danish Silent Film](western/danishsilentfilm/index.js) | stumfilm.dk | English | Mature | 1.0.0 |
+| [Ghostflix](western/ghostflix/index.js) | ghostflix.st | English | Mature | 1.0.0 |
 | [Gnula](western/gnula/index.js) | gnula.life | Spanish | Mature | 1.0.2 |
 | [HydraHD](western/hydrahd/index.js) | hydrahd.gd | English | Mature | 1.0.4 |
+| [Internet Archive Films](western/internetarchive/index.js) | archive.org | English | Mature | 1.0.0 |
+| [moanatv](western/moanatv/index.js) | lfmx.app | English | Mature | 1.0.0 |
+| [NEPU](western/nepu/index.js) | nepu.us | English | Mature | 1.0.0 |
 | [OnlyFlix](western/onlyflix/index.js) | onlyflix.to | English | Mature | 1.0.2 |
 | [PelisForte](western/pelisforte/index.js) | www2.pelisforte.se | Spanish | Mature | 1.0.0 |
 | [PoseidonHD](western/poseidonhd/index.js) | poseidonhd2.co | Spanish | Mature | 1.0.1 |
-| [PressPlayZ](western/pressplayz/index.js) | pressplayz.top | English | Mature | 1.0.3 |
+| [PressPlayZ](western/pressplayz/index.js) | pressplayz.top | English | Mature | 1.0.4 |
+| [Primeshows](western/primeshows/index.js) | primeshows.org | English | Mature | 1.0.0 |
+| [Q62](western/q62flix/index.js) | q62flix.ws | English | Mature | 1.0.0 |
+| [Spacedom](western/spacedom/index.js) | spacedom.live | English | Mature | 1.0.0 |
+| [Way2Movies](western/way2movies/index.js) | beta.way2movies.live | English | Mature | 1.0.0 |
+| [WCO](western/wco/index.js) | wco.tv | English | Mature | 1.0.0 |
 
 ## Known issues
 
@@ -460,13 +477,16 @@ These extensions are known to be broken right now:
 
 - **Kami Sama Explorer** (`kamisamaexplorer`): The reader site shows a "Coming Soon" page on every address.
 - **KuManga** (`kumanga`): Chapters cannot be opened: the site now needs a token its own script builds. Latest, details and chapter lists still load.
+- **NirvanaManga** (`nirvanamanga`): The site's server answers HTTP 521 (down) on every address (checked on 2026-11-18 and 2026-11-19).
+- **Nocturne Summer** (`nocturnesummer`): The site shows a maintenance page on every address (checked on 2026-11-18 and 2026-11-19).
 - **Renascans** (`renascans`): The site's API address (api.renascans.net) no longer exists.
+- **RichtoScan** (`richtoscan`): The site's server answers HTTP 500 on every page (checked on 2026-11-18 and 2026-11-19).
 
 ## Credits
 
 Thanks to the people who built extensions for Inkstone.
 
-- [matsukiender-star](https://github.com/matsukiender-star): AnimeAV1, AnimeJL, AnimeLatinoHD, AnimeMovil, AnimeOnline.Ninja, AsiaLiveAction, Beatz Anime, CineCalidad, CinePlus123, Cuevana, DoramasFlix, DoramasYT, Dragon Translation, Elejandría, Eternal Mangas, Gnula, HentaiLA, Ikigai Mangas, JKAnime, Katanime, KuManga, Latanime, Lectulandia, Leer Manhwas, LeerCapitulo, LegionAnime, Mangas.in, MangaTV, MangoLibreria, Manhwa Latino, ManhwaWeb, Marmota, MonosChinos, MundoDonghua, Novela en Español, NovelasLigeras, PelisForte, PoseidonHD, Shadow Manga, TioAnime, Traducciones Isekai, VerAnime, VerAnimes, Wikisource (Español), ZonaTMO.org
+- [matsukiender-star](https://github.com/matsukiender-star): AnimeAV1, AnimeJL, AnimeLatinoHD, AnimeMovil, AnimeOnline.Ninja, AsiaLiveAction, Beatz Anime, CineCalidad, CinePlus123, Cuevana, DoramasFlix, DoramasYT, Dragon Translation, Elejandría, Eternal Mangas, Gnula, HentaiLA, Ikigai Mangas, JKAnime, Katanime, KuManga, Latanime, Lectulandia, Leer Manhwas, LeerCapitulo, Mangas.in, MangaTV, MangoLibreria, Manhwa Latino, ManhwaWeb, Marmota, MonosChinos, MundoDonghua, Novela en Español, NovelasLigeras, PelisForte, PoseidonHD, Shadow Manga, TioAnime, Traducciones Isekai, VerAnime, VerAnimes, Wikisource (Español), ZonaTMO.org
 - [omfgitsjesus](https://discord.com/users/177424485526274048): HiperDEX
 
 ## Contributing

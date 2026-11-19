@@ -47,7 +47,7 @@
     {
       "id": "chikari",
       "name": "Chikari",
-      "version": "4.4.1",
+      "version": "4.4.2",
       "medium": "both",
       "website": "https://chikari.moe",
       "iconUrl": "https://inkstone.web.app/chikari/icon.png",
@@ -62,7 +62,7 @@
       ],
       "language": "en",
       "contentRating": "adult",
-      "sha256": "2e7157f1079dec5e4286364d14d571eeedd3418beacbd8682e7628c16f7253eb"
+      "sha256": "d6fd45431b8cacf83ef25666ad7316450007422a5a36533e4eeb44b61c56df91"
     },
     {
       "id": "novelfire",
@@ -166,9 +166,9 @@
     {
       "id": "natomanga",
       "name": "Natomanga",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "medium": "comics",
-      "website": "https://natomanga.com",
+      "website": "https://www.natumanga.com",
       "iconUrl": "https://inkstone.web.app/natomanga/icon.png",
       "description": "Manga・Manhwa・Manhua\n\nCatalog・90,000+\n\nRestrictions:\n・Cloudflare Checks",
       "capabilities": [
@@ -181,7 +181,7 @@
       ],
       "language": "en",
       "contentRating": "adult",
-      "sha256": "99eb7e0b37ca854eac73e487b4d0c18b54565ae65d95d27c5be4ca06d6ccf581"
+      "sha256": "c839121210680c0603d78d13c07d05c576129713f16fd3e705af5c81d04e7d78"
     },
     {
       "id": "royalroad",
@@ -506,7 +506,7 @@
     {
       "id": "inmanga",
       "name": "InManga",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "medium": "comics",
       "website": "https://inmanga.com",
       "iconUrl": "https://inkstone.web.app/inmanga/icon.png",
@@ -520,7 +520,7 @@
       ],
       "language": "es",
       "contentRating": "safe",
-      "sha256": "d06c10056980ec2b01fcfbaaf628f42841b73cf13446b4af2043b155b6a75879"
+      "sha256": "d0db4023740a6e564212d20982afd44bd25cb93e91ac7715937634e22b5a0d37"
     },
     {
       "id": "olympusscans",
@@ -1267,7 +1267,9 @@
       ],
       "language": "tr",
       "contentRating": "adult",
-      "sha256": "530e071d846bab9724a8c917b9b17c1467f2985d9e7c14dcade95206b5b86aa9"
+      "sha256": "530e071d846bab9724a8c917b9b17c1467f2985d9e7c14dcade95206b5b86aa9",
+      "status": "broken",
+      "statusNote": "The site's server answers HTTP 521 (down) on every address (checked on 2026-11-18 and 2026-11-19)."
     },
     {
       "id": "remanga",
@@ -1831,7 +1833,7 @@
     {
       "id": "mangadex",
       "name": "MangaDex",
-      "version": "1.4.0",
+      "version": "1.4.1",
       "medium": "comics",
       "website": "https://mangadex.org",
       "iconUrl": "https://inkstone.web.app/mangadex/icon.png",
@@ -2000,7 +2002,7 @@
       ],
       "language": "multi",
       "contentRating": "safe",
-      "sha256": "bb8d1a462497f7acbe04252434f564f864191750af41baeb78cac4e9f2e8c999"
+      "sha256": "1aaaa93c4695fdee0d05303677204be050282ad5201c38ad5bb57e460f1ee138"
     },
     {
       "id": "kagane",
@@ -3155,7 +3157,7 @@
     {
       "id": "renascans",
       "name": "Renascans",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "medium": "comics",
       "website": "https://renascans.net",
       "iconUrl": "https://inkstone.web.app/renascans/icon.png",
@@ -3163,7 +3165,7 @@
         "renascans.net",
         "*.renascans.net"
       ],
-      "description": "Manhwa・Manhua・Manga\n\nCatalog〃80+\n\nRestrictions:\n・Locked Chapters",
+      "description": "Manhwa・Manhua・Manga\n\nCatalog・80+\n\nRestrictions:\n・Locked Chapters",
       "capabilities": [
         "browse",
         "search",
@@ -3255,15 +3257,15 @@
     {
       "id": "novelarchive",
       "name": "Novel Archive",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "medium": "novel",
-      "website": "https://novelarchive.cc",
+      "website": "https://novelarchive.st",
       "iconUrl": "https://inkstone.web.app/novelarchive/icon.png",
       "hosts": [
-        "novelarchive.cc",
-        "*.novelarchive.cc"
+        "novelarchive.st",
+        "*.novelarchive.st"
       ],
-      "description": "Web Novels・Light Novels\n\nCatalog・100,000+\n\nRestrictions:\n・Rate Limit",
+      "description": "Web Novels・Light Novels\n\nCatalog・200,000+\n\nRestrictions:\n・Rate Limit",
       "capabilities": [
         "browse",
         "search",
@@ -3274,7 +3276,7 @@
       ],
       "language": "en",
       "contentRating": "mature",
-      "sha256": "12a8574d64023c74cb420b66f4f08045b517316452db8a1bf384d835dd979044"
+      "sha256": "f2094f465ae215b77b4aba5ca26c70a170c1ae1f19d72cb2a682629ca6b753da"
     },
     {
       "id": "qimanga",
@@ -3440,7 +3442,7 @@
     {
       "id": "anikoto",
       "name": "Anikoto",
-      "version": "1.0.10",
+      "version": "1.0.11",
       "medium": "anime",
       "website": "https://anikototv.bz",
       "iconUrl": "https://anikototv.to/AnikotoTheme/assets/images/favicon.png",
@@ -3460,7 +3462,15 @@
         "*.zhaevor.top",
         "*.embermeadow.world",
         "*.midnightvoyage.site",
-        "cdn.anipixcdn.co"
+        "cdn.anipixcdn.co",
+        "anikototv.se",
+        "*.anikototv.se",
+        "anikoto.me",
+        "*.anikoto.me",
+        "anikoto.net",
+        "*.anikoto.net",
+        "anikoto.cz",
+        "*.anikoto.cz"
       ],
       "description": "Anime\n\nCatalog・10,000+",
       "capabilities": [
@@ -3473,7 +3483,7 @@
       ],
       "language": "multi",
       "contentRating": "mature",
-      "sha256": "dd2362851727a74570e8a9e832b66d8b6b50289aa365528b1257727689dfd378"
+      "sha256": "738066c0d27d7558d626e23aa6d336215d09b951fd5d25dba6674c72ce6fd8aa"
     },
     {
       "id": "aniworld",
@@ -3518,7 +3528,7 @@
     {
       "id": "miruro",
       "name": "Miruro",
-      "version": "1.0.9",
+      "version": "1.0.10",
       "medium": "anime",
       "website": "https://miruro.cx",
       "iconUrl": "https://miruro.cx/icon-dark-1024x1024.png",
@@ -3531,7 +3541,11 @@
         "s1.keeply.top",
         "s2.keeply.top",
         "*.krussdomi.com",
-        "krussdomi.com"
+        "krussdomi.com",
+        "miruro.tv",
+        "*.miruro.tv",
+        "miruro.to",
+        "*.miruro.to"
       ],
       "description": "Anime\n\nCatalog・10,000+",
       "capabilities": [
@@ -3544,7 +3558,7 @@
       ],
       "language": "en",
       "contentRating": "mature",
-      "sha256": "a2efe8016464412666891165de88ed3f9b2171209e9059cd734f8ed5b45080e4"
+      "sha256": "8f5ba06a5b4af5ca85d69652905f4fabd13dde9ba68cbce6cbe1a8daaf0c9f04"
     },
     {
       "id": "akazascans",
@@ -5268,7 +5282,9 @@
       ],
       "language": "pt-BR",
       "contentRating": "mature",
-      "sha256": "4cb52323c252543321e90a8c3902cc859c2869f05cecc1cac168f7f787be7462"
+      "sha256": "4cb52323c252543321e90a8c3902cc859c2869f05cecc1cac168f7f787be7462",
+      "status": "broken",
+      "statusNote": "The site shows a maintenance page on every address (checked on 2026-11-18 and 2026-11-19)."
     },
     {
       "id": "rahpchanhdy",
@@ -5316,7 +5332,9 @@
       ],
       "language": "es",
       "contentRating": "safe",
-      "sha256": "4e4b9c4a7330968ed7018d6583a26b36968363a0c61682d888716e919671e6e8"
+      "sha256": "4e4b9c4a7330968ed7018d6583a26b36968363a0c61682d888716e919671e6e8",
+      "status": "broken",
+      "statusNote": "The site's server answers HTTP 500 on every page (checked on 2026-11-18 and 2026-11-19)."
     },
     {
       "id": "slowmanga",
@@ -6360,7 +6378,7 @@
     {
       "id": "pressplayz",
       "name": "PressPlayZ",
-      "version": "1.0.3",
+      "version": "1.0.4",
       "medium": "anime",
       "website": "https://pressplayz.top",
       "iconUrl": "https://inkstone.web.app/pressplayz/icon.png",
@@ -6373,7 +6391,9 @@
         "*.paretocdn.site",
         "netrocdn.site",
         "*.netrocdn.site",
-        "*.workers.dev"
+        "*.workers.dev",
+        "moviesapi.to",
+        "*.moviesapi.to"
       ],
       "description": "Western",
       "capabilities": [
@@ -6386,7 +6406,7 @@
       ],
       "language": "en",
       "contentRating": "mature",
-      "sha256": "1ba3c639b7a10572fbeb42756060649b1ddeb0d1bd6c3768658d3787144f26aa"
+      "sha256": "cef2f21be1d18a2f6fa96a15d7165871554cbe85ede84ef9bbf556e3ca16db76"
     },
     {
       "id": "bingr",
@@ -6475,7 +6495,7 @@
     {
       "id": "animejl",
       "name": "AnimeJL",
-      "version": "1.0.14",
+      "version": "1.0.16",
       "medium": "anime",
       "website": "https://www.anime-jl.net",
       "iconUrl": "https://inkstone.web.app/animejl/icon.png",
@@ -6563,11 +6583,12 @@
       "language": "es",
       "contentRating": "adult",
       "tags": [
-        "hentai"
+        "hentai",
+        "sumizuri-exclusive"
       ],
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "c65bbe88121ac27d9741dcea5324dd35b82b4b8b8b14bc52ce4bc6024ffafc4b"
+      "sha256": "99c50cefe490e58e59902195c92b257eb437da1b8789c3229b43433ff7adfdf7"
     },
     {
       "id": "animelatinohd",
@@ -6776,7 +6797,7 @@
     {
       "id": "asialiveaction",
       "name": "AsiaLiveAction",
-      "version": "1.0.9",
+      "version": "1.0.11",
       "medium": "anime",
       "website": "https://asialiveaction.com",
       "iconUrl": "https://inkstone.web.app/asialiveaction/icon.png",
@@ -6793,7 +6814,7 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "59f878780bf1adc40c47fd2fe8457f7a608e19e442dbc846027f2aadb9b95f95"
+      "sha256": "cb0a02204c9803d2d43e95da81f4006a7e92a852c90012ba3baa4b41840760c8"
     },
     {
       "id": "beatzanime",
@@ -6846,7 +6867,7 @@
     {
       "id": "cineplus123",
       "name": "CinePlus123",
-      "version": "1.0.7",
+      "version": "1.0.8",
       "medium": "anime",
       "website": "https://cineplus123.org",
       "iconUrl": "https://inkstone.web.app/cineplus123/icon.png",
@@ -6863,7 +6884,7 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "73189bc37f011e4ece654d44a47a62300a95f6a25dd97478a7f21650cb2e071f"
+      "sha256": "40d412b3f650deec54c8bf5afc95030f844368124558fb9b7853b9a3f96c3c59"
     },
     {
       "id": "cuevana",
@@ -6890,11 +6911,11 @@
     {
       "id": "doramasflix",
       "name": "DoramasFlix",
-      "version": "1.0.1",
+      "version": "1.1.0",
       "medium": "anime",
       "website": "https://doramasflix.in",
       "iconUrl": "https://inkstone.web.app/doramasflix/icon.png",
-      "description": "Drama\n\nCatalog・3,000+\n\nRestrictions:\n・Rate Limit",
+      "description": "Drama・Movies\n\nCatalog・4,000+",
       "capabilities": [
         "browse",
         "search",
@@ -6907,12 +6928,12 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "25fe7f26cce96ccf404e248a422bc4a97f9c047365fa9fd95c18000514464f9f"
+      "sha256": "b14f91d2e29263320c53545ae45445c0f39ccf2856d36d1d60e818f46340bb37"
     },
     {
       "id": "doramasyt",
       "name": "DoramasYT",
-      "version": "1.0.9",
+      "version": "1.0.10",
       "medium": "anime",
       "website": "https://www.doramasyt.com",
       "iconUrl": "https://inkstone.web.app/doramasyt/icon.png",
@@ -6929,7 +6950,7 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "4907ffbc56e86918580f8e9374e36bdd53e1e4843988613c6b5d1946725841f7"
+      "sha256": "854a119b7151f525df1d3af97d820fb0e34f3fc7218481620ae7fc7f71a6fa54"
     },
     {
       "id": "dragontranslation",
@@ -6959,7 +6980,7 @@
     {
       "id": "eternalmangas",
       "name": "Eternal Mangas",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "medium": "comics",
       "website": "https://eternalmangas.org",
       "iconUrl": "https://inkstone.web.app/eternalmangas/icon.png",
@@ -6979,7 +7000,7 @@
       "contentRating": "adult",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "7e6e79cbcd0e0f57d07cadba5351d6562ed7eb16d26b0bf6be1256918a96274e"
+      "sha256": "d3d0101a37a4126dc9b732a63361356ad2615d04d76d383190fa373cbf3cdfc0"
     },
     {
       "id": "gnula",
@@ -7027,7 +7048,7 @@
     {
       "id": "katanime",
       "name": "Katanime",
-      "version": "1.0.9",
+      "version": "1.0.10",
       "medium": "anime",
       "website": "https://katanime.net",
       "iconUrl": "https://inkstone.web.app/katanime/icon.png",
@@ -7071,7 +7092,7 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "961cbb87e04a631f462cd9a5546242d55fb71df2aedc5eb9ccd602fbe0b439f2"
+      "sha256": "6398633d8c053559db839898fcc542b6eb66e4d7ae76acf399ba38842df8068a"
     },
     {
       "id": "latanime",
@@ -7143,28 +7164,6 @@
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
       "sha256": "a823a3259d79003c3950060c34490335c5e582e05b6a0cef687026f0d9aeafe1"
-    },
-    {
-      "id": "legionanime",
-      "name": "LegionAnime",
-      "version": "1.0.2",
-      "medium": "anime",
-      "website": "https://legionanime.xyz",
-      "iconUrl": "https://inkstone.web.app/legionanime/icon.png",
-      "description": "Anime\n\nCatalog・3,000+",
-      "capabilities": [
-        "browse",
-        "search",
-        "genres",
-        "details",
-        "chapters",
-        "videos"
-      ],
-      "language": "es",
-      "contentRating": "mature",
-      "author": "matsukiender-star",
-      "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "47dd6dda66822bbff8c4be36b23b011c9f580e63d499bde874b4b6f4e3de4708"
     },
     {
       "id": "mangasin",
@@ -7293,7 +7292,7 @@
     {
       "id": "mundodonghua",
       "name": "MundoDonghua",
-      "version": "1.0.10",
+      "version": "1.0.11",
       "medium": "anime",
       "website": "https://www.mundodonghua.com",
       "iconUrl": "https://inkstone.web.app/mundodonghua/icon.png",
@@ -7310,7 +7309,7 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "a9e9e71f6285aee4727966782aa7a811731f49358367ba5fb37f1ece1741afbf"
+      "sha256": "2003b3e4c58f54b07b5c1db3ceefd842ca4715f84c8a5392c6bdf741c8f16747"
     },
     {
       "id": "novelaenespanol",
@@ -7484,7 +7483,7 @@
     {
       "id": "veranime",
       "name": "VerAnime",
-      "version": "1.0.12",
+      "version": "1.0.13",
       "medium": "anime",
       "website": "https://verani.me",
       "iconUrl": "https://inkstone.web.app/veranime/icon.png",
@@ -7501,7 +7500,7 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "61bc940c8bdc63eb218950ff9b97881eaaba5edfcb6e7aef995b533bfc3e3959"
+      "sha256": "839b149228d8b2e5fe0c1f418d955aa17ee06c38c50d412ee36e1a0cd9e6faf1"
     },
     {
       "id": "veranimes",
@@ -7606,7 +7605,7 @@
     {
       "id": "ikigaimangas",
       "name": "Ikigai Mangas",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "medium": "comics",
       "website": "https://ikigaimangas.com",
       "iconUrl": "https://inkstone.web.app/ikigaimangas/icon.png",
@@ -7614,6 +7613,7 @@
       "capabilities": [
         "browse",
         "search",
+        "genres",
         "details",
         "chapters",
         "reader"
@@ -7622,7 +7622,7 @@
       "contentRating": "adult",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "630d4852a5921afa57623bf8db1d3db72368d4f32d705699cbfe8cb3b9a25f82"
+      "sha256": "916faeac4d43379193a214f15a611c0815e2c921981100814189392b3d8d7a27"
     },
     {
       "id": "mangolibreria",
@@ -7933,7 +7933,7 @@
     {
       "id": "katdrama",
       "name": "Kat Drama",
-      "version": "1.0.1",
+      "version": "1.1.0",
       "medium": "anime",
       "website": "https://k-drama.in",
       "iconUrl": "https://inkstone.web.app/katdrama/icon.png",
@@ -7949,12 +7949,12 @@
       ],
       "language": "en",
       "contentRating": "mature",
-      "sha256": "02f0ba6b2881fa3299203596ba7a6a32ab8e16727184d32e51580b1aeedf8f18"
+      "sha256": "e8520afba524650840c983354894bba9e97faece93da2953ca0ff4e80617aed2"
     },
     {
       "id": "cno",
       "name": "Cno.to",
-      "version": "1.0.6",
+      "version": "1.0.7",
       "medium": "anime",
       "website": "https://cno.to",
       "iconUrl": "https://inkstone.web.app/cno/icon.png",
@@ -7970,7 +7970,7 @@
       ],
       "language": "en",
       "contentRating": "mature",
-      "sha256": "d660f5f6f07a93af7a970765bea09fc066702bb70d2d4cdb9ad21366dc2b6a76"
+      "sha256": "68d2dcc69479d7cc27f0a1e5183c728500ec58261da48c5acc38632e1cf4a131"
     },
     {
       "id": "watchanimeworld",
@@ -8831,7 +8831,7 @@
     {
       "id": "anidap",
       "name": "Anidap",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "medium": "anime",
       "website": "https://anidap.lol",
       "iconUrl": "https://inkstone.web.app/anidap/icon.png",
@@ -8846,7 +8846,7 @@
       ],
       "language": "en",
       "contentRating": "mature",
-      "sha256": "a987702746d6d8730b1f538c903114a37f3ba64cf471293b975e458058199959"
+      "sha256": "df8c9de8cf7a980638b1233e509c388044d35029f40d09403de7660f083f6f97"
     },
     {
       "id": "kissbae",
@@ -9021,7 +9021,7 @@
     {
       "id": "anistream",
       "name": "Anistream",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "anime",
       "website": "https://anistream.one/",
       "iconUrl": "https://inkstone.web.app/anistream/icon.png",
@@ -9037,7 +9037,7 @@
       "language": "en",
       "contentRating": "mature",
       "hostsNote": "no hosts list on purpose. The extension itself requests only graphql.animex.one and api.anistream.one, but the stream and subtitle hosts it hands to the player belong to several providers and change (fetch.nexabloom.top, *.mysubsplay.com, s-NN.megavid.se, hls.dramahot.top, hls.krussdomi.com, subst.krussdomi.com, spr-cdn.echovideo.to); if the orchestrator knows the apps only check hosts on the extension's own requests, [\"graphql.animex.one\", \"api.anistream.one\"] is the complete list. The guide test only warns when it is empty.",
-      "sha256": "405aff1745278333a241c743d24940aae9dc07c976661aadcfadb21c7f2694eb"
+      "sha256": "ed050b6e565a99831006f4a83267ddabf32d210e9111b7e9d29366f3517eebdb"
     },
     {
       "id": "wuxiadreams",
@@ -9311,6 +9311,397 @@
       "language": "en",
       "contentRating": "safe",
       "sha256": "fccea14ceb04f4929bf36ca61e0d5bb4167766c87a169343bb88ccce57a04919"
+    },
+    {
+      "id": "anihq",
+      "name": "AniHQ",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://anihq.cc",
+      "iconUrl": "https://inkstone.web.app/anihq/icon.png",
+      "description": "Anime・Movies\n\nCatalog・2,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "videos",
+        "genres"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "0f2e44fbdc5d994ec7bb9041684f35722d6b98a99f247f09f6b042a1fae2426e"
+    },
+    {
+      "id": "anicine",
+      "name": "AniCine",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://anicine.sbs",
+      "iconUrl": "https://inkstone.web.app/anicine/icon.png",
+      "description": "Western・Movies・TV・Anime",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "13ca00dccf030b2cc50b093927bd26fa02161264a4cca127dcb8fc20313839e5"
+    },
+    {
+      "id": "animesuge",
+      "name": "AnimeSuge",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://animesuge.cz",
+      "iconUrl": "https://inkstone.web.app/animesuge/icon.png",
+      "description": "Anime・Movies\n\nCatalog・9,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "3bcb238fbd9870ff81eb9bc524fd7ed00d975a51d2cef7a5ef33f0c94d79abea"
+    },
+    {
+      "id": "anixo",
+      "name": "AniXo",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://anixo.live",
+      "iconUrl": "https://inkstone.web.app/anixo/icon.png",
+      "hosts": [
+        "db.anixo.buzz",
+        "graphql.anilist.co",
+        "vidcloud.sbs",
+        "*.vidcloud.sbs"
+      ],
+      "description": "Anime・Subbed・Dubbed\n\nCatalog・9,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "c2fd6e3baf21fb87a45a4e9d00007becedc21c832cc2211bb4bc5e22b5026e3b"
+    },
+    {
+      "id": "spacedom",
+      "name": "Spacedom",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://spacedom.live/",
+      "iconUrl": "https://inkstone.web.app/spacedom/icon.png",
+      "description": "Western・Movies・TV\n\nCatalog・10,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "0a0d2057a11be865d5acc90dc6eb76708bffc2b4d02581c783b35e4d8d1fcd37"
+    },
+    {
+      "id": "q62flix",
+      "name": "Q62",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://q62flix.ws",
+      "iconUrl": "https://inkstone.web.app/q62flix/icon.png",
+      "hosts": [
+        "q62flix.ws",
+        "api.q62flix.ws",
+        "proxy.7movie.ws"
+      ],
+      "description": "Western・Movies・TV\n\nCatalog・70+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "49119d648506aa96e76b2c59c568d3802b26c99c6f18d4767cf7a944a811d7d6"
+    },
+    {
+      "id": "danishsilentfilm",
+      "name": "Danish Silent Film",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://www.stumfilm.dk/en/stumfilm",
+      "iconUrl": "https://inkstone.web.app/danishsilentfilm/icon.png",
+      "hosts": [
+        "www.stumfilm.dk",
+        "stumfilm.dk",
+        "dfi-dam.qonqord.cloud",
+        "player.vimeo.com",
+        "vimeo.com",
+        "*.vimeo.com",
+        "*.vimeocdn.com"
+      ],
+      "description": "Western・Movies・Silent Films\n\nCatalog・400+",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "58b8bb79f093de02069d4b90915546ecde881226cde211978cb360277fce211f"
+    },
+    {
+      "id": "arc018",
+      "name": "arc018",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://arc018.stream",
+      "iconUrl": "https://inkstone.web.app/arc018/icon.png",
+      "description": "Western・Movies・TV\n\nCatalog・40,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "0147283f82419b4e412c66a70554a593dc2e39d681baf66c37d3b3015f4d777f"
+    },
+    {
+      "id": "internetarchive",
+      "name": "Internet Archive Films",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://archive.org/details/moviesandfilms",
+      "iconUrl": "https://inkstone.web.app/internetarchive/icon.png",
+      "hosts": [
+        "archive.org",
+        "*.archive.org"
+      ],
+      "description": "Western・Movies・Silent Films・Serials\n\nCatalog・20,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "e79e150ae3f1335600b86cab45327753beaf39db9af48dbd158e97bb29885e7e"
+    },
+    {
+      "id": "ghostflix",
+      "name": "Ghostflix",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://ghostflix.st",
+      "iconUrl": "https://inkstone.web.app/ghostflix/icon.png",
+      "description": "Western・Movies・TV\n\nCatalog・10,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "a00ac9d9881b1312eaccbb3136e8dd943db3d9b51bf08ed2ed312b302e4f23d4"
+    },
+    {
+      "id": "primeshows",
+      "name": "Primeshows",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://www.primeshows.org",
+      "iconUrl": "https://inkstone.web.app/primeshows/icon.png",
+      "description": "Western・Movies・TV\n\nCatalog・10,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "b3c3ac53c436104df3d900f7cbb6a94e34784362f8a5580ced39c8c236fe0f3b"
+    },
+    {
+      "id": "corsflix",
+      "name": "CorsFlix",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://watch.corsflix.net",
+      "iconUrl": "https://inkstone.web.app/corsflix/icon.png",
+      "description": "Western・Movies・TV\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "a8313131bfcd4680e5e3bcfead59afba24c05efdc204b6eabfad419affd1754e"
+    },
+    {
+      "id": "chillflix",
+      "name": "Chillflix",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://chillflix.lol",
+      "iconUrl": "https://inkstone.web.app/chillflix/icon.png",
+      "description": "Western・Movies・TV",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "4d378d8851782844e7536328401948f8cecb8d5562c8c9ec92bdf8772848c027"
+    },
+    {
+      "id": "arrowtv",
+      "name": "ArrowTV",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://arrowtv.net",
+      "iconUrl": "https://inkstone.web.app/arrowtv/icon.png",
+      "description": "Western・Movies・TV\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "c6c9762c9c624f8032fc648bc55aa803e7841ce61fc99e038a091f027e76102a"
+    },
+    {
+      "id": "way2movies",
+      "name": "Way2Movies",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://beta.way2movies.live/",
+      "iconUrl": "https://inkstone.web.app/way2movies/icon.png",
+      "description": "Western・Movies・TV\n\nCatalog・10,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "705cb7e7d415305ec13af1ebb298c7ea92b5602b5833af90c3e8ddf85cca009c"
+    },
+    {
+      "id": "moanatv",
+      "name": "moanatv",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://lfmx.app/",
+      "iconUrl": "https://inkstone.web.app/moanatv/icon.png",
+      "description": "Western・Movies・TV\n\nCatalog・10,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "8445f264426e7c8042cf93f11cb83f1f72f5e26636ab65f2957daa0e1823a51d"
+    },
+    {
+      "id": "nepu",
+      "name": "NEPU",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://nepu.us/",
+      "iconUrl": "https://inkstone.web.app/nepu/icon.png",
+      "description": "Western・Movies・TV・Anime\n\nCatalog・100,000+\n\nRestrictions:\n・Cloudflare Checks",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "57a0f327c6f75f21b868b66c24d0be05ca90f6bd5ea76afbe6c310e159868f81"
+    },
+    {
+      "id": "wco",
+      "name": "WCO",
+      "version": "1.0.0",
+      "medium": "anime",
+      "website": "https://www.wco.tv/",
+      "iconUrl": "https://inkstone.web.app/wco/icon.png",
+      "hosts": [
+        "www.wco.tv",
+        "wco.tv",
+        "www.wcoforever.net",
+        "wcoforever.net",
+        "www.wcoflix.tv",
+        "wcoflix.tv",
+        "wcostream.com",
+        "*.wcostream.com"
+      ],
+      "description": "Western・Cartoons・Anime\n\nCatalog・3,000+\n\nRestrictions:\n・Cloudflare Checks",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "videos"
+      ],
+      "language": "en",
+      "contentRating": "mature",
+      "sha256": "3a04e314cb29139b880b6fde61f52129304462f522117b0afb6ad41c8b0a4e2a"
     },
     {
       "id": "elcoleccionista",
