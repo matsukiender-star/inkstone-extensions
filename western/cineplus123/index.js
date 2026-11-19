@@ -117,7 +117,12 @@ class Source {
     const html = await this.get(`${SITE}/${mangaId}/`);
     const $ = cheerio.load(html);
     const title = $('h1').first().text().trim();
-    const desc = $('div.wp-content p, #info div.wp-content, div.desc p').first().text().trim() || undefined;
+    // The story is the first plain paragraph: the block opens with a heading of search words ("Ver ... Inkapelis Repelis ..."), and the credits are paragraphs with a bold label.
+    const desc = $('div.wp-content p, div.desc p')
+      .filter((i, el) => !$(el).find('strong').length)
+      .first()
+      .text()
+      .trim() || undefined;
     const genres = $('div.sgeneros a, span.genres a')
       .map((i, el) => $(el).text().trim())
       .get()
@@ -146,7 +151,8 @@ class Source {
       const match = /\/capitulo\/([^/?#]+)/.exec(href);
       if (!match) return;
       const chapterId = `capitulo/${match[1]}`;
-      const title = $(el).find('.episodiotitle a').text().trim();
+      // The site names them "Episodio 1 - Piloto"; the number goes in front again below, so it is left out here.
+      const title = $(el).find('.episodiotitle a').text().trim().replace(/^Episodio\s*\d+\s*[-–:]?\s*/i, '');
       const numMatch = /(\d+)\s*-\s*(\d+)/.exec($(el).find('.numerando').text().trim());
       if (!numMatch) {
         chapters.push({ id: chapterId, name: title || `Episodio ${i + 1}`, number: i + 1 });
