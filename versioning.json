@@ -2380,7 +2380,7 @@
     {
       "id": "ikigaimangas",
       "name": "Ikigai Mangas",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "medium": "comics",
       "website": "https://ikigaimangas.com",
       "iconUrl": "https://inkstone.web.app/ikigaimangas/icon.png",
@@ -2397,12 +2397,17 @@
       "contentRating": "adult",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "916faeac4d43379193a214f15a611c0815e2c921981100814189392b3d8d7a27"
+      "sha256": "916faeac4d43379193a214f15a611c0815e2c921981100814189392b3d8d7a27",
+      "imageHeaders": {
+        "Sec-Fetch-Dest": "image",
+        "Sec-Fetch-Mode": "no-cors",
+        "Sec-Fetch-Site": "cross-site"
+      }
     },
     {
       "id": "mangolibreria",
       "name": "MangoLibreria",
-      "version": "1.0.1",
+      "version": "1.1.0",
       "medium": "comics",
       "website": "https://lectorfenix.com",
       "iconUrl": "https://inkstone.web.app/mangolibreria/icon.png",
@@ -2413,6 +2418,7 @@
       "capabilities": [
         "browse",
         "search",
+        "genres",
         "details",
         "chapters",
         "reader"
@@ -2421,7 +2427,7 @@
       "contentRating": "adult",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "997b9c42037b7f2277629f05c1ee31e2c677d4f108ef97399a39a3f943688a34"
+      "sha256": "e59142b5952ecc55325df71fb7a09024428b142110b42043a1b85dadbfa7d9e9"
     },
     {
       "id": "lectulandia",
