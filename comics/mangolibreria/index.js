@@ -1,5 +1,10 @@
 const SITE = 'https://lectorfenix.com';
-const IMAGE_HEADERS = { 'Sec-Fetch-Dest': 'image' };
+const IMAGE_HEADERS = {
+  'Sec-Fetch-Dest': 'image',
+  'Sec-Fetch-Mode': 'no-cors',
+  'Sec-Fetch-Site': 'cross-site',
+  Referer: '',
+};
 
 const STATUS = { ongoing: 'ONGOING', completed: 'COMPLETED', finalizado: 'COMPLETED', hiatus: 'HIATUS', pausa: 'HIATUS' };
 

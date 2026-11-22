@@ -7627,13 +7627,19 @@
     {
       "id": "mangolibreria",
       "name": "MangoLibreria",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "medium": "comics",
       "website": "https://lectorfenix.com",
       "iconUrl": "https://inkstone.web.app/mangolibreria/icon.png",
       "hosts": [
         "lectorfenix.com"
       ],
+      "imageHeaders": {
+        "Sec-Fetch-Dest": "image",
+        "Sec-Fetch-Mode": "no-cors",
+        "Sec-Fetch-Site": "cross-site",
+        "Referer": ""
+      },
       "description": "Manga・Manhwa・Manhua\n\nCatalog・2,000+",
       "capabilities": [
         "browse",
@@ -7647,7 +7653,7 @@
       "contentRating": "adult",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "e59142b5952ecc55325df71fb7a09024428b142110b42043a1b85dadbfa7d9e9"
+      "sha256": "781be1b0ad127ba1643c4a72330464623ed6091d1db001c399db7c9f630d0cbc"
     },
     {
       "id": "lectulandia",
