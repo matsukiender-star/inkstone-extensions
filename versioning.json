@@ -10250,6 +10250,57 @@
         "drive.google.com",
         "*.googleusercontent.com"
       ]
+    },
+    {
+      "id": "traduccionesmoonlight",
+      "name": "Traducciones Moonlight",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://traduccionesmoonlight.com",
+      "iconUrl": "https://inkstone.web.app/traduccionesmoonlight/icon.png",
+      "description": "Manhwa・Manga・Manhua\n\nCatalog・400+\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "sha256": "ac684f30ae4398a47de088e0a00827ae3f2f4caa73f3299ea2ec8405b0a1240d",
+      "hosts": [
+        "traduccionesmoonlight.com",
+        "*.traduccionesmoonlight.com",
+        "imagizer.imageshack.com",
+        "wsrv.nl"
+      ]
+    },
+    {
+      "id": "lectorasteria",
+      "name": "Lector Asteria",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://visor.chifa-tong.online",
+      "iconUrl": "https://inkstone.web.app/lectorasteria/icon.png",
+      "description": "Manhwa・Manga・Manhua\n\nCatalog・60+\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "sha256": "28181ca356a1ed6bfec56323a4c3f6cba047a135d8c99bc2e81191d4483ec146",
+      "hosts": [
+        "visor.chifa-tong.online",
+        "media.lectorasteria.com",
+        "wsrv.nl"
+      ]
     }
   ]
 }
