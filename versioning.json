@@ -10585,6 +10585,97 @@
         "www.ranoa.lat"
       ],
       "sha256": "2145e9b657df24e994ea16b4d32ed1ec7a79e2c77966e07acaec9680e8d6a115"
+    },
+    {
+      "id": "gcomics",
+      "name": "Gcomics",
+      "version": "1.0.0",
+      "medium": "comics",
+      "file": "comics/gcomics/index.js",
+      "author": "matsukiender-star",
+      "website": "https://gcomics.online",
+      "language": "es",
+      "contentRating": "safe",
+      "description": "Webtoon・Comics\n\nCatalog・50+\n\nRestrictions:\n・None",
+      "capabilities": [
+        "browse",
+        "search",
+        "chapters",
+        "details"
+      ],
+      "hosts": [
+        "gcomics.online"
+      ],
+      "sha256": "39824e6fa611077cefc76d10e067eae3dea6eb4308fd546a77adce24b955c315"
+    },
+    {
+      "id": "mangamx",
+      "name": "MangaOni",
+      "version": "1.0.0",
+      "medium": "comics",
+      "file": "comics/mangamx/index.js",
+      "author": "matsukiender-star",
+      "website": "https://manga-oni.com",
+      "language": "es",
+      "contentRating": "mature",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・10,000+\n\nRestrictions:\n・None",
+      "capabilities": [
+        "browse",
+        "search",
+        "chapters",
+        "details"
+      ],
+      "hosts": [
+        "manga-oni.com"
+      ],
+      "sha256": "d70b8b3ef5dc5469e5ff617deae91b7ec492529b9efa06da86eccac1fa0568a1"
+    },
+    {
+      "id": "mangashiina",
+      "name": "MangaMukai",
+      "version": "1.0.0",
+      "medium": "comics",
+      "file": "comics/mangashiina/index.js",
+      "author": "matsukiender-star",
+      "website": "https://mangamukai.com",
+      "language": "es",
+      "contentRating": "mature",
+      "description": "Manhwa・Manga・Manhua\n\nCatalog・100+\n\nRestrictions:\n・Locked Chapters",
+      "capabilities": [
+        "browse",
+        "search",
+        "chapters",
+        "details",
+        "genres"
+      ],
+      "hosts": [
+        "mangamukai.com"
+      ],
+      "sha256": "1da52e28e233357556d5392bea8c56b5eaae2149745528ce814b88fccf9de96a"
+    },
+    {
+      "id": "skymangas",
+      "name": "SkyMangas",
+      "version": "1.0.0",
+      "medium": "comics",
+      "file": "comics/skymangas/index.js",
+      "author": "matsukiender-star",
+      "website": "https://skymangas.com",
+      "language": "es",
+      "contentRating": "mature",
+      "description": "Manhua・Manhwa・Manga\n\nCatalog・1,000+\n\nRestrictions:\n・None",
+      "capabilities": [
+        "browse",
+        "search",
+        "chapters",
+        "details",
+        "genres"
+      ],
+      "hosts": [
+        "skymangas.com",
+        "api.skymangas.com"
+      ],
+      "sha256": "ea9175e4cc159d8849c29b3442fa0653679ef3660e0dbbc224260066aa7d6cab"
     }
   ]
 }
