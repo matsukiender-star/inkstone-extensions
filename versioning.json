@@ -10125,6 +10125,81 @@
         "*.lectovela.com",
         "*.wp.com"
       ]
+    },
+    {
+      "id": "apollcomics",
+      "name": "ApollComics",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://apollcomics.es",
+      "iconUrl": "https://inkstone.web.app/apollcomics/icon.png",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・500+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "sha256": "bd1db29c13c2f163a45c67808638b903a8fdda6a75c2e68796c7b4d1c3517af3",
+      "hosts": [
+        "apollcomics.es",
+        "*.apollcomics.es",
+        "*.wp.com"
+      ]
+    },
+    {
+      "id": "taurusfansub",
+      "name": "TaurusFansub",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://lectortaurus.com",
+      "iconUrl": "https://inkstone.web.app/taurusfansub/icon.png",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・500+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "sha256": "0ec31b4d27fb613acc1ccf92cefef0620247844f0a7bafab30406f180bc9caaa",
+      "hosts": [
+        "lectortaurus.com",
+        "*.lectortaurus.com",
+        "*.wp.com"
+      ]
+    },
+    {
+      "id": "mundomanhwa",
+      "name": "MundoManhwa",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://mundomanhwa.com",
+      "iconUrl": "https://inkstone.web.app/mundomanhwa/icon.png",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・400+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "sha256": "1b82e9897733061cc1ab9aed4dec408514c3043d89b02354c9bffcf174546105",
+      "hosts": [
+        "mundomanhwa.com",
+        "*.mundomanhwa.com",
+        "*.wp.com"
+      ]
     }
   ]
 }
