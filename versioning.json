@@ -10676,6 +10676,104 @@
         "api.skymangas.com"
       ],
       "sha256": "ea9175e4cc159d8849c29b3442fa0653679ef3660e0dbbc224260066aa7d6cab"
+    },
+    {
+      "id": "seraphicdeviltry",
+      "name": "Seraphic Deviltry",
+      "version": "1.0.0",
+      "medium": "comics",
+      "file": "comics/seraphicdeviltry/index.js",
+      "author": "matsukiender-star",
+      "website": "https://spanish.seraphic-deviltry.com",
+      "language": "es",
+      "contentRating": "adult",
+      "tags": [
+        "hentai"
+      ],
+      "description": "Manhwa・Manga・Doujinshi\n\nCatalog・100+\n\nRestrictions:\n・None",
+      "capabilities": [
+        "browse",
+        "search",
+        "chapters",
+        "details",
+        "genres"
+      ],
+      "hosts": [
+        "spanish.seraphic-deviltry.com"
+      ],
+      "sha256": "1ebc475f995b1699d5a0a5da01dd8c96671fef045f3ef8983fcde392bf69ff38"
+    },
+    {
+      "id": "hentaimode",
+      "name": "HentaiMode",
+      "version": "1.0.0",
+      "medium": "comics",
+      "file": "comics/hentaimode/index.js",
+      "author": "matsukiender-star",
+      "website": "https://hentaimode.com",
+      "language": "es",
+      "contentRating": "adult",
+      "tags": [
+        "hentai"
+      ],
+      "description": "Doujinshi・Manga\n\nCatalog・1,000+\n\nRestrictions:\n・None",
+      "capabilities": [
+        "browse",
+        "search",
+        "chapters",
+        "details"
+      ],
+      "hosts": [
+        "hentaimode.com"
+      ],
+      "sha256": "af790a4408656da17d39d89c85171cb6ba9cc54840e40d95173a1fc285e1fed1"
+    },
+    {
+      "id": "swordmangas",
+      "name": "SwordMangas",
+      "version": "1.0.0",
+      "medium": "comics",
+      "file": "comics/swordmangas/index.js",
+      "author": "matsukiender-star",
+      "website": "https://swordmangas.com/esp",
+      "language": "es",
+      "contentRating": "mature",
+      "description": "Manhwa・Manhua・Manga\n\nCatalog・50+\n\nRestrictions:\n・Locked Chapters",
+      "capabilities": [
+        "browse",
+        "search",
+        "chapters",
+        "details"
+      ],
+      "hosts": [
+        "swordmangas.com"
+      ],
+      "sha256": "1c04cc65be9cbe836f68198d16bf59e92f7418a67fac07393e8e759de39a2439"
+    },
+    {
+      "id": "doujinhentai",
+      "name": "DoujinHentai",
+      "version": "1.0.0",
+      "medium": "comics",
+      "file": "comics/doujinhentai/index.js",
+      "author": "matsukiender-star",
+      "website": "https://doujinhentai.net",
+      "language": "es",
+      "contentRating": "adult",
+      "tags": [
+        "hentai"
+      ],
+      "description": "Doujinshi・Manga\n\nCatalog・10,000+\n\nRestrictions:\n・None",
+      "capabilities": [
+        "browse",
+        "search",
+        "chapters",
+        "details"
+      ],
+      "hosts": [
+        "doujinhentai.net"
+      ],
+      "sha256": "670492e869c4c22b50bbd022b386227fe98222d417a26f2c25954794ae7f9fc7"
     }
   ]
 }
