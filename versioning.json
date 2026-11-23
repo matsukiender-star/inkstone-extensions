@@ -10726,7 +10726,7 @@
       "hosts": [
         "hentaimode.com"
       ],
-      "sha256": "af790a4408656da17d39d89c85171cb6ba9cc54840e40d95173a1fc285e1fed1"
+      "sha256": "ca01733861d3f9fee64a081b400dd267cc5dcfe8f2474706b0e3ad3b6b680407"
     },
     {
       "id": "swordmangas",
@@ -10774,6 +10774,30 @@
         "doujinhentai.net"
       ],
       "sha256": "670492e869c4c22b50bbd022b386227fe98222d417a26f2c25954794ae7f9fc7"
+    },
+    {
+      "id": "namicomi",
+      "name": "NamiComi",
+      "version": "1.0.0",
+      "medium": "comics",
+      "file": "comics/namicomi/index.js",
+      "author": "matsukiender-star",
+      "website": "https://namicomi.com",
+      "language": "es",
+      "contentRating": "mature",
+      "description": "Manga・Manhwa・Webtoon\n\nCatalog・200+\n\nRestrictions:\n・Locked Chapters",
+      "capabilities": [
+        "browse",
+        "search",
+        "chapters",
+        "details"
+      ],
+      "hosts": [
+        "namicomi.com",
+        "api.namicomi.com",
+        "uploads.namicomi.com"
+      ],
+      "sha256": "6d869ddcd0e21311774ba13bb9a8d199fbd13aa7ea79e7491e0d83c03381b06a"
     }
   ]
 }
