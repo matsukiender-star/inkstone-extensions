@@ -10473,6 +10473,118 @@
         "platinumlilyscan.com",
         "*.platinumlilyscan.com"
       ]
+    },
+    {
+      "id": "menudofansub",
+      "name": "Menudo-Fansub",
+      "version": "1.0.0",
+      "medium": "comics",
+      "file": "comics/menudofansub/index.js",
+      "author": "matsukiender-star",
+      "website": "https://www.menudo-fansub.com/slide/",
+      "language": "es",
+      "contentRating": "safe",
+      "description": "Manga\n\nCatalog・200+\n\nRestrictions:\n・None",
+      "capabilities": [
+        "browse",
+        "search",
+        "chapters",
+        "details"
+      ],
+      "hosts": [
+        "www.menudo-fansub.com"
+      ],
+      "sha256": "16b3088ed628e17df827cedd2fc7a2575c63b1999be10add10b09d8375cbc928"
+    },
+    {
+      "id": "ragnascans",
+      "name": "RagnaScans",
+      "version": "1.0.0",
+      "medium": "comics",
+      "file": "comics/ragnascans/index.js",
+      "author": "matsukiender-star",
+      "website": "https://lector.ragnascan.xyz",
+      "language": "es",
+      "contentRating": "mature",
+      "description": "Manhwa・Manga・Manhua\n\nCatalog・100+\n\nRestrictions:\n・Locked Chapters",
+      "capabilities": [
+        "browse",
+        "search",
+        "chapters",
+        "details",
+        "genres"
+      ],
+      "hosts": [
+        "lector.ragnascan.xyz"
+      ],
+      "sha256": "44992eef40d8013a26e26ca8eef67a225aefe0bbb4666fdff71049c3c6a5d0f5"
+    },
+    {
+      "id": "bloomscans",
+      "name": "BloomScans",
+      "version": "1.0.0",
+      "medium": "comics",
+      "file": "comics/bloomscans/index.js",
+      "author": "matsukiender-star",
+      "website": "https://bloomscans.com",
+      "language": "es",
+      "contentRating": "mature",
+      "description": "Manhwa・Manga・Manhua\n\nCatalog・50+\n\nRestrictions:\n・None",
+      "capabilities": [
+        "browse",
+        "search",
+        "chapters",
+        "details",
+        "genres"
+      ],
+      "hosts": [
+        "bloomscans.com"
+      ],
+      "sha256": "733994d14be9923e2517db7348ac8f7e638e61baa0edeb36017004fec1ad87d1"
+    },
+    {
+      "id": "ritto",
+      "name": "Ritto",
+      "version": "1.0.0",
+      "medium": "comics",
+      "file": "comics/ritto/index.js",
+      "author": "matsukiender-star",
+      "website": "https://ritto.cc",
+      "language": "es",
+      "contentRating": "mature",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・100+\n\nRestrictions:\n・None",
+      "capabilities": [
+        "browse",
+        "search",
+        "chapters",
+        "details"
+      ],
+      "hosts": [
+        "ritto.cc"
+      ],
+      "sha256": "bd675c05edaee4518b627d9d0ee730946901f0c55aebcd331c69d376bbc1a077"
+    },
+    {
+      "id": "ranoa",
+      "name": "Ranoa",
+      "version": "1.0.0",
+      "medium": "comics",
+      "file": "comics/ranoa/index.js",
+      "author": "matsukiender-star",
+      "website": "https://www.ranoa.lat",
+      "language": "es",
+      "contentRating": "safe",
+      "description": "Manga\n\nCatalog・10+\n\nRestrictions:\n・None",
+      "capabilities": [
+        "browse",
+        "search",
+        "chapters",
+        "details"
+      ],
+      "hosts": [
+        "www.ranoa.lat"
+      ],
+      "sha256": "2145e9b657df24e994ea16b4d32ed1ec7a79e2c77966e07acaec9680e8d6a115"
     }
   ]
 }
