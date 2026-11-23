@@ -10023,6 +10023,108 @@
       "language": "en",
       "contentRating": "mature",
       "sha256": "8b7e0a41f7d1d6fcac75d3988d4c5ff8697eb84f7e4038dd460fb946bba700ea"
+    },
+    {
+      "id": "bymichiscan",
+      "name": "ByMichiScan",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://bymichiby.com",
+      "iconUrl": "https://inkstone.web.app/bymichiscan/icon.png",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・300+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "sha256": "15eb11bb29b7fda5dade3c333c7c8a7c548703c23318a3c4502e1b6fb30b9923",
+      "hosts": [
+        "bymichiby.com",
+        "*.bymichiby.com",
+        "*.wp.com"
+      ]
+    },
+    {
+      "id": "asialotus",
+      "name": "AsiaLotus",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://asialotuss.com",
+      "iconUrl": "https://inkstone.web.app/asialotus/icon.png",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・100+\n\nRestrictions:\n・Locked Chapters",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "sha256": "9345b3b9686d1fd269718897b88c1a8d2b7eb8e070454f2b18b7ede8660c3ec5",
+      "hosts": [
+        "asialotuss.com",
+        "*.asialotuss.com",
+        "img.gopar.dev",
+        "*.wp.com"
+      ]
+    },
+    {
+      "id": "cerberusseries",
+      "name": "CerberusSeries",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://legionscans.com/wp",
+      "iconUrl": "https://inkstone.web.app/cerberusseries/icon.png",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・100+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "sha256": "800d756e2be7f57ce7ce36cb7b34926ebf12add8f2aa081693f832139d6ff439",
+      "hosts": [
+        "legionscans.com",
+        "*.legionscans.com",
+        "*.wp.com",
+        "*.imageshack.com"
+      ]
+    },
+    {
+      "id": "miauscan",
+      "name": "Miau Scan",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://leer.lectovela.com",
+      "iconUrl": "https://inkstone.web.app/miauscan/icon.png",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・5,000+",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "sha256": "efc11a1537c17d54329060ed9debee1aeed84beb865254ca93a8d3fce53a87ce",
+      "hosts": [
+        "leer.lectovela.com",
+        "*.lectovela.com",
+        "*.wp.com"
+      ]
     }
   ]
 }
