@@ -10373,6 +10373,32 @@
       "tags": [
         "hentai"
       ]
+    },
+    {
+      "id": "tmomanhwa",
+      "name": "TmoManhwa",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://tmomanhwa.com",
+      "iconUrl": "https://inkstone.web.app/tmomanhwa/icon.png",
+      "description": "Manhwa・Manga\n\nCatalog・10,000+\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "tags": [
+        "explicit"
+      ],
+      "sha256": "271bcc452217f072f919336a94df28997ca6843e7eefc20cbe044856ae35b633",
+      "hosts": [
+        "tmomanhwa.com",
+        "*.tmomanhwa.com"
+      ]
     }
   ]
 }
