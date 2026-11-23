@@ -10326,6 +10326,53 @@
         "*.spnmanga.com",
         "*.t34798ndc.com"
       ]
+    },
+    {
+      "id": "seinagi",
+      "name": "Seinagi",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://online.seinagi.org.es",
+      "iconUrl": "https://inkstone.web.app/seinagi/icon.png",
+      "description": "Manga\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "sha256": "a8c6add8e6afdb163e14dbde5d914581308989acfda4f2ab6b79d2a541ca64a6",
+      "hosts": [
+        "online.seinagi.org.es"
+      ]
+    },
+    {
+      "id": "pzykosis666hfansub",
+      "name": "Pzykosis666HFansub",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://lector.pzykosis666hfansub.com",
+      "iconUrl": "https://inkstone.web.app/pzykosis666hfansub/icon.png",
+      "description": "Manga・Doujinshi\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "sha256": "933c813a6b1b6132f4e17c12cb57956a31ff00672935598b06b843ab52b7c06c",
+      "hosts": [
+        "lector.pzykosis666hfansub.com"
+      ],
+      "tags": [
+        "hentai"
+      ]
     }
   ]
 }
