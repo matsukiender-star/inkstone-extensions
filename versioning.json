@@ -10425,6 +10425,54 @@
         "es.3hentai.net",
         "*.3hentai.net"
       ]
+    },
+    {
+      "id": "dynasty",
+      "name": "Dynasty (Manhuako)",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://manhuako.net",
+      "iconUrl": "https://inkstone.web.app/dynasty/icon.png",
+      "description": "Manhua・Manhwa・Manga\n\nCatalog・400+\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "sha256": "d5dc1d9187f683fd4fba80a1b28cc8b72bb17237b71ef68b1afecb04829cbeea",
+      "hosts": [
+        "manhuako.net",
+        "*.manhuako.net"
+      ]
+    },
+    {
+      "id": "platinumlilyscan",
+      "name": "Platinum Lily Scan",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://platinumlilyscan.com",
+      "iconUrl": "https://inkstone.web.app/platinumlilyscan/icon.png",
+      "description": "Manga・Yuri\n\nCatalog・70+\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "sha256": "3a4402901c33b836e70bd139ae3c175d944b57295d6ef6b90d4aa042b76448e5",
+      "hosts": [
+        "platinumlilyscan.com",
+        "*.platinumlilyscan.com"
+      ]
     }
   ]
 }
