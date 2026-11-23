@@ -10200,6 +10200,30 @@
         "*.mundomanhwa.com",
         "*.wp.com"
       ]
+    },
+    {
+      "id": "manhwashot",
+      "name": "ManhwaShot",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://manhwashot.lat",
+      "iconUrl": "https://inkstone.web.app/manhwashot/icon.png",
+      "description": "Manhwa・Manga・Manhua\n\nCatalog・2,000+\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "sha256": "542963b715777c44175217c54c2bc4b71f92497bbf4f14374357d2430f329122",
+      "hosts": [
+        "manhwashot.lat",
+        "*.manhwashot.lat"
+      ]
     }
   ]
 }
