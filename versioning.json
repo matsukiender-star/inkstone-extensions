@@ -10224,6 +10224,32 @@
         "manhwashot.lat",
         "*.manhwashot.lat"
       ]
+    },
+    {
+      "id": "anzmanga",
+      "name": "AnzManga",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://www.anzmanga25.com",
+      "iconUrl": "https://inkstone.web.app/anzmanga/icon.png",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・200+\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "sha256": "f62c6efbfa8bb63d9841b0d26e600e5daaaaac0520242ac9af190a3d45663d82",
+      "hosts": [
+        "anzmanga25.com",
+        "*.anzmanga25.com",
+        "drive.google.com",
+        "*.googleusercontent.com"
+      ]
     }
   ]
 }
