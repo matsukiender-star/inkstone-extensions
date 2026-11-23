@@ -10301,6 +10301,31 @@
         "media.lectorasteria.com",
         "wsrv.nl"
       ]
+    },
+    {
+      "id": "spnmanga",
+      "name": "SpnManga",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://www.spnmanga.com",
+      "iconUrl": "https://inkstone.web.app/spnmanga/icon.png",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・60,000+\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "sha256": "80366585d172d6cd5ee6cbac8c63045b410f1d79e1ebe5ab3f209e51c8065559",
+      "hosts": [
+        "spnmanga.com",
+        "*.spnmanga.com",
+        "*.t34798ndc.com"
+      ]
     }
   ]
 }
