@@ -10399,6 +10399,32 @@
         "tmomanhwa.com",
         "*.tmomanhwa.com"
       ]
+    },
+    {
+      "id": "3hentai",
+      "name": "3Hentai (ES)",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://es.3hentai.net",
+      "iconUrl": "https://inkstone.web.app/3hentai/icon.png",
+      "description": "Doujinshi・Manga\n\nCatalog・300,000+\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "tags": [
+        "hentai"
+      ],
+      "sha256": "b69d0257f5016f11c1403902958b52ad32650ab7151ae2cdfae7f3c6ac77fe5b",
+      "hosts": [
+        "es.3hentai.net",
+        "*.3hentai.net"
+      ]
     }
   ]
 }
