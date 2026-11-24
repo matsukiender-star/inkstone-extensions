@@ -10254,7 +10254,7 @@
     {
       "id": "traduccionesmoonlight",
       "name": "Traducciones Moonlight",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://traduccionesmoonlight.com",
       "iconUrl": "https://inkstone.web.app/traduccionesmoonlight/icon.png",
@@ -10269,7 +10269,7 @@
       ],
       "language": "es",
       "contentRating": "adult",
-      "sha256": "ac684f30ae4398a47de088e0a00827ae3f2f4caa73f3299ea2ec8405b0a1240d",
+      "sha256": "bee331a71f3ea00566c4e156938450845fa1990849b9f0b8add8ccc692233e9c",
       "hosts": [
         "traduccionesmoonlight.com",
         "*.traduccionesmoonlight.com",

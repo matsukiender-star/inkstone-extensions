@@ -95,7 +95,7 @@ class Source {
     if (this.catalogCache && Date.now() - this.catalogCache.at < 300000) return this.catalogCache.items;
     const text = await this.requestRaw(`${SITE_BASE}/api/comics`, true);
     const json = JSON.parse(text);
-    const items = (Array.isArray(json && json.response) ? json.response : []).filter((x) => x && x.slug && x.name && x.isVisible !== 0);
+    const items = (Array.isArray(json && json.response) ? json.response : []).filter((x) => x && x.slug && x.name && x.isVisible !== 0 && x.type !== 'novela');
     this.catalogCache = { at: Date.now(), items };
     return items;
   }
