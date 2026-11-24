@@ -126,14 +126,19 @@ class Source {
       const json = await this.gql('AlbumListOwnPictures', ALBUM_PICS_Q, {
         input: {
           filters: [{ name: 'album_id', value: String(chapterId) }],
-          display: 'position',
+          display: 'date_oldest',
           page,
         },
       });
       const listObj = json && json.data && json.data.picture && json.data.picture.list;
       const items = Array.isArray(listObj && listObj.items) ? listObj.items : [];
       items.forEach((p) => {
-        const u = absolute(p && p.url_to_original);
+        let pick = p && p.url_to_original;
+        if (!pick && Array.isArray(p && p.thumbnails) && p.thumbnails.length > 0) {
+          const sorted = p.thumbnails.slice().sort((a, b) => (Number(b && b.width) || 0) - (Number(a && a.width) || 0));
+          pick = sorted[0] && sorted[0].url;
+        }
+        const u = absolute(pick);
         if (u) pages.push(u);
       });
       const totalPages = Number(listObj && listObj.info && listObj.info.total_pages) || 1;
