@@ -312,7 +312,7 @@ class Source {
     const released = infoField($, ['Released', 'Publicado', 'Lanzamiento', 'Año']);
     const info = {
       title,
-      image,
+      image: image || undefined,
       author: people.join(', '),
       desc: paragraphs.join('\n\n'),
       status,

@@ -10104,7 +10104,7 @@
     {
       "id": "miauscan",
       "name": "Miau Scan",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://leer.lectovela.com",
       "iconUrl": "https://inkstone.web.app/miauscan/icon.png",
@@ -10119,7 +10119,7 @@
       ],
       "language": "es",
       "contentRating": "mature",
-      "sha256": "efc11a1537c17d54329060ed9debee1aeed84beb865254ca93a8d3fce53a87ce",
+      "sha256": "ada3120b0d99473d561e0397d3334be62d047997a8429c51d954737837f26b62",
       "hosts": [
         "leer.lectovela.com",
         "*.lectovela.com",
@@ -10609,7 +10609,7 @@
       "sha256": "39824e6fa611077cefc76d10e067eae3dea6eb4308fd546a77adce24b955c315"
     },
     {
-      "id": "mangamx",
+      "id": "mangaoni",
       "name": "MangaOni",
       "version": "1.0.0",
       "medium": "comics",
@@ -10631,7 +10631,7 @@
       "sha256": "d70b8b3ef5dc5469e5ff617deae91b7ec492529b9efa06da86eccac1fa0568a1"
     },
     {
-      "id": "mangashiina",
+      "id": "mangamukai",
       "name": "MangaMukai",
       "version": "1.0.0",
       "medium": "comics",
