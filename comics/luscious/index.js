@@ -127,7 +127,6 @@ class Source {
         input: {
           filters: [{ name: 'album_id', value: String(chapterId) }],
           display: 'position',
-          items_per_page: 50,
           page,
         },
       });

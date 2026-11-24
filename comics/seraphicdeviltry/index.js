@@ -372,7 +372,7 @@ class Source {
   }
 
   async getChapterDetails(mangaId, chapterId) {
-    const url = `${detailUrlOf(mangaId)}${String(chapterId).split('~').map(seg).join('/')}/`;
+    const url = `${detailUrlOf(mangaId)}${String(chapterId).split('~').map(seg).join('/')}/?style=list`;
     const $ = cheerio.load(await this.requestHTML(url));
     const pages = [];
     const seen = new Set();

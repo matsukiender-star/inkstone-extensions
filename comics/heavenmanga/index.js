@@ -137,8 +137,8 @@ class Source {
       .replace(/\s*\|.*$/, '')
       .trim();
     const h1Text = cleanText($('div.post-title h1, div.post-title h3, h1').first().text());
-    const safeH1 = h1Text && !/verificando\s+edad/i.test(h1Text) ? h1Text : '';
-    const title = safeH1 || ogTitle || mangaId.split('/').pop().replace(/-/g, ' ');
+    const safeH1 = h1Text && !/verificaci[oó]n|verificando|edad\s+adulta/i.test(h1Text) ? h1Text : '';
+    const title = ogTitle || safeH1 || mangaId.split('/').pop().replace(/-/g, ' ');
     const img = $('div.tab-summary div.summary_image img, div.summary_image img').first();
     const image = absolute(img.attr('data-src') || img.attr('src'));
     const tags = [];
