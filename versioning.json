@@ -10258,7 +10258,7 @@
       "medium": "comics",
       "website": "https://traduccionesmoonlight.com",
       "iconUrl": "https://inkstone.web.app/traduccionesmoonlight/icon.png",
-      "description": "Manhwa・Manga・Manhua\n\nCatalog・400+\n\nRestrictions:\n・Rate Limit",
+      "description": "Manhwa・Manga・Manhua\n\nCatalog・300+\n\nRestrictions:\n・Rate Limit",
       "capabilities": [
         "browse",
         "search",
@@ -10275,6 +10275,29 @@
         "*.traduccionesmoonlight.com",
         "imagizer.imageshack.com",
         "wsrv.nl"
+      ]
+    },
+    {
+      "id": "traduccionesmoonlightnovelas",
+      "name": "Traducciones Moonlight Novelas",
+      "version": "1.0.0",
+      "medium": "novel",
+      "website": "https://traduccionesmoonlight.com",
+      "description": "Web Novels・Light Novels\n\nCatalog・100+\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "sha256": "c555b699d013c5e094e1798b397aedba2f2deb89daf2f12262fdfffb44b3a7d6",
+      "hosts": [
+        "traduccionesmoonlight.com",
+        "*.traduccionesmoonlight.com"
       ]
     },
     {
