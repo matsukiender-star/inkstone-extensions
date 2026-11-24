@@ -10243,7 +10243,7 @@
       ],
       "language": "es",
       "contentRating": "mature",
-      "sha256": "f62c6efbfa8bb63d9841b0d26e600e5daaaaac0520242ac9af190a3d45663d82",
+      "sha256": "e6675f530a9fa0b7cd9ba99b057e0ebf0884ca1ff6d36f62123de64682a76830",
       "hosts": [
         "anzmanga25.com",
         "*.anzmanga25.com",
@@ -10367,7 +10367,7 @@
       ],
       "language": "es",
       "contentRating": "mature",
-      "sha256": "a8c6add8e6afdb163e14dbde5d914581308989acfda4f2ab6b79d2a541ca64a6",
+      "sha256": "a906f013e48de82d0ad452c99c8f0e2c5fc8ed8eb2c402df1dc5c878faf270d5",
       "hosts": [
         "online.seinagi.org.es"
       ]
@@ -10417,7 +10417,7 @@
       "tags": [
         "explicit"
       ],
-      "sha256": "271bcc452217f072f919336a94df28997ca6843e7eefc20cbe044856ae35b633",
+      "sha256": "e7750547985ffd37ba7b8e420d7850735862ba78139f438621818dd2d383f4fc",
       "hosts": [
         "tmomanhwa.com",
         "*.tmomanhwa.com"
@@ -10563,7 +10563,7 @@
       "hosts": [
         "bloomscans.com"
       ],
-      "sha256": "733994d14be9923e2517db7348ac8f7e638e61baa0edeb36017004fec1ad87d1"
+      "sha256": "eec0b4c7f22d5038b230ee0dd691e36fef1303c252805ed1b4d29f110cebc574"
     },
     {
       "id": "ritto",

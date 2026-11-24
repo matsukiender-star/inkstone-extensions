@@ -111,7 +111,7 @@ function parseGrid($) {
     const mangaId = idFromHref(link.attr('href'));
     if (!mangaId || mangaId === 'list-mode' || seen.has(mangaId)) return;
     const title = cleanText(card.find('.tt').first().text()) || cleanText(link.attr('title'));
-    if (!title || /\bnovela\b|\bnovel\b/i.test(title) || card.find('.type.Novel, .novel').length > 0) return;
+    if (!title || /\bnovela\b|\bnovel\b/i.test(title) || card.find('.novelabel, .type.Novel, .novel').length > 0) return;
     seen.add(mangaId);
     results.push({
       mangaId,

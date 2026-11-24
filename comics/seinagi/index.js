@@ -34,14 +34,16 @@ function parseList($) {
   const seen = new Set();
   $('.list .group, .series').each((_, el) => {
     const g = $(el);
-    const link = g.find('.title a[href*="/series/"], a[href*="/series/"]').first();
+    const titleLink = g.find('.title a[href*="/series/"]').first();
+    const link = titleLink.length ? titleLink : g.find('a[href*="/series/"]').first();
     const mangaId = slugFromSeries(link.attr('href'));
     if (!mangaId || seen.has(mangaId)) return;
     const title = cleanText(link.text()) || cleanText(link.attr('title'));
     if (!title) return;
     seen.add(mangaId);
-    const img = g.find('img.preview, img').first();
-    const image = absolute(img.attr('src') || img.attr('data-src') || `${SITE_BASE}/content/comics/${mangaId}/thumb.jpg`);
+    const img = g.find('img.preview').first();
+    const src = img.attr('src') || img.attr('data-src') || '';
+    const image = src && !/glyphish|facebook|feed-icon|bird_/i.test(src) ? absolute(src) : `${SITE_BASE}/content/comics/${mangaId}/thumb.jpg`;
     const item = {
       mangaId,
       title,

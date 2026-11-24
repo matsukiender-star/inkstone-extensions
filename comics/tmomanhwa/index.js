@@ -61,13 +61,14 @@ function parseList($) {
 
 function hasNextPage($, page) {
   let found = false;
-  $('a[href*="page="], a.next, a[rel="next"]').each((_, el) => {
+  $('a[href*="page="], a[href*="/page/"], a.next, a[rel="next"]').each((_, el) => {
     const a = $(el);
     if (a.hasClass('next') || a.attr('rel') === 'next') {
       found = true;
       return;
     }
-    const m = /[?&]page=(\d+)/.exec(a.attr('href') || '');
+    const href = a.attr('href') || '';
+    const m = /(?:[?&]page=|\/page\/)(\d+)/.exec(href);
     if (m && parseInt(m[1], 10) > page) found = true;
   });
   return found;
@@ -93,7 +94,7 @@ class Source {
       url = `${SITE_BASE}/search/?s=${encodeURIComponent(query)}` + (page > 1 ? `&page=${page}` : '');
     } else {
       const feed = FEEDS.find((f) => f.id === (request && request.feed)) || FEEDS[0];
-      url = `${SITE_BASE}${feed.path}` + (page > 1 ? `?page=${page}` : '');
+      url = page > 1 ? `${SITE_BASE}${feed.path}page/${page}/` : `${SITE_BASE}${feed.path}`;
     }
 
     let html;

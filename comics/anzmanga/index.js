@@ -209,9 +209,7 @@ class Source {
       let number = r.number;
       if (number <= last) number = Math.round((last + 0.0001) * 10000) / 10000;
       last = number;
-      const ch = { id: r.id, chapterId: r.id, name: r.name, number };
-      if (r.time !== undefined) ch.time = r.time;
-      return ch;
+      return { id: r.id, chapterId: r.id, name: r.name, number };
     });
   }
 
