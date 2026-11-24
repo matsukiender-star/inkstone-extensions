@@ -1,10 +1,30 @@
-const SITE_BASE = 'https://es.3hentai.net';
+const SITE_BASE = 'https://3hentai.net';
 const UA =
   'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1';
 
 const FEEDS = [
-  { id: 'latest', name: 'Latest Updates', path: '/' },
+  { id: 'latest', name: 'Latest Updates' },
 ];
+
+const LANG_SLUGS = {
+  all: null,
+  es: 'spanish',
+  en: 'english',
+  ja: 'japanese',
+  zh: 'chinese',
+  ko: 'korean',
+  fr: 'french',
+  pt: 'portuguese',
+  ru: 'russian',
+  it: 'italian',
+  de: 'german',
+};
+
+function selectedLang() {
+  const raw = App.getSourceSetting('language');
+  const code = String(raw || '').trim().toLowerCase();
+  return Object.prototype.hasOwnProperty.call(LANG_SLUGS, code) ? code : 'all';
+}
 
 function cleanText(text) {
   return String(text || '').replace(/\s+/g, ' ').trim();
@@ -77,10 +97,15 @@ class Source {
     if (request && request.medium && request.medium !== 'comics') return { results: [] };
     const query = cleanText(request && request.title);
     const page = (metadata && metadata.page) || 1;
+    const langCode = selectedLang();
+    const langSlug = LANG_SLUGS[langCode];
 
     let url;
     if (query) {
-      url = `${SITE_BASE}/search?q=${encodeURIComponent(query)}` + (page > 1 ? `&page=${page}` : '');
+      const q = langSlug ? `language:${langSlug} ${query}` : query;
+      url = `${SITE_BASE}/search?q=${encodeURIComponent(q)}` + (page > 1 ? `&page=${page}` : '');
+    } else if (langSlug) {
+      url = page > 1 ? `${SITE_BASE}/language/${langSlug}/${page}` : `${SITE_BASE}/language/${langSlug}`;
     } else {
       url = page > 1 ? `${SITE_BASE}/${page}` : `${SITE_BASE}/`;
     }
@@ -122,7 +147,7 @@ class Source {
       if (t && artists.indexOf(t) < 0) artists.push(t);
     });
     const pageCount = $('#main-content .single-thumb, .listing-container .single-thumb').length;
-    const desc = tags.length ? `Tags: ${tags.slice(0, 12).join(', ')}` + (pageCount ? ` (${pageCount} páginas)` : '') : title;
+    const desc = tags.length ? `Tags: ${tags.slice(0, 12).join(', ')}` + (pageCount ? ` (${pageCount} pages)` : '') : title;
     return {
       mangaInfo: {
         title,
@@ -143,7 +168,10 @@ class Source {
   async getChapters(mangaId) {
     const $ = cheerio.load(await this.titleHtml(mangaId));
     const count = $('.single-thumb img').length;
-    const name = count ? `Capítulo 1 (${count} páginas)` : 'Capítulo 1';
+    const es = selectedLang() === 'es';
+    const name = es
+      ? (count ? `Capítulo 1 (${count} páginas)` : 'Capítulo 1')
+      : (count ? `Chapter 1 (${count} pages)` : 'Chapter 1');
     return [{ id: '1', chapterId: '1', name, number: 1 }];
   }
 

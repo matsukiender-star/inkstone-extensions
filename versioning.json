@@ -10426,11 +10426,11 @@
     {
       "id": "3hentai",
       "name": "3Hentai (ES)",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "medium": "comics",
-      "website": "https://es.3hentai.net",
+      "website": "https://3hentai.net",
       "iconUrl": "https://inkstone.web.app/3hentai/icon.png",
-      "description": "Doujinshi・Manga\n\nCatalog・300,000+\n\nRestrictions:\n・Rate Limit",
+      "description": "Doujinshi & Hentai (Multi-language, 300,000+)",
       "capabilities": [
         "browse",
         "search",
@@ -10438,15 +10438,70 @@
         "chapters",
         "reader"
       ],
-      "language": "es",
+      "language": "en",
       "contentRating": "adult",
       "tags": [
         "hentai"
       ],
-      "sha256": "b69d0257f5016f11c1403902958b52ad32650ab7151ae2cdfae7f3c6ac77fe5b",
+      "sha256": "a0f4946b2530cd63be93ea5b58f0e375465226affc76a0ab6ae31f30f52b5497",
       "hosts": [
-        "es.3hentai.net",
+        "3hentai.net",
         "*.3hentai.net"
+      ],
+      "file": "comics/3hentai/index.js",
+      "settingsSchema": [
+        {
+          "type": "select",
+          "key": "language",
+          "label": "Language",
+          "default": "all",
+          "options": [
+            {
+              "value": "all",
+              "label": "All languages"
+            },
+            {
+              "value": "es",
+              "label": "Español"
+            },
+            {
+              "value": "en",
+              "label": "English"
+            },
+            {
+              "value": "ja",
+              "label": "日本語"
+            },
+            {
+              "value": "zh",
+              "label": "中文"
+            },
+            {
+              "value": "ko",
+              "label": "한국어"
+            },
+            {
+              "value": "fr",
+              "label": "Français"
+            },
+            {
+              "value": "pt",
+              "label": "Português"
+            },
+            {
+              "value": "ru",
+              "label": "Русский"
+            },
+            {
+              "value": "it",
+              "label": "Italiano"
+            },
+            {
+              "value": "de",
+              "label": "Deutsch"
+            }
+          ]
+        }
       ]
     },
     {
@@ -10805,7 +10860,7 @@
     {
       "id": "namicomi",
       "name": "NamiComi",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "file": "comics/namicomi/index.js",
       "author": "matsukiender-star",
@@ -10816,15 +10871,17 @@
       "capabilities": [
         "browse",
         "search",
+        "genres",
+        "details",
         "chapters",
-        "details"
+        "reader"
       ],
       "hosts": [
         "namicomi.com",
         "api.namicomi.com",
         "uploads.namicomi.com"
       ],
-      "sha256": "6d869ddcd0e21311774ba13bb9a8d199fbd13aa7ea79e7491e0d83c03381b06a"
+      "sha256": "e66d6ff1e61c84bc91ffef50b5e85d0219b0fa7080a8b68ddd6f80b3baf87c56"
     },
     {
       "id": "ravenmanga",
@@ -10924,7 +10981,7 @@
     {
       "id": "submanhwa",
       "name": "SubManhwa",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "file": "comics/submanhwa/index.js",
       "author": "matsukiender-star",
@@ -10935,13 +10992,40 @@
       "capabilities": [
         "browse",
         "search",
+        "genres",
+        "details",
         "chapters",
-        "details"
+        "reader"
       ],
       "hosts": [
         "submanhwa.com"
       ],
-      "sha256": "d99e0a6208752451c686c81a3f808e8099320d7d5e0645a7909c8a3206124cdd"
+      "sha256": "c3e4b1821a25103299d989130e3e742c49195ad8ce4a766edf558c42c7a9199e"
+    },
+    {
+      "id": "megabanana",
+      "name": "MegaBanana",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://megabanana.mx",
+      "iconUrl": "https://inkstone.web.app/megabanana/icon.png",
+      "description": "Cómics en español (Marvel, DC, Dark Horse, Image, IDW, Independientes)",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "safe",
+      "file": "comics/megabanana/index.js",
+      "sha256": "150def15fb6d17c96d079018df6e87a67470303e8bb3a6cbba05c9e3f3829735",
+      "hosts": [
+        "megabanana.mx",
+        "*.megabanana.mx"
+      ]
     }
   ]
 }
