@@ -44,9 +44,28 @@ class Source {
     return FEEDS.map((f) => ({ id: f.id, name: f.name }));
   }
 
+  async getSearchTags() {
+    try {
+      const $ = cheerio.load(await this.requestHTML(`${SITE_BASE}/directorio`));
+      const tags = [];
+      const seen = new Set();
+      $('select[name="genero"] option').each((_, el) => {
+        const id = cleanText($(el).attr('value'));
+        const label = cleanText($(el).text());
+        if (!id || id === 'false' || !label || seen.has(id)) return;
+        seen.add(id);
+        tags.push({ id, label });
+      });
+      return tags;
+    } catch (e) {
+      return [];
+    }
+  }
+
   async getSearchResults(request, metadata) {
     if (request && request.medium && request.medium !== 'comics') return { results: [] };
     const query = cleanText(request && request.title);
+    const tags = ((request && request.includedTags) || []).filter((t) => t && t.id);
     const feed = FEEDS.find((f) => f.id === (request && request.feed)) || FEEDS[0];
     const page = (metadata && metadata.page) || 1;
 
@@ -85,7 +104,7 @@ class Source {
       return { results, metadata: hasNext ? { page: page + 1 } : undefined };
     }
 
-    if (feed.id === 'latest') {
+    if (feed.id === 'latest' && tags.length === 0) {
       const $ = cheerio.load(await this.requestHTML(`${SITE_BASE}/recientes?p=${page}`));
       const results = [];
       const seen = new Set();
@@ -111,7 +130,8 @@ class Source {
       return { results, metadata: hasNext ? { page: page + 1 } : undefined };
     }
 
-    const url = `${SITE_BASE}/directorio?genero=false&estado=false&filtro=visitas&tipo=false&adulto=false&orden=desc&p=${page}`;
+    const genreParam = tags.length > 0 ? encodeURIComponent(tags[0].id) : 'false';
+    const url = `${SITE_BASE}/directorio?genero=${genreParam}&estado=false&filtro=visitas&tipo=false&adulto=false&orden=desc&p=${page}`;
     const $ = cheerio.load(await this.requestHTML(url));
     const results = [];
     const seen = new Set();

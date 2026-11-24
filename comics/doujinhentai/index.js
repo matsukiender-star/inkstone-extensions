@@ -3,8 +3,8 @@ const UA =
   'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1';
 
 const FEEDS = [
-  { id: 'views', name: 'Popular' },
   { id: 'last', name: 'Latest Updates' },
+  { id: 'views', name: 'Popular' },
 ];
 
 const MONTHS_EN = {
@@ -71,15 +71,40 @@ class Source {
     return FEEDS.map((f) => ({ id: f.id, name: f.name }));
   }
 
+  async getSearchTags() {
+    try {
+      const $ = cheerio.load(await this.requestHTML(`${SITE_BASE}/lista-manga-hentai`));
+      const tags = [];
+      const seen = new Set();
+      $('a[href*="/lista-manga-hentai/category/"]').each((_, el) => {
+        const a = $(el);
+        const m = /\/lista-manga-hentai\/category\/([^/?#]+)/.exec(a.attr('href') || '');
+        const label = cleanText(a.text());
+        if (!m || !label || seen.has(m[1])) return;
+        seen.add(m[1]);
+        tags.push({ id: m[1], label });
+      });
+      return tags;
+    } catch (e) {
+      return [];
+    }
+  }
+
   async getSearchResults(request, metadata) {
     if (request && request.medium && request.medium !== 'comics') return { results: [] };
     const query = cleanText(request && request.title);
+    const tags = ((request && request.includedTags) || []).filter((t) => t && t.id);
     const feed = FEEDS.find((f) => f.id === (request && request.feed)) || FEEDS[0];
     const page = (metadata && metadata.page) || 1;
 
-    const url = query
-      ? `${SITE_BASE}/lista-manga-hentai?search=${encodeURIComponent(query)}&page=${page}`
-      : `${SITE_BASE}/lista-manga-hentai?orderby=${encodeURIComponent(feed.id)}&page=${page}`;
+    let url;
+    if (query) {
+      url = `${SITE_BASE}/lista-manga-hentai?search=${encodeURIComponent(query)}&page=${page}`;
+    } else if (tags.length > 0) {
+      url = `${SITE_BASE}/lista-manga-hentai/category/${encodeURIComponent(tags[0].id)}?page=${page}`;
+    } else {
+      url = `${SITE_BASE}/lista-manga-hentai?orderby=${encodeURIComponent(feed.id)}&page=${page}`;
+    }
     const $ = cheerio.load(await this.requestHTML(url));
     const results = parseList($);
     const hasNext = $('a[rel="next"]').length > 0 && results.length > 0;

@@ -7,6 +7,18 @@ const FEEDS = [
   { id: 'popular', name: 'Popular' },
 ];
 
+const GENRES = [
+  ['accion', 'Acción'], ['adulto', 'Adulto'], ['artes-marciales', 'Artes Marciales'],
+  ['aventura', 'Aventura'], ['comedia', 'Comedia'], ['drama', 'Drama'],
+  ['ecchi', 'Ecchi'], ['fantasia', 'Fantasía'], ['gore', 'Gore'],
+  ['harem', 'Harem'], ['hentai', 'Hentai'], ['historico', 'Histórico'],
+  ['horror', 'Horror'], ['josei', 'Josei'], ['magia', 'Magia'],
+  ['mecha', 'Mecha'], ['misterio', 'Misterio'], ['psicologico', 'Psicológico'],
+  ['romance', 'Romance'], ['seinen', 'Seinen'], ['shojo', 'Shojo'],
+  ['shonen', 'Shonen'], ['sobrenatural', 'Sobrenatural'], ['tragedia', 'Tragedia'],
+  ['yaoi', 'Yaoi'], ['yuri', 'Yuri'],
+];
+
 const ADULT_GENRE = /^(adult|adulto|hentai|smut|erotica|erótico|erotico|nsfw|\+18|18\+|gore)$/i;
 const SUGGESTIVE_GENRE = /^(mature|maduro|ecchi|bl|yaoi)$/i;
 
@@ -59,9 +71,14 @@ class Source {
     return FEEDS.map((f) => ({ id: f.id, name: f.name }));
   }
 
+  async getSearchTags() {
+    return GENRES.map(([id, label]) => ({ id, label }));
+  }
+
   async getSearchResults(request, metadata) {
     if (request && request.medium && request.medium !== 'comics') return { results: [] };
     const query = cleanText(request && request.title);
+    const tags = ((request && request.includedTags) || []).filter((t) => t && t.id);
     const feed = FEEDS.find((f) => f.id === (request && request.feed)) || FEEDS[0];
     const page = (metadata && metadata.page) || 1;
 
@@ -91,6 +108,16 @@ class Source {
           medium: 'comics',
         });
       });
+      const hasNext = $('ul.pagination a[rel="next"]').length > 0 && results.length > 0;
+      return { results, metadata: hasNext ? { page: page + 1 } : undefined };
+    }
+
+    if (tags.length > 0) {
+      const gUrl = page > 1
+        ? `${SITE_BASE}/genero/${encodeURIComponent(tags[0].id)}.html?pages=${page}`
+        : `${SITE_BASE}/genero/${encodeURIComponent(tags[0].id)}.html`;
+      const $ = cheerio.load(await this.requestHTML(gUrl));
+      const results = parseGrid($);
       const hasNext = $('ul.pagination a[rel="next"]').length > 0 && results.length > 0;
       return { results, metadata: hasNext ? { page: page + 1 } : undefined };
     }

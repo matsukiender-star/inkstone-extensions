@@ -8,6 +8,16 @@ const FEEDS = [
   { id: 'latest', name: 'Latest Updates' },
 ];
 
+const GENRES = [
+  ['accion', 'Acción'], ['apocaliptico', 'Apocalíptico'], ['artes marciales', 'Artes Marciales'],
+  ['aventura', 'Aventura'], ['batalla', 'Batalla'], ['comedia', 'Comedia'],
+  ['deportes', 'Deportes'], ['drama', 'Drama'], ['fantasia', 'Fantasía'],
+  ['guerra', 'Guerra'], ['medicina', 'Medicina'], ['murim', 'Murim'],
+  ['ocultismo', 'Ocultismo'], ['reencarnacion', 'Reencarnación'], ['romance', 'Romance'],
+  ['sistema', 'Sistema'], ['superheroe', 'Superhéroe'], ['venganza', 'Venganza'],
+  ['vida escolar', 'Vida Escolar'],
+];
+
 const ADULT_GENRE = /^(adult|adulto|hentai|smut|erotica|erótico|erotico|nsfw|\+18|18\+)$/i;
 const SUGGESTIVE_GENRE = /^(mature|maduro|ecchi|bl|yaoi)$/i;
 
@@ -93,8 +103,13 @@ class Source {
     return FEEDS.map((f) => ({ id: f.id, name: f.name }));
   }
 
-  async fetchLibraryPage(page) {
-    const html = await this.requestHTML(`${SITE_BASE}/${LANG_PATH}/library?sort=popular&page=${page}`);
+  async getSearchTags() {
+    return GENRES.map(([id, label]) => ({ id, label }));
+  }
+
+  async fetchLibraryPage(page, genre) {
+    const gqs = genre ? `&genre=${encodeURIComponent(genre)}` : '';
+    const html = await this.requestHTML(`${SITE_BASE}/${LANG_PATH}/library?sort=popular&page=${page}${gqs}`);
     const $ = cheerio.load(html);
     const results = [];
     const seen = new Set();
@@ -125,6 +140,8 @@ class Source {
   async getSearchResults(request, metadata) {
     if (request && request.medium && request.medium !== 'comics') return { results: [] };
     const query = cleanText(request && request.title).toLowerCase();
+    const tags = ((request && request.includedTags) || []).filter((t) => t && t.id);
+    const genre = tags.length > 0 ? tags[0].id : '';
     const feed = FEEDS.find((f) => f.id === (request && request.feed)) || FEEDS[0];
     const page = (metadata && metadata.page) || 1;
 
@@ -133,7 +150,7 @@ class Source {
       const all = [];
       const seen = new Set();
       for (let p = 1; p <= 8; p++) {
-        const res = await this.fetchLibraryPage(p);
+        const res = await this.fetchLibraryPage(p, genre);
         res.results.forEach((it) => {
           if (!seen.has(it.mangaId)) {
             seen.add(it.mangaId);
@@ -145,7 +162,7 @@ class Source {
       return { results: all.filter((it) => it.title.toLowerCase().includes(query)), metadata: undefined };
     }
 
-    if (feed.id === 'latest') {
+    if (feed.id === 'latest' && !genre) {
       const html = await this.requestHTML(`${SITE_BASE}/${LANG_PATH}?page=${page}`);
       const rsc = extractNextF(html);
       const items = extractJsonField(rsc, 'items', '[', ']') || [];
@@ -170,7 +187,7 @@ class Source {
       return { results, metadata: hasNext && results.length > 0 ? { page: page + 1 } : undefined };
     }
 
-    const res = await this.fetchLibraryPage(page);
+    const res = await this.fetchLibraryPage(page, genre);
     return { results: res.results, metadata: res.hasNext ? { page: page + 1 } : undefined };
   }
 

@@ -10580,12 +10580,13 @@
         "browse",
         "search",
         "chapters",
-        "details"
+        "details",
+        "genres"
       ],
       "hosts": [
         "ritto.cc"
       ],
-      "sha256": "bd675c05edaee4518b627d9d0ee730946901f0c55aebcd331c69d376bbc1a077"
+      "sha256": "af934c2abba27aeb5fa9de62d8df73cafd0e78146ddbd194066cb95bd817f63f"
     },
     {
       "id": "ranoa",
@@ -10646,12 +10647,13 @@
         "browse",
         "search",
         "chapters",
-        "details"
+        "details",
+        "genres"
       ],
       "hosts": [
         "manga-oni.com"
       ],
-      "sha256": "d70b8b3ef5dc5469e5ff617deae91b7ec492529b9efa06da86eccac1fa0568a1"
+      "sha256": "370080eef062ee8768d3208dd007410a6beaa0c8c8d318ee578885c96f52fb70"
     },
     {
       "id": "mangamukai",
@@ -10766,12 +10768,13 @@
         "browse",
         "search",
         "chapters",
-        "details"
+        "details",
+        "genres"
       ],
       "hosts": [
         "swordmangas.com"
       ],
-      "sha256": "1c04cc65be9cbe836f68198d16bf59e92f7418a67fac07393e8e759de39a2439"
+      "sha256": "4b0eb7bdad79e60c3c8e2b99553aabff1b5f628cfba90691299719aa2f85b005"
     },
     {
       "id": "doujinhentai",
@@ -10791,12 +10794,13 @@
         "browse",
         "search",
         "chapters",
-        "details"
+        "details",
+        "genres"
       ],
       "hosts": [
         "doujinhentai.net"
       ],
-      "sha256": "670492e869c4c22b50bbd022b386227fe98222d417a26f2c25954794ae7f9fc7"
+      "sha256": "be4c46058e342fd7be65290756b6bb3e13fadf3ee31fa8b64da39d47893f5721"
     },
     {
       "id": "namicomi",
@@ -10860,12 +10864,13 @@
         "browse",
         "search",
         "chapters",
-        "details"
+        "details",
+        "genres"
       ],
       "hosts": [
         "heavenmanga.com"
       ],
-      "sha256": "57cfa00e2a26d0c3810188ffb4f3427fa0f6fd5638d207a063f314a92fb2abbc"
+      "sha256": "8323f027d129749fc73340a0672b797c7c678fe98685fdcd83f4d55023bac268"
     },
     {
       "id": "leermangaesp",
@@ -10882,13 +10887,14 @@
         "browse",
         "search",
         "chapters",
-        "details"
+        "details",
+        "genres"
       ],
       "hosts": [
         "mangalect.org",
         "images.mangalect.org"
       ],
-      "sha256": "3f904e82422a6c256a38b022be388bbd4936c8f1fb2c9292f54fabbfc5b51a0a"
+      "sha256": "ff58010b334c65adf92fb99d63a454bb1bcd848a22f8c2a807e51bc3a5e5cb3a"
     },
     {
       "id": "luscious",

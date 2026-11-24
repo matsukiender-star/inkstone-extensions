@@ -7,6 +7,20 @@ const FEEDS = [
   { id: 'latest', name: 'Latest Updates', orden: 'reciente' },
 ];
 
+const GENRES = [
+  ['accion', 'Acción'], ['artes-marciales', 'Artes Marciales'], ['aventura', 'Aventura'],
+  ['boys-love', 'Boys Love'], ['ciencia-ficcion', 'Ciencia Ficción'], ['comedia', 'Comedia'],
+  ['crimen', 'Crimen'], ['demonios', 'Demonios'], ['deporte', 'Deporte'],
+  ['drama', 'Drama'], ['ecchi', 'Ecchi'], ['fantasia', 'Fantasía'],
+  ['girls-love', 'Girls Love'], ['gore', 'Gore'], ['guerra', 'Guerra'],
+  ['harem', 'Harem'], ['historico', 'Histórico'], ['horror', 'Horror'],
+  ['isekai', 'Isekai'], ['josei', 'Josei'], ['magia', 'Magia'],
+  ['mecha', 'Mecha'], ['misterio', 'Misterio'], ['psicologico', 'Psicológico'],
+  ['recuentos-de-la-vida', 'Recuentos de la vida'], ['romance', 'Romance'],
+  ['seinen', 'Seinen'], ['shojo', 'Shojo'], ['shonen', 'Shonen'],
+  ['sobrenatural', 'Sobrenatural'], ['tragedia', 'Tragedia'],
+];
+
 const MONTHS_ES = {
   ene: 0, feb: 1, mar: 2, abr: 3, may: 4, jun: 5,
   jul: 6, ago: 7, sept: 8, sep: 8, oct: 9, nov: 10, dic: 11,
@@ -113,15 +127,21 @@ class Source {
     return FEEDS.map((f) => ({ id: f.id, name: f.name }));
   }
 
+  async getSearchTags() {
+    return GENRES.map(([id, label]) => ({ id, label }));
+  }
+
   async getSearchResults(request, metadata) {
     if (request && request.medium && request.medium !== 'comics') return { results: [] };
     const query = cleanText(request && request.title);
+    const tags = ((request && request.includedTags) || []).filter((t) => t && t.id);
     const feed = FEEDS.find((f) => f.id === (request && request.feed)) || FEEDS[0];
     const page = (metadata && metadata.page) || 1;
 
     const params = [`pagina=${page}`];
     if (query) params.push(`busqueda=${encodeURIComponent(query)}`);
     else params.push(`orden=${encodeURIComponent(feed.orden)}`);
+    if (tags.length > 0) params.push(`genero=${encodeURIComponent(tags[0].id)}`);
 
     const html = await this.requestHTML(`${SITE_BASE}/catalogo?${params.join('&')}`);
     const $ = cheerio.load(html);

@@ -9,6 +9,15 @@ const FEEDS = [
   { id: 'all', name: 'All Series' },
 ];
 
+const GENRES = [
+  'Acción', 'Apocalíptico', 'Artes marciales', 'Aventura', 'Boys Love',
+  'Ciencia Ficción', 'Comedia', 'Crimen', 'Demonios', 'Deportes', 'Doujinshi',
+  'Drama', 'Ecchi', 'Fantasía', 'Girls Love', 'Gore', 'Harem', 'Histórico',
+  'Horror', 'Isekai', 'Josei', 'Magia', 'Mecha', 'Misterio', 'Psicológico',
+  'Recuentos de la vida', 'Romance', 'Seinen', 'Shojo', 'Shonen',
+  'Sobrenatural', 'Tragedia',
+];
+
 const MONTHS_EN = {
   january: 0, february: 1, march: 2, april: 3, may: 4, june: 5,
   july: 6, august: 7, september: 8, october: 9, november: 10, december: 11,
@@ -89,15 +98,21 @@ class Source {
     return FEEDS.map((f) => ({ id: f.id, name: f.name }));
   }
 
+  async getSearchTags() {
+    return GENRES.map((g) => ({ id: g, label: g }));
+  }
+
   async getSearchResults(request, metadata) {
     if (request && request.medium && request.medium !== 'comics') return { results: [] };
     const query = cleanText(request && request.title);
+    const tags = ((request && request.includedTags) || []).filter((t) => t && t.id);
     const feed = FEEDS.find((f) => f.id === (request && request.feed)) || FEEDS[0];
     const page = (metadata && metadata.page) || 1;
 
-    if (query || feed.id === 'all') {
+    if (query || tags.length > 0 || feed.id === 'all') {
       const params = [`page=${page}`, 'page_size=24'];
       if (query) params.push(`query=${encodeURIComponent(query)}`);
+      if (tags.length > 0) params.push(`generos=${encodeURIComponent(tags.map((t) => t.id).join(','))}`);
       const json = await this.requestJSON(`${SITE_BASE}/api/buscar_mangas?${params.join('&')}`);
       const results = mapDtoList(json && json.resultados);
       const totalPages = Number(json && json.total_pages) || 1;
