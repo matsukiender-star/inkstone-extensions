@@ -10219,7 +10219,7 @@
       ],
       "language": "es",
       "contentRating": "mature",
-      "sha256": "542963b715777c44175217c54c2bc4b71f92497bbf4f14374357d2430f329122",
+      "sha256": "98b8876a1f8a10f51a38111d94ab5d04bbdfb4ec3221584ee01b87bdd1615bb6",
       "hosts": [
         "manhwashot.lat",
         "*.manhwashot.lat"
@@ -10343,7 +10343,7 @@
       ],
       "language": "es",
       "contentRating": "mature",
-      "sha256": "80366585d172d6cd5ee6cbac8c63045b410f1d79e1ebe5ab3f209e51c8065559",
+      "sha256": "78f76847e92e2e683aeaaaec83b54f4a86c568e57b319862dc1ff4384b4c6daa",
       "hosts": [
         "spnmanga.com",
         "*.spnmanga.com",
@@ -10607,7 +10607,7 @@
       "hosts": [
         "www.ranoa.lat"
       ],
-      "sha256": "2145e9b657df24e994ea16b4d32ed1ec7a79e2c77966e07acaec9680e8d6a115"
+      "sha256": "7d13e8bf92c6fce6e4d92f9c0724692ee015c005ae7ecfc60d62bf9d30702957"
     },
     {
       "id": "gcomics",
@@ -10674,7 +10674,7 @@
       "hosts": [
         "mangamukai.com"
       ],
-      "sha256": "1da52e28e233357556d5392bea8c56b5eaae2149745528ce814b88fccf9de96a"
+      "sha256": "1883b7a5707e21155d1e2aae4631fd12d0b3822737d4fab28f746744167cbcd1"
     },
     {
       "id": "skymangas",
@@ -10865,7 +10865,7 @@
       "hosts": [
         "heavenmanga.com"
       ],
-      "sha256": "355eb4ac18a61d232ec052f36efde8d46c0d0f0bd58288d6c79126b8a9f72fbb"
+      "sha256": "57cfa00e2a26d0c3810188ffb4f3427fa0f6fd5638d207a063f314a92fb2abbc"
     },
     {
       "id": "leermangaesp",

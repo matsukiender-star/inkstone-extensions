@@ -189,14 +189,14 @@ class Source {
     $(`a[href^="${prefix}"]`).each((_, el) => {
       const a = $(el);
       const href = (a.attr('href') || '').trim();
-      const rest = href.slice(prefix.length).replace(/\/+$/, '');
+      const rest = href.slice(prefix.length).replace(/\/+$/, '').split(/[?#]/)[0];
+      if (!rest || seen.has(rest)) return;
       const rawText = cleanText(a.text());
       if (/^(start with|latest\b|leer desde|último cap|ultimo cap)/i.test(rawText)) return;
-      if (seen.has(rest)) return;
       seen.add(rest);
       const numM = /(\d+(?:\.\d+)?)/.exec(rest) || /(\d+(?:\.\d+)?)/.exec(rawText);
       const num = numM ? parseFloat(numM[1]) : 0;
-      const name = rawText && rawText.length < 70 ? rawText : `Capítulo ${num || rest}`;
+      const name = numM ? `Capítulo ${numM[1]}` : (rawText && rawText.length < 50 ? rawText : `Capítulo ${rest}`);
       rows.push({ id: rest, chapterId: rest, name, number: Number.isFinite(num) ? num : 0 });
     });
     rows.sort((a, b) => a.number - b.number);

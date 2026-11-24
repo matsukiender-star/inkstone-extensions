@@ -72,6 +72,26 @@ function extractFieldArray(rsc, keyName) {
   }
 }
 
+function resolveRscRef(rsc, val) {
+  if (typeof val !== 'string') return val;
+  const m = /^\$L?([0-9a-f]+)$/i.exec(val);
+  if (!m) return val;
+  const id = m[1];
+  const re = new RegExp('(?:^|\\n)' + id + ':([\\[\\{])');
+  const hit = re.exec(rsc);
+  if (!hit) return val;
+  const start = hit.index + hit[0].length - 1;
+  const open = hit[1];
+  const close = open === '[' ? ']' : '}';
+  const slice = extractBalanced(rsc, start, open, close);
+  if (!slice) return val;
+  try {
+    return JSON.parse(slice);
+  } catch (e) {
+    return val;
+  }
+}
+
 function findDeep(node, key) {
   if (!node || typeof node !== 'object') return undefined;
   if (!Array.isArray(node) && Object.prototype.hasOwnProperty.call(node, key)) return node[key];
@@ -116,7 +136,7 @@ class Source {
     const metaDesc = cleanText($('meta[name="description"]').attr('content'));
     const rsc = extractNextF(html);
     const obras = extractFieldArray(rsc, 'obras') || [];
-    const data = { at: Date.now(), obras, metaDesc };
+    const data = { at: Date.now(), obras, metaDesc, rsc };
     if (!key) this.catalogCache = data;
     return data;
   }
@@ -142,10 +162,11 @@ class Source {
   }
 
   async getMangaDetails(mangaId) {
-    const { obras, metaDesc } = await this.loadCatalog(mangaId);
+    const { obras, metaDesc, rsc } = await this.loadCatalog(mangaId);
     const work = obras.find((w) => w && String(w.key) === String(mangaId));
     if (!work) throw new Error('Ranoa: work not found');
-    const st = String(findDeep(work.contenido, 'data-publication-status') || '').toLowerCase();
+    const content = resolveRscRef(rsc, work.contenido);
+    const st = String(findDeep(content, 'data-publication-status') || '').toLowerCase();
     const status = st === 'ongoing' ? 'ONGOING' : (st === 'completed' ? 'COMPLETED' : 'UNKNOWN');
     return {
       mangaInfo: {
@@ -164,11 +185,12 @@ class Source {
   }
 
   async getChapters(mangaId) {
-    const { obras } = await this.loadCatalog(mangaId);
+    const { obras, rsc } = await this.loadCatalog(mangaId);
     const work = obras.find((w) => w && String(w.key) === String(mangaId));
     if (!work) throw new Error('Ranoa: work not found');
+    const content = resolveRscRef(rsc, work.contenido);
     const volumes = [];
-    collectVolumes(work.contenido, volumes);
+    collectVolumes(content, volumes);
     const rows = [];
     const seen = new Set();
     volumes.forEach((vol) => {

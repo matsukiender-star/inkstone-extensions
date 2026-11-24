@@ -205,7 +205,7 @@ class Source {
       seen.add(rest);
       const numM = /(?:capitulo|cap|chapter|ch)[-_ ]*(\d+(?:[._-]\d+)?)/i.exec(rest) || /(\d+(?:\.\d+)?)/.exec(rawText);
       const num = numM ? parseFloat(numM[1].replace(/[_-]/g, '.')) : 0;
-      const name = rawText && rawText.length < 80 ? rawText : `Capítulo ${num || rest}`;
+      const name = numM ? `Capítulo ${numM[1].replace(/[_-]/g, '.')}` : `Capítulo ${rest}`;
       rows.push({ id: rest, chapterId: rest, name, number: Number.isFinite(num) ? num : 0 });
     });
     rows.sort((a, b) => a.number - b.number);

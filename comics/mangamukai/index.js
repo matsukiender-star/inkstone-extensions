@@ -146,7 +146,10 @@ class Source {
       if (seen.has(cid)) return;
       seen.add(cid);
       const num = typeof c.chapter_number === 'number' ? c.chapter_number : parseFloat(String(c.chapter_number || 0));
-      const name = cleanText(c.title) || `Capítulo ${num}`;
+      const numStr = Number.isFinite(num) ? String(num).replace(/\.0$/, '') : '';
+      const rawTitle = cleanText(c.title);
+      const capM = /(cap[íi]tulo\s*[\d.]+(?:\s*[-–:]\s*[^|]+)?)/i.exec(rawTitle);
+      const name = numStr ? `Capítulo ${numStr}` : (capM ? cleanText(capM[1]) : rawTitle || `Capítulo ${cid}`);
       const time = c.created_at ? Date.parse(c.created_at) : undefined;
       rows.push({
         id: cid,
