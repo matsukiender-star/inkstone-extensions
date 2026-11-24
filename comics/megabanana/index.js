@@ -33,6 +33,19 @@ function stripHtml(html) {
   return cleanText(cheerio.load(String(html)).text());
 }
 
+function extractDescription(html) {
+  if (!html) return '';
+  const $ = cheerio.load(String(html));
+  $('script, style, ins, noscript, iframe, .megab-entity-placement').remove();
+  const paras = [];
+  $('p').each((_, el) => {
+    const t = cleanText($(el).text());
+    if (t) paras.push(t);
+  });
+  if (paras.length > 0) return paras.join('\n\n');
+  return cleanText($.root().text());
+}
+
 function cleanComicTitle(raw) {
   let t = stripHtml(raw);
   t = t.replace(/^Leer\s+/i, '');
@@ -123,7 +136,7 @@ class Source {
     const title = cleanComicTitle(post && post.title && post.title.rendered) || mangaId;
     const media = post && post._embedded && post._embedded['wp:featuredmedia'] && post._embedded['wp:featuredmedia'][0];
     const image = absolute(media && media.source_url);
-    const desc = stripHtml(post && post.excerpt && post.excerpt.rendered) || stripHtml(post && post.content && post.content.rendered).slice(0, 500) || title;
+    const desc = extractDescription(post && post.content && post.content.rendered) || stripHtml(post && post.excerpt && post.excerpt.rendered) || title;
     const tags = [];
     const termGroups = (post && post._embedded && post._embedded['wp:term']) || [];
     termGroups.forEach((group) => {

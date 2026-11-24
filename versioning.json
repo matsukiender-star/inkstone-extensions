@@ -11005,7 +11005,7 @@
     {
       "id": "megabanana",
       "name": "MegaBanana",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://megabanana.mx",
       "iconUrl": "https://inkstone.web.app/megabanana/icon.png",
@@ -11021,7 +11021,7 @@
       "language": "es",
       "contentRating": "safe",
       "file": "comics/megabanana/index.js",
-      "sha256": "150def15fb6d17c96d079018df6e87a67470303e8bb3a6cbba05c9e3f3829735",
+      "sha256": "26df74924815ee3fa736b737f69d7f43badf5ae14602996c345584b99c66309e",
       "hosts": [
         "megabanana.mx",
         "*.megabanana.mx"
