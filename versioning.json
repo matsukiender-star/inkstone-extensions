@@ -10798,6 +10798,121 @@
         "uploads.namicomi.com"
       ],
       "sha256": "6d869ddcd0e21311774ba13bb9a8d199fbd13aa7ea79e7491e0d83c03381b06a"
+    },
+    {
+      "id": "ravenmanga",
+      "name": "RavenManga",
+      "version": "1.0.0",
+      "medium": "comics",
+      "file": "comics/ravenmanga/index.js",
+      "author": "matsukiender-star",
+      "website": "https://raventard.xyz",
+      "language": "es",
+      "contentRating": "mature",
+      "description": "Manhwa・Manga・Manhua\n\nCatalog・20+\n\nRestrictions:\n・None",
+      "capabilities": [
+        "browse",
+        "search",
+        "chapters",
+        "details"
+      ],
+      "hosts": [
+        "raventard.xyz",
+        "brakeout.xyz"
+      ],
+      "sha256": "77f90b75a647751ad5c8edd5ccfa588374efb2874a8175cdb4fcec70146b8d9d"
+    },
+    {
+      "id": "heavenmanga",
+      "name": "HeavenManga",
+      "version": "1.0.0",
+      "medium": "comics",
+      "file": "comics/heavenmanga/index.js",
+      "author": "matsukiender-star",
+      "website": "https://heavenmanga.com",
+      "language": "es",
+      "contentRating": "mature",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・10,000+\n\nRestrictions:\n・None",
+      "capabilities": [
+        "browse",
+        "search",
+        "chapters",
+        "details"
+      ],
+      "hosts": [
+        "heavenmanga.com"
+      ],
+      "sha256": "355eb4ac18a61d232ec052f36efde8d46c0d0f0bd58288d6c79126b8a9f72fbb"
+    },
+    {
+      "id": "leermangaesp",
+      "name": "LeerMangaEsp",
+      "version": "1.0.0",
+      "medium": "comics",
+      "file": "comics/leermangaesp/index.js",
+      "author": "matsukiender-star",
+      "website": "https://mangalect.org",
+      "language": "es",
+      "contentRating": "mature",
+      "description": "Manga・Manhwa・Manhua\n\nCatalog・1,000+\n\nRestrictions:\n・None",
+      "capabilities": [
+        "browse",
+        "search",
+        "chapters",
+        "details"
+      ],
+      "hosts": [
+        "mangalect.org",
+        "images.mangalect.org"
+      ],
+      "sha256": "3f904e82422a6c256a38b022be388bbd4936c8f1fb2c9292f54fabbfc5b51a0a"
+    },
+    {
+      "id": "luscious",
+      "name": "Luscious",
+      "version": "1.0.0",
+      "medium": "comics",
+      "file": "comics/luscious/index.js",
+      "author": "matsukiender-star",
+      "website": "https://www.luscious.net",
+      "language": "es",
+      "contentRating": "adult",
+      "tags": [
+        "hentai"
+      ],
+      "description": "Doujinshi・Manga\n\nCatalog・1,000+\n\nRestrictions:\n・Cloudflare",
+      "capabilities": [
+        "browse",
+        "search",
+        "chapters",
+        "details"
+      ],
+      "hosts": [
+        "www.luscious.net"
+      ],
+      "sha256": "37b88b16fd4dc37d7f1d7d33b65283c8d6c906b334f77febe3ba810179233c4c"
+    },
+    {
+      "id": "submanhwa",
+      "name": "SubManhwa",
+      "version": "1.0.0",
+      "medium": "comics",
+      "file": "comics/submanhwa/index.js",
+      "author": "matsukiender-star",
+      "website": "https://submanhwa.com",
+      "language": "es",
+      "contentRating": "mature",
+      "description": "Manhwa・Manga・Manhua\n\nCatalog・1,000+\n\nRestrictions:\n・Cloudflare (Search)",
+      "capabilities": [
+        "browse",
+        "search",
+        "chapters",
+        "details"
+      ],
+      "hosts": [
+        "submanhwa.com"
+      ],
+      "sha256": "d99e0a6208752451c686c81a3f808e8099320d7d5e0645a7909c8a3206124cdd"
     }
   ]
 }
