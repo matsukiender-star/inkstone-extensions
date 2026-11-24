@@ -288,18 +288,18 @@ class Source {
     const image = absolute(imgCandidates[0] || $('meta[property="og:image"]').attr('content'));
 
     const tags = [];
-    $('.genxed a, .mgen a, .seriestugenre a').each((_, el) => {
+    $('.genxed a, .mgen a, .seriestugenre a, .lm4-series a[href*="/genres/"]').each((_, el) => {
       const t = cleanText($(el).text());
       if (t && tags.indexOf(t) < 0) tags.push(t);
     });
 
     const paragraphs = [];
-    $('.entry-content[itemprop="description"] p, .synp .entry-content p, .entry-content.entry-content-single p').each((_, el) => {
+    $('.lm4-summary p, .entry-content[itemprop="description"] p, .synp .entry-content p, .entry-content.entry-content-single p').each((_, el) => {
       const t = cleanText($(el).text());
       if (t) paragraphs.push(t);
     });
     if (paragraphs.length === 0) {
-      const fallback = cleanText($('.entry-content[itemprop="description"], .synp .entry-content').first().text());
+      const fallback = cleanText($('.lm4-summary, .entry-content[itemprop="description"], .synp .entry-content').first().text());
       if (fallback) paragraphs.push(fallback);
     }
 
@@ -308,7 +308,7 @@ class Source {
       const t = cleanText(n);
       if (t && !/^(updating|n\/a|unknown|none|-|\?|desconocido)$/i.test(t) && people.indexOf(t) < 0) people.push(t);
     }));
-    const status = mapStatus(infoField($, ['Status', 'Estado']));
+    const status = mapStatus(cleanText($('.lm4-poster-status').first().text()) || infoField($, ['Status', 'Estado']));
     const released = infoField($, ['Released', 'Publicado', 'Lanzamiento', 'Año']);
     const info = {
       title,
@@ -340,14 +340,14 @@ class Source {
       const path = href.replace(/^https?:\/\/[^/]+/i, '').split(/[?#]/)[0].replace(/^\/+|\/+$/g, '');
       if (!path || seen.has(path)) return;
       seen.add(path);
-      const name = cleanText(li.find('.chapternum').first().text()) || cleanText(link.text()) || path;
+      const name = cleanText(li.find('.lm4-chapter-name, .chapternum').first().text()) || cleanText(link.attr('data-chapter-label')) || cleanText(link.text()) || path;
       const dataNum = parseFloat(li.attr('data-num'));
       const fromName = /(\d+(?:\.\d+)?)/.exec(name);
       rows.push({
         id: path.replace(/\//g, '~'),
         name,
         number: Number.isFinite(dataNum) ? dataNum : fromName ? parseFloat(fromName[1]) : 0,
-        time: parseReleaseDate(li.find('.chapterdate').first().text()),
+        time: parseReleaseDate(li.find('.lm4-chapter-date, .chapterdate').first().text()),
       });
     });
     rows.reverse();
