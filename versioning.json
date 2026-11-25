@@ -1,6 +1,6 @@
 {
-  "repositoryName": "Inkstone",
-  "repositoryDescription": "Community-made extensions that add content to Boundless Reader.",
+  "repositoryName": "Inkstone Suki (pruebas)",
+  "repositoryDescription": "Test build of matsukiender-star's pending Inkstone extensions.",
   "buildTime": "2026-09-03T16:35:04Z",
   "sources": [
     {
@@ -520,7 +520,8 @@
       ],
       "language": "es",
       "contentRating": "safe",
-      "sha256": "d0db4023740a6e564212d20982afd44bd25cb93e91ac7715937634e22b5a0d37"
+      "sha256": "d0db4023740a6e564212d20982afd44bd25cb93e91ac7715937634e22b5a0d37",
+      "category": "manga"
     },
     {
       "id": "olympusscans",
@@ -543,7 +544,8 @@
       "sha256": "519fa9afc0ff0e7e80023e43dcbd582357b16c020d3a87f45ad403c746b514b0",
       "hosts": [
         "olympusxyz.com"
-      ]
+      ],
+      "category": "scans"
     },
     {
       "id": "novelbuddy",
@@ -648,7 +650,7 @@
     {
       "id": "webtoons",
       "name": "WEBTOON",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "medium": "comics",
       "website": "https://www.webtoons.com",
       "iconUrl": "https://inkstone.web.app/webtoons/icon.png",
@@ -661,7 +663,7 @@
         "chapters",
         "reader"
       ],
-      "language": "en",
+      "language": "multi",
       "contentRating": "safe",
       "sha256": "a39bafb3e9dc28cbfffc7b67596db43d1304bc375a8accb8b1728a83223ead4f",
       "hosts": [
@@ -687,7 +689,8 @@
             }
           ]
         }
-      ]
+      ],
+      "category": "manhwa"
     },
     {
       "id": "novelfull",
@@ -1188,7 +1191,8 @@
       ],
       "language": "es",
       "contentRating": "adult",
-      "sha256": "e673bee7d37ad0ffbedf6ab14bf5c5b312d5978f56d038ddbac26495fa008db1"
+      "sha256": "e673bee7d37ad0ffbedf6ab14bf5c5b312d5978f56d038ddbac26495fa008db1",
+      "category": "general"
     },
     {
       "id": "komikindo",
@@ -1547,9 +1551,10 @@
         "chapters",
         "reader"
       ],
-      "language": "en",
+      "language": "multi",
       "contentRating": "adult",
-      "sha256": "dd273420932d7865c56a6e34ea0527df04a560e73c8d917ae3d511ee257dd50d"
+      "sha256": "dd273420932d7865c56a6e34ea0527df04a560e73c8d917ae3d511ee257dd50d",
+      "category": "fanfic"
     },
     {
       "id": "webfic",
@@ -1826,9 +1831,10 @@
           "placeholder": "Not for Google or Facebook sign-in"
         }
       ],
-      "language": "en",
+      "language": "multi",
       "contentRating": "mature",
-      "sha256": "be9386f57b279d517b85d1ee50952f74c92ee7c3e3f0fc37c7c9c40a262c5355"
+      "sha256": "be9386f57b279d517b85d1ee50952f74c92ee7c3e3f0fc37c7c9c40a262c5355",
+      "category": "manhwa"
     },
     {
       "id": "mangadex",
@@ -2000,9 +2006,10 @@
           "default": false
         }
       ],
-      "language": "en",
+      "language": "multi",
       "contentRating": "safe",
-      "sha256": "1aaaa93c4695fdee0d05303677204be050282ad5201c38ad5bb57e460f1ee138"
+      "sha256": "1aaaa93c4695fdee0d05303677204be050282ad5201c38ad5bb57e460f1ee138",
+      "category": "general"
     },
     {
       "id": "kagane",
@@ -2313,9 +2320,10 @@
           ]
         }
       ],
-      "language": "en",
+      "language": "multi",
       "contentRating": "safe",
-      "sha256": "a1125ccee0c317ff6e73f6b9e4e8de5e7886b3abefaf5a064be954d26da35dd8"
+      "sha256": "a1125ccee0c317ff6e73f6b9e4e8de5e7886b3abefaf5a064be954d26da35dd8",
+      "category": "general"
     },
     {
       "id": "mangafire",
@@ -3481,9 +3489,10 @@
         "chapters",
         "videos"
       ],
-      "language": "en",
+      "language": "multi",
       "contentRating": "mature",
-      "sha256": "738066c0d27d7558d626e23aa6d336215d09b951fd5d25dba6674c72ce6fd8aa"
+      "sha256": "738066c0d27d7558d626e23aa6d336215d09b951fd5d25dba6674c72ce6fd8aa",
+      "category": "anime"
     },
     {
       "id": "aniworld",
@@ -4007,7 +4016,8 @@
       ],
       "language": "es",
       "contentRating": "adult",
-      "sha256": "619e8531422d7b1ba38b4fa078c0d3ecf27bd2d0cdd0f95c1b870c3b96ab8d79"
+      "sha256": "619e8531422d7b1ba38b4fa078c0d3ecf27bd2d0cdd0f95c1b870c3b96ab8d79",
+      "category": "scans"
     },
     {
       "id": "inventariooculto",
@@ -4031,7 +4041,8 @@
       ],
       "language": "es",
       "contentRating": "adult",
-      "sha256": "6393f930fc717c4445ca7fe6c5eb000163a2de9bd53cd952a6d772acb211c203"
+      "sha256": "6393f930fc717c4445ca7fe6c5eb000163a2de9bd53cd952a6d772acb211c203",
+      "category": "scans"
     },
     {
       "id": "kazokuden",
@@ -4055,7 +4066,8 @@
       ],
       "language": "es",
       "contentRating": "mature",
-      "sha256": "de0048b4779a0577073d10c1983864728b851014821bb9c6e03cc269c31498b6"
+      "sha256": "de0048b4779a0577073d10c1983864728b851014821bb9c6e03cc269c31498b6",
+      "category": "scans"
     },
     {
       "id": "mhscans",
@@ -4079,7 +4091,8 @@
       ],
       "language": "es",
       "contentRating": "safe",
-      "sha256": "ea58cece0722ad3d132cbf87e2cb44ab097752a6c9726a76883bcfe89cbe5676"
+      "sha256": "ea58cece0722ad3d132cbf87e2cb44ab097752a6c9726a76883bcfe89cbe5676",
+      "category": "scans"
     },
     {
       "id": "monopolyscan",
@@ -4103,7 +4116,8 @@
       ],
       "language": "es",
       "contentRating": "safe",
-      "sha256": "62cc540a9fdd6eceef54bbab1058053fc94294e59095158d004fee32cd228a0b"
+      "sha256": "62cc540a9fdd6eceef54bbab1058053fc94294e59095158d004fee32cd228a0b",
+      "category": "scans"
     },
     {
       "id": "ragnarokscanlation",
@@ -4127,7 +4141,8 @@
       ],
       "language": "es",
       "contentRating": "safe",
-      "sha256": "d33c8b88181df39914e4c2133f2ed6218774de654c56855d19b281213df415fd"
+      "sha256": "d33c8b88181df39914e4c2133f2ed6218774de654c56855d19b281213df415fd",
+      "category": "scans"
     },
     {
       "id": "rakuentranslations",
@@ -4151,7 +4166,8 @@
       ],
       "language": "es",
       "contentRating": "mature",
-      "sha256": "252a6d1dcb4adde8a76d5c56ee084f3ee073ab2056f76a6b60b5570502a23f93"
+      "sha256": "252a6d1dcb4adde8a76d5c56ee084f3ee073ab2056f76a6b60b5570502a23f93",
+      "category": "scans"
     },
     {
       "id": "uchuujinprojects",
@@ -4175,7 +4191,8 @@
       ],
       "language": "es",
       "contentRating": "mature",
-      "sha256": "9996bde2ae8585c17e52d720478034a15b20b16b9973515acf6a65297b0d04b9"
+      "sha256": "9996bde2ae8585c17e52d720478034a15b20b16b9973515acf6a65297b0d04b9",
+      "category": "scans"
     },
     {
       "id": "undertranslations",
@@ -4199,7 +4216,8 @@
       ],
       "language": "es",
       "contentRating": "mature",
-      "sha256": "c5138b10a886318df68a78419ba9a55fe5e9a2d11945291db23dd8415142e66b"
+      "sha256": "c5138b10a886318df68a78419ba9a55fe5e9a2d11945291db23dd8415142e66b",
+      "category": "scans"
     },
     {
       "id": "yurionline",
@@ -4223,7 +4241,8 @@
       ],
       "language": "es",
       "contentRating": "safe",
-      "sha256": "2fb96da77b3368ffc95f474de284c44ec0268b498b5472cf02b60069395edd0c"
+      "sha256": "2fb96da77b3368ffc95f474de284c44ec0268b498b5472cf02b60069395edd0c",
+      "category": "general"
     },
     {
       "id": "cafcomyaoi",
@@ -4944,7 +4963,8 @@
       "authorUrl": "https://github.com/matsukiender-star",
       "sha256": "005bc4dc3c16ebe5f503a19d7cf116824231887e8cbb98741ec0178a9699b496",
       "status": "broken",
-      "statusNote": "Chapters cannot be opened: the site now needs a token its own script builds. Latest, details and chapter lists still load."
+      "statusNote": "Chapters cannot be opened: the site now needs a token its own script builds. Latest, details and chapter lists still load.",
+      "category": "general"
     },
     {
       "id": "zonatmoorg",
@@ -4970,7 +4990,8 @@
       "contentRating": "adult",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "03c525683b6cf8db344e12a6a1025776ad5820dba0e45c8141f2ac14e08ff999"
+      "sha256": "03c525683b6cf8db344e12a6a1025776ad5820dba0e45c8141f2ac14e08ff999",
+      "category": "general"
     },
     {
       "id": "abertoverse",
@@ -5090,7 +5111,8 @@
       ],
       "language": "es",
       "contentRating": "safe",
-      "sha256": "f917d2243d20b39e0ba55e760eef25388875e0005b2604ee0bd1ff63d8b6ce15"
+      "sha256": "f917d2243d20b39e0ba55e760eef25388875e0005b2604ee0bd1ff63d8b6ce15",
+      "category": "scans"
     },
     {
       "id": "jinmangas",
@@ -5234,7 +5256,8 @@
       ],
       "language": "es",
       "contentRating": "safe",
-      "sha256": "22f7fbf9fcfac6e0c091166dbcd2f23c4af2222805397b88b3ca2e0c5fbc4881"
+      "sha256": "22f7fbf9fcfac6e0c091166dbcd2f23c4af2222805397b88b3ca2e0c5fbc4881",
+      "category": "scans"
     },
     {
       "id": "ninjascan",
@@ -5334,7 +5357,8 @@
       "contentRating": "safe",
       "sha256": "4e4b9c4a7330968ed7018d6583a26b36968363a0c61682d888716e919671e6e8",
       "status": "broken",
-      "statusNote": "The site's server answers HTTP 500 on every page (checked on 2026-11-18 and 2026-11-19)."
+      "statusNote": "The site's server answers HTTP 500 on every page (checked on 2026-11-18 and 2026-11-19).",
+      "category": "scans"
     },
     {
       "id": "slowmanga",
@@ -5520,7 +5544,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "e2e549e0a0991be005445791e00f07dbd1fe278313eac1fd9b2305ca7c92f0fc"
+      "sha256": "e2e549e0a0991be005445791e00f07dbd1fe278313eac1fd9b2305ca7c92f0fc",
+      "category": "anime"
     },
     {
       "id": "doodmanga",
@@ -5807,7 +5832,8 @@
       ],
       "language": "es",
       "contentRating": "mature",
-      "sha256": "8549321fa01fb239d477157ecec01d2088e4fa11d96f63ba9a61f40c98ee7f00"
+      "sha256": "8549321fa01fb239d477157ecec01d2088e4fa11d96f63ba9a61f40c98ee7f00",
+      "category": "scans"
     },
     {
       "id": "begatranslation",
@@ -5831,7 +5857,8 @@
       ],
       "language": "es",
       "contentRating": "adult",
-      "sha256": "502bc8da0118c147e619e82f99a171a40f0f27758c36c8b0e0d90e01187a3d5e"
+      "sha256": "502bc8da0118c147e619e82f99a171a40f0f27758c36c8b0e0d90e01187a3d5e",
+      "category": "scans"
     },
     {
       "id": "webtoonhatti",
@@ -6023,7 +6050,7 @@
         "chapters",
         "videos"
       ],
-      "language": "en",
+      "language": "multi",
       "contentRating": "mature",
       "settingsSchema": [
         {
@@ -6071,7 +6098,8 @@
           ]
         }
       ],
-      "sha256": "bff94d8909e4ab800dd60e78790d9fa4572178d5ca8dfd89149dc1a051c31c3f"
+      "sha256": "bff94d8909e4ab800dd60e78790d9fa4572178d5ca8dfd89149dc1a051c31c3f",
+      "category": "anime"
     },
     {
       "id": "animexin",
@@ -6490,7 +6518,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "3077a5d9ea4b0e0362556246ddc529522e3c588795f3ccf62e56a7c8b3ac7faa"
+      "sha256": "3077a5d9ea4b0e0362556246ddc529522e3c588795f3ccf62e56a7c8b3ac7faa",
+      "category": "anime"
     },
     {
       "id": "animejl",
@@ -6588,7 +6617,8 @@
       ],
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "99c50cefe490e58e59902195c92b257eb437da1b8789c3229b43433ff7adfdf7"
+      "sha256": "99c50cefe490e58e59902195c92b257eb437da1b8789c3229b43433ff7adfdf7",
+      "category": "anime"
     },
     {
       "id": "animelatinohd",
@@ -6671,7 +6701,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "32c031981a2c585a04284c0b25dcbb73fd07082f133621b994c080d41358c600"
+      "sha256": "32c031981a2c585a04284c0b25dcbb73fd07082f133621b994c080d41358c600",
+      "category": "anime"
     },
     {
       "id": "animemovil",
@@ -6696,7 +6727,8 @@
       ],
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "efa3d6942559bb49edb667164bdc055dec00dec52aad147a89ccb92809e6aac4"
+      "sha256": "efa3d6942559bb49edb667164bdc055dec00dec52aad147a89ccb92809e6aac4",
+      "category": "anime"
     },
     {
       "id": "animeonlineninja",
@@ -6794,7 +6826,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "de6875c679bcae951dd37f0d37aa24e9156b8c9a5ed250f288c689af744a4744"
+      "sha256": "de6875c679bcae951dd37f0d37aa24e9156b8c9a5ed250f288c689af744a4744",
+      "category": "anime"
     },
     {
       "id": "asialiveaction",
@@ -6816,7 +6849,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "cb0a02204c9803d2d43e95da81f4006a7e92a852c90012ba3baa4b41840760c8"
+      "sha256": "cb0a02204c9803d2d43e95da81f4006a7e92a852c90012ba3baa4b41840760c8",
+      "category": "dramas"
     },
     {
       "id": "beatzanime",
@@ -6842,7 +6876,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "bee96704f10924ac4e520ec7ab036f450539a8b51a8b7f45647733397da59708"
+      "sha256": "bee96704f10924ac4e520ec7ab036f450539a8b51a8b7f45647733397da59708",
+      "category": "anime"
     },
     {
       "id": "cinecalidad",
@@ -6864,12 +6899,13 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "2202be928db92dd9834e9c7390ecb2a757e04ac41dfdccffd8a99c79bb7bdce4"
+      "sha256": "2202be928db92dd9834e9c7390ecb2a757e04ac41dfdccffd8a99c79bb7bdce4",
+      "category": "movies"
     },
     {
       "id": "cineplus123",
       "name": "CinePlus123",
-      "version": "1.0.10",
+      "version": "1.0.11",
       "medium": "anime",
       "website": "https://cineplus123.org",
       "iconUrl": "https://inkstone.web.app/cineplus123/icon.png",
@@ -6886,7 +6922,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "3297842719536b51ecb0c637e769ba04cb12801e073729b6c315fc7b6d73b4d3"
+      "sha256": "3297842719536b51ecb0c637e769ba04cb12801e073729b6c315fc7b6d73b4d3",
+      "category": "movies"
     },
     {
       "id": "cuevana",
@@ -6908,7 +6945,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "ead7c8b7adde0c09effe5819b270e1faa88a820d69d0a439ea922886dcd768d2"
+      "sha256": "ead7c8b7adde0c09effe5819b270e1faa88a820d69d0a439ea922886dcd768d2",
+      "category": "movies"
     },
     {
       "id": "doramasflix",
@@ -6930,7 +6968,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "b14f91d2e29263320c53545ae45445c0f39ccf2856d36d1d60e818f46340bb37"
+      "sha256": "b14f91d2e29263320c53545ae45445c0f39ccf2856d36d1d60e818f46340bb37",
+      "category": "dramas"
     },
     {
       "id": "doramasyt",
@@ -6952,7 +6991,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "854a119b7151f525df1d3af97d820fb0e34f3fc7218481620ae7fc7f71a6fa54"
+      "sha256": "854a119b7151f525df1d3af97d820fb0e34f3fc7218481620ae7fc7f71a6fa54",
+      "category": "dramas"
     },
     {
       "id": "dragontranslation",
@@ -6977,7 +7017,8 @@
       "contentRating": "adult",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "a098db9ba2a1bd2432bd1cd916aa255523e0d747eef80fa27966575d42e4477e"
+      "sha256": "a098db9ba2a1bd2432bd1cd916aa255523e0d747eef80fa27966575d42e4477e",
+      "category": "scans"
     },
     {
       "id": "eternalmangas",
@@ -7002,7 +7043,8 @@
       "contentRating": "adult",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "d3d0101a37a4126dc9b732a63361356ad2615d04d76d383190fa373cbf3cdfc0"
+      "sha256": "d3d0101a37a4126dc9b732a63361356ad2615d04d76d383190fa373cbf3cdfc0",
+      "category": "scans"
     },
     {
       "id": "gnula",
@@ -7024,7 +7066,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "18367c0fd3dc18af4d1a85c52bb99a61d1254d48513995a173def10bb546b41b"
+      "sha256": "18367c0fd3dc18af4d1a85c52bb99a61d1254d48513995a173def10bb546b41b",
+      "category": "movies"
     },
     {
       "id": "jkanime",
@@ -7045,7 +7088,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "03f2b4a7fb6b3da3e11bca77d46833b726374aeb533b962cec134d8db5139f5f"
+      "sha256": "03f2b4a7fb6b3da3e11bca77d46833b726374aeb533b962cec134d8db5139f5f",
+      "category": "anime"
     },
     {
       "id": "katanime",
@@ -7094,7 +7138,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "6398633d8c053559db839898fcc542b6eb66e4d7ae76acf399ba38842df8068a"
+      "sha256": "6398633d8c053559db839898fcc542b6eb66e4d7ae76acf399ba38842df8068a",
+      "category": "anime"
     },
     {
       "id": "latanime",
@@ -7115,7 +7160,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "606dc377b824552d23c7b7c3a4886e35ebfbed6c6855e690c1ba6d5b5beef0a5"
+      "sha256": "606dc377b824552d23c7b7c3a4886e35ebfbed6c6855e690c1ba6d5b5beef0a5",
+      "category": "anime"
     },
     {
       "id": "leercapitulo",
@@ -7140,7 +7186,8 @@
       "contentRating": "adult",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "d2839cf6a3802455adcc3ea4fe513e713ef60853bb73315a1a011376b506bdde"
+      "sha256": "d2839cf6a3802455adcc3ea4fe513e713ef60853bb73315a1a011376b506bdde",
+      "category": "general"
     },
     {
       "id": "leermanhwas",
@@ -7165,7 +7212,8 @@
       "contentRating": "adult",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "a823a3259d79003c3950060c34490335c5e582e05b6a0cef687026f0d9aeafe1"
+      "sha256": "a823a3259d79003c3950060c34490335c5e582e05b6a0cef687026f0d9aeafe1",
+      "category": "manhwa"
     },
     {
       "id": "mangasin",
@@ -7189,7 +7237,8 @@
       "contentRating": "adult",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "540bc472d1c184cad4ddf75a5af3032ce49a35877499764e215bd50eff6314f2"
+      "sha256": "540bc472d1c184cad4ddf75a5af3032ce49a35877499764e215bd50eff6314f2",
+      "category": "manga"
     },
     {
       "id": "mangatv",
@@ -7214,7 +7263,8 @@
       "contentRating": "adult",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "050eb01e93374c18aa57a5f3a8788c58afe011f89fc46521e4cf5b752167849f"
+      "sha256": "050eb01e93374c18aa57a5f3a8788c58afe011f89fc46521e4cf5b752167849f",
+      "category": "general"
     },
     {
       "id": "manhwalatino",
@@ -7238,7 +7288,8 @@
       "contentRating": "adult",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "2b365116880c81e32c9501ca0a95e3063b2317739bb6c9a926a8618bfa6792e7"
+      "sha256": "2b365116880c81e32c9501ca0a95e3063b2317739bb6c9a926a8618bfa6792e7",
+      "category": "manhwa"
     },
     {
       "id": "manhwaweb",
@@ -7263,7 +7314,8 @@
       "contentRating": "adult",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "860d1ebaac98b05929508c46f427a0f7ca479144450f5d8bf424c6ec459545e2"
+      "sha256": "860d1ebaac98b05929508c46f427a0f7ca479144450f5d8bf424c6ec459545e2",
+      "category": "manhwa"
     },
     {
       "id": "marmota",
@@ -7289,12 +7341,13 @@
       "contentRating": "safe",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "2424c0de883d68aabce26099da2e666a7ff4b9116221a3ff1c7d015fa086e654"
+      "sha256": "2424c0de883d68aabce26099da2e666a7ff4b9116221a3ff1c7d015fa086e654",
+      "category": "comics"
     },
     {
       "id": "mundodonghua",
       "name": "MundoDonghua",
-      "version": "1.0.12",
+      "version": "1.0.13",
       "medium": "anime",
       "website": "https://www.mundodonghua.com",
       "iconUrl": "https://inkstone.web.app/mundodonghua/icon.png",
@@ -7311,7 +7364,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "07d87d572214b5fde56dd729afe08f372b32f05940617d9e04c5b92ec2297d05"
+      "sha256": "07d87d572214b5fde56dd729afe08f372b32f05940617d9e04c5b92ec2297d05",
+      "category": "donghua"
     },
     {
       "id": "novelaenespanol",
@@ -7335,7 +7389,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "2103c3802d023bebfda0d6939955c2189b27fb363fa13e367b45c2b2062ef97b"
+      "sha256": "2103c3802d023bebfda0d6939955c2189b27fb363fa13e367b45c2b2062ef97b",
+      "category": "lightnovels"
     },
     {
       "id": "novelasligeras",
@@ -7359,7 +7414,8 @@
       "contentRating": "adult",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "8297b62269f283a93276fb871bbc700d27f4c343e76dd25a073e74691c912952"
+      "sha256": "8297b62269f283a93276fb871bbc700d27f4c343e76dd25a073e74691c912952",
+      "category": "lightnovels"
     },
     {
       "id": "pelisforte",
@@ -7386,7 +7442,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "b15839b65163f5fc670bf6f15ca74db8d943e90603f97ddfbeecd2e9e895ebe1"
+      "sha256": "b15839b65163f5fc670bf6f15ca74db8d943e90603f97ddfbeecd2e9e895ebe1",
+      "category": "movies"
     },
     {
       "id": "poseidonhd",
@@ -7408,7 +7465,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "6d635d8982973bf72d275f9f7a2c5ce0672a0f2b7af6ba721355e6406c035583"
+      "sha256": "6d635d8982973bf72d275f9f7a2c5ce0672a0f2b7af6ba721355e6406c035583",
+      "category": "movies"
     },
     {
       "id": "shadowmanga",
@@ -7433,7 +7491,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "2d0e8c9108fcb953aff4d7a601b6706496bb19ca43ff0273bb7779c09802e863"
+      "sha256": "2d0e8c9108fcb953aff4d7a601b6706496bb19ca43ff0273bb7779c09802e863",
+      "category": "scans"
     },
     {
       "id": "tioanime",
@@ -7455,7 +7514,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "6c9bff5f3c4502c417c509db289a5a79718ac82eb888edfd9f5cc053520a9e5d"
+      "sha256": "6c9bff5f3c4502c417c509db289a5a79718ac82eb888edfd9f5cc053520a9e5d",
+      "category": "anime"
     },
     {
       "id": "traduccionesisekai",
@@ -7480,7 +7540,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "96952d4d50dc9bb9f945cbb18d424e63da4a487bd5a721c236a4feefffdf1a15"
+      "sha256": "96952d4d50dc9bb9f945cbb18d424e63da4a487bd5a721c236a4feefffdf1a15",
+      "category": "lightnovels"
     },
     {
       "id": "veranime",
@@ -7502,7 +7563,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "839b149228d8b2e5fe0c1f418d955aa17ee06c38c50d412ee36e1a0cd9e6faf1"
+      "sha256": "839b149228d8b2e5fe0c1f418d955aa17ee06c38c50d412ee36e1a0cd9e6faf1",
+      "category": "anime"
     },
     {
       "id": "veranimes",
@@ -7552,7 +7614,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "836eac48c081303fabeed919600159f75f02d0be3626e011cf54c9cc1e91b76e"
+      "sha256": "836eac48c081303fabeed919600159f75f02d0be3626e011cf54c9cc1e91b76e",
+      "category": "anime"
     },
     {
       "id": "wikisourcees",
@@ -7578,7 +7641,8 @@
       "contentRating": "safe",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "1350f9bf5ebb18e9ff525aaf106ea23dbe608478b2ac19717dd3e42b6d5e0059"
+      "sha256": "1350f9bf5ebb18e9ff525aaf106ea23dbe608478b2ac19717dd3e42b6d5e0059",
+      "category": "books"
     },
     {
       "id": "hentaila",
@@ -7604,12 +7668,13 @@
       ],
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "c38851c46a0e5fa3d68c2ce1845813a08efe17a22b0f9089f5bd31487421571a"
+      "sha256": "c38851c46a0e5fa3d68c2ce1845813a08efe17a22b0f9089f5bd31487421571a",
+      "category": "hentai"
     },
     {
       "id": "ikigaimangas",
       "name": "Ikigai Mangas",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "medium": "comics",
       "website": "https://ikigaimangas.com",
       "iconUrl": "https://inkstone.web.app/ikigaimangas/icon.png",
@@ -7626,7 +7691,13 @@
       "contentRating": "adult",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "916faeac4d43379193a214f15a611c0815e2c921981100814189392b3d8d7a27"
+      "sha256": "916faeac4d43379193a214f15a611c0815e2c921981100814189392b3d8d7a27",
+      "imageHeaders": {
+        "Sec-Fetch-Dest": "image",
+        "Sec-Fetch-Mode": "no-cors",
+        "Sec-Fetch-Site": "cross-site"
+      },
+      "category": "general"
     },
     {
       "id": "mangolibreria",
@@ -7651,7 +7722,8 @@
       "contentRating": "adult",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "e59142b5952ecc55325df71fb7a09024428b142110b42043a1b85dadbfa7d9e9"
+      "sha256": "e59142b5952ecc55325df71fb7a09024428b142110b42043a1b85dadbfa7d9e9",
+      "category": "general"
     },
     {
       "id": "lectulandia",
@@ -7680,7 +7752,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "4759da801a197b9d24f62083711e75ce4ace73a1c19b5de1f6d896c979e146a4"
+      "sha256": "4759da801a197b9d24f62083711e75ce4ace73a1c19b5de1f6d896c979e146a4",
+      "category": "books"
     },
     {
       "id": "elejandria",
@@ -7706,7 +7779,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "407691962dd2fe9688f3cdddff95e612eb03731e08a24945ca298b95f855b60d"
+      "sha256": "407691962dd2fe9688f3cdddff95e612eb03731e08a24945ca298b95f855b60d",
+      "category": "books"
     },
     {
       "id": "myasiantv",
@@ -7952,9 +8026,10 @@
         "chapters",
         "videos"
       ],
-      "language": "en",
+      "language": "multi",
       "contentRating": "mature",
-      "sha256": "e8520afba524650840c983354894bba9e97faece93da2953ca0ff4e80617aed2"
+      "sha256": "e8520afba524650840c983354894bba9e97faece93da2953ca0ff4e80617aed2",
+      "category": "dramas"
     },
     {
       "id": "cno",
@@ -8660,9 +8735,10 @@
         "chapters",
         "videos"
       ],
-      "language": "en",
+      "language": "multi",
       "contentRating": "mature",
-      "sha256": "66620c9539274fe4f3d387be0b0a0e7eb0ef08264fdca360d1cb9e5348b54c30"
+      "sha256": "66620c9539274fe4f3d387be0b0a0e7eb0ef08264fdca360d1cb9e5348b54c30",
+      "category": "dramas"
     },
     {
       "id": "anilight",
@@ -8869,10 +8945,11 @@
         "chapters",
         "videos"
       ],
-      "language": "en",
+      "language": "multi",
       "contentRating": "mature",
       "hostsNote": "hosts left OUT on purpose (empty means no limit): the stream hosts rotate and differ per server (gzip.rousav.tech, stream.vidbolt.xyz, proxy.vidbolt.xyz, dash-hls-bridge.johndoesdmc.workers.dev, v.vidozen.xyz, sandyowl17.boats). The code itself requests only kissbae.com, vidozen.xyz and vidbolt.pro. The test script warns 'no hosts list'.",
-      "sha256": "94a88601d741c446ee2203bf372b4463e02be3d0694abbbe8255b90b028cf9f0"
+      "sha256": "94a88601d741c446ee2203bf372b4463e02be3d0694abbbe8255b90b028cf9f0",
+      "category": "dramas"
     },
     {
       "id": "justanime",
@@ -9353,9 +9430,10 @@
         "chapters",
         "videos"
       ],
-      "language": "en",
+      "language": "multi",
       "contentRating": "mature",
-      "sha256": "13ca00dccf030b2cc50b093927bd26fa02161264a4cca127dcb8fc20313839e5"
+      "sha256": "13ca00dccf030b2cc50b093927bd26fa02161264a4cca127dcb8fc20313839e5",
+      "category": "movies"
     },
     {
       "id": "animesuge",
@@ -9443,9 +9521,10 @@
         "chapters",
         "videos"
       ],
-      "language": "en",
+      "language": "multi",
       "contentRating": "mature",
-      "sha256": "49119d648506aa96e76b2c59c568d3802b26c99c6f18d4767cf7a944a811d7d6"
+      "sha256": "49119d648506aa96e76b2c59c568d3802b26c99c6f18d4767cf7a944a811d7d6",
+      "category": "movies"
     },
     {
       "id": "danishsilentfilm",
@@ -9491,9 +9570,10 @@
         "chapters",
         "videos"
       ],
-      "language": "en",
+      "language": "multi",
       "contentRating": "mature",
-      "sha256": "0147283f82419b4e412c66a70554a593dc2e39d681baf66c37d3b3015f4d777f"
+      "sha256": "0147283f82419b4e412c66a70554a593dc2e39d681baf66c37d3b3015f4d777f",
+      "category": "movies"
     },
     {
       "id": "internetarchive",
@@ -9595,9 +9675,10 @@
         "chapters",
         "videos"
       ],
-      "language": "en",
+      "language": "multi",
       "contentRating": "mature",
-      "sha256": "4d378d8851782844e7536328401948f8cecb8d5562c8c9ec92bdf8772848c027"
+      "sha256": "4d378d8851782844e7536328401948f8cecb8d5562c8c9ec92bdf8772848c027",
+      "category": "movies"
     },
     {
       "id": "arrowtv",
@@ -10029,7 +10110,7 @@
     {
       "id": "bymichiscan",
       "name": "ByMichiScan",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://bymichiby.com",
       "iconUrl": "https://inkstone.web.app/bymichiscan/icon.png",
@@ -10051,7 +10132,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "b17ea34f00e3fb8da57e8346abd019809a3f97c45ea96a6f9c72d153a482005d"
+      "sha256": "b17ea34f00e3fb8da57e8346abd019809a3f97c45ea96a6f9c72d153a482005d",
+      "category": "scans"
     },
     {
       "id": "asialotus",
@@ -10079,7 +10161,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "9345b3b9686d1fd269718897b88c1a8d2b7eb8e070454f2b18b7ede8660c3ec5"
+      "sha256": "9345b3b9686d1fd269718897b88c1a8d2b7eb8e070454f2b18b7ede8660c3ec5",
+      "category": "scans"
     },
     {
       "id": "cerberusseries",
@@ -10107,12 +10190,13 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "800d756e2be7f57ce7ce36cb7b34926ebf12add8f2aa081693f832139d6ff439"
+      "sha256": "800d756e2be7f57ce7ce36cb7b34926ebf12add8f2aa081693f832139d6ff439",
+      "category": "scans"
     },
     {
       "id": "miauscan",
       "name": "Miau Scan",
-      "version": "1.0.0",
+      "version": "1.0.2",
       "medium": "comics",
       "website": "https://leer.lectovela.com",
       "iconUrl": "https://inkstone.web.app/miauscan/icon.png",
@@ -10134,7 +10218,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "4e60ebf94fae0615658b23defd8365e33965867b97262d749b4622039182c50d"
+      "sha256": "4e60ebf94fae0615658b23defd8365e33965867b97262d749b4622039182c50d",
+      "category": "scans"
     },
     {
       "id": "apollcomics",
@@ -10161,12 +10246,13 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "bd1db29c13c2f163a45c67808638b903a8fdda6a75c2e68796c7b4d1c3517af3"
+      "sha256": "bd1db29c13c2f163a45c67808638b903a8fdda6a75c2e68796c7b4d1c3517af3",
+      "category": "scans"
     },
     {
       "id": "taurusfansub",
       "name": "TaurusFansub",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://lectortaurus.com",
       "iconUrl": "https://inkstone.web.app/taurusfansub/icon.png",
@@ -10188,7 +10274,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "29f98b08decb848c7a926106421ad76c603e7a5de2e4d4e0aa5e911e1d5dde4c"
+      "sha256": "29f98b08decb848c7a926106421ad76c603e7a5de2e4d4e0aa5e911e1d5dde4c",
+      "category": "scans"
     },
     {
       "id": "mundomanhwa",
@@ -10215,12 +10302,13 @@
       "contentRating": "adult",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "1b82e9897733061cc1ab9aed4dec408514c3043d89b02354c9bffcf174546105"
+      "sha256": "1b82e9897733061cc1ab9aed4dec408514c3043d89b02354c9bffcf174546105",
+      "category": "manhwa"
     },
     {
       "id": "manhwashot",
       "name": "ManhwaShot",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://manhwashot.lat",
       "iconUrl": "https://inkstone.web.app/manhwashot/icon.png",
@@ -10241,12 +10329,13 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "98b8876a1f8a10f51a38111d94ab5d04bbdfb4ec3221584ee01b87bdd1615bb6"
+      "sha256": "98b8876a1f8a10f51a38111d94ab5d04bbdfb4ec3221584ee01b87bdd1615bb6",
+      "category": "manhwa"
     },
     {
       "id": "anzmanga",
       "name": "AnzManga",
-      "version": "1.0.0",
+      "version": "1.0.2",
       "medium": "comics",
       "website": "https://www.anzmanga25.com",
       "iconUrl": "https://inkstone.web.app/anzmanga/icon.png",
@@ -10269,12 +10358,13 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "957a7961aba3c46dc1117237277b3a7ea5edc5bc3ea71032cb5feb06b44cf9d3"
+      "sha256": "957a7961aba3c46dc1117237277b3a7ea5edc5bc3ea71032cb5feb06b44cf9d3",
+      "category": "scans"
     },
     {
       "id": "traduccionesmoonlight",
       "name": "Traducciones Moonlight",
-      "version": "1.0.0",
+      "version": "1.0.2",
       "medium": "comics",
       "website": "https://traduccionesmoonlight.com",
       "iconUrl": "https://inkstone.web.app/traduccionesmoonlight/icon.png",
@@ -10301,12 +10391,13 @@
       ],
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "bfc3d2f44760535669bde649b3f9d21a4e02c301c3fec5649bb71ccec3c57c7b"
+      "sha256": "bfc3d2f44760535669bde649b3f9d21a4e02c301c3fec5649bb71ccec3c57c7b",
+      "category": "adult"
     },
     {
       "id": "traduccionesmoonlightnovelas",
       "name": "Traducciones Moonlight Novelas",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "novel",
       "website": "https://traduccionesmoonlight.com",
       "iconUrl": "https://inkstone.web.app/traduccionesmoonlightnovelas/icon.png",
@@ -10331,12 +10422,13 @@
       ],
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "15577185b5b6429fe220a49769265ee24f3a11153bffec15c968a258eef4c827"
+      "sha256": "15577185b5b6429fe220a49769265ee24f3a11153bffec15c968a258eef4c827",
+      "category": "lightnovels"
     },
     {
       "id": "lectorasteria",
       "name": "Lector Asteria",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://visor.chifa-tong.online",
       "iconUrl": "https://inkstone.web.app/lectorasteria/icon.png",
@@ -10358,12 +10450,13 @@
       "contentRating": "adult",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "1d27594237499dcfd60876fe113815f24b0f956afa05a54972926639240c6a3f"
+      "sha256": "1d27594237499dcfd60876fe113815f24b0f956afa05a54972926639240c6a3f",
+      "category": "scans"
     },
     {
       "id": "spnmanga",
       "name": "SpnManga",
-      "version": "1.0.0",
+      "version": "1.0.2",
       "medium": "comics",
       "website": "https://www.spnmanga.com",
       "iconUrl": "https://inkstone.web.app/spnmanga/icon.png",
@@ -10385,12 +10478,13 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "80cbb47d78b2b77881ce027e1188960c8a4d087dd71e0bff2de26736a3adb0c4"
+      "sha256": "80cbb47d78b2b77881ce027e1188960c8a4d087dd71e0bff2de26736a3adb0c4",
+      "category": "general"
     },
     {
       "id": "seinagi",
       "name": "Seinagi",
-      "version": "1.0.0",
+      "version": "1.0.2",
       "medium": "comics",
       "website": "https://online.seinagi.org.es",
       "iconUrl": "https://inkstone.web.app/seinagi/icon.png",
@@ -10409,12 +10503,13 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "da9bc8f5734b34660878c77432afddfa37c99fa80c8b8a79e57ab58762ec1c55"
+      "sha256": "da9bc8f5734b34660878c77432afddfa37c99fa80c8b8a79e57ab58762ec1c55",
+      "category": "scans"
     },
     {
       "id": "pzykosis666hfansub",
       "name": "Pzykosis666HFansub",
-      "version": "1.0.0",
+      "version": "1.0.2",
       "medium": "comics",
       "website": "https://lector.pzykosis666hfansub.com",
       "iconUrl": "https://inkstone.web.app/pzykosis666hfansub/icon.png",
@@ -10437,12 +10532,13 @@
       ],
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "17565fe849627a6ce338becf571fa6a8a8d61ce5b4241be36db28297cae84078"
+      "sha256": "17565fe849627a6ce338becf571fa6a8a8d61ce5b4241be36db28297cae84078",
+      "category": "adult"
     },
     {
       "id": "tmomanhwa",
       "name": "TmoManhwa",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://tmomanhwa.com",
       "iconUrl": "https://inkstone.web.app/tmomanhwa/icon.png",
@@ -10465,12 +10561,13 @@
       ],
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "e7750547985ffd37ba7b8e420d7850735862ba78139f438621818dd2d383f4fc"
+      "sha256": "e7750547985ffd37ba7b8e420d7850735862ba78139f438621818dd2d383f4fc",
+      "category": "adult"
     },
     {
       "id": "dynasty",
       "name": "Dynasty (Manhuako)",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://manhuako.net",
       "iconUrl": "https://inkstone.web.app/dynasty/icon.png",
@@ -10491,7 +10588,8 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "ee81b35e860028518629dffc2f52033b3bc0b8d73f632701590106278fb7770b"
+      "sha256": "ee81b35e860028518629dffc2f52033b3bc0b8d73f632701590106278fb7770b",
+      "category": "scans"
     },
     {
       "id": "platinumlilyscan",
@@ -10517,12 +10615,13 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "3a4402901c33b836e70bd139ae3c175d944b57295d6ef6b90d4aa042b76448e5"
+      "sha256": "3a4402901c33b836e70bd139ae3c175d944b57295d6ef6b90d4aa042b76448e5",
+      "category": "scans"
     },
     {
       "id": "menudofansub",
       "name": "Menudo-Fansub",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://www.menudo-fansub.com/slide/",
       "iconUrl": "https://inkstone.web.app/menudofansub/icon.png",
@@ -10541,7 +10640,8 @@
       "contentRating": "safe",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "7ccb9be991516830dff9779bbd0fd8cb4245ce51d074667364899f1d27002be0"
+      "sha256": "7ccb9be991516830dff9779bbd0fd8cb4245ce51d074667364899f1d27002be0",
+      "category": "scans"
     },
     {
       "id": "ragnascans",
@@ -10566,12 +10666,13 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "44992eef40d8013a26e26ca8eef67a225aefe0bbb4666fdff71049c3c6a5d0f5"
+      "sha256": "44992eef40d8013a26e26ca8eef67a225aefe0bbb4666fdff71049c3c6a5d0f5",
+      "category": "scans"
     },
     {
       "id": "bloomscans",
       "name": "BloomScans",
-      "version": "1.0.0",
+      "version": "1.0.2",
       "medium": "comics",
       "website": "https://bloomscans.com",
       "iconUrl": "https://inkstone.web.app/bloomscans/icon.png",
@@ -10591,12 +10692,13 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "c10363334130da50e6746ee1f47390932fa5a1349a09b021b47f8a1f0e56ae85"
+      "sha256": "c10363334130da50e6746ee1f47390932fa5a1349a09b021b47f8a1f0e56ae85",
+      "category": "scans"
     },
     {
       "id": "ritto",
       "name": "Ritto",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://ritto.cc",
       "iconUrl": "https://inkstone.web.app/ritto/icon.png",
@@ -10616,12 +10718,13 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "af934c2abba27aeb5fa9de62d8df73cafd0e78146ddbd194066cb95bd817f63f"
+      "sha256": "af934c2abba27aeb5fa9de62d8df73cafd0e78146ddbd194066cb95bd817f63f",
+      "category": "scans"
     },
     {
       "id": "ranoa",
       "name": "Ranoa",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://www.ranoa.lat",
       "iconUrl": "https://inkstone.web.app/ranoa/icon.png",
@@ -10640,7 +10743,8 @@
       "contentRating": "safe",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "7d13e8bf92c6fce6e4d92f9c0724692ee015c005ae7ecfc60d62bf9d30702957"
+      "sha256": "7d13e8bf92c6fce6e4d92f9c0724692ee015c005ae7ecfc60d62bf9d30702957",
+      "category": "scans"
     },
     {
       "id": "gcomics",
@@ -10664,12 +10768,13 @@
       "contentRating": "safe",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "39824e6fa611077cefc76d10e067eae3dea6eb4308fd546a77adce24b955c315"
+      "sha256": "39824e6fa611077cefc76d10e067eae3dea6eb4308fd546a77adce24b955c315",
+      "category": "comics"
     },
     {
       "id": "mangaoni",
       "name": "MangaOni",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://manga-oni.com",
       "iconUrl": "https://inkstone.web.app/mangaoni/icon.png",
@@ -10689,12 +10794,13 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "370080eef062ee8768d3208dd007410a6beaa0c8c8d318ee578885c96f52fb70"
+      "sha256": "370080eef062ee8768d3208dd007410a6beaa0c8c8d318ee578885c96f52fb70",
+      "category": "scans"
     },
     {
       "id": "mangamukai",
       "name": "MangaMukai",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://mangamukai.com",
       "iconUrl": "https://inkstone.web.app/mangamukai/icon.png",
@@ -10714,12 +10820,13 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "1883b7a5707e21155d1e2aae4631fd12d0b3822737d4fab28f746744167cbcd1"
+      "sha256": "1883b7a5707e21155d1e2aae4631fd12d0b3822737d4fab28f746744167cbcd1",
+      "category": "scans"
     },
     {
       "id": "skymangas",
       "name": "SkyMangas",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://skymangas.com",
       "iconUrl": "https://inkstone.web.app/skymangas/icon.png",
@@ -10740,12 +10847,13 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "f82a203744a5148814868bd7e43f8409856a72050d401a4143e53a7ced37d88d"
+      "sha256": "f82a203744a5148814868bd7e43f8409856a72050d401a4143e53a7ced37d88d",
+      "category": "scans"
     },
     {
       "id": "seraphicdeviltry",
       "name": "Seraphic Deviltry",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://spanish.seraphic-deviltry.com",
       "iconUrl": "https://inkstone.web.app/seraphicdeviltry/icon.png",
@@ -10769,7 +10877,8 @@
       ],
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "2fc67fa2069c76f401b72d32c0458e50d011ef2367cb4210e8f27e0acb7b3beb"
+      "sha256": "2fc67fa2069c76f401b72d32c0458e50d011ef2367cb4210e8f27e0acb7b3beb",
+      "category": "adult"
     },
     {
       "id": "hentaimode",
@@ -10797,12 +10906,13 @@
       ],
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "ca01733861d3f9fee64a081b400dd267cc5dcfe8f2474706b0e3ad3b6b680407"
+      "sha256": "ca01733861d3f9fee64a081b400dd267cc5dcfe8f2474706b0e3ad3b6b680407",
+      "category": "adult"
     },
     {
       "id": "swordmangas",
       "name": "SwordMangas",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://swordmangas.com/esp",
       "iconUrl": "https://inkstone.web.app/swordmangas/icon.png",
@@ -10822,12 +10932,13 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "4b0eb7bdad79e60c3c8e2b99553aabff1b5f628cfba90691299719aa2f85b005"
+      "sha256": "4b0eb7bdad79e60c3c8e2b99553aabff1b5f628cfba90691299719aa2f85b005",
+      "category": "scans"
     },
     {
       "id": "doujinhentai",
       "name": "DoujinHentai",
-      "version": "1.0.0",
+      "version": "1.0.2",
       "medium": "comics",
       "website": "https://doujinhentai.net",
       "iconUrl": "https://inkstone.web.app/doujinhentai/icon.png",
@@ -10853,12 +10964,13 @@
       ],
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "306aa4624e814a998200e9b6725f43bb65d8dd72bc6798b1759444a621bc5734"
+      "sha256": "306aa4624e814a998200e9b6725f43bb65d8dd72bc6798b1759444a621bc5734",
+      "category": "adult"
     },
     {
       "id": "namicomi",
       "name": "NamiComi",
-      "version": "1.0.0",
+      "version": "1.0.2",
       "medium": "comics",
       "website": "https://namicomi.com",
       "iconUrl": "https://inkstone.web.app/namicomi/icon.png",
@@ -10879,12 +10991,13 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "6d869ddcd0e21311774ba13bb9a8d199fbd13aa7ea79e7491e0d83c03381b06a"
+      "sha256": "6d869ddcd0e21311774ba13bb9a8d199fbd13aa7ea79e7491e0d83c03381b06a",
+      "category": "general"
     },
     {
       "id": "ravenmanga",
       "name": "RavenManga",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://raventard.xyz",
       "iconUrl": "https://inkstone.web.app/ravenmanga/icon.png",
@@ -10905,12 +11018,13 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "593b33ff1d84ede912797d00c767316ce1f4f4950ac89ccf5be42e3f3dfb4d41"
+      "sha256": "593b33ff1d84ede912797d00c767316ce1f4f4950ac89ccf5be42e3f3dfb4d41",
+      "category": "scans"
     },
     {
       "id": "heavenmanga",
       "name": "HeavenManga",
-      "version": "1.0.0",
+      "version": "1.0.4",
       "medium": "comics",
       "website": "https://heavenmanga.com",
       "iconUrl": "https://inkstone.web.app/heavenmanga/icon.png",
@@ -10936,12 +11050,13 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "c9bfff9c73f0f3e5e2d56cce9fd16f97ab3f9a858923ed831b631265852f718e"
+      "sha256": "c9bfff9c73f0f3e5e2d56cce9fd16f97ab3f9a858923ed831b631265852f718e",
+      "category": "general"
     },
     {
       "id": "leermangaesp",
       "name": "LeerMangaEsp",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "medium": "comics",
       "website": "https://mangalect.org",
       "iconUrl": "https://inkstone.web.app/leermangaesp/icon.png",
@@ -10962,12 +11077,13 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "ff58010b334c65adf92fb99d63a454bb1bcd848a22f8c2a807e51bc3a5e5cb3a"
+      "sha256": "ff58010b334c65adf92fb99d63a454bb1bcd848a22f8c2a807e51bc3a5e5cb3a",
+      "category": "general"
     },
     {
       "id": "luscious",
       "name": "Luscious",
-      "version": "1.0.0",
+      "version": "1.0.2",
       "medium": "comics",
       "website": "https://www.luscious.net",
       "iconUrl": "https://inkstone.web.app/luscious/icon.png",
@@ -10990,12 +11106,13 @@
       ],
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "06675bef984e549e1033fda8ba827b16aecb593d9beb9a4e9fbe6d8eaf7b4770"
+      "sha256": "06675bef984e549e1033fda8ba827b16aecb593d9beb9a4e9fbe6d8eaf7b4770",
+      "category": "adult"
     },
     {
       "id": "submanhwa",
       "name": "SubManhwa",
-      "version": "1.0.0",
+      "version": "1.0.2",
       "medium": "comics",
       "website": "https://submanhwa.com",
       "iconUrl": "https://inkstone.web.app/submanhwa/icon.png",
@@ -11014,7 +11131,8 @@
       "contentRating": "adult",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "d99e0a6208752451c686c81a3f808e8099320d7d5e0645a7909c8a3206124cdd"
+      "sha256": "d99e0a6208752451c686c81a3f808e8099320d7d5e0645a7909c8a3206124cdd",
+      "category": "manhwa"
     },
     {
       "id": "komiwa",
@@ -11034,7 +11152,8 @@
       ],
       "language": "es",
       "contentRating": "mature",
-      "sha256": "8e016d5395f077577c03f231566ed45b18644425c1d9c3e30d2a6fb748bd5e0e"
+      "sha256": "8e016d5395f077577c03f231566ed45b18644425c1d9c3e30d2a6fb748bd5e0e",
+      "category": "general"
     },
     {
       "id": "niadd",
@@ -11060,7 +11179,8 @@
       ],
       "language": "es",
       "contentRating": "mature",
-      "sha256": "e971890e4c7ca360f0e1c20bfcdc89ac74de3c71a4abea458fadf20023f154be"
+      "sha256": "e971890e4c7ca360f0e1c20bfcdc89ac74de3c71a4abea458fadf20023f154be",
+      "category": "general"
     },
     {
       "id": "readanybook",
@@ -11134,6 +11254,169 @@
       "language": "en",
       "contentRating": "mature",
       "sha256": "fdbee1544c45c1fc26efec62bf702431119af161ec3c01355d97c5f129cb5235"
+    },
+    {
+      "id": "elcoleccionista",
+      "name": "El Coleccionista",
+      "version": "1.0.0",
+      "medium": "novel",
+      "website": "https://elcoleccionistadenovelas.wordpress.com",
+      "hosts": [
+        "elcoleccionistadenovelas.wordpress.com",
+        "public-api.wordpress.com",
+        "drive.usercontent.google.com"
+      ],
+      "description": "Light Novels・Web Novels in PDF\n\nCatalog・99 novels, one PDF volume per chapter\n\nRestrictions:\n・Volumes open only in Sumizuri Suki",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "sha256": "192a4df8503e41358396c176694622953b2b8c7910a08b0895cdb787384841a9",
+      "category": "books"
+    },
+    {
+      "id": "3hentai",
+      "name": "3Hentai",
+      "version": "1.1.1",
+      "medium": "comics",
+      "website": "https://3hentai.net",
+      "iconUrl": "https://inkstone.web.app/3hentai/icon.png",
+      "description": "Doujinshi & Hentai (Multi-language, 300,000+)",
+      "capabilities": [
+        "browse",
+        "search",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "multi",
+      "contentRating": "adult",
+      "tags": [
+        "hentai"
+      ],
+      "sha256": "a0f4946b2530cd63be93ea5b58f0e375465226affc76a0ab6ae31f30f52b5497",
+      "hosts": [
+        "3hentai.net",
+        "*.3hentai.net"
+      ],
+      "file": "comics/3hentai/index.js",
+      "settingsSchema": [
+        {
+          "type": "select",
+          "key": "language",
+          "label": "Language",
+          "default": "all",
+          "options": [
+            {
+              "value": "all",
+              "label": "All languages"
+            },
+            {
+              "value": "es",
+              "label": "Español"
+            },
+            {
+              "value": "en",
+              "label": "English"
+            },
+            {
+              "value": "ja",
+              "label": "日本語"
+            },
+            {
+              "value": "zh",
+              "label": "中文"
+            },
+            {
+              "value": "ko",
+              "label": "한국어"
+            },
+            {
+              "value": "fr",
+              "label": "Français"
+            },
+            {
+              "value": "pt",
+              "label": "Português"
+            },
+            {
+              "value": "ru",
+              "label": "Русский"
+            },
+            {
+              "value": "it",
+              "label": "Italiano"
+            },
+            {
+              "value": "de",
+              "label": "Deutsch"
+            }
+          ]
+        }
+      ],
+      "category": "adult"
+    },
+    {
+      "id": "megabanana",
+      "name": "MegaBanana",
+      "version": "1.0.1",
+      "medium": "comics",
+      "website": "https://megabanana.mx",
+      "iconUrl": "https://inkstone.web.app/megabanana/icon.png",
+      "description": "Cómics en español (Marvel, DC, Dark Horse, Image, IDW, Independientes)",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "safe",
+      "file": "comics/megabanana/index.js",
+      "sha256": "26df74924815ee3fa736b737f69d7f43badf5ae14602996c345584b99c66309e",
+      "hosts": [
+        "megabanana.mx",
+        "*.megabanana.mx"
+      ],
+      "category": "comics"
+    },
+    {
+      "id": "mangacrab",
+      "name": "MangaCrab",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://es.mangacrab.org",
+      "iconUrl": "https://inkstone.web.app/mangacrab/icon.png",
+      "hosts": [
+        "es.mangacrab.org",
+        "mangacrab.org"
+      ],
+      "description": "Manhwa・Manhua・Manga\n\nCatalog・1,100+\n\nRestrictions:\n・Rate Limit\n・Locked Chapters",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "file": "comics/mangacrab/index.js",
+      "sha256": "a4f94bd80e6f8cf0460190b1935b65335fd669269951a9b42106d2fbc196b125",
+      "category": "scans"
     }
   ]
 }
