@@ -11026,6 +11026,33 @@
         "megabanana.mx",
         "*.megabanana.mx"
       ]
+    },
+    {
+      "id": "mangacrab",
+      "name": "MangaCrab",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://es.mangacrab.org",
+      "iconUrl": "https://inkstone.web.app/mangacrab/icon.png",
+      "hosts": [
+        "es.mangacrab.org",
+        "mangacrab.org"
+      ],
+      "description": "Manhwa・Manhua・Manga\n\nCatalog・1,100+\n\nRestrictions:\n・Rate Limit\n・Locked Chapters",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "file": "comics/mangacrab/index.js",
+      "sha256": "a4f94bd80e6f8cf0460190b1935b65335fd669269951a9b42106d2fbc196b125"
     }
   ]
 }
