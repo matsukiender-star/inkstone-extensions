@@ -11053,6 +11053,61 @@
       "authorUrl": "https://github.com/matsukiender-star",
       "file": "comics/mangacrab/index.js",
       "sha256": "a4f94bd80e6f8cf0460190b1935b65335fd669269951a9b42106d2fbc196b125"
+    },
+    {
+      "id": "manhuaonline",
+      "name": "ManhuaOnline",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://samurai.j5z.xyz",
+      "iconUrl": "https://inkstone.web.app/manhuaonline/icon.png",
+      "hosts": [
+        "samurai.j5z.xyz"
+      ],
+      "description": "Manhua・Manhwa・Manga\n\nCatalog・200+\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "mature",
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "file": "comics/manhuaonline/index.js",
+      "sha256": "ae90314a606099b48b88612b3e33fb92f2b5a54f70e65326d8b3848f2d92233e"
+    },
+    {
+      "id": "lhentai",
+      "name": "lHentai",
+      "version": "1.0.0",
+      "medium": "comics",
+      "website": "https://lhentai.com",
+      "iconUrl": "https://inkstone.web.app/lhentai/icon.png",
+      "hosts": [
+        "lhentai.com"
+      ],
+      "description": "Doujinshi・Hentai\n\nCatalog・100,000+\n\nRestrictions:\n・Rate Limit",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "adult",
+      "tags": [
+        "hentai"
+      ],
+      "author": "matsukiender-star",
+      "authorUrl": "https://github.com/matsukiender-star",
+      "file": "comics/lhentai/index.js",
+      "sha256": "5406502da0d1c4162e148ba0de0c771792768ac75703e61310bb5797674b6e5f"
     }
   ]
 }
