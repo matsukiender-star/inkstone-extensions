@@ -2069,7 +2069,7 @@
     {
       "id": "manhwaweb",
       "name": "ManhwaWeb",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "medium": "comics",
       "website": "https://manhwaweb.com",
       "iconUrl": "https://inkstone.web.app/manhwaweb/icon.png",
@@ -2089,7 +2089,7 @@
       "contentRating": "adult",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "860d1ebaac98b05929508c46f427a0f7ca479144450f5d8bf424c6ec459545e2",
+      "sha256": "d2149952aac1956414d2300d7c56bee54894adba445d35a22b4a56fbbc5c9426",
       "category": "manhwa"
     },
     {
@@ -3577,7 +3577,7 @@
     {
       "id": "namicomi",
       "name": "NamiComi",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "medium": "comics",
       "website": "https://namicomi.com",
       "iconUrl": "https://inkstone.web.app/namicomi/icon.png",
@@ -3590,6 +3590,7 @@
       "capabilities": [
         "browse",
         "search",
+        "genres",
         "chapters",
         "details",
         "reader"
@@ -3598,7 +3599,7 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "6d869ddcd0e21311774ba13bb9a8d199fbd13aa7ea79e7491e0d83c03381b06a",
+      "sha256": "e66d6ff1e61c84bc91ffef50b5e85d0219b0fa7080a8b68ddd6f80b3baf87c56",
       "category": "general"
     },
     {
@@ -3719,7 +3720,7 @@
     {
       "id": "submanhwa",
       "name": "SubManhwa",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "medium": "comics",
       "website": "https://submanhwa.com",
       "iconUrl": "https://inkstone.web.app/submanhwa/icon.png",
@@ -3730,6 +3731,7 @@
       "capabilities": [
         "browse",
         "search",
+        "genres",
         "chapters",
         "details",
         "reader"
@@ -3738,7 +3740,7 @@
       "contentRating": "adult",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "d99e0a6208752451c686c81a3f808e8099320d7d5e0645a7909c8a3206124cdd",
+      "sha256": "c3e4b1821a25103299d989130e3e742c49195ad8ce4a766edf558c42c7a9199e",
       "category": "manhwa"
     },
     {
@@ -3788,6 +3790,32 @@
       "contentRating": "mature",
       "sha256": "e971890e4c7ca360f0e1c20bfcdc89ac74de3c71a4abea458fadf20023f154be",
       "category": "general"
+    },
+    {
+      "id": "megabanana",
+      "name": "MegaBanana",
+      "version": "1.0.1",
+      "medium": "comics",
+      "website": "https://megabanana.mx",
+      "iconUrl": "https://inkstone.web.app/megabanana/icon.png",
+      "description": "Cómics en español (Marvel, DC, Dark Horse, Image, IDW, Independientes)",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "safe",
+      "file": "comics/megabanana/index.js",
+      "sha256": "26df74924815ee3fa736b737f69d7f43badf5ae14602996c345584b99c66309e",
+      "hosts": [
+        "megabanana.mx",
+        "*.megabanana.mx"
+      ],
+      "category": "comics"
     },
     {
       "id": "elcoleccionista",
@@ -3897,32 +3925,6 @@
         }
       ],
       "category": "adult"
-    },
-    {
-      "id": "megabanana",
-      "name": "MegaBanana",
-      "version": "1.0.1",
-      "medium": "comics",
-      "website": "https://megabanana.mx",
-      "iconUrl": "https://inkstone.web.app/megabanana/icon.png",
-      "description": "Cómics en español (Marvel, DC, Dark Horse, Image, IDW, Independientes)",
-      "capabilities": [
-        "browse",
-        "search",
-        "genres",
-        "details",
-        "chapters",
-        "reader"
-      ],
-      "language": "es",
-      "contentRating": "safe",
-      "file": "comics/megabanana/index.js",
-      "sha256": "26df74924815ee3fa736b737f69d7f43badf5ae14602996c345584b99c66309e",
-      "hosts": [
-        "megabanana.mx",
-        "*.megabanana.mx"
-      ],
-      "category": "comics"
     },
     {
       "id": "mangacrab",
