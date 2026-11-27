@@ -6406,7 +6406,7 @@
     {
       "id": "pressplayz",
       "name": "PressPlayZ",
-      "version": "1.0.4",
+      "version": "1.0.5",
       "medium": "anime",
       "website": "https://pressplayz.top",
       "iconUrl": "https://inkstone.web.app/pressplayz/icon.png",
@@ -6421,7 +6421,9 @@
         "*.netrocdn.site",
         "*.workers.dev",
         "moviesapi.to",
-        "*.moviesapi.to"
+        "*.moviesapi.to",
+        "vidfast.vc",
+        "*.vidfast.vc"
       ],
       "description": "Western",
       "capabilities": [
@@ -6434,7 +6436,7 @@
       ],
       "language": "en",
       "contentRating": "mature",
-      "sha256": "cef2f21be1d18a2f6fa96a15d7165871554cbe85ede84ef9bbf556e3ca16db76"
+      "sha256": "2ca2a647aeca559bc6f6d757a58a26ec4314e5446105068633d58b84d88f60a3"
     },
     {
       "id": "bingr",
@@ -7294,7 +7296,7 @@
     {
       "id": "manhwaweb",
       "name": "ManhwaWeb",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "medium": "comics",
       "website": "https://manhwaweb.com",
       "iconUrl": "https://inkstone.web.app/manhwaweb/icon.png",
@@ -7314,7 +7316,7 @@
       "contentRating": "adult",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "860d1ebaac98b05929508c46f427a0f7ca479144450f5d8bf424c6ec459545e2",
+      "sha256": "d2149952aac1956414d2300d7c56bee54894adba445d35a22b4a56fbbc5c9426",
       "category": "manhwa"
     },
     {
@@ -8034,7 +8036,7 @@
     {
       "id": "cno",
       "name": "Cno.to",
-      "version": "1.0.8",
+      "version": "1.0.9",
       "medium": "anime",
       "website": "https://cno.to",
       "iconUrl": "https://inkstone.web.app/cno/icon.png",
@@ -8050,7 +8052,7 @@
       ],
       "language": "en",
       "contentRating": "mature",
-      "sha256": "a31d1c8af2a17dcc7e2ca41f3244e69f43a8967ce331cc68969d97c9c0509c9a"
+      "sha256": "14640ff0ad5ea04fadf7fe3286c8e7aa2b58dd6db88a7c44633ad156f2604b86"
     },
     {
       "id": "watchanimeworld",
@@ -10970,7 +10972,7 @@
     {
       "id": "namicomi",
       "name": "NamiComi",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "medium": "comics",
       "website": "https://namicomi.com",
       "iconUrl": "https://inkstone.web.app/namicomi/icon.png",
@@ -10983,6 +10985,7 @@
       "capabilities": [
         "browse",
         "search",
+        "genres",
         "chapters",
         "details",
         "reader"
@@ -10991,7 +10994,7 @@
       "contentRating": "mature",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "6d869ddcd0e21311774ba13bb9a8d199fbd13aa7ea79e7491e0d83c03381b06a",
+      "sha256": "e66d6ff1e61c84bc91ffef50b5e85d0219b0fa7080a8b68ddd6f80b3baf87c56",
       "category": "general"
     },
     {
@@ -11112,7 +11115,7 @@
     {
       "id": "submanhwa",
       "name": "SubManhwa",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "medium": "comics",
       "website": "https://submanhwa.com",
       "iconUrl": "https://inkstone.web.app/submanhwa/icon.png",
@@ -11123,6 +11126,7 @@
       "capabilities": [
         "browse",
         "search",
+        "genres",
         "chapters",
         "details",
         "reader"
@@ -11131,7 +11135,7 @@
       "contentRating": "adult",
       "author": "matsukiender-star",
       "authorUrl": "https://github.com/matsukiender-star",
-      "sha256": "d99e0a6208752451c686c81a3f808e8099320d7d5e0645a7909c8a3206124cdd",
+      "sha256": "c3e4b1821a25103299d989130e3e742c49195ad8ce4a766edf558c42c7a9199e",
       "category": "manhwa"
     },
     {
@@ -11256,6 +11260,32 @@
       "sha256": "fdbee1544c45c1fc26efec62bf702431119af161ec3c01355d97c5f129cb5235"
     },
     {
+      "id": "megabanana",
+      "name": "MegaBanana",
+      "version": "1.0.1",
+      "medium": "comics",
+      "website": "https://megabanana.mx",
+      "iconUrl": "https://inkstone.web.app/megabanana/icon.png",
+      "description": "Cómics en español (Marvel, DC, Dark Horse, Image, IDW, Independientes)",
+      "capabilities": [
+        "browse",
+        "search",
+        "genres",
+        "details",
+        "chapters",
+        "reader"
+      ],
+      "language": "es",
+      "contentRating": "safe",
+      "file": "comics/megabanana/index.js",
+      "sha256": "26df74924815ee3fa736b737f69d7f43badf5ae14602996c345584b99c66309e",
+      "hosts": [
+        "megabanana.mx",
+        "*.megabanana.mx"
+      ],
+      "category": "comics"
+    },
+    {
       "id": "elcoleccionista",
       "name": "El Coleccionista",
       "version": "1.0.0",
@@ -11363,32 +11393,6 @@
         }
       ],
       "category": "adult"
-    },
-    {
-      "id": "megabanana",
-      "name": "MegaBanana",
-      "version": "1.0.1",
-      "medium": "comics",
-      "website": "https://megabanana.mx",
-      "iconUrl": "https://inkstone.web.app/megabanana/icon.png",
-      "description": "Cómics en español (Marvel, DC, Dark Horse, Image, IDW, Independientes)",
-      "capabilities": [
-        "browse",
-        "search",
-        "genres",
-        "details",
-        "chapters",
-        "reader"
-      ],
-      "language": "es",
-      "contentRating": "safe",
-      "file": "comics/megabanana/index.js",
-      "sha256": "26df74924815ee3fa736b737f69d7f43badf5ae14602996c345584b99c66309e",
-      "hosts": [
-        "megabanana.mx",
-        "*.megabanana.mx"
-      ],
-      "category": "comics"
     },
     {
       "id": "mangacrab",
